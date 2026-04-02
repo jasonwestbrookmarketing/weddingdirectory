@@ -4,10 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Users, Settings, LogOut, Menu, X } from "lucide-react";
+import { Users, Building2, Settings, LogOut, Menu, X } from "lucide-react";
 
 const navItems = [
   { href: "/dashboard/leads", label: "Leads", icon: Users },
+  { href: "/dashboard/venue", label: "Venue Listing", icon: Building2 },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
