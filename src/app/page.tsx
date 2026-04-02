@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import SearchBar from "@/components/search/SearchBar";
 import VenueCard from "@/components/search/VenueCard";
 
+export const revalidate = 120;
+
 export default async function HomePage() {
   const supabase = await createClient();
   const { data: venues } = await supabase

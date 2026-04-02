@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import VenuePageClient from "./VenuePageClient";
 import type { Metadata } from "next";
 
+export const revalidate = 60;
+
 interface Props {
   params: Promise<{ slug: string }>;
 }

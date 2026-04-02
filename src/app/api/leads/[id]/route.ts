@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod/v4";
 import { createClient } from "@/lib/supabase/server";
+
+const VALID_STATUSES = ["new", "contacted", "call_booked", "tour_booked", "booked"] as const;
+
+const updateLeadSchema = z.object({
+  status: z.enum(VALID_STATUSES),
+});
 
 export async function PATCH(
   request: NextRequest,
@@ -36,19 +43,24 @@ export async function PATCH(
     return NextResponse.json({ error: "Lead not found" }, { status: 404 });
   }
 
-  const body = await request.json();
-  const { status } = body;
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
 
-  if (!status) {
+  const result = updateLeadSchema.safeParse(body);
+  if (!result.success) {
     return NextResponse.json(
-      { error: "Status is required" },
+      { error: "Invalid status. Must be one of: " + VALID_STATUSES.join(", ") },
       { status: 400 }
     );
   }
 
   const { data: updated, error } = await supabase
     .from("leads")
-    .update({ status })
+    .update({ status: result.data.status })
     .eq("id", id)
     .select()
     .single();

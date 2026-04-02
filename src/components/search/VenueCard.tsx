@@ -45,6 +45,8 @@ export default function VenueCard({ venue }: VenueCardProps) {
             width={600}
             height={450}
             unoptimized
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            loading="lazy"
             className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (

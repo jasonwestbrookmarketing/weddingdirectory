@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
+import { z } from "zod/v4";
 import { createClient } from "@/lib/supabase/server";
 import { createSignedUploadUrl, ALLOWED_IMAGE_TYPES } from "@/lib/wasabi";
+
+const uploadSchema = z.object({
+  venueId: z.string().uuid("Invalid venue ID"),
+  folder: z.enum(["cover", "gallery"]),
+  filename: z.string().min(1, "Filename required"),
+  contentType: z.enum(ALLOWED_IMAGE_TYPES as unknown as [string, ...string[]]),
+});
 
 export async function POST(request: Request) {
   const supabase = await createClient();
@@ -12,39 +20,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await request.json();
-  const { venueId, folder, filename, contentType } = body as {
-    venueId: string;
-    folder: "cover" | "gallery";
-    filename: string;
-    contentType: string;
-  };
-
-  if (!venueId || !folder || !filename || !contentType) {
-    return NextResponse.json(
-      { error: "Missing required fields" },
-      { status: 400 }
-    );
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  if (!ALLOWED_IMAGE_TYPES.includes(contentType)) {
-    return NextResponse.json(
-      { error: "Invalid content type. Allowed: JPEG, PNG, WebP" },
-      { status: 400 }
-    );
+  const result = uploadSchema.safeParse(body);
+  if (!result.success) {
+    const msg = result.error.issues.map((i) => i.message).join(", ");
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
-  if (!["cover", "gallery"].includes(folder)) {
-    return NextResponse.json(
-      { error: "Invalid folder. Must be 'cover' or 'gallery'" },
-      { status: 400 }
-    );
-  }
+  const { venueId, folder, filename, contentType } = result.data;
 
   try {
     const { signedUrl, publicUrl } = await createSignedUploadUrl(
       venueId,
-      folder,
+      folder as "cover" | "gallery",
       filename,
       contentType
     );

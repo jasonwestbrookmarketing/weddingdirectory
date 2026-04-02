@@ -62,6 +62,7 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
             alt={venue.name || "Venue"}
             fill
             unoptimized
+            sizes="100vw"
             className="object-cover"
             priority
           />
@@ -142,6 +143,8 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
                     width={800}
                     height={600}
                     unoptimized
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    loading="lazy"
                     className="w-full h-full object-cover aspect-[4/3] hover:scale-105 transition-transform duration-300"
                   />
                 </div>
@@ -337,6 +340,8 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         venueId={venue.id}
+        venueName={venue.name || undefined}
+        prefillGuestCount={venue.capacity_min || undefined}
       />
     </>
   );
