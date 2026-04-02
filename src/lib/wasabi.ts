@@ -47,7 +47,9 @@ export async function createSignedUploadUrl(
     unhoistableHeaders: new Set(["content-type"]),
   });
 
-  const publicUrl = `${process.env.WASABI_PUBLIC_BASE_URL}/${key}`;
+  // Strip trailing slash from base URL to avoid double-slash in final URL
+  const baseUrl = (process.env.WASABI_PUBLIC_BASE_URL || "").replace(/\/+$/, "");
+  const publicUrl = `${baseUrl}/${key}`;
   return { signedUrl, publicUrl, key };
 }
 
