@@ -35,6 +35,17 @@ export async function POST(request: Request) {
 
   const { venueId, folder, filename, contentType } = result.data;
 
+  if (
+    !process.env.WASABI_ACCESS_KEY_ID ||
+    !process.env.WASABI_SECRET_ACCESS_KEY ||
+    !process.env.WASABI_BUCKET
+  ) {
+    return NextResponse.json(
+      { error: "Image storage is not configured. Please add Wasabi credentials to your environment variables." },
+      { status: 503 }
+    );
+  }
+
   try {
     const { signedUrl, publicUrl } = await createSignedUploadUrl(
       venueId,
@@ -44,9 +55,11 @@ export async function POST(request: Request) {
     );
 
     return NextResponse.json({ signedUrl, publicUrl });
-  } catch {
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    console.error("Wasabi signed URL error:", message);
     return NextResponse.json(
-      { error: "Failed to create signed URL" },
+      { error: `Failed to create upload URL: ${message}` },
       { status: 500 }
     );
   }
