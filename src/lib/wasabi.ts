@@ -1,10 +1,23 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
+function normalizeEndpoint(endpoint: string): string {
+  if (!endpoint) return "";
+  // Add https:// if missing
+  if (!endpoint.startsWith("http://") && !endpoint.startsWith("https://")) {
+    return `https://${endpoint}`;
+  }
+  return endpoint;
+}
+
 function getS3Client() {
+  const region = process.env.WASABI_REGION || "us-east-1";
+  const rawEndpoint = process.env.WASABI_ENDPOINT || `https://s3.${region}.wasabisys.com`;
+  const endpoint = normalizeEndpoint(rawEndpoint);
+
   return new S3Client({
-    region: process.env.WASABI_REGION || "us-east-1",
-    endpoint: process.env.WASABI_ENDPOINT || "https://s3.us-east-1.wasabisys.com",
+    region,
+    endpoint,
     credentials: {
       accessKeyId: process.env.WASABI_ACCESS_KEY_ID || "",
       secretAccessKey: process.env.WASABI_SECRET_ACCESS_KEY || "",

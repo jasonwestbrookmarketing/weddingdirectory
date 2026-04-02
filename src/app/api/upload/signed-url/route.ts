@@ -35,16 +35,27 @@ export async function POST(request: Request) {
 
   const { venueId, folder, filename, contentType } = result.data;
 
-  if (
-    !process.env.WASABI_ACCESS_KEY_ID ||
-    !process.env.WASABI_SECRET_ACCESS_KEY ||
-    !process.env.WASABI_BUCKET
-  ) {
+  const missingVars = [
+    !process.env.WASABI_ACCESS_KEY_ID && "WASABI_ACCESS_KEY_ID",
+    !process.env.WASABI_SECRET_ACCESS_KEY && "WASABI_SECRET_ACCESS_KEY",
+    !process.env.WASABI_BUCKET && "WASABI_BUCKET",
+  ].filter(Boolean);
+
+  if (missingVars.length > 0) {
     return NextResponse.json(
-      { error: "Image storage is not configured. Please add Wasabi credentials to your environment variables." },
+      { error: `Image storage misconfigured. Missing: ${missingVars.join(", ")}` },
       { status: 503 }
     );
   }
+
+  // Log config for debugging (no secrets)
+  console.log("Wasabi config:", {
+    region: process.env.WASABI_REGION,
+    endpoint: process.env.WASABI_ENDPOINT,
+    bucket: process.env.WASABI_BUCKET,
+    hasKey: !!process.env.WASABI_ACCESS_KEY_ID,
+    hasSecret: !!process.env.WASABI_SECRET_ACCESS_KEY,
+  });
 
   try {
     const { signedUrl, publicUrl } = await createSignedUploadUrl(
