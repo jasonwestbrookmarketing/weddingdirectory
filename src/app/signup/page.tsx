@@ -14,6 +14,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -24,7 +25,10 @@ export default function SignupPage() {
     const { error: signUpError } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName } },
+      options: {
+        data: { full_name: fullName },
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=/onboarding`,
+      },
     });
 
     if (signUpError) {
@@ -33,7 +37,29 @@ export default function SignupPage() {
       return;
     }
 
-    router.push("/onboarding");
+    setEmailSent(true);
+    setLoading(false);
+  }
+
+  if (emailSent) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-stone-50 px-4">
+        <div className="w-full max-w-md">
+          <div className="rounded-2xl bg-white p-10 shadow-sm border border-stone-100 text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-stone-100">
+              <svg className="h-7 w-7 text-stone-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h1 className="mb-2 text-2xl font-semibold text-stone-900">Check your email</h1>
+            <p className="text-stone-500">
+              We sent a confirmation link to <strong className="text-stone-800">{email}</strong>.
+              Click it to verify your account and continue to onboarding.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
