@@ -50,19 +50,25 @@ export default async function VenuePage({ params }: Props) {
   if (!venue) notFound();
 
   return (
-    <>
-      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6">
-        <Link href="/" className="text-xl font-bold tracking-tight text-white">
-          StoryVenue
-        </Link>
-        <Link
-          href="/signup"
-          className="text-sm font-medium text-white/80 hover:text-white transition-colors"
-        >
-          List Your Venue
-        </Link>
+    <div className="min-h-screen bg-white">
+      {/* Airbnb-style white top nav */}
+      <nav className="sticky top-0 z-30 bg-white border-b border-stone-200">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between h-16">
+          <Link
+            href="/"
+            className="text-lg font-bold tracking-tight text-stone-900 hover:text-stone-700 transition-colors"
+          >
+            StoryVenue
+          </Link>
+          <Link
+            href="/signup"
+            className="text-sm font-medium text-stone-700 hover:text-stone-900 border border-stone-200 hover:border-stone-300 px-4 py-2 rounded-xl transition-colors"
+          >
+            List Your Venue
+          </Link>
+        </div>
       </nav>
       <VenuePageClient venue={venue} />
-    </>
+    </div>
   );
 }

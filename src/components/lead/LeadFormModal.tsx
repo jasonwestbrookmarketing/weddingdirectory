@@ -236,7 +236,7 @@ export default function LeadFormModal({
           </div>
 
           {error && (
-            <p className="text-sm text-rose-600 bg-rose-50 rounded-lg px-3 py-2">
+            <p className="text-sm text-stone-700 bg-stone-100 rounded-lg px-3 py-2">
               {error}
             </p>
           )}
@@ -244,7 +244,7 @@ export default function LeadFormModal({
           <Button
             type="submit"
             loading={loading}
-            className="w-full bg-rose-600 hover:bg-rose-700 text-white"
+            className="w-full bg-stone-900 hover:bg-stone-800 text-white"
             size="lg"
           >
             {CTA_LABEL}

@@ -9,6 +9,11 @@ import {
   Sparkles,
   TreePine,
   Heart,
+  Share2,
+  BookmarkIcon,
+  ChevronDown,
+  X,
+  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import LeadFormModal from "@/components/lead/LeadFormModal";
@@ -25,8 +30,184 @@ interface VenuePageClientProps {
   venue: Venue;
 }
 
+function PhotoMosaic({
+  coverImage,
+  galleryImages,
+  venueName,
+  onViewAll,
+}: {
+  coverImage: string | null;
+  galleryImages: string[];
+  venueName: string;
+  onViewAll: () => void;
+}) {
+  const allPhotos = [
+    ...(coverImage ? [coverImage] : []),
+    ...galleryImages,
+  ];
+
+  const placeholderClass = "bg-gradient-to-br from-stone-200 to-stone-300";
+
+  return (
+    <div className="relative">
+      {/* Desktop mosaic: 1 large left + 2×2 right grid */}
+      <div className="hidden md:grid grid-cols-4 grid-rows-2 gap-2 h-[480px] overflow-hidden rounded-none md:rounded-2xl">
+        {/* Main large photo */}
+        <div className="col-span-2 row-span-2 overflow-hidden">
+          {allPhotos[0] ? (
+            <Image
+              src={allPhotos[0]}
+              alt={`${venueName} – Main photo`}
+              fill={false}
+              width={900}
+              height={600}
+              unoptimized
+              className="w-full h-full object-cover"
+              priority
+            />
+          ) : (
+            <div className={`w-full h-full ${placeholderClass}`} />
+          )}
+        </div>
+        {/* Top-right two */}
+        {[1, 2].map((i) => (
+          <div key={i} className="overflow-hidden">
+            {allPhotos[i] ? (
+              <Image
+                src={allPhotos[i]}
+                alt={`${venueName} – Photo ${i + 1}`}
+                fill={false}
+                width={450}
+                height={300}
+                unoptimized
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className={`w-full h-full ${placeholderClass}`} />
+            )}
+          </div>
+        ))}
+        {/* Bottom-right two */}
+        {[3, 4].map((i) => (
+          <div key={i} className="overflow-hidden relative">
+            {allPhotos[i] ? (
+              <Image
+                src={allPhotos[i]}
+                alt={`${venueName} – Photo ${i + 1}`}
+                fill={false}
+                width={450}
+                height={300}
+                unoptimized
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className={`w-full h-full ${placeholderClass}`} />
+            )}
+            {/* "Show all photos" overlay on last tile */}
+            {i === 4 && allPhotos.length > 5 && (
+              <button
+                onClick={onViewAll}
+                className="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-semibold text-sm hover:bg-black/50 transition-colors"
+              >
+                +{allPhotos.length - 5} photos
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Mobile: single hero */}
+      <div className="md:hidden relative h-[280px] overflow-hidden">
+        {allPhotos[0] ? (
+          <Image
+            src={allPhotos[0]}
+            alt={`${venueName} – Main photo`}
+            fill
+            unoptimized
+            sizes="100vw"
+            className="object-cover"
+            priority
+          />
+        ) : (
+          <div className={`w-full h-full ${placeholderClass}`} />
+        )}
+      </div>
+
+      {/* Show all photos button */}
+      {allPhotos.length > 1 && (
+        <button
+          onClick={onViewAll}
+          className="absolute bottom-4 right-4 hidden md:flex items-center gap-2 bg-white border border-stone-300 text-stone-900 text-sm font-semibold px-4 py-2.5 rounded-xl shadow-sm hover:bg-stone-50 transition-colors"
+        >
+          <span className="grid grid-cols-2 gap-0.5 w-4 h-4">
+            {[0,1,2,3].map(n => (
+              <div key={n} className="bg-stone-900 rounded-[1px]" />
+            ))}
+          </span>
+          Show all photos
+        </button>
+      )}
+    </div>
+  );
+}
+
+function PhotoGalleryModal({
+  images,
+  venueName,
+  onClose,
+}: {
+  images: string[];
+  venueName: string;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+      <div className="sticky top-0 z-10 bg-white border-b border-stone-200 px-6 py-4 flex items-center justify-between">
+        <button
+          onClick={onClose}
+          className="flex items-center gap-2 text-stone-900 font-medium hover:underline text-sm"
+        >
+          <X className="h-5 w-5" />
+          Close
+        </button>
+        <span className="text-sm font-medium text-stone-600">
+          {images.length} photos
+        </span>
+      </div>
+      <div className="max-w-4xl mx-auto px-6 py-8 space-y-4">
+        {images.map((url, i) => (
+          <div key={i} className="overflow-hidden rounded-2xl">
+            <Image
+              src={url}
+              alt={`${venueName} – Photo ${i + 1}`}
+              width={900}
+              height={600}
+              unoptimized
+              className="w-full object-cover"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function VenuePageClient({ venue }: VenuePageClientProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showGallery, setShowGallery] = useState(false);
+  const [descExpanded, setDescExpanded] = useState(false);
 
   useEffect(() => {
     trackEvent("venue_page_viewed", {
@@ -51,46 +232,78 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
   const featureLabels = features.map(
     (f) => FEATURES_LIST.find((fl) => fl.value === f)?.label || f
   );
+  const allPhotos = [
+    ...(venue.cover_image_url ? [venue.cover_image_url] : []),
+    ...galleryImages,
+  ];
+
+  const descriptionText = venue.description || "";
+  const DESCRIPTION_LIMIT = 280;
+  const isLongDesc = descriptionText.length > DESCRIPTION_LIMIT;
+  const displayedDesc =
+    isLongDesc && !descExpanded
+      ? descriptionText.slice(0, DESCRIPTION_LIMIT) + "…"
+      : descriptionText;
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative h-[70vh] min-h-[500px]">
-        {venue.cover_image_url ? (
-          <Image
-            src={venue.cover_image_url}
-            alt={venue.name || "Venue"}
-            fill
-            unoptimized
-            sizes="100vw"
-            className="object-cover"
-            priority
-          />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-stone-200 to-stone-300" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-stone-900/30 to-transparent" />
+      {/* Photo mosaic */}
+      <div className="max-w-7xl mx-auto px-0 md:px-6 lg:px-8 pt-0 md:pt-6">
+        <PhotoMosaic
+          coverImage={venue.cover_image_url}
+          galleryImages={galleryImages}
+          venueName={venue.name || "Venue"}
+          onViewAll={() => setShowGallery(true)}
+        />
+      </div>
 
-        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
-          <div className="max-w-7xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-3">
-              {venue.name}
-            </h1>
-            {venue.location_full && (
-              <p className="flex items-center gap-2 text-lg text-white/80 mb-6">
-                <MapPin className="h-5 w-5" />
-                {venue.location_full}
-              </p>
-            )}
-            <div className="flex flex-wrap gap-3">
+      {/* Main content */}
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12">
+          {/* Left column */}
+          <div className="min-w-0">
+            {/* Title row */}
+            <div className="flex items-start justify-between gap-4 mb-3">
+              <div>
+                <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-stone-900">
+                  {venue.name}
+                </h1>
+                {venue.location_full && (
+                  <p className="flex items-center gap-1.5 text-sm text-stone-500 mt-1.5">
+                    <MapPin className="h-4 w-4 flex-shrink-0" />
+                    {venue.location_full}
+                  </p>
+                )}
+              </div>
+              {/* Action buttons */}
+              <div className="flex items-center gap-1 flex-shrink-0">
+                <button className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-3 py-2 rounded-xl transition-colors">
+                  <Share2 className="h-4 w-4" />
+                  <span className="hidden sm:inline">Share</span>
+                </button>
+                <button className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-3 py-2 rounded-xl transition-colors">
+                  <BookmarkIcon className="h-4 w-4" />
+                  <span className="hidden sm:inline">Save</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Quick-stat pills */}
+            <div className="flex flex-wrap gap-2 mb-8">
               {venueTypeLabel && (
-                <span className="bg-white/15 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium">
+                <span className="bg-stone-100 text-stone-700 px-3 py-1.5 rounded-full text-sm font-medium">
                   {venueTypeLabel}
                 </span>
               )}
+              {indoorOutdoorLabel && (
+                <span className="bg-stone-100 text-stone-700 px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5">
+                  <TreePine className="h-3.5 w-3.5" />
+                  {indoorOutdoorLabel}
+                </span>
+              )}
               {(venue.capacity_min != null || venue.capacity_max != null) && (
-                <span className="bg-white/15 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-1.5">
-                  <Users className="h-4 w-4" />
+                <span className="bg-stone-100 text-stone-700 px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5">
+                  <Users className="h-3.5 w-3.5" />
                   {venue.capacity_min && venue.capacity_max
                     ? `${venue.capacity_min}–${venue.capacity_max} guests`
                     : venue.capacity_max
@@ -99,241 +312,289 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
                 </span>
               )}
               {venue.price_min != null && (
-                <span className="bg-white/15 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-1.5">
-                  <DollarSign className="h-4 w-4" />
+                <span className="bg-stone-100 text-stone-700 px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5">
+                  <DollarSign className="h-3.5 w-3.5" />
                   From ${venue.price_min.toLocaleString()}
-                  {venue.price_max != null &&
-                    ` – $${venue.price_max.toLocaleString()}`}
                 </span>
               )}
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Story */}
-      {venue.description && (
-        <section className="py-20 px-6">
-          <div className="max-w-2xl mx-auto">
-            <p className="text-lg md:text-xl leading-relaxed text-stone-700 whitespace-pre-line">
-              {venue.description}
-            </p>
-          </div>
-        </section>
-      )}
+            <hr className="border-stone-200 mb-8" />
 
-      {/* Gallery */}
-      {galleryImages.length > 0 && (
-        <section className="py-16 px-6 md:px-12">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-stone-900 mb-8">
-              Gallery
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {galleryImages.map((url, i) => (
-                <div
-                  key={i}
-                  className={`overflow-hidden rounded-xl ${
-                    i === 0 ? "col-span-2 row-span-2" : ""
-                  }`}
-                >
-                  <Image
-                    src={url}
-                    alt={`${venue.name} – Photo ${i + 1}`}
-                    width={800}
-                    height={600}
-                    unoptimized
-                    sizes="(max-width: 768px) 50vw, 33vw"
-                    loading="lazy"
-                    className="w-full h-full object-cover aspect-[4/3] hover:scale-105 transition-transform duration-300"
-                  />
+            {/* Host/venue identity row */}
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-full bg-stone-900 flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-semibold text-lg">
+                  {(venue.name || "V").charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <div>
+                <p className="font-semibold text-stone-900 text-base">
+                  {venue.name}
+                </p>
+                <p className="text-sm text-stone-500">
+                  {venueTypeLabel} venue
+                  {venue.location_city ? ` · ${venue.location_city}` : ""}
+                </p>
+              </div>
+            </div>
+
+            <hr className="border-stone-200 mb-8" />
+
+            {/* Key highlights */}
+            <div className="space-y-6 mb-8">
+              {(venue.capacity_min != null || venue.capacity_max != null) && (
+                <div className="flex items-start gap-4">
+                  <Users className="h-6 w-6 text-stone-700 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-stone-900">Capacity</p>
+                    <p className="text-stone-500 text-sm">
+                      {venue.capacity_min && venue.capacity_max
+                        ? `${venue.capacity_min}–${venue.capacity_max} guests`
+                        : venue.capacity_max
+                          ? `Up to ${venue.capacity_max} guests`
+                          : `${venue.capacity_min}+ guests`}
+                    </p>
+                  </div>
                 </div>
-              ))}
+              )}
+              {venue.price_min != null && (
+                <div className="flex items-start gap-4">
+                  <DollarSign className="h-6 w-6 text-stone-700 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-stone-900">Pricing</p>
+                    <p className="text-stone-500 text-sm">
+                      Starting from ${venue.price_min.toLocaleString()}
+                      {venue.price_max != null
+                        ? ` – $${venue.price_max.toLocaleString()}`
+                        : ""}
+                    </p>
+                  </div>
+                </div>
+              )}
+              {venueTypeLabel && (
+                <div className="flex items-start gap-4">
+                  <Sparkles className="h-6 w-6 text-stone-700 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-stone-900">Venue Style</p>
+                    <p className="text-stone-500 text-sm">{venueTypeLabel}</p>
+                  </div>
+                </div>
+              )}
+              {indoorOutdoorLabel && (
+                <div className="flex items-start gap-4">
+                  <TreePine className="h-6 w-6 text-stone-700 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-stone-900">Setting</p>
+                    <p className="text-stone-500 text-sm">{indoorOutdoorLabel}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <hr className="border-stone-200 mb-8" />
+
+            {/* Description */}
+            {descriptionText && (
+              <>
+                <div className="mb-8">
+                  <p className="text-stone-700 leading-relaxed text-base whitespace-pre-line">
+                    {displayedDesc}
+                  </p>
+                  {isLongDesc && (
+                    <button
+                      onClick={() => setDescExpanded(!descExpanded)}
+                      className="flex items-center gap-1 mt-3 text-stone-900 font-semibold text-sm hover:underline"
+                    >
+                      {descExpanded ? "Show less" : "Show more"}
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform ${descExpanded ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                  )}
+                </div>
+                <hr className="border-stone-200 mb-8" />
+              </>
+            )}
+
+            {/* Features & Amenities */}
+            {featureLabels.length > 0 && (
+              <>
+                <div className="mb-8">
+                  <h2 className="text-xl font-semibold text-stone-900 mb-5">
+                    What this venue offers
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {featureLabels.map((label, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <Check className="h-5 w-5 text-stone-700 flex-shrink-0" />
+                        <span className="text-stone-700 text-sm">{label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <hr className="border-stone-200 mb-8" />
+              </>
+            )}
+
+            {/* Vision section */}
+            <div className="mb-8">
+              <h2 className="text-xl font-semibold text-stone-900 mb-6">
+                Imagine your day here
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div className="space-y-3">
+                  <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center">
+                    <Heart className="h-5 w-5 text-stone-700" />
+                  </div>
+                  <h3 className="font-semibold text-stone-900 text-sm">Your Ceremony</h3>
+                  <p className="text-stone-500 text-sm leading-relaxed">
+                    Exchange vows in a{" "}
+                    {venueTypeLabel
+                      ? `beautiful ${venueTypeLabel.toLowerCase()} setting`
+                      : "stunning setting"}
+                    {indoorOutdoorLabel
+                      ? `, ${indoorOutdoorLabel.toLowerCase()}`
+                      : ""}
+                    , surrounded by the ones you love.
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center">
+                    <Sparkles className="h-5 w-5 text-stone-700" />
+                  </div>
+                  <h3 className="font-semibold text-stone-900 text-sm">The Reception</h3>
+                  <p className="text-stone-500 text-sm leading-relaxed">
+                    Celebrate with
+                    {venue.capacity_max ? ` up to ${venue.capacity_max}` : " your"}{" "}
+                    guests as the evening unfolds with dinner, dancing, and
+                    unforgettable moments.
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center">
+                    <Users className="h-5 w-5 text-stone-700" />
+                  </div>
+                  <h3 className="font-semibold text-stone-900 text-sm">Guest Experience</h3>
+                  <p className="text-stone-500 text-sm leading-relaxed">
+                    From arrival to last dance, every moment flows naturally in
+                    a space designed for celebration and connection.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
-      )}
 
-      {/* Key Details */}
-      <section className="py-16 px-6 bg-stone-50">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-stone-900 mb-10">
-            Key Details
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {(venue.capacity_min != null || venue.capacity_max != null) && (
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-stone-500">
-                  <Users className="h-5 w-5" />
-                  <span className="text-sm font-medium uppercase tracking-wider">
-                    Capacity
-                  </span>
-                </div>
-                <p className="text-2xl font-semibold text-stone-900">
-                  {venue.capacity_min && venue.capacity_max
-                    ? `${venue.capacity_min} – ${venue.capacity_max}`
-                    : venue.capacity_max || `${venue.capacity_min}+`}
-                </p>
-                <p className="text-sm text-stone-500">guests</p>
-              </div>
-            )}
+          {/* Right column — sticky booking card */}
+          <div className="hidden lg:block">
+            <div className="sticky top-8">
+              <div className="border border-stone-200 rounded-2xl shadow-lg p-6 bg-white">
+                {/* Price */}
+                {venue.price_min != null && (
+                  <div className="mb-5">
+                    <p className="text-stone-900">
+                      <span className="text-2xl font-bold">
+                        ${venue.price_min.toLocaleString()}
+                      </span>
+                      <span className="text-stone-500 text-base font-normal ml-1">
+                        starting price
+                      </span>
+                    </p>
+                    {venue.price_max != null && (
+                      <p className="text-sm text-stone-500 mt-0.5">
+                        up to ${venue.price_max.toLocaleString()}
+                      </p>
+                    )}
+                  </div>
+                )}
 
-            {venue.price_min != null && (
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-stone-500">
-                  <DollarSign className="h-5 w-5" />
-                  <span className="text-sm font-medium uppercase tracking-wider">
-                    Pricing
-                  </span>
+                {/* Stats */}
+                <div className="border border-stone-200 rounded-xl overflow-hidden mb-4 divide-y divide-stone-200">
+                  {(venue.capacity_min != null || venue.capacity_max != null) && (
+                    <div className="px-4 py-3">
+                      <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-0.5">
+                        Capacity
+                      </p>
+                      <p className="text-sm text-stone-900 font-medium">
+                        {venue.capacity_min && venue.capacity_max
+                          ? `${venue.capacity_min}–${venue.capacity_max} guests`
+                          : venue.capacity_max
+                            ? `Up to ${venue.capacity_max} guests`
+                            : `${venue.capacity_min}+ guests`}
+                      </p>
+                    </div>
+                  )}
+                  {venueTypeLabel && (
+                    <div className="px-4 py-3">
+                      <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-0.5">
+                        Venue Type
+                      </p>
+                      <p className="text-sm text-stone-900 font-medium">
+                        {venueTypeLabel}
+                      </p>
+                    </div>
+                  )}
+                  {indoorOutdoorLabel && (
+                    <div className="px-4 py-3">
+                      <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-0.5">
+                        Setting
+                      </p>
+                      <p className="text-sm text-stone-900 font-medium">
+                        {indoorOutdoorLabel}
+                      </p>
+                    </div>
+                  )}
                 </div>
-                <p className="text-2xl font-semibold text-stone-900">
-                  ${venue.price_min.toLocaleString()}
-                  {venue.price_max != null &&
-                    ` – $${venue.price_max.toLocaleString()}`}
-                </p>
-                <p className="text-sm text-stone-500">starting price</p>
-              </div>
-            )}
 
-            {venueTypeLabel && (
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-stone-500">
-                  <Sparkles className="h-5 w-5" />
-                  <span className="text-sm font-medium uppercase tracking-wider">
-                    Style
-                  </span>
-                </div>
-                <p className="text-2xl font-semibold text-stone-900">
-                  {venueTypeLabel}
-                </p>
-              </div>
-            )}
+                <Button
+                  size="lg"
+                  className="w-full bg-stone-900 hover:bg-stone-800 text-white rounded-xl"
+                  onClick={handleCTAClick}
+                >
+                  {CTA_LABEL}
+                </Button>
 
-            {indoorOutdoorLabel && (
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-stone-500">
-                  <TreePine className="h-5 w-5" />
-                  <span className="text-sm font-medium uppercase tracking-wider">
-                    Setting
-                  </span>
-                </div>
-                <p className="text-2xl font-semibold text-stone-900">
-                  {indoorOutdoorLabel}
+                <p className="text-xs text-stone-400 text-center mt-3">
+                  No commitment — just check availability
                 </p>
               </div>
-            )}
+            </div>
           </div>
+        </div>
+      </div>
 
-          {featureLabels.length > 0 && (
-            <div className="mt-12">
-              <h3 className="text-lg font-semibold text-stone-900 mb-4">
-                Features & Amenities
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {featureLabels.map((label, i) => (
-                  <span
-                    key={i}
-                    className="bg-white border border-stone-200 px-4 py-2 rounded-full text-sm text-stone-700"
-                  >
-                    {label}
-                  </span>
-                ))}
-              </div>
+      {/* Mobile sticky CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white border-t border-stone-200 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <div className="flex items-center justify-between gap-4">
+          {venue.price_min != null && (
+            <div>
+              <p className="text-stone-900">
+                <span className="text-lg font-bold">${venue.price_min.toLocaleString()}</span>
+                <span className="text-stone-500 text-sm font-normal ml-1">starting</span>
+              </p>
             </div>
           )}
-        </div>
-      </section>
-
-      {/* Imagine Your Day Here */}
-      <section className="py-20 px-6">
-        <div className="max-w-5xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-stone-900 mb-4">
-            Imagine Your Day Here
-          </h2>
-          <p className="text-stone-500 text-lg">
-            Every great love story deserves a stunning setting
-          </p>
-        </div>
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="text-center space-y-4 p-8">
-            <div className="w-14 h-14 rounded-full bg-rose-50 flex items-center justify-center mx-auto">
-              <Heart className="h-7 w-7 text-rose-600" />
-            </div>
-            <h3 className="text-xl font-semibold text-stone-900">
-              Your Ceremony
-            </h3>
-            <p className="text-stone-500 leading-relaxed">
-              Picture exchanging vows in a{" "}
-              {venueTypeLabel
-                ? `beautiful ${venueTypeLabel.toLowerCase()} setting`
-                : "stunning setting"}
-              {indoorOutdoorLabel
-                ? `, ${indoorOutdoorLabel.toLowerCase()}`
-                : ""}
-              , surrounded by your loved ones.
-            </p>
-          </div>
-          <div className="text-center space-y-4 p-8">
-            <div className="w-14 h-14 rounded-full bg-rose-50 flex items-center justify-center mx-auto">
-              <Sparkles className="h-7 w-7 text-rose-600" />
-            </div>
-            <h3 className="text-xl font-semibold text-stone-900">
-              The Reception
-            </h3>
-            <p className="text-stone-500 leading-relaxed">
-              Celebrate with
-              {venue.capacity_max ? ` up to ${venue.capacity_max}` : " your"}{" "}
-              guests as the evening unfolds with dinner, dancing, and
-              unforgettable moments.
-            </p>
-          </div>
-          <div className="text-center space-y-4 p-8">
-            <div className="w-14 h-14 rounded-full bg-rose-50 flex items-center justify-center mx-auto">
-              <Users className="h-7 w-7 text-rose-600" />
-            </div>
-            <h3 className="text-xl font-semibold text-stone-900">
-              Guest Experience
-            </h3>
-            <p className="text-stone-500 leading-relaxed">
-              From arrival to last dance, every moment flows naturally in a
-              space designed for celebration and connection.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Block */}
-      <section className="py-24 px-6 text-center bg-stone-50">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-stone-900 mb-4">
-            Ready to Visit?
-          </h2>
-          <p className="text-stone-500 text-lg mb-8">
-            Get pricing details and check availability for your preferred dates.
-          </p>
           <Button
-            size="lg"
-            className="bg-rose-600 hover:bg-rose-700 text-white"
+            size="md"
+            className="flex-1 bg-stone-900 hover:bg-stone-800 text-white rounded-xl"
             onClick={handleCTAClick}
           >
             {CTA_LABEL}
           </Button>
         </div>
-      </section>
-
-      {/* Mobile Sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-stone-200 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-        <Button
-          size="lg"
-          className="w-full bg-rose-600 hover:bg-rose-700 text-white"
-          onClick={handleCTAClick}
-        >
-          {CTA_LABEL}
-        </Button>
       </div>
 
       {/* Spacer for mobile sticky CTA */}
-      <div className="h-20 md:hidden" />
+      <div className="h-20 lg:hidden" />
+
+      {/* Photo gallery modal */}
+      {showGallery && (
+        <PhotoGalleryModal
+          images={allPhotos}
+          venueName={venue.name || "Venue"}
+          onClose={() => setShowGallery(false)}
+        />
+      )}
 
       {/* Lead Form Modal */}
       <LeadFormModal
