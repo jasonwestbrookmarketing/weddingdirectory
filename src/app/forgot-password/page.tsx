@@ -2,7 +2,6 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
@@ -17,21 +16,26 @@ export default function ForgotPasswordPage() {
     setError("");
     setLoading(true);
 
-    const supabase = createClient();
-    const { error: resetError } = await supabase.auth.resetPasswordForEmail(
-      email,
-      {
-        redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
+    try {
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || "Something went wrong. Please try again.");
+        setLoading(false);
+        return;
       }
-    );
-
-    setLoading(false);
-
-    if (resetError) {
-      setError(resetError.message);
+    } catch {
+      setError("Something went wrong. Please try again.");
+      setLoading(false);
       return;
     }
 
+    setLoading(false);
     setSubmitted(true);
   }
 
@@ -60,9 +64,10 @@ export default function ForgotPasswordPage() {
                 Check your email
               </h1>
               <p className="mb-8 text-stone-500 text-center text-sm leading-relaxed">
-                We sent a password reset link to{" "}
-                <span className="font-medium text-stone-700">{email}</span>.
-                Check your inbox and click the link to reset your password.
+                If an account exists for{" "}
+                <span className="font-medium text-stone-700">{email}</span>,
+                we&apos;ve sent a password reset link. Check your inbox and
+                click the link to reset your password.
               </p>
               <p className="text-center text-sm text-stone-400">
                 Didn&apos;t receive it?{" "}
