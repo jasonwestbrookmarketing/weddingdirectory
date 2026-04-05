@@ -39,12 +39,13 @@ export async function createSignedUploadUrl(
     Bucket: process.env.WASABI_BUCKET,
     Key: key,
     ContentType: contentType,
+    ACL: "public-read",
   });
 
-  // Sign with exact Content-Type so browser PUT must match
+  // Sign with exact Content-Type and ACL so browser PUT must match both
   const signedUrl = await getSignedUrl(s3, command, {
     expiresIn: 600,
-    unhoistableHeaders: new Set(["content-type"]),
+    unhoistableHeaders: new Set(["content-type", "x-amz-acl"]),
   });
 
   // Strip trailing slash from base URL to avoid double-slash in final URL

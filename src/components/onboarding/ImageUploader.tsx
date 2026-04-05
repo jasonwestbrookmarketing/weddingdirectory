@@ -72,8 +72,9 @@ export function ImageUploader({
     await new Promise<void>((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open("PUT", signedUrl);
-      // Content-Type must match what was signed — required by Wasabi
+      // Both headers must match what was signed — required by Wasabi
       xhr.setRequestHeader("Content-Type", file.type);
+      xhr.setRequestHeader("x-amz-acl", "public-read");
 
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
