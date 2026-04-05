@@ -59,7 +59,7 @@ export default function LeadsPage() {
         .from("venues")
         .select("id")
         .eq("owner_id", user.id)
-        .single();
+        .maybeSingle();
 
       if (!venue) {
         setLoading(false);

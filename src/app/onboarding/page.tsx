@@ -51,18 +51,51 @@ function OnboardingPage() {
 
   useEffect(() => {
     async function loadVenue() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setError("Not authenticated. Please sign in.");
+        setLoading(false);
+        return;
+      }
+
+      // Always filter by owner_id so RLS for published venues doesn't cause
+      // .single() to 406 when more than one row is visible to this user.
       const { data, error: fetchError } = await supabase
         .from("venues")
         .select("*")
+        .eq("owner_id", user.id)
         .single();
 
-      if (fetchError) {
+      if (fetchError && fetchError.code !== "PGRST116") {
+        // PGRST116 = "no rows returned" — handled below by creating a new row
         setError("Could not load your venue. Please try again.");
         setLoading(false);
         return;
       }
 
-      setVenue(data as Venue);
+      if (data) {
+        setVenue(data as Venue);
+        setLoading(false);
+        return;
+      }
+
+      // No venue yet — create a blank one so onboarding can proceed
+      const { data: created, error: createError } = await supabase
+        .from("venues")
+        .insert({ owner_id: user.id })
+        .select("*")
+        .single();
+
+      if (createError || !created) {
+        setError("Could not create your venue. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      setVenue(created as Venue);
       setLoading(false);
     }
     loadVenue();

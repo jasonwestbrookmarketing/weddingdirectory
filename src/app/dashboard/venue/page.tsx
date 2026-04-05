@@ -55,7 +55,7 @@ export default function VenueDashboardPage() {
       .from("venues")
       .select("*")
       .eq("owner_id", user.id)
-      .single();
+      .maybeSingle();
 
     if (data) {
       setVenue(data);
