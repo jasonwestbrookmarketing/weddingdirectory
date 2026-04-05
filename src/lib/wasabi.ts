@@ -1,4 +1,8 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  PutBucketPolicyCommand,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 function normalizeEndpoint(endpoint: string): string {
@@ -52,6 +56,32 @@ export async function createSignedUploadUrl(
   const baseUrl = (process.env.WASABI_PUBLIC_BASE_URL || "").replace(/\/+$/, "");
   const publicUrl = `${baseUrl}/${key}`;
   return { signedUrl, publicUrl, key };
+}
+
+/**
+ * Apply a public-read bucket policy so every object in the bucket is
+ * accessible without authentication. Call this once from the admin route.
+ */
+export async function applyPublicReadBucketPolicy() {
+  const s3 = getS3Client();
+  const bucket = process.env.WASABI_BUCKET!;
+
+  const policy = JSON.stringify({
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Sid: "PublicReadGetObject",
+        Effect: "Allow",
+        Principal: "*",
+        Action: "s3:GetObject",
+        Resource: `arn:aws:s3:::${bucket}/*`,
+      },
+    ],
+  });
+
+  await s3.send(
+    new PutBucketPolicyCommand({ Bucket: bucket, Policy: policy })
+  );
 }
 
 export const ALLOWED_IMAGE_TYPES = [
