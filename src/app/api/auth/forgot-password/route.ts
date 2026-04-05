@@ -24,7 +24,25 @@ export async function POST(request: Request) {
   }
 
   const { email } = result.data;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.storyvenue.com";
+
+  // Derive public origin from forwarded headers so this works correctly
+  // behind Railway/Vercel proxies where request.url is an internal address.
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const forwardedProto =
+    request.headers.get("x-forwarded-proto")?.split(",")[0].trim() ?? "https";
+  const requestOrigin = forwardedHost
+    ? `${forwardedProto}://${forwardedHost}`
+    : new URL(request.url).origin;
+
+  // Prefer explicit env var, but strip trailing slashes and ensure scheme
+  const rawEnvUrl = (process.env.NEXT_PUBLIC_APP_URL || "").replace(/\/+$/, "");
+  const envUrl = rawEnvUrl
+    ? rawEnvUrl.startsWith("http")
+      ? rawEnvUrl
+      : `https://${rawEnvUrl}`
+    : null;
+
+  const appUrl = envUrl || requestOrigin;
 
   try {
     const supabase = await createServiceClient();
