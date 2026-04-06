@@ -20,8 +20,8 @@ export default async function HomePage() {
   return (
     <>
       {/* Navigation — absolute over video */}
-      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6">
-        <Link href="/" aria-label="StoryVenue home">
+      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6 gap-4">
+        <Link href="/" aria-label="StoryVenue home" className="shrink-0">
           <Image
             src="/storyvenue-light-logo.png"
             alt="StoryVenue"
@@ -31,9 +31,33 @@ export default async function HomePage() {
             priority
           />
         </Link>
+
+        {/* Center links */}
+        <div
+          className="hidden sm:flex items-center gap-6 md:gap-8"
+          style={{ fontFamily: "var(--font-open-sans)" }}
+        >
+          <a
+            href="https://storypay.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-white/80 hover:text-white transition-colors"
+          >
+            StoryPay
+          </a>
+          <a
+            href="https://storyvenuemarketing.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-white/80 hover:text-white transition-colors"
+          >
+            StoryVenue Marketing
+          </a>
+        </div>
+
         <Link
           href="/signup"
-          className="text-sm font-medium text-white/90 hover:text-white transition-colors"
+          className="shrink-0 text-sm font-medium text-white/90 hover:text-white transition-colors"
           style={{ fontFamily: "var(--font-open-sans)" }}
         >
           List Your Venue
