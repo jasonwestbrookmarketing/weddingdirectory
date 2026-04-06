@@ -2,9 +2,11 @@
 
 import { useCallback, useRef, useState } from "react";
 import { Upload, X, Image as ImageIcon } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_SIZE = 10 * 1024 * 1024;
+const BUCKET = "venue-images";
 
 interface ImageUploaderProps {
   venueId: string;
@@ -47,56 +49,27 @@ export function ImageUploader({
     file: File,
     folder: "cover" | "gallery"
   ): Promise<string | null> => {
+    const supabase = createClient();
     const timestamp = Date.now();
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const filename = `${timestamp}-${safeName}`;
+    const path = `venues/${venueId}/${folder}/${timestamp}-${safeName}`;
 
-    const res = await fetch("/api/upload/signed-url", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        venueId,
-        folder,
-        filename,
-        contentType: file.type,
-      }),
-    });
+    setUploads((prev) =>
+      prev.map((u) => (u.file === file.name ? { ...u, progress: 50 } : u))
+    );
 
-    if (!res.ok) {
-      const data = await res.json();
-      throw new Error(data.error || "Failed to get upload URL");
-    }
+    const { error: uploadError } = await supabase.storage
+      .from(BUCKET)
+      .upload(path, file, { contentType: file.type, upsert: true });
 
-    const { signedUrl, publicUrl } = await res.json();
+    if (uploadError) throw new Error(uploadError.message);
 
-    await new Promise<void>((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open("PUT", signedUrl);
-      // Both headers must match what was signed — required by Wasabi
-      xhr.setRequestHeader("Content-Type", file.type);
-      xhr.setRequestHeader("x-amz-acl", "public-read");
+    setUploads((prev) =>
+      prev.map((u) => (u.file === file.name ? { ...u, progress: 100 } : u))
+    );
 
-      xhr.upload.onprogress = (e) => {
-        if (e.lengthComputable) {
-          const pct = Math.round((e.loaded / e.total) * 100);
-          setUploads((prev) =>
-            prev.map((u) =>
-              u.file === file.name ? { ...u, progress: pct } : u
-            )
-          );
-        }
-      };
-
-      xhr.onload = () => {
-        if (xhr.status >= 200 && xhr.status < 300) resolve();
-        else reject(new Error(`Upload failed with status ${xhr.status}`));
-      };
-
-      xhr.onerror = () => reject(new Error("Upload failed"));
-      xhr.send(file);
-    });
-
-    return publicUrl;
+    const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+    return data.publicUrl;
   };
 
   const handleCoverUpload = useCallback(
@@ -134,12 +107,10 @@ export function ImageUploader({
 
       const fileArray = Array.from(files);
       const errors: string[] = [];
-
       for (const file of fileArray) {
         const validationError = validateFile(file);
         if (validationError) errors.push(validationError);
       }
-
       if (errors.length > 0) {
         setError(errors.join(". "));
         return;
@@ -166,7 +137,6 @@ export function ImageUploader({
   );
 
   const removeCover = () => onCoverChange(null);
-
   const removeGalleryImage = (index: number) => {
     onGalleryChange(galleryImages.filter((_, i) => i !== index));
   };
