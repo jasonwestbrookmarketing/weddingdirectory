@@ -34,13 +34,14 @@ export default async function HomePage() {
         <Link
           href="/signup"
           className="text-sm font-medium text-white/90 hover:text-white transition-colors"
+          style={{ fontFamily: "var(--font-open-sans)" }}
         >
           List Your Venue
         </Link>
       </nav>
 
       {/* Hero — cinematic video background */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
+      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
 
         {/* Video layer */}
         <video
@@ -51,11 +52,7 @@ export default async function HomePage() {
           playsInline
           poster="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80&auto=format&fit=crop"
         >
-          {/*
-            Mixkit free license — https://mixkit.co/license/#videoFree
-            "Happy bride walking with her bouquet" – mixkit ID 40591
-            "Just married couple" – mixkit ID 40599
-          */}
+          {/* Mixkit free license — https://mixkit.co/license/#videoFree */}
           <source
             src="https://assets.mixkit.co/videos/preview/mixkit-happy-bride-walking-with-her-bouquet-40591-large.mp4"
             type="video/mp4"
@@ -66,37 +63,61 @@ export default async function HomePage() {
           />
         </video>
 
-        {/* Cinematic dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
-        {/* Subtle vignette */}
+        {/* Cinematic overlays */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/35 to-black/70" />
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%)",
+              "radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.5) 100%)",
           }}
         />
 
-        <div className="relative z-10 w-full max-w-4xl mx-auto text-center space-y-7 pt-28 pb-20">
-          <p className="text-sm font-medium tracking-[0.2em] uppercase text-white/60">
+        {/* Hero content */}
+        <div className="relative z-10 w-full max-w-4xl mx-auto text-center px-5 sm:px-8 pt-28 pb-24 sm:pt-32 sm:pb-28 flex flex-col items-center gap-5 sm:gap-6">
+
+          {/* Eyebrow */}
+          <p
+            className="text-xs sm:text-sm font-medium tracking-[0.22em] uppercase text-white/55"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
             Wedding Venue Discovery
           </p>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white leading-tight drop-shadow-lg">
+
+          {/* Main headline — Playfair Display thin (400) */}
+          <h1
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal leading-[1.1] tracking-tight text-white drop-shadow-lg"
+            style={{ fontFamily: "var(--font-playfair)" }}
+          >
             Find Your Perfect{" "}
-            <span className="italic font-light text-white/90">StoryVenue</span>
+            <em className="not-italic" style={{ fontStyle: "italic" }}>
+              StoryVenue
+            </em>
           </h1>
-          <p className="text-lg md:text-xl text-white/75 max-w-xl mx-auto leading-relaxed">
+
+          {/* Sub-headline — Open Sans */}
+          <p
+            className="text-base sm:text-lg md:text-xl text-white/75 max-w-lg sm:max-w-xl mx-auto leading-relaxed font-light"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
             Discover venues that match your vision, guest count, and budget
           </p>
-          <SearchBar />
+
+          {/* Search bar */}
+          <div className="w-full max-w-xl mt-1 sm:mt-2">
+            <SearchBar />
+          </div>
         </div>
 
         {/* Scroll hint */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 opacity-60">
-          <span className="text-white text-xs tracking-widest uppercase">
+        <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 opacity-50">
+          <span
+            className="text-white text-[10px] tracking-[0.2em] uppercase"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
             Scroll
           </span>
-          <div className="w-px h-8 bg-white/50 animate-pulse" />
+          <div className="w-px h-6 sm:h-8 bg-white/60 animate-pulse" />
         </div>
       </section>
 
@@ -104,7 +125,10 @@ export default async function HomePage() {
       {venues && venues.length > 0 && (
         <section className="py-24 px-6 md:px-12">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-stone-900 mb-12">
+            <h2
+              className="text-3xl md:text-4xl font-normal tracking-tight text-stone-900 mb-12"
+              style={{ fontFamily: "var(--font-playfair)" }}
+            >
               Featured Venues
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
