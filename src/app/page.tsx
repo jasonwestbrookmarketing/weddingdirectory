@@ -131,6 +131,15 @@ export default async function HomePage() {
           <div className="w-full max-w-xl mt-1 sm:mt-2">
             <SearchBar />
           </div>
+
+          {/* CTA button */}
+          <Link
+            href="/signup"
+            className="inline-flex items-center gap-2 rounded-full bg-white text-stone-900 px-7 py-3.5 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-lg mt-2"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
+            List Your Venue
+          </Link>
         </div>
 
         {/* Scroll hint */}
