@@ -10,8 +10,19 @@ import { ImageUploader } from "@/components/onboarding/ImageUploader";
 import {
   VENUE_TYPES,
   INDOOR_OUTDOOR_OPTIONS,
+  AMENITIES_LIST,
+  CEREMONY_TYPES_LIST,
+  VENUE_SETTINGS_LIST,
+  SERVICES_LIST,
   FEATURES_LIST,
 } from "@/lib/constants";
+
+const FEATURE_GROUPS = [
+  { label: "Amenities", items: AMENITIES_LIST },
+  { label: "Ceremony Types", items: CEREMONY_TYPES_LIST },
+  { label: "Venue Settings", items: VENUE_SETTINGS_LIST },
+  { label: "Service Offerings", items: SERVICES_LIST },
+] as const;
 import type { Venue } from "@/types/database";
 
 const TOTAL_STEPS = 5;
@@ -438,34 +449,38 @@ function StepDetails({
           onChange={(e) => onChange({ indoor_outdoor: e.target.value })}
         />
 
-        {/* Features */}
-        <div>
-          <p className="text-sm font-medium text-stone-700 mb-3">
-            Amenities & Features
-          </p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {FEATURES_LIST.map((feat) => {
-              const checked = features.includes(feat.value);
-              return (
-                <label
-                  key={feat.value}
-                  className={`flex items-center gap-2.5 rounded-xl border px-4 py-3 cursor-pointer transition-colors text-sm ${
-                    checked
-                      ? "border-stone-900 bg-stone-900 text-white"
-                      : "border-stone-200 bg-white text-stone-700 hover:border-stone-300"
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    className="sr-only"
-                    checked={checked}
-                    onChange={() => toggleFeature(feat.value)}
-                  />
-                  {feat.label}
-                </label>
-              );
-            })}
-          </div>
+        {/* Features — grouped */}
+        <div className="space-y-6">
+          {FEATURE_GROUPS.map((group) => (
+            <div key={group.label}>
+              <p className="text-sm font-semibold text-stone-700 uppercase tracking-wide mb-3">
+                {group.label}
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {group.items.map((feat) => {
+                  const checked = features.includes(feat.value);
+                  return (
+                    <label
+                      key={feat.value}
+                      className={`flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 cursor-pointer transition-colors text-sm ${
+                        checked
+                          ? "border-stone-900 bg-stone-900 text-white"
+                          : "border-stone-200 bg-white text-stone-700 hover:border-stone-300"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="sr-only"
+                        checked={checked}
+                        onChange={() => toggleFeature(feat.value)}
+                      />
+                      {feat.label}
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Description */}

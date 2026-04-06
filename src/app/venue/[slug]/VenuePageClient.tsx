@@ -22,8 +22,25 @@ import {
   CTA_LABEL,
   VENUE_TYPES,
   INDOOR_OUTDOOR_OPTIONS,
-  FEATURES_LIST,
+  AMENITIES_LIST,
+  CEREMONY_TYPES_LIST,
+  VENUE_SETTINGS_LIST,
+  SERVICES_LIST,
 } from "@/lib/constants";
+
+const ALL_FEATURE_ITEMS = [
+  ...AMENITIES_LIST,
+  ...CEREMONY_TYPES_LIST,
+  ...VENUE_SETTINGS_LIST,
+  ...SERVICES_LIST,
+] as const;
+
+const FEATURE_GROUPS = [
+  { label: "Amenities", items: AMENITIES_LIST },
+  { label: "Ceremony Types", items: CEREMONY_TYPES_LIST },
+  { label: "Venue Settings", items: VENUE_SETTINGS_LIST },
+  { label: "Service Offerings", items: SERVICES_LIST },
+] as const;
 import type { Venue } from "@/types/database";
 
 interface VenuePageClientProps {
@@ -230,8 +247,14 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
   const galleryImages = (venue.gallery_images as string[] | null) || [];
   const features = (venue.features as string[] | null) || [];
   const featureLabels = features.map(
-    (f) => FEATURES_LIST.find((fl) => fl.value === f)?.label || f
+    (f) => ALL_FEATURE_ITEMS.find((fl) => fl.value === f)?.label || f
   );
+  const groupedFeatures = FEATURE_GROUPS.map((g) => ({
+    label: g.label,
+    labels: g.items
+      .filter((item) => features.includes(item.value))
+      .map((item) => item.label),
+  })).filter((g) => g.labels.length > 0);
   const allPhotos = [
     ...(venue.cover_image_url ? [venue.cover_image_url] : []),
     ...galleryImages,
@@ -417,18 +440,27 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
               </>
             )}
 
-            {/* Features & Amenities */}
-            {featureLabels.length > 0 && (
+            {/* Features & Amenities — grouped */}
+            {groupedFeatures.length > 0 && (
               <>
                 <div className="mb-8">
-                  <h2 className="text-xl font-semibold text-stone-900 mb-5">
+                  <h2 className="text-xl font-semibold text-stone-900 mb-6">
                     What this venue offers
                   </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {featureLabels.map((label, i) => (
-                      <div key={i} className="flex items-center gap-3">
-                        <Check className="h-5 w-5 text-stone-700 flex-shrink-0" />
-                        <span className="text-stone-700 text-sm">{label}</span>
+                  <div className="space-y-6">
+                    {groupedFeatures.map((group) => (
+                      <div key={group.label}>
+                        <p className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-3">
+                          {group.label}
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          {group.labels.map((label) => (
+                            <div key={label} className="flex items-center gap-3">
+                              <Check className="h-4 w-4 text-stone-500 flex-shrink-0" />
+                              <span className="text-stone-700 text-sm">{label}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     ))}
                   </div>

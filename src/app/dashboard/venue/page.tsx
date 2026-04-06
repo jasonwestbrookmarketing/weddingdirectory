@@ -10,8 +10,19 @@ import { Select } from "@/components/ui/Select";
 import {
   VENUE_TYPES,
   INDOOR_OUTDOOR_OPTIONS,
+  AMENITIES_LIST,
+  CEREMONY_TYPES_LIST,
+  VENUE_SETTINGS_LIST,
+  SERVICES_LIST,
   FEATURES_LIST,
 } from "@/lib/constants";
+
+const FEATURE_GROUPS = [
+  { label: "Amenities", items: AMENITIES_LIST },
+  { label: "Ceremony Types", items: CEREMONY_TYPES_LIST },
+  { label: "Venue Settings", items: VENUE_SETTINGS_LIST },
+  { label: "Service Offerings", items: SERVICES_LIST },
+] as const;
 import type { Venue } from "@/types/database";
 import { ExternalLink, Eye, Pencil, Save, X } from "lucide-react";
 
@@ -371,26 +382,31 @@ export default function VenueDashboardPage() {
                 className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm focus:ring-2 focus:ring-stone-900 focus:border-transparent outline-none resize-none"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-stone-700 mb-2">
-                Features
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {FEATURES_LIST.map((f) => (
-                  <button
-                    key={f.value}
-                    type="button"
-                    onClick={() => toggleFeature(f.value)}
-                    className={`rounded-full px-3 py-1.5 text-xs font-medium border transition-colors ${
-                      details.features.includes(f.value)
-                        ? "border-stone-900 bg-stone-900 text-white"
-                        : "border-stone-200 text-stone-600 hover:border-stone-400"
-                    }`}
-                  >
-                    {f.label}
-                  </button>
-                ))}
-              </div>
+            <div className="space-y-5">
+              <p className="text-sm font-medium text-stone-700">Features</p>
+              {FEATURE_GROUPS.map((group) => (
+                <div key={group.label}>
+                  <p className="text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">
+                    {group.label}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {group.items.map((f) => (
+                      <button
+                        key={f.value}
+                        type="button"
+                        onClick={() => toggleFeature(f.value)}
+                        className={`rounded-full px-3 py-1.5 text-xs font-medium border transition-colors ${
+                          details.features.includes(f.value)
+                            ? "border-stone-900 bg-stone-900 text-white"
+                            : "border-stone-200 text-stone-600 hover:border-stone-400"
+                        }`}
+                      >
+                        {f.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
             <Button type="submit" loading={saving} size="sm">
               <Save className="h-3.5 w-3.5 mr-1.5" /> Save Details

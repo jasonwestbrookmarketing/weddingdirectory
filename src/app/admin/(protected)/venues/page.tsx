@@ -9,7 +9,21 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
-import { VENUE_TYPES, INDOOR_OUTDOOR_OPTIONS } from "@/lib/constants";
+import {
+  VENUE_TYPES,
+  INDOOR_OUTDOOR_OPTIONS,
+  AMENITIES_LIST,
+  CEREMONY_TYPES_LIST,
+  VENUE_SETTINGS_LIST,
+  SERVICES_LIST,
+} from "@/lib/constants";
+
+const FEATURE_GROUPS = [
+  { label: "Amenities", items: AMENITIES_LIST },
+  { label: "Ceremony Types", items: CEREMONY_TYPES_LIST },
+  { label: "Venue Settings", items: VENUE_SETTINGS_LIST },
+  { label: "Service Offerings", items: SERVICES_LIST },
+] as const;
 
 interface Venue {
   id: string;
