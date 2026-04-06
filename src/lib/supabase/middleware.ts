@@ -31,13 +31,22 @@ export async function updateSession(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
 
-  const protectedRoutes = ["/dashboard", "/onboarding", "/admin"];
+  const adminPublicRoutes = ["/admin/login", "/admin/forgot-password", "/admin/register"];
+  const isAdminPublic = adminPublicRoutes.some((r) => path.startsWith(r));
+  const protectedRoutes = ["/dashboard", "/onboarding"];
   const authRoutes = ["/login", "/signup"];
 
-  if (!user && protectedRoutes.some((r) => path.startsWith(r))) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
+  if (!user) {
+    if (protectedRoutes.some((r) => path.startsWith(r))) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
+    if (path.startsWith("/admin") && !isAdminPublic) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin/login";
+      return NextResponse.redirect(url);
+    }
   }
 
   if (user && authRoutes.some((r) => path.startsWith(r))) {

@@ -1,26 +1,9 @@
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import { AdminShell } from "@/components/admin/AdminShell";
-
-export default async function AdminLayout({
+// Root admin layout — no auth check here so (auth) sub-routes are accessible.
+// Auth gating is handled by (protected)/layout.tsx.
+export default function AdminRootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) redirect("/login");
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-
-  if (profile?.role !== "admin") redirect("/dashboard");
-
-  return <AdminShell>{children}</AdminShell>;
+  return <>{children}</>;
 }
