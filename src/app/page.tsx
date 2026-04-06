@@ -57,7 +57,7 @@ export default async function HomePage() {
 
         <Link
           href="/signup"
-          className="shrink-0 text-sm font-medium text-white/90 hover:text-white transition-colors"
+          className="shrink-0 rounded-full bg-white text-stone-900 px-5 py-2.5 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-sm"
           style={{ fontFamily: "var(--font-open-sans)" }}
         >
           List Your Venue
@@ -132,14 +132,6 @@ export default async function HomePage() {
             <SearchBar />
           </div>
 
-          {/* CTA button */}
-          <Link
-            href="/signup"
-            className="inline-flex items-center gap-2 rounded-full bg-white text-stone-900 px-7 py-3.5 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-lg mt-2"
-            style={{ fontFamily: "var(--font-open-sans)" }}
-          >
-            List Your Venue
-          </Link>
         </div>
 
         {/* Scroll hint */}
