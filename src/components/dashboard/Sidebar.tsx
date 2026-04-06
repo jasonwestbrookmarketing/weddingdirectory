@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Users, Building2, Settings, LogOut, Menu, X } from "lucide-react";
@@ -24,13 +25,20 @@ export function Sidebar({ currentPath }: { currentPath: string }) {
 
   const sidebarContent = (
     <div className="flex h-full flex-col">
-      <div className="px-6 py-6">
+      <div className="px-6 py-5">
         <Link
           href="/dashboard"
-          className="text-lg font-semibold tracking-tight text-stone-900"
           onClick={() => setMobileOpen(false)}
+          aria-label="StoryVenue dashboard"
         >
-          StoryVenue
+          <Image
+            src="/storyvenue-dark-logo.png"
+            alt="StoryVenue"
+            width={140}
+            height={36}
+            className="h-8 w-auto object-contain"
+            priority
+          />
         </Link>
       </div>
 

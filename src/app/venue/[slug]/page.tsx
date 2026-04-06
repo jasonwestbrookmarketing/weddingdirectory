@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import VenuePageClient from "./VenuePageClient";
 import type { Metadata } from "next";
@@ -54,11 +55,15 @@ export default async function VenuePage({ params }: Props) {
       {/* Airbnb-style white top nav */}
       <nav className="sticky top-0 z-30 bg-white border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between h-16">
-          <Link
-            href="/"
-            className="text-lg font-bold tracking-tight text-stone-900 hover:text-stone-700 transition-colors"
-          >
-            StoryVenue
+          <Link href="/" aria-label="StoryVenue home">
+            <Image
+              src="/storyvenue-dark-logo.png"
+              alt="StoryVenue"
+              width={140}
+              height={36}
+              className="h-8 w-auto object-contain"
+              priority
+            />
           </Link>
           <Link
             href="/signup"
