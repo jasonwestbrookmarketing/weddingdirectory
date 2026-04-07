@@ -27,12 +27,15 @@ export const BOOKING_TIMELINES = [
 ] as const;
 
 export const LEAD_STATUSES = [
-  { value: "new", label: "New" },
-  { value: "contacted", label: "Contacted" },
-  { value: "call_booked", label: "Call Booked" },
-  { value: "tour_booked", label: "Tour Booked" },
-  { value: "booked", label: "Booked" },
+  { value: "new",            label: "New Lead",        color: "bg-blue-50 text-blue-700" },
+  { value: "contacted",      label: "Contacted",       color: "bg-amber-50 text-amber-700" },
+  { value: "tour_booked",    label: "Booked Tour",     color: "bg-purple-50 text-purple-700" },
+  { value: "proposal_sent",  label: "Proposal Sent",   color: "bg-orange-50 text-orange-700" },
+  { value: "booked_wedding", label: "Booked Wedding",  color: "bg-emerald-50 text-emerald-700" },
+  { value: "not_interested", label: "Not Interested",  color: "bg-stone-100 text-stone-500" },
 ] as const;
+
+export type LeadStatus = typeof LEAD_STATUSES[number]["value"];
 
 // ── Amenities ────────────────────────────────────────────────────────────────
 export const AMENITIES_LIST = [

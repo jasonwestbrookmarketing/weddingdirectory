@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod/v4";
 import { createClient } from "@/lib/supabase/server";
 
-const VALID_STATUSES = ["new", "contacted", "call_booked", "tour_booked", "booked"] as const;
+const VALID_STATUSES = ["new", "contacted", "tour_booked", "proposal_sent", "booked_wedding", "not_interested"] as const;
 
 const updateLeadSchema = z.object({
   status: z.enum(VALID_STATUSES),

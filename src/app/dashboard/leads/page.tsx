@@ -1,58 +1,151 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  type DropResult,
+} from "@hello-pangea/dnd";
 import { createClient } from "@/lib/supabase/client";
 import { LEAD_STATUSES } from "@/lib/constants";
 import { LeadDetail } from "./LeadDetail";
 import type { Lead } from "@/types/database";
+import { Calendar, Users, GripVertical } from "lucide-react";
 
-const STATUS_COLORS: Record<string, string> = {
-  new: "bg-blue-50 text-blue-700",
-  contacted: "bg-amber-50 text-amber-700",
-  call_booked: "bg-purple-50 text-purple-700",
-  tour_booked: "bg-emerald-50 text-emerald-700",
-  booked: "bg-emerald-50 text-emerald-700",
-};
-
-function statusLabel(value: string) {
-  return LEAD_STATUSES.find((s) => s.value === value)?.label ?? value;
-}
+type PipelineStage = typeof LEAD_STATUSES[number]["value"];
+type Columns = Record<PipelineStage, Lead[]>;
 
 function formatDate(dateStr: string | null) {
-  if (!dateStr) return "—";
+  if (!dateStr) return null;
   return new Date(dateStr).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
+    month: "short", day: "numeric", year: "numeric",
   });
 }
 
-function Toast({ message, onDone }: { message: string; onDone: () => void }) {
-  useEffect(() => {
-    const t = setTimeout(onDone, 3000);
-    return () => clearTimeout(t);
-  }, [onDone]);
+function LeadCard({
+  lead,
+  index,
+  onClick,
+}: {
+  lead: Lead;
+  index: number;
+  onClick: () => void;
+}) {
+  return (
+    <Draggable draggableId={lead.id} index={index}>
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          onClick={onClick}
+          className={`bg-white rounded-xl border p-4 cursor-pointer select-none transition-shadow ${
+            snapshot.isDragging
+              ? "shadow-xl border-stone-300 rotate-[1deg]"
+              : "border-stone-200 hover:border-stone-300 hover:shadow-sm"
+          }`}
+        >
+          <div className="flex items-start justify-between gap-2 mb-3">
+            <p className="font-semibold text-stone-900 text-sm leading-tight">{lead.name}</p>
+            <div
+              {...provided.dragHandleProps}
+              className="text-stone-300 hover:text-stone-500 shrink-0 mt-0.5"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <GripVertical className="h-4 w-4" />
+            </div>
+          </div>
+          <p className="text-xs text-stone-500 truncate mb-3">{lead.email}</p>
+          <div className="flex flex-wrap gap-x-3 gap-y-1.5">
+            {lead.wedding_date && (
+              <span className="flex items-center gap-1 text-xs text-stone-500">
+                <Calendar className="h-3 w-3" />
+                {formatDate(lead.wedding_date)}
+              </span>
+            )}
+            {lead.guest_count && (
+              <span className="flex items-center gap-1 text-xs text-stone-500">
+                <Users className="h-3 w-3" />
+                {lead.guest_count}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+    </Draggable>
+  );
+}
+
+function Column({
+  stage,
+  leads,
+  onCardClick,
+}: {
+  stage: typeof LEAD_STATUSES[number];
+  leads: Lead[];
+  onCardClick: (lead: Lead) => void;
+}) {
+  const columnColors: Record<string, string> = {
+    new:            "bg-blue-500",
+    contacted:      "bg-amber-500",
+    tour_booked:    "bg-purple-500",
+    proposal_sent:  "bg-orange-500",
+    booked_wedding: "bg-emerald-500",
+    not_interested: "bg-stone-400",
+  };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 rounded-xl bg-stone-900 px-5 py-3 text-sm font-medium text-white shadow-lg animate-slide-up">
-      {message}
+    <div className="flex flex-col min-w-[270px] max-w-[270px] lg:min-w-0 lg:max-w-none lg:flex-1">
+      {/* Column header */}
+      <div className="flex items-center gap-2 mb-3">
+        <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${columnColors[stage.value] ?? "bg-stone-400"}`} />
+        <h3 className="text-sm font-semibold text-stone-700 flex-1 truncate">{stage.label}</h3>
+        <span className="text-xs font-medium text-stone-400 bg-stone-100 rounded-full px-2 py-0.5 shrink-0">
+          {leads.length}
+        </span>
+      </div>
+
+      {/* Droppable column */}
+      <Droppable droppableId={stage.value}>
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={`flex-1 min-h-[120px] rounded-2xl p-2.5 space-y-2.5 transition-colors ${
+              snapshot.isDraggingOver ? "bg-stone-200/70" : "bg-stone-100/60"
+            }`}
+          >
+            {leads.map((lead, index) => (
+              <LeadCard
+                key={lead.id}
+                lead={lead}
+                index={index}
+                onClick={() => onCardClick(lead)}
+              />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 }
 
 export default function LeadsPage() {
-  const [leads, setLeads] = useState<Lead[]>([]);
+  const [columns, setColumns] = useState<Columns>(() => {
+    const empty = {} as Columns;
+    LEAD_STATUSES.forEach((s) => { empty[s.value as PipelineStage] = []; });
+    return empty;
+  });
   const [loading, setLoading] = useState(true);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [toast, setToast] = useState<string | null>(null);
-
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const supabase = createClient();
 
   useEffect(() => {
     async function load() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
       const { data: venue } = await supabase
@@ -61,10 +154,7 @@ export default function LeadsPage() {
         .eq("owner_id", user.id)
         .maybeSingle();
 
-      if (!venue) {
-        setLoading(false);
-        return;
-      }
+      if (!venue) { setLoading(false); return; }
 
       const { data } = await supabase
         .from("leads")
@@ -72,34 +162,108 @@ export default function LeadsPage() {
         .eq("venue_id", venue.id)
         .order("created_at", { ascending: false });
 
-      setLeads(data ?? []);
+      const next: Columns = {} as Columns;
+      LEAD_STATUSES.forEach((s) => { next[s.value as PipelineStage] = []; });
+      (data ?? []).forEach((lead) => {
+        const stage = lead.status as PipelineStage;
+        if (next[stage]) next[stage].push(lead as Lead);
+        else next["new"].push(lead as Lead);
+      });
+      setColumns(next);
       setLoading(false);
     }
     load();
-  }, [supabase]);
+  }, []);
+
+  function showToast(msg: string) {
+    setToast(msg);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(null), 3000);
+  }
+
+  const handleDragEnd = useCallback(
+    async (result: DropResult) => {
+      const { source, destination, draggableId } = result;
+      if (!destination) return;
+      if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+
+      const srcStage = source.droppableId as PipelineStage;
+      const dstStage = destination.droppableId as PipelineStage;
+
+      // Optimistic update
+      setColumns((prev) => {
+        const next = { ...prev };
+        const srcList = [...prev[srcStage]];
+        const [moved] = srcList.splice(source.index, 1);
+        const dstList = srcStage === dstStage ? srcList : [...prev[dstStage]];
+        dstList.splice(destination.index, 0, { ...moved, status: dstStage });
+        next[srcStage] = srcStage === dstStage ? dstList : srcList;
+        if (srcStage !== dstStage) next[dstStage] = dstList;
+        return next;
+      });
+
+      // Update selected lead if open
+      if (selectedLead?.id === draggableId) {
+        setSelectedLead((l) => l ? { ...l, status: dstStage } : l);
+      }
+
+      // Persist
+      const res = await fetch(`/api/leads/${draggableId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: dstStage }),
+      });
+
+      if (res.ok) {
+        const stageName = LEAD_STATUSES.find((s) => s.value === dstStage)?.label;
+        showToast(`Moved to ${stageName}`);
+      } else {
+        showToast("Failed to update — please try again");
+      }
+    },
+    [selectedLead]
+  );
 
   const handleStatusChange = useCallback(
     async (leadId: string, status: string) => {
-      setLeads((prev) =>
-        prev.map((l) => (l.id === leadId ? { ...l, status } : l))
-      );
+      const newStage = status as PipelineStage;
+      let movedLead: Lead | undefined;
+
+      setColumns((prev) => {
+        const next = { ...prev };
+        LEAD_STATUSES.forEach(({ value }) => {
+          const stage = value as PipelineStage;
+          const idx = next[stage].findIndex((l) => l.id === leadId);
+          if (idx !== -1) {
+            [movedLead] = next[stage].splice(idx, 1);
+            movedLead = { ...movedLead, status: newStage };
+          }
+        });
+        if (movedLead) next[newStage] = [movedLead, ...next[newStage]];
+        return next;
+      });
+
+      if (selectedLead?.id === leadId) {
+        setSelectedLead((l) => l ? { ...l, status: newStage } : l);
+      }
 
       const res = await fetch(`/api/leads/${leadId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status: newStage }),
       });
 
       if (res.ok) {
-        setToast("Status updated");
+        const stageName = LEAD_STATUSES.find((s) => s.value === newStage)?.label;
+        showToast(`Moved to ${stageName}`);
       } else {
-        setToast("Failed to update status");
+        showToast("Failed to update");
       }
     },
-    []
+    [selectedLead]
   );
 
-  const selectedLead = leads.find((l) => l.id === selectedId) ?? null;
+  const totalLeads = Object.values(columns).reduce((s, col) => s + col.length, 0);
 
   if (loading) {
     return (
@@ -111,125 +275,53 @@ export default function LeadsPage() {
 
   return (
     <>
+      {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-stone-900">Leads</h1>
+        <h1 className="text-2xl font-semibold text-stone-900">Leads Pipeline</h1>
         <p className="mt-1 text-sm text-stone-500">
-          Manage inquiries from couples interested in your venue.
+          {totalLeads} {totalLeads === 1 ? "lead" : "leads"} · Drag cards to move between stages
         </p>
       </div>
 
-      {leads.length === 0 ? (
+      {totalLeads === 0 ? (
         <div className="rounded-2xl border border-dashed border-stone-200 px-6 py-16 text-center">
           <p className="text-stone-500">
             No leads yet. Share your venue listing to start receiving inquiries.
           </p>
         </div>
       ) : (
-        <>
-          {/* Desktop table */}
-          <div className="hidden md:block overflow-x-auto rounded-xl border border-stone-200">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-stone-200 bg-stone-50">
-                  <th className="px-4 py-3 font-medium text-stone-500">Name</th>
-                  <th className="px-4 py-3 font-medium text-stone-500">Email</th>
-                  <th className="px-4 py-3 font-medium text-stone-500">Phone</th>
-                  <th className="px-4 py-3 font-medium text-stone-500">Wedding Date</th>
-                  <th className="px-4 py-3 font-medium text-stone-500">Guests</th>
-                  <th className="px-4 py-3 font-medium text-stone-500">Status</th>
-                  <th className="px-4 py-3 font-medium text-stone-500">Received</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-stone-100">
-                {leads.map((lead) => (
-                  <tr
-                    key={lead.id}
-                    onClick={() => setSelectedId(lead.id)}
-                    className="cursor-pointer transition-colors hover:bg-stone-50"
-                  >
-                    <td className="px-4 py-3 font-medium text-stone-900">
-                      {lead.name}
-                    </td>
-                    <td className="px-4 py-3 text-stone-600">{lead.email}</td>
-                    <td className="px-4 py-3 text-stone-600">{lead.phone}</td>
-                    <td className="px-4 py-3 text-stone-600">
-                      {formatDate(lead.wedding_date)}
-                    </td>
-                    <td className="px-4 py-3 text-stone-600">
-                      {lead.guest_count ?? "—"}
-                    </td>
-                    <td className="px-4 py-3">
-                      <select
-                        value={lead.status}
-                        onClick={(e) => e.stopPropagation()}
-                        onChange={(e) =>
-                          handleStatusChange(lead.id, e.target.value)
-                        }
-                        className={`rounded-full px-3 py-1 text-xs font-medium border-0 cursor-pointer focus:ring-2 focus:ring-stone-900 focus:outline-none ${
-                          STATUS_COLORS[lead.status] ?? "bg-stone-100 text-stone-700"
-                        }`}
-                      >
-                        {LEAD_STATUSES.map((s) => (
-                          <option key={s.value} value={s.value}>
-                            {s.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td className="px-4 py-3 text-stone-500">
-                      {formatDate(lead.created_at)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <DragDropContext onDragEnd={handleDragEnd}>
+          {/* Horizontal scroll on mobile, grid on desktop */}
+          <div className="overflow-x-auto pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 lg:overflow-visible">
+            <div className="flex gap-3 lg:grid lg:gap-4 min-w-max lg:min-w-0"
+              style={{ gridTemplateColumns: `repeat(${LEAD_STATUSES.length}, minmax(0, 1fr))` }}
+            >
+              {LEAD_STATUSES.map((stage) => (
+                <Column
+                  key={stage.value}
+                  stage={stage}
+                  leads={columns[stage.value as PipelineStage]}
+                  onCardClick={setSelectedLead}
+                />
+              ))}
+            </div>
           </div>
-
-          {/* Mobile cards */}
-          <div className="space-y-3 md:hidden">
-            {leads.map((lead) => (
-              <div
-                key={lead.id}
-                onClick={() => setSelectedId(lead.id)}
-                className="cursor-pointer rounded-xl border border-stone-200 p-4 transition-colors hover:bg-stone-50"
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="font-medium text-stone-900">{lead.name}</p>
-                    <p className="mt-0.5 text-sm text-stone-500">{lead.email}</p>
-                  </div>
-                  <span
-                    className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      STATUS_COLORS[lead.status] ?? "bg-stone-100 text-stone-700"
-                    }`}
-                  >
-                    {statusLabel(lead.status)}
-                  </span>
-                </div>
-                <div className="mt-3 flex gap-4 text-xs text-stone-500">
-                  <span>{formatDate(lead.wedding_date)}</span>
-                  {lead.guest_count && (
-                    <span>{lead.guest_count} guests</span>
-                  )}
-                  <span className="ml-auto">
-                    {formatDate(lead.created_at)}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
+        </DragDropContext>
       )}
 
       {selectedLead && (
         <LeadDetail
           lead={selectedLead}
-          onClose={() => setSelectedId(null)}
+          onClose={() => setSelectedLead(null)}
           onStatusChange={handleStatusChange}
         />
       )}
 
-      {toast && <Toast message={toast} onDone={() => setToast(null)} />}
+      {toast && (
+        <div className="fixed bottom-6 right-6 z-50 rounded-xl bg-stone-900 px-5 py-3 text-sm font-medium text-white shadow-lg animate-slide-up">
+          {toast}
+        </div>
+      )}
     </>
   );
 }

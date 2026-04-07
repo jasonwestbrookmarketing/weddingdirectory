@@ -1,7 +1,6 @@
 "use client";
 
-import { X, Mail, Phone } from "lucide-react";
-import { Select } from "@/components/ui/Select";
+import { X, Mail, Phone, Calendar, Users, Clock, MessageSquare, Tag } from "lucide-react";
 import { LEAD_STATUSES, BOOKING_TIMELINES } from "@/lib/constants";
 import type { Lead } from "@/types/database";
 
@@ -14,9 +13,7 @@ interface LeadDetailProps {
 function formatDate(dateStr: string | null) {
   if (!dateStr) return "—";
   return new Date(dateStr).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
+    month: "long", day: "numeric", year: "numeric",
   });
 }
 
@@ -26,102 +23,134 @@ function getTimelineLabel(value: string | null) {
 }
 
 export function LeadDetail({ lead, onClose, onStatusChange }: LeadDetailProps) {
+  const currentStage = LEAD_STATUSES.find((s) => s.value === lead.status);
+
   return (
     <>
-      <div
-        className="fixed inset-0 z-40 bg-black/20"
-        onClick={onClose}
-      />
+      <div className="fixed inset-0 z-40 bg-black/20" onClick={onClose} />
       <aside className="fixed inset-y-0 right-0 z-50 w-full max-w-sm border-l border-stone-200 bg-white shadow-xl animate-slide-in-right overflow-y-auto">
-        <div className="flex items-center justify-between border-b border-stone-200 px-6 py-4">
-          <h2 className="text-lg font-semibold text-stone-900">{lead.name}</h2>
+
+        {/* Header */}
+        <div className="flex items-start justify-between border-b border-stone-200 px-6 py-4">
+          <div>
+            <h2 className="text-lg font-semibold text-stone-900 leading-tight">{lead.name}</h2>
+            <span className={`inline-flex items-center mt-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${currentStage?.color ?? "bg-stone-100 text-stone-500"}`}>
+              {currentStage?.label ?? lead.status}
+            </span>
+          </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
-            aria-label="Close"
+            className="rounded-lg p-1.5 text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors shrink-0 mt-0.5"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <div className="space-y-6 p-6">
-          {/* Status */}
+
+          {/* Pipeline stage picker */}
           <div>
-            <Select
-              label="Status"
-              id="detail-status"
-              options={LEAD_STATUSES}
-              value={lead.status}
-              onChange={(e) => onStatusChange(lead.id, e.target.value)}
-            />
+            <p className="text-xs font-semibold uppercase tracking-wider text-stone-400 mb-2">Move to Stage</p>
+            <div className="flex flex-wrap gap-1.5">
+              {LEAD_STATUSES.map((s) => (
+                <button
+                  key={s.value}
+                  onClick={() => onStatusChange(lead.id, s.value)}
+                  className={`rounded-full px-3 py-1.5 text-xs font-medium border transition-colors ${
+                    lead.status === s.value
+                      ? "border-stone-900 bg-stone-900 text-white"
+                      : "border-stone-200 text-stone-600 hover:border-stone-400 hover:bg-stone-50"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
           </div>
 
+          <hr className="border-stone-100" />
+
           {/* Contact */}
-          <div className="space-y-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-stone-400">
-              Contact
-            </h3>
+          <div className="space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-wider text-stone-400">Contact</p>
             <a
               href={`mailto:${lead.email}`}
-              className="flex items-center gap-3 rounded-lg border border-stone-200 px-4 py-3 text-sm text-stone-700 transition-colors hover:bg-stone-50"
+              className="flex items-center gap-3 rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-700 hover:bg-stone-50 transition-colors"
             >
-              <Mail className="h-4 w-4 text-stone-400" />
-              {lead.email}
+              <Mail className="h-4 w-4 text-stone-400 shrink-0" />
+              <span className="truncate">{lead.email}</span>
             </a>
             <a
               href={`tel:${lead.phone}`}
-              className="flex items-center gap-3 rounded-lg border border-stone-200 px-4 py-3 text-sm text-stone-700 transition-colors hover:bg-stone-50"
+              className="flex items-center gap-3 rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-700 hover:bg-stone-50 transition-colors"
             >
-              <Phone className="h-4 w-4 text-stone-400" />
+              <Phone className="h-4 w-4 text-stone-400 shrink-0" />
               {lead.phone}
             </a>
           </div>
 
           {/* Event Details */}
-          <div className="space-y-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-stone-400">
-              Event Details
-            </h3>
-            <div className="rounded-lg border border-stone-200 divide-y divide-stone-100">
-              <DetailRow label="Wedding Date" value={formatDate(lead.wedding_date)} />
-              <DetailRow
-                label="Guest Count"
-                value={lead.guest_count ? lead.guest_count.toLocaleString() : "—"}
-              />
-              <DetailRow
-                label="Timeline"
-                value={getTimelineLabel(lead.booking_timeline)}
-              />
+          <div className="space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-wider text-stone-400">Event Details</p>
+            <div className="rounded-xl border border-stone-200 divide-y divide-stone-100 overflow-hidden">
+              <DetailRow icon={Calendar} label="Wedding Date" value={formatDate(lead.wedding_date)} />
+              <DetailRow icon={Users} label="Guest Count" value={lead.guest_count ? `${lead.guest_count.toLocaleString()} guests` : "—"} />
+              <DetailRow icon={Clock} label="Booking Timeline" value={getTimelineLabel(lead.booking_timeline)} />
+              <DetailRow icon={Tag} label="Lead Received" value={formatDate(lead.created_at)} />
             </div>
           </div>
 
           {/* Message */}
           {lead.message && (
-            <div className="space-y-3">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-stone-400">
-                Message
-              </h3>
-              <p className="rounded-lg border border-stone-200 px-4 py-3 text-sm leading-relaxed text-stone-700">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-stone-400">
+                <MessageSquare className="inline h-3.5 w-3.5 mr-1 mb-0.5" />
+                Message from couple
+              </p>
+              <p className="rounded-xl border border-stone-200 px-4 py-3 text-sm leading-relaxed text-stone-700">
                 {lead.message}
               </p>
             </div>
           )}
 
-          {/* Received */}
-          <p className="text-xs text-stone-400">
-            Received {formatDate(lead.created_at)}
-          </p>
+          {/* Quick actions */}
+          <div className="grid grid-cols-2 gap-2 pt-2">
+            <a
+              href={`mailto:${lead.email}`}
+              className="flex items-center justify-center gap-2 rounded-xl bg-stone-900 text-white px-4 py-2.5 text-sm font-medium hover:bg-stone-700 transition-colors"
+            >
+              <Mail className="h-4 w-4" />
+              Email
+            </a>
+            <a
+              href={`tel:${lead.phone}`}
+              className="flex items-center justify-center gap-2 rounded-xl border border-stone-200 text-stone-700 px-4 py-2.5 text-sm font-medium hover:bg-stone-50 transition-colors"
+            >
+              <Phone className="h-4 w-4" />
+              Call
+            </a>
+          </div>
+
         </div>
       </aside>
     </>
   );
 }
 
-function DetailRow({ label, value }: { label: string; value: string }) {
+function DetailRow({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: React.ElementType;
+  label: string;
+  value: string;
+}) {
   return (
-    <div className="flex items-center justify-between px-4 py-2.5">
-      <span className="text-sm text-stone-500">{label}</span>
-      <span className="text-sm font-medium text-stone-900">{value}</span>
+    <div className="flex items-center gap-3 px-4 py-3">
+      <Icon className="h-4 w-4 text-stone-400 shrink-0" />
+      <span className="text-sm text-stone-500 flex-1">{label}</span>
+      <span className="text-sm font-medium text-stone-900 text-right">{value}</span>
     </div>
   );
 }
