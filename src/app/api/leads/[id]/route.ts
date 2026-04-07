@@ -5,7 +5,10 @@ import { createClient } from "@/lib/supabase/server";
 const VALID_STATUSES = ["new", "contacted", "tour_booked", "proposal_sent", "booked_wedding", "not_interested"] as const;
 
 const updateLeadSchema = z.object({
-  status: z.enum(VALID_STATUSES),
+  status: z.enum(VALID_STATUSES).optional(),
+  notes: z.string().optional(),
+}).refine((d) => d.status !== undefined || d.notes !== undefined, {
+  message: "Provide at least status or notes",
 });
 
 export async function PATCH(
@@ -58,9 +61,13 @@ export async function PATCH(
     );
   }
 
+  const updatePayload: Record<string, unknown> = {};
+  if (result.data.status !== undefined) updatePayload.status = result.data.status;
+  if (result.data.notes !== undefined) updatePayload.notes = result.data.notes;
+
   const { data: updated, error } = await supabase
     .from("leads")
-    .update({ status: result.data.status })
+    .update(updatePayload)
     .eq("id", id)
     .select()
     .single();

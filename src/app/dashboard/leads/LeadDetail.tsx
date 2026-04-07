@@ -1,6 +1,7 @@
 "use client";
 
-import { X, Mail, Phone, Calendar, Users, Clock, MessageSquare, Tag } from "lucide-react";
+import { useRef, useState } from "react";
+import { X, Mail, Phone, Calendar, Users, Clock, MessageSquare, Tag, StickyNote, Check } from "lucide-react";
 import { LEAD_STATUSES, BOOKING_TIMELINES } from "@/lib/constants";
 import type { Lead } from "@/types/database";
 
@@ -24,6 +25,26 @@ function getTimelineLabel(value: string | null) {
 
 export function LeadDetail({ lead, onClose, onStatusChange }: LeadDetailProps) {
   const currentStage = LEAD_STATUSES.find((s) => s.value === lead.status);
+  const [notes, setNotes] = useState(lead.notes ?? "");
+  const [notesSaved, setNotesSaved] = useState(false);
+  const notesTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  async function saveNotes(value: string) {
+    await fetch(`/api/leads/${lead.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ notes: value }),
+    });
+    setNotesSaved(true);
+    if (notesTimer.current) clearTimeout(notesTimer.current);
+    notesTimer.current = setTimeout(() => setNotesSaved(false), 2000);
+  }
+
+  function handleNotesChange(value: string) {
+    setNotes(value);
+    if (notesTimer.current) clearTimeout(notesTimer.current);
+    notesTimer.current = setTimeout(() => saveNotes(value), 800);
+  }
 
   return (
     <>
@@ -112,6 +133,29 @@ export function LeadDetail({ lead, onClose, onStatusChange }: LeadDetailProps) {
               </p>
             </div>
           )}
+
+          {/* Notes */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-semibold uppercase tracking-wider text-stone-400 flex items-center gap-1.5">
+                <StickyNote className="h-3.5 w-3.5" />
+                Internal Notes
+              </p>
+              {notesSaved && (
+                <span className="flex items-center gap-1 text-xs text-emerald-600">
+                  <Check className="h-3 w-3" /> Saved
+                </span>
+              )}
+            </div>
+            <textarea
+              value={notes}
+              onChange={(e) => handleNotesChange(e.target.value)}
+              rows={4}
+              placeholder="Add private notes about this lead…"
+              className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-700 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900 focus:border-transparent resize-none leading-relaxed"
+            />
+            <p className="text-xs text-stone-400">Auto-saves as you type. Not visible to the couple.</p>
+          </div>
 
           {/* Quick actions */}
           <div className="grid grid-cols-2 gap-2 pt-2">

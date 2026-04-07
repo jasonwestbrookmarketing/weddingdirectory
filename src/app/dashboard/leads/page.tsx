@@ -11,7 +11,7 @@ import { createClient } from "@/lib/supabase/client";
 import { LEAD_STATUSES } from "@/lib/constants";
 import { LeadDetail } from "./LeadDetail";
 import type { Lead } from "@/types/database";
-import { Calendar, Users, GripVertical } from "lucide-react";
+import { Mail, Phone, Clock } from "lucide-react";
 
 type PipelineStage = typeof LEAD_STATUSES[number]["value"];
 type Columns = Record<PipelineStage, Lead[]>;
@@ -22,6 +22,24 @@ function formatDate(dateStr: string | null) {
     month: "short", day: "numeric", year: "numeric",
   });
 }
+
+const COLUMN_ACCENT: Record<string, string> = {
+  new:            "border-t-blue-400",
+  contacted:      "border-t-amber-400",
+  tour_booked:    "border-t-purple-400",
+  proposal_sent:  "border-t-orange-400",
+  booked_wedding: "border-t-emerald-400",
+  not_interested: "border-t-stone-300",
+};
+
+const COLUMN_DOT: Record<string, string> = {
+  new:            "bg-blue-400",
+  contacted:      "bg-amber-400",
+  tour_booked:    "bg-purple-400",
+  proposal_sent:  "bg-orange-400",
+  booked_wedding: "bg-emerald-400",
+  not_interested: "bg-stone-300",
+};
 
 function LeadCard({
   lead,
@@ -38,37 +56,35 @@ function LeadCard({
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
+          {...provided.dragHandleProps}
           onClick={onClick}
-          className={`bg-white rounded-xl border p-4 cursor-pointer select-none transition-shadow ${
+          className={`bg-white rounded-xl border border-t-2 p-4 cursor-grab active:cursor-grabbing select-none transition-all ${
+            COLUMN_ACCENT[lead.status] ?? "border-t-stone-300"
+          } ${
             snapshot.isDragging
-              ? "shadow-xl border-stone-300 rotate-[1deg]"
-              : "border-stone-200 hover:border-stone-300 hover:shadow-sm"
+              ? "shadow-2xl scale-[1.02] border-stone-300"
+              : "border-stone-200 hover:border-stone-300 hover:shadow-md"
           }`}
         >
-          <div className="flex items-start justify-between gap-2 mb-3">
-            <p className="font-semibold text-stone-900 text-sm leading-tight">{lead.name}</p>
-            <div
-              {...provided.dragHandleProps}
-              className="text-stone-300 hover:text-stone-500 shrink-0 mt-0.5"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <GripVertical className="h-4 w-4" />
+          {/* Name */}
+          <p className="font-semibold text-stone-900 text-sm leading-tight mb-3">{lead.name}</p>
+
+          {/* Contact rows */}
+          <div className="space-y-1.5 mb-3">
+            <div className="flex items-center gap-2 text-xs text-stone-500">
+              <Mail className="h-3 w-3 shrink-0 text-stone-400" />
+              <span className="truncate">{lead.email}</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-stone-500">
+              <Phone className="h-3 w-3 shrink-0 text-stone-400" />
+              <span>{lead.phone}</span>
             </div>
           </div>
-          <p className="text-xs text-stone-500 truncate mb-3">{lead.email}</p>
-          <div className="flex flex-wrap gap-x-3 gap-y-1.5">
-            {lead.wedding_date && (
-              <span className="flex items-center gap-1 text-xs text-stone-500">
-                <Calendar className="h-3 w-3" />
-                {formatDate(lead.wedding_date)}
-              </span>
-            )}
-            {lead.guest_count && (
-              <span className="flex items-center gap-1 text-xs text-stone-500">
-                <Users className="h-3 w-3" />
-                {lead.guest_count}
-              </span>
-            )}
+
+          {/* Created date */}
+          <div className="flex items-center gap-1.5 text-[11px] text-stone-400 pt-2.5 border-t border-stone-100">
+            <Clock className="h-3 w-3" />
+            {formatDate(lead.created_at) ?? "—"}
           </div>
         </div>
       )}
@@ -85,22 +101,13 @@ function Column({
   leads: Lead[];
   onCardClick: (lead: Lead) => void;
 }) {
-  const columnColors: Record<string, string> = {
-    new:            "bg-blue-500",
-    contacted:      "bg-amber-500",
-    tour_booked:    "bg-purple-500",
-    proposal_sent:  "bg-orange-500",
-    booked_wedding: "bg-emerald-500",
-    not_interested: "bg-stone-400",
-  };
-
   return (
-    <div className="flex flex-col min-w-[270px] max-w-[270px] lg:min-w-0 lg:max-w-none lg:flex-1">
+    <div className="flex flex-col min-w-[300px] lg:min-w-0 lg:flex-1">
       {/* Column header */}
-      <div className="flex items-center gap-2 mb-3">
-        <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${columnColors[stage.value] ?? "bg-stone-400"}`} />
+      <div className="flex items-center gap-2 mb-3 px-0.5">
+        <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${COLUMN_DOT[stage.value] ?? "bg-stone-400"}`} />
         <h3 className="text-sm font-semibold text-stone-700 flex-1 truncate">{stage.label}</h3>
-        <span className="text-xs font-medium text-stone-400 bg-stone-100 rounded-full px-2 py-0.5 shrink-0">
+        <span className="text-xs font-semibold text-stone-400 bg-stone-100 rounded-full px-2.5 py-0.5 shrink-0 tabular-nums">
           {leads.length}
         </span>
       </div>
@@ -111,8 +118,8 @@ function Column({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`flex-1 min-h-[120px] rounded-2xl p-2.5 space-y-2.5 transition-colors ${
-              snapshot.isDraggingOver ? "bg-stone-200/70" : "bg-stone-100/60"
+            className={`flex-1 min-h-[160px] rounded-2xl p-2.5 space-y-2.5 transition-colors ${
+              snapshot.isDraggingOver ? "bg-stone-200/80 ring-2 ring-stone-300/50" : "bg-stone-100/70"
             }`}
           >
             {leads.map((lead, index) => (
@@ -291,11 +298,10 @@ export default function LeadsPage() {
         </div>
       ) : (
         <DragDropContext onDragEnd={handleDragEnd}>
-          {/* Horizontal scroll on mobile, grid on desktop */}
-          <div className="overflow-x-auto pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 lg:overflow-visible">
-            <div className="flex gap-3 lg:grid lg:gap-4 min-w-max lg:min-w-0"
-              style={{ gridTemplateColumns: `repeat(${LEAD_STATUSES.length}, minmax(0, 1fr))` }}
-            >
+          {/* Full-bleed horizontal scroll on mobile, flex on desktop */}
+          <div className="overflow-x-auto pb-6 -mx-4 px-4 lg:-mx-8 lg:px-8">
+            <div className="flex gap-4 min-w-max lg:min-w-0">
+
               {LEAD_STATUSES.map((stage) => (
                 <Column
                   key={stage.value}
