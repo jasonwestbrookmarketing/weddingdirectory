@@ -147,22 +147,15 @@ function Column({
   onCardClick: (lead: Lead) => void;
 }) {
   return (
-    <div className="flex flex-col w-[320px] shrink-0 lg:w-auto lg:flex-1">
+    <div className="flex flex-col w-[380px] shrink-0">
 
-      {/* Column header card */}
-      <div className={`bg-white rounded-xl border-t-4 shadow-sm px-4 py-3 mb-3 ${COLUMN_BORDER[stage.value] ?? "border-t-stone-300"}`}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className={`w-2 h-2 rounded-full ${COLUMN_DOT[stage.value] ?? "bg-stone-300"}`} />
-            <h3 className="text-sm font-bold text-stone-800">{stage.label}</h3>
-          </div>
-          <span className="text-xs font-semibold text-stone-500 bg-stone-100 rounded-full px-2.5 py-0.5 tabular-nums">
-            {leads.length}
-          </span>
-        </div>
-        <p className="text-xs text-stone-400 mt-0.5 ml-4">
-          {leads.length} {leads.length === 1 ? "opportunity" : "opportunities"}
-        </p>
+      {/* Column header — compact single row */}
+      <div className={`bg-white rounded-xl border-t-[3px] shadow-sm px-4 py-2.5 mb-2.5 flex items-center gap-2.5 ${COLUMN_BORDER[stage.value] ?? "border-t-stone-300"}`}>
+        <div className={`w-2 h-2 rounded-full shrink-0 ${COLUMN_DOT[stage.value] ?? "bg-stone-300"}`} />
+        <h3 className="text-sm font-bold text-stone-800 flex-1 leading-none">{stage.label}</h3>
+        <span className="text-xs font-semibold text-stone-400 tabular-nums">
+          {leads.length} {leads.length === 1 ? "lead" : "leads"}
+        </span>
       </div>
 
       {/* Droppable zone */}
@@ -171,7 +164,7 @@ function Column({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`flex-1 min-h-[120px] rounded-2xl p-2 space-y-2.5 transition-colors ${
+            className={`flex-1 min-h-[100px] rounded-2xl p-2 space-y-2 transition-colors ${
               snapshot.isDraggingOver
                 ? "bg-stone-200/70 ring-2 ring-inset ring-stone-300/50"
                 : "bg-stone-100/60"
@@ -318,7 +311,7 @@ export default function LeadsPage() {
 
   return (
     <>
-      <div className="mb-6">
+      <div className="mb-6 px-4 md:px-8">
         <h1 className="text-2xl font-semibold text-stone-900">Leads Pipeline</h1>
         <p className="mt-1 text-sm text-stone-500">
           {totalLeads} {totalLeads === 1 ? "lead" : "leads"} · Drag cards between stages
@@ -326,15 +319,14 @@ export default function LeadsPage() {
       </div>
 
       {totalLeads === 0 ? (
-        <div className="rounded-2xl border border-dashed border-stone-200 px-6 py-16 text-center">
+        <div className="mx-4 md:mx-8 rounded-2xl border border-dashed border-stone-200 px-6 py-16 text-center">
           <p className="text-stone-500">No leads yet. Share your venue listing to start receiving inquiries.</p>
         </div>
       ) : (
         <DragDropContext onDragEnd={handleDragEnd}>
-          <div className="overflow-x-auto pb-6 -mx-4 px-4 lg:-mx-8 lg:px-8">
-            <div className="flex gap-4 min-w-max lg:min-w-0 lg:grid lg:gap-5"
-              style={{ gridTemplateColumns: `repeat(${LEAD_STATUSES.length}, minmax(0, 1fr))` }}
-            >
+          {/* Always horizontal-scroll so columns stay wide */}
+          <div className="overflow-x-auto pb-6 -mx-4 px-4 md:-mx-8 md:px-8">
+            <div className="flex gap-4 w-max">
               {LEAD_STATUSES.map((stage) => (
                 <Column
                   key={stage.value}
