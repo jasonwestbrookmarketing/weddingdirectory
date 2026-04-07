@@ -31,57 +31,50 @@ export default function SearchBar() {
     router.push(`/search?${params.toString()}`);
   };
 
-  const inputBase =
-    "w-full bg-transparent text-stone-900 placeholder:text-stone-400 text-sm focus:outline-none";
-  const dividerV = "hidden md:block w-px self-stretch bg-stone-200 my-1.5 shrink-0";
-
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto">
-      {/* Desktop — single pill row */}
-      <div className="hidden md:flex items-stretch bg-white rounded-full shadow-xl border border-white/20 overflow-hidden">
 
-        {/* Location */}
-        <div className="flex items-center gap-2 flex-1 min-w-0 px-5 py-3.5">
+      {/* ── Desktop pill ── */}
+      <div className="hidden md:flex items-stretch bg-white rounded-full shadow-2xl overflow-hidden h-[68px]">
+
+        {/* Location — takes remaining space */}
+        <div className="flex items-center gap-2.5 flex-1 min-w-0 pl-5 pr-4 border-r border-stone-200">
           <MapPin className="h-4 w-4 text-stone-400 shrink-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wide leading-none mb-0.5">Where</p>
+            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest leading-none mb-1">Where</p>
             <input
               type="text"
               placeholder="City or state"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className={inputBase}
+              className="w-full bg-transparent text-stone-900 placeholder:text-stone-400 text-sm focus:outline-none"
             />
           </div>
         </div>
 
-        <div className={dividerV} />
-
-        {/* Guests */}
-        <div className="flex items-center flex-none w-32 px-4 py-3.5">
+        {/* Guests — fixed narrow */}
+        <div className="flex items-center w-[110px] shrink-0 px-4 border-r border-stone-200">
           <div className="w-full">
-            <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wide leading-none mb-0.5">Guests</p>
+            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest leading-none mb-1">Guests</p>
             <input
               type="number"
               placeholder="Any"
               min={1}
               value={guests}
               onChange={(e) => setGuests(e.target.value)}
-              className={inputBase}
+              className="w-full bg-transparent text-stone-900 placeholder:text-stone-400 text-sm focus:outline-none"
             />
           </div>
         </div>
 
-        <div className={dividerV} />
-
-        {/* Budget */}
-        <div className="flex items-center flex-none w-40 px-4 py-3.5">
+        {/* Budget — fixed */}
+        <div className="flex items-center w-[155px] shrink-0 px-4 border-r border-stone-200">
           <div className="w-full">
-            <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wide leading-none mb-0.5">Budget</p>
+            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest leading-none mb-1">Budget</p>
             <select
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
-              className={`${inputBase} appearance-none cursor-pointer`}
+              className="w-full bg-transparent text-stone-900 text-sm focus:outline-none appearance-none cursor-pointer"
             >
               <option value="">Any budget</option>
               {BUDGET_RANGES.map((r) => (
@@ -91,16 +84,14 @@ export default function SearchBar() {
           </div>
         </div>
 
-        <div className={dividerV} />
-
-        {/* Style */}
-        <div className="flex items-center flex-none w-40 px-4 py-3.5">
+        {/* Style — fixed */}
+        <div className="flex items-center w-[150px] shrink-0 px-4">
           <div className="w-full">
-            <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wide leading-none mb-0.5">Style</p>
+            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest leading-none mb-1">Style</p>
             <select
               value={style}
               onChange={(e) => setStyle(e.target.value)}
-              className={`${inputBase} appearance-none cursor-pointer`}
+              className="w-full bg-transparent text-stone-900 text-sm focus:outline-none appearance-none cursor-pointer"
             >
               <option value="">Any style</option>
               {VENUE_TYPES.map((t) => (
@@ -110,11 +101,11 @@ export default function SearchBar() {
           </div>
         </div>
 
-        {/* Search button */}
+        {/* Search button — never shrinks */}
         <div className="flex items-center p-2 shrink-0">
           <button
             type="submit"
-            className="flex items-center gap-2 rounded-full bg-stone-900 hover:bg-stone-700 active:scale-95 transition-all text-white px-5 py-3 text-sm font-semibold"
+            className="h-full flex items-center gap-2 rounded-full bg-stone-900 hover:bg-stone-700 active:scale-95 transition-all text-white px-6 text-sm font-semibold whitespace-nowrap"
           >
             <Search className="h-4 w-4" />
             Search
@@ -122,8 +113,8 @@ export default function SearchBar() {
         </div>
       </div>
 
-      {/* Mobile — stacked card */}
-      <div className="flex flex-col md:hidden bg-white rounded-2xl shadow-xl overflow-hidden border border-white/20">
+      {/* ── Mobile stacked card ── */}
+      <div className="flex flex-col md:hidden bg-white rounded-2xl shadow-2xl overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-3.5 border-b border-stone-100">
           <MapPin className="h-4 w-4 text-stone-400 shrink-0" />
           <input
@@ -137,7 +128,7 @@ export default function SearchBar() {
 
         <div className="grid grid-cols-2 border-b border-stone-100">
           <div className="px-4 py-3 border-r border-stone-100">
-            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-wide mb-1">Guests</p>
+            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Guests</p>
             <input
               type="number"
               placeholder="Any"
@@ -148,7 +139,7 @@ export default function SearchBar() {
             />
           </div>
           <div className="px-4 py-3">
-            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-wide mb-1">Budget</p>
+            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Budget</p>
             <select
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
@@ -163,7 +154,7 @@ export default function SearchBar() {
         </div>
 
         <div className="px-4 py-3 border-b border-stone-100">
-          <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-wide mb-1">Style / Vibe</p>
+          <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Style</p>
           <select
             value={style}
             onChange={(e) => setStyle(e.target.value)}
@@ -178,12 +169,13 @@ export default function SearchBar() {
 
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-700 active:scale-[0.99] transition-all text-white px-6 py-4 text-sm font-semibold"
+          className="flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-700 text-white px-6 py-4 text-sm font-semibold transition-colors"
         >
           <Search className="h-4 w-4" />
           Search
         </button>
       </div>
+
     </form>
   );
 }
