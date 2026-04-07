@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Search } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { BUDGET_RANGES } from "@/lib/constants";
@@ -118,11 +119,15 @@ export default function SearchPage() {
     <>
       <nav className="bg-white border-b border-stone-200">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-          <Link
-            href="/"
-            className="text-xl font-bold tracking-tight text-stone-900"
-          >
-            StoryVenue
+          <Link href="/" aria-label="StoryVenue home">
+            <Image
+              src="/storyvenue-dark-logo.png"
+              alt="StoryVenue"
+              width={140}
+              height={36}
+              className="h-8 w-auto object-contain"
+              priority
+            />
           </Link>
           <Link
             href="/signup"
