@@ -119,9 +119,9 @@ export default async function HomePage() {
             </em>
           </h1>
 
-          {/* Sub-headline — Open Sans */}
+          {/* Sub-headline — Open Sans, no wrap */}
           <p
-            className="text-base sm:text-lg md:text-xl text-white/75 max-w-lg sm:max-w-xl mx-auto leading-relaxed font-light"
+            className="text-base sm:text-lg md:text-xl text-white/75 whitespace-nowrap leading-relaxed font-light"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             Discover venues that match your vision, guest count, and budget
@@ -130,6 +130,42 @@ export default async function HomePage() {
           {/* Search bar */}
           <div className="w-full mt-1 sm:mt-2">
             <SearchBar />
+          </div>
+
+          {/* Venue trust ticker */}
+          <div className="w-full mt-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_12%,white_88%,transparent)]">
+            <div className="flex gap-12 animate-[ticker_30s_linear_infinite] whitespace-nowrap w-max">
+              {[
+                "Retreat at Evans Farms",
+                "The Barn of Hidden Valley",
+                "Irongate Wedding Venue",
+                "The Grand Estate",
+                "Willow Creek Farms",
+                "Stone Ridge Manor",
+                "Harvest Moon Venue",
+                "Blue Heron Farm",
+                "The Magnolia House",
+                "Rosewood Barn",
+                "Retreat at Evans Farms",
+                "The Barn of Hidden Valley",
+                "Irongate Wedding Venue",
+                "The Grand Estate",
+                "Willow Creek Farms",
+                "Stone Ridge Manor",
+                "Harvest Moon Venue",
+                "Blue Heron Farm",
+                "The Magnolia House",
+                "Rosewood Barn",
+              ].map((name, i) => (
+                <span
+                  key={i}
+                  className="text-xs sm:text-sm font-semibold text-white/40 tracking-widest uppercase shrink-0"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
+                  {name}
+                </span>
+              ))}
+            </div>
           </div>
 
         </div>
