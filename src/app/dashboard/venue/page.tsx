@@ -369,9 +369,7 @@ export default function VenueDashboardPage() {
             size="sm"
             loading={publishLoading}
             onClick={togglePublish}
-            className={isPublished
-              ? "bg-white border border-stone-200 text-stone-700 hover:bg-stone-50"
-              : "bg-stone-900 text-white hover:bg-stone-700"}
+            className="bg-stone-900 text-white hover:bg-stone-700"
           >
             {isPublished
               ? <><EyeOff className="h-3.5 w-3.5 mr-1.5" /> Unpublish</>

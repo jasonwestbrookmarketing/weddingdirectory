@@ -39,16 +39,18 @@ export default function SearchBar() {
 
         {/* Location — takes remaining space */}
         <div className="flex items-center gap-2.5 flex-1 min-w-0 pl-5 pr-4 border-r border-stone-200">
-          <MapPin className="h-4 w-4 text-stone-400 shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest leading-none mb-1">Where</p>
-            <input
-              type="text"
-              placeholder="City or state"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="w-full bg-transparent text-stone-900 placeholder:text-stone-400 text-sm focus:outline-none"
-            />
+            <div className="flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-stone-400 shrink-0" />
+              <input
+                type="text"
+                placeholder="City or State"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                className="w-full bg-transparent text-stone-900 placeholder:text-stone-400 text-sm focus:outline-none"
+              />
+            </div>
           </div>
         </div>
 
