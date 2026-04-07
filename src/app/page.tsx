@@ -128,7 +128,7 @@ export default async function HomePage() {
           </p>
 
           {/* Search bar */}
-          <div className="w-full max-w-xl mt-1 sm:mt-2">
+          <div className="w-full mt-1 sm:mt-2">
             <SearchBar />
           </div>
 
