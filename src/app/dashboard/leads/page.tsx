@@ -24,12 +24,12 @@ function formatDate(dateStr: string | null) {
 }
 
 const COLUMN_ACCENT: Record<string, string> = {
-  new:            "border-t-blue-400",
-  contacted:      "border-t-amber-400",
-  tour_booked:    "border-t-purple-400",
-  proposal_sent:  "border-t-orange-400",
-  booked_wedding: "border-t-emerald-400",
-  not_interested: "border-t-stone-300",
+  new:            "border-l-blue-400",
+  contacted:      "border-l-amber-400",
+  tour_booked:    "border-l-purple-400",
+  proposal_sent:  "border-l-orange-400",
+  booked_wedding: "border-l-emerald-400",
+  not_interested: "border-l-stone-300",
 };
 
 const COLUMN_DOT: Record<string, string> = {
@@ -58,33 +58,33 @@ function LeadCard({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           onClick={onClick}
-          className={`bg-white rounded-xl border border-t-2 p-4 cursor-grab active:cursor-grabbing select-none transition-all ${
-            COLUMN_ACCENT[lead.status] ?? "border-t-stone-300"
+          className={`bg-white rounded-xl border-l-4 px-4 py-3.5 cursor-grab active:cursor-grabbing select-none transition-all ${
+            COLUMN_ACCENT[lead.status] ?? "border-l-stone-300"
           } ${
             snapshot.isDragging
-              ? "shadow-2xl scale-[1.02] border-stone-300"
-              : "border-stone-200 hover:border-stone-300 hover:shadow-md"
+              ? "shadow-2xl scale-[1.01] ring-1 ring-stone-200"
+              : "border border-stone-200 hover:shadow-md hover:border-stone-300"
           }`}
         >
-          {/* Name */}
-          <p className="font-semibold text-stone-900 text-sm leading-tight mb-3">{lead.name}</p>
+          {/* Top row: name + date */}
+          <div className="flex items-start justify-between gap-3 mb-2.5">
+            <p className="font-semibold text-stone-900 text-sm leading-snug">{lead.name}</p>
+            <span className="text-[11px] text-stone-400 shrink-0 flex items-center gap-1 mt-0.5">
+              <Clock className="h-3 w-3" />
+              {formatDate(lead.created_at) ?? "—"}
+            </span>
+          </div>
 
-          {/* Contact rows */}
-          <div className="space-y-1.5 mb-3">
-            <div className="flex items-center gap-2 text-xs text-stone-500">
+          {/* Bottom row: email + phone side by side */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5 text-xs text-stone-500 min-w-0">
               <Mail className="h-3 w-3 shrink-0 text-stone-400" />
               <span className="truncate">{lead.email}</span>
             </div>
-            <div className="flex items-center gap-2 text-xs text-stone-500">
-              <Phone className="h-3 w-3 shrink-0 text-stone-400" />
+            <div className="flex items-center gap-1.5 text-xs text-stone-500 shrink-0">
+              <Phone className="h-3 w-3 text-stone-400" />
               <span>{lead.phone}</span>
             </div>
-          </div>
-
-          {/* Created date */}
-          <div className="flex items-center gap-1.5 text-[11px] text-stone-400 pt-2.5 border-t border-stone-100">
-            <Clock className="h-3 w-3" />
-            {formatDate(lead.created_at) ?? "—"}
           </div>
         </div>
       )}

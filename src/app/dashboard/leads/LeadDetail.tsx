@@ -29,7 +29,11 @@ export function LeadDetail({ lead, onClose, onStatusChange }: LeadDetailProps) {
   const [notesSaved, setNotesSaved] = useState(false);
   const notesTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const savedValueRef = useRef(lead.notes ?? "");
+
   async function saveNotes(value: string) {
+    if (value === savedValueRef.current) return; // nothing changed
+    savedValueRef.current = value;
     await fetch(`/api/leads/${lead.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -43,7 +47,14 @@ export function LeadDetail({ lead, onClose, onStatusChange }: LeadDetailProps) {
   function handleNotesChange(value: string) {
     setNotes(value);
     if (notesTimer.current) clearTimeout(notesTimer.current);
+    // debounce while typing
     notesTimer.current = setTimeout(() => saveNotes(value), 800);
+  }
+
+  function handleNotesBlur() {
+    // save immediately when focus leaves the textarea
+    if (notesTimer.current) clearTimeout(notesTimer.current);
+    saveNotes(notes);
   }
 
   return (
@@ -150,6 +161,7 @@ export function LeadDetail({ lead, onClose, onStatusChange }: LeadDetailProps) {
             <textarea
               value={notes}
               onChange={(e) => handleNotesChange(e.target.value)}
+              onBlur={handleNotesBlur}
               rows={4}
               placeholder="Add private notes about this lead…"
               className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-700 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900 focus:border-transparent resize-none leading-relaxed"
