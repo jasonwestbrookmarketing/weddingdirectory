@@ -136,9 +136,30 @@ export const FEATURES_LIST = [
 export const CTA_LABEL = "Get Pricing & Check Availability";
 
 export const BUDGET_RANGES = [
-  { value: "0-5000", label: "Under $5,000", min: 0, max: 5000 },
-  { value: "5000-10000", label: "$5,000 – $10,000", min: 5000, max: 10000 },
-  { value: "10000-20000", label: "$10,000 – $20,000", min: 10000, max: 20000 },
-  { value: "20000-40000", label: "$20,000 – $40,000", min: 20000, max: 40000 },
-  { value: "40000+", label: "$40,000+", min: 40000, max: 999999 },
+  { value: "0-5000",    label: "$ · Budget-Friendly",   scale: "$",    min: 0,     max: 5000   },
+  { value: "5000-10000", label: "$$ · Moderate",         scale: "$$",   min: 5000,  max: 10000  },
+  { value: "10000-20000",label: "$$$ · Premium",          scale: "$$$",  min: 10000, max: 20000  },
+  { value: "20000-40000",label: "$$$$ · Luxury",          scale: "$$$$", min: 20000, max: 40000  },
+  { value: "40000+",    label: "$$$$$ · Ultra-Luxury",   scale: "$$$$$",min: 40000, max: 999999 },
 ] as const;
+
+/**
+ * Returns a dollar-sign scale string for a given price_min value.
+ * Used on venue cards and listing pages instead of showing raw dollar amounts.
+ */
+export function getPriceScale(priceMin: number | null | undefined): string | null {
+  if (priceMin == null) return null;
+  if (priceMin < 5000)  return "$";
+  if (priceMin < 10000) return "$$";
+  if (priceMin < 20000) return "$$$";
+  if (priceMin < 40000) return "$$$$";
+  return "$$$$$";
+}
+
+export const PRICE_SCALE_LABELS: Record<string, string> = {
+  "$":     "Budget-Friendly",
+  "$$":    "Moderate",
+  "$$$":   "Premium",
+  "$$$$":  "Luxury",
+  "$$$$$": "Ultra-Luxury",
+};

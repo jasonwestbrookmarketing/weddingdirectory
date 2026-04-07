@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Users } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
+import { getPriceScale, PRICE_SCALE_LABELS } from "@/lib/constants";
 import type { Venue } from "@/types/database";
 
 type VenueCardData = Pick<
@@ -66,14 +67,20 @@ export default function VenueCard({ venue }: VenueCardProps) {
             {venue.location_full}
           </p>
         )}
-        <div className="flex items-center justify-between pt-1">
-          {venue.price_min != null && (
-            <span className="text-sm font-medium text-stone-900">
-              From ${venue.price_min.toLocaleString()}
-            </span>
-          )}
+        <div className="flex items-center justify-between pt-1.5 gap-2">
+          {(() => {
+            const scale = getPriceScale(venue.price_min);
+            if (!scale) return null;
+            const label = PRICE_SCALE_LABELS[scale];
+            return (
+              <span className="flex items-baseline gap-1.5">
+                <span className="text-sm font-bold tracking-wide text-stone-900">{scale}</span>
+                <span className="text-xs text-stone-400">{label}</span>
+              </span>
+            );
+          })()}
           {(venue.capacity_min != null || venue.capacity_max != null) && (
-            <span className="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded-full flex items-center gap-1">
+            <span className="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded-full flex items-center gap-1 shrink-0">
               <Users className="h-3 w-3" />
               {venue.capacity_min && venue.capacity_max
                 ? `${venue.capacity_min}–${venue.capacity_max}`

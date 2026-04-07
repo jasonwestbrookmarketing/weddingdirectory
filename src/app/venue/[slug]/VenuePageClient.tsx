@@ -26,6 +26,8 @@ import {
   CEREMONY_TYPES_LIST,
   VENUE_SETTINGS_LIST,
   SERVICES_LIST,
+  getPriceScale,
+  PRICE_SCALE_LABELS,
 } from "@/lib/constants";
 
 const ALL_FEATURE_ITEMS = [
@@ -334,10 +336,10 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
                       : `${venue.capacity_min}+ guests`}
                 </span>
               )}
-              {venue.price_min != null && (
+              {venue.price_min != null && getPriceScale(venue.price_min) && (
                 <span className="bg-stone-100 text-stone-700 px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5">
                   <DollarSign className="h-3.5 w-3.5" />
-                  From ${venue.price_min.toLocaleString()}
+                  {getPriceScale(venue.price_min)} · {PRICE_SCALE_LABELS[getPriceScale(venue.price_min)!]}
                 </span>
               )}
             </div>
@@ -381,17 +383,16 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
                   </div>
                 </div>
               )}
-              {venue.price_min != null && (
+              {venue.price_min != null && getPriceScale(venue.price_min) && (
                 <div className="flex items-start gap-4">
                   <DollarSign className="h-6 w-6 text-stone-700 flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="font-medium text-stone-900">Pricing</p>
                     <p className="text-stone-500 text-sm">
-                      Starting from ${venue.price_min.toLocaleString()}
-                      {venue.price_max != null
-                        ? ` – $${venue.price_max.toLocaleString()}`
-                        : ""}
+                      <span className="font-semibold text-stone-700">{getPriceScale(venue.price_min)}</span>
+                      {" · "}{PRICE_SCALE_LABELS[getPriceScale(venue.price_min)!]}
                     </p>
+                    <p className="text-xs text-stone-400 mt-0.5">Inquire for exact pricing</p>
                   </div>
                 </div>
               )}
@@ -521,22 +522,18 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
           <div className="hidden lg:block">
             <div className="sticky top-8">
               <div className="border border-stone-200 rounded-2xl shadow-lg p-6 bg-white">
-                {/* Price */}
-                {venue.price_min != null && (
+                {/* Price scale */}
+                {venue.price_min != null && getPriceScale(venue.price_min) && (
                   <div className="mb-5">
-                    <p className="text-stone-900">
-                      <span className="text-2xl font-bold">
-                        ${venue.price_min.toLocaleString()}
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold tracking-wide text-stone-900">
+                        {getPriceScale(venue.price_min)}
                       </span>
-                      <span className="text-stone-500 text-base font-normal ml-1">
-                        starting price
+                      <span className="text-base text-stone-500 font-normal">
+                        {PRICE_SCALE_LABELS[getPriceScale(venue.price_min)!]}
                       </span>
-                    </p>
-                    {venue.price_max != null && (
-                      <p className="text-sm text-stone-500 mt-0.5">
-                        up to ${venue.price_max.toLocaleString()}
-                      </p>
-                    )}
+                    </div>
+                    <p className="text-xs text-stone-400 mt-1">Inquire for exact pricing</p>
                   </div>
                 )}
 
@@ -598,12 +595,14 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
       {/* Mobile sticky CTA */}
       <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white border-t border-stone-200 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <div className="flex items-center justify-between gap-4">
-          {venue.price_min != null && (
+          {venue.price_min != null && getPriceScale(venue.price_min) && (
             <div>
-              <p className="text-stone-900">
-                <span className="text-lg font-bold">${venue.price_min.toLocaleString()}</span>
-                <span className="text-stone-500 text-sm font-normal ml-1">starting</span>
-              </p>
+              <span className="text-lg font-bold tracking-wide text-stone-900">
+                {getPriceScale(venue.price_min)}
+              </span>
+              <span className="text-stone-500 text-xs ml-1.5">
+                {PRICE_SCALE_LABELS[getPriceScale(venue.price_min)!]}
+              </span>
             </div>
           )}
           <Button
