@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Building2, FileText, Globe, TrendingUp } from "lucide-react";
+import { Building2, FileText, Globe, TrendingUp, TriangleAlert } from "lucide-react";
 
 const RANGES = [
   { value: "7d", label: "Last 7 days" },
@@ -103,6 +103,28 @@ export default function AdminMetricsPage() {
   const [range, setRange] = useState("30d");
   const [data, setData] = useState<MetricsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [maintenance, setMaintenance] = useState(false);
+  const [maintenanceLoading, setMaintenanceLoading] = useState(false);
+
+  // Load maintenance state
+  useEffect(() => {
+    fetch("/api/admin/settings")
+      .then((r) => r.json())
+      .then((s) => setMaintenance(s.maintenance_mode === "true"))
+      .catch(() => {});
+  }, []);
+
+  async function toggleMaintenance() {
+    setMaintenanceLoading(true);
+    const next = !maintenance;
+    await fetch("/api/admin/settings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ maintenance_mode: String(next) }),
+    });
+    setMaintenance(next);
+    setMaintenanceLoading(false);
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -116,6 +138,40 @@ export default function AdminMetricsPage() {
 
   return (
     <div>
+      {/* Maintenance mode banner + toggle */}
+      <div className={`mb-6 rounded-2xl border px-5 py-4 flex items-center justify-between gap-4 ${
+        maintenance
+          ? "bg-amber-50 border-amber-200"
+          : "bg-white border-stone-200"
+      }`}>
+        <div className="flex items-center gap-3">
+          <TriangleAlert className={`h-5 w-5 shrink-0 ${maintenance ? "text-amber-500" : "text-stone-300"}`} />
+          <div>
+            <p className={`text-sm font-semibold ${maintenance ? "text-amber-800" : "text-stone-700"}`}>
+              Maintenance Mode
+            </p>
+            <p className={`text-xs mt-0.5 ${maintenance ? "text-amber-600" : "text-stone-400"}`}>
+              {maintenance
+                ? "Site is DOWN — all public pages show maintenance screen. Admins can still access /admin."
+                : "Site is live and accessible to all visitors."}
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={toggleMaintenance}
+          disabled={maintenanceLoading}
+          className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none disabled:opacity-60 ${
+            maintenance ? "bg-amber-500" : "bg-stone-200"
+          }`}
+          role="switch"
+          aria-checked={maintenance}
+        >
+          <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ${
+            maintenance ? "translate-x-5" : "translate-x-0"
+          }`} />
+        </button>
+      </div>
+
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
