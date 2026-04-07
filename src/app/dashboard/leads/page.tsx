@@ -8,10 +8,10 @@ import {
   type DropResult,
 } from "@hello-pangea/dnd";
 import { createClient } from "@/lib/supabase/client";
-import { LEAD_STATUSES } from "@/lib/constants";
+import { LEAD_STATUSES, BOOKING_TIMELINES } from "@/lib/constants";
 import { LeadDetail } from "./LeadDetail";
 import type { Lead } from "@/types/database";
-import { Mail, Phone, Clock } from "lucide-react";
+import { Mail, Phone, Calendar, Users, MessageSquare } from "lucide-react";
 
 type PipelineStage = typeof LEAD_STATUSES[number]["value"];
 type Columns = Record<PipelineStage, Lead[]>;
@@ -23,13 +23,18 @@ function formatDate(dateStr: string | null) {
   });
 }
 
-const COLUMN_ACCENT: Record<string, string> = {
-  new:            "border-l-blue-400",
-  contacted:      "border-l-amber-400",
-  tour_booked:    "border-l-purple-400",
-  proposal_sent:  "border-l-orange-400",
-  booked_wedding: "border-l-emerald-400",
-  not_interested: "border-l-stone-300",
+function getTimelineLabel(value: string | null) {
+  if (!value) return null;
+  return BOOKING_TIMELINES.find((t) => t.value === value)?.label ?? value;
+}
+
+const COLUMN_BORDER: Record<string, string> = {
+  new:            "border-t-blue-400",
+  contacted:      "border-t-amber-400",
+  tour_booked:    "border-t-purple-400",
+  proposal_sent:  "border-t-orange-400",
+  booked_wedding: "border-t-emerald-400",
+  not_interested: "border-t-stone-300",
 };
 
 const COLUMN_DOT: Record<string, string> = {
@@ -41,6 +46,7 @@ const COLUMN_DOT: Record<string, string> = {
   not_interested: "bg-stone-300",
 };
 
+// ── Lead Card ────────────────────────────────────────────────────────────────
 function LeadCard({
   lead,
   index,
@@ -50,6 +56,8 @@ function LeadCard({
   index: number;
   onClick: () => void;
 }) {
+  const timeline = getTimelineLabel(lead.booking_timeline);
+
   return (
     <Draggable draggableId={lead.id} index={index}>
       {(provided, snapshot) => (
@@ -58,33 +66,69 @@ function LeadCard({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           onClick={onClick}
-          className={`bg-white rounded-xl border-l-4 px-4 py-3.5 cursor-grab active:cursor-grabbing select-none transition-all ${
-            COLUMN_ACCENT[lead.status] ?? "border-l-stone-300"
-          } ${
+          className={`bg-white rounded-xl select-none transition-all cursor-grab active:cursor-grabbing overflow-hidden ${
             snapshot.isDragging
-              ? "shadow-2xl scale-[1.01] ring-1 ring-stone-200"
-              : "border border-stone-200 hover:shadow-md hover:border-stone-300"
+              ? "shadow-2xl ring-2 ring-stone-300/60 scale-[1.01]"
+              : "shadow-sm hover:shadow-md"
           }`}
         >
-          {/* Top row: name + date */}
-          <div className="flex items-start justify-between gap-3 mb-2.5">
-            <p className="font-semibold text-stone-900 text-sm leading-snug">{lead.name}</p>
-            <span className="text-[11px] text-stone-400 shrink-0 flex items-center gap-1 mt-0.5">
-              <Clock className="h-3 w-3" />
-              {formatDate(lead.created_at) ?? "—"}
-            </span>
+          {/* Card body */}
+          <div className="px-4 pt-4 pb-3">
+            {/* Name */}
+            <p className="font-bold text-stone-900 text-[15px] leading-snug mb-3">
+              {lead.name}
+            </p>
+
+            {/* Labeled rows */}
+            <div className="space-y-1.5">
+              {lead.wedding_date && (
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-stone-400 w-28 shrink-0 flex items-center gap-1.5">
+                    <Calendar className="h-3 w-3" /> Wedding Date
+                  </span>
+                  <span className="text-xs font-medium text-stone-700">{formatDate(lead.wedding_date)}</span>
+                </div>
+              )}
+              {lead.guest_count && (
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-stone-400 w-28 shrink-0 flex items-center gap-1.5">
+                    <Users className="h-3 w-3" /> Guest Count
+                  </span>
+                  <span className="text-xs font-medium text-stone-700">{lead.guest_count} guests</span>
+                </div>
+              )}
+              {timeline && (
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-stone-400 w-28 shrink-0 flex items-center gap-1.5">
+                    <MessageSquare className="h-3 w-3" /> Timeline
+                  </span>
+                  <span className="text-xs font-medium text-stone-700">{timeline}</span>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Bottom row: email + phone side by side */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5 text-xs text-stone-500 min-w-0">
-              <Mail className="h-3 w-3 shrink-0 text-stone-400" />
-              <span className="truncate">{lead.email}</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs text-stone-500 shrink-0">
-              <Phone className="h-3 w-3 text-stone-400" />
-              <span>{lead.phone}</span>
-            </div>
+          {/* Footer action bar */}
+          <div className="border-t border-stone-100 px-4 py-2.5 flex items-center gap-4">
+            <a
+              href={`tel:${lead.phone}`}
+              onClick={(e) => e.stopPropagation()}
+              className="text-stone-400 hover:text-stone-700 transition-colors"
+              title="Call"
+            >
+              <Phone className="h-4 w-4" />
+            </a>
+            <a
+              href={`mailto:${lead.email}`}
+              onClick={(e) => e.stopPropagation()}
+              className="text-stone-400 hover:text-stone-700 transition-colors"
+              title="Email"
+            >
+              <Mail className="h-4 w-4" />
+            </a>
+            <span className="ml-auto text-[11px] text-stone-400">
+              {formatDate(lead.created_at)}
+            </span>
           </div>
         </div>
       )}
@@ -92,6 +136,7 @@ function LeadCard({
   );
 }
 
+// ── Column ────────────────────────────────────────────────────────────────────
 function Column({
   stage,
   leads,
@@ -102,24 +147,34 @@ function Column({
   onCardClick: (lead: Lead) => void;
 }) {
   return (
-    <div className="flex flex-col min-w-[300px] lg:min-w-0 lg:flex-1">
-      {/* Column header */}
-      <div className="flex items-center gap-2 mb-3 px-0.5">
-        <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${COLUMN_DOT[stage.value] ?? "bg-stone-400"}`} />
-        <h3 className="text-sm font-semibold text-stone-700 flex-1 truncate">{stage.label}</h3>
-        <span className="text-xs font-semibold text-stone-400 bg-stone-100 rounded-full px-2.5 py-0.5 shrink-0 tabular-nums">
-          {leads.length}
-        </span>
+    <div className="flex flex-col w-[320px] shrink-0 lg:w-auto lg:flex-1">
+
+      {/* Column header card */}
+      <div className={`bg-white rounded-xl border-t-4 shadow-sm px-4 py-3 mb-3 ${COLUMN_BORDER[stage.value] ?? "border-t-stone-300"}`}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className={`w-2 h-2 rounded-full ${COLUMN_DOT[stage.value] ?? "bg-stone-300"}`} />
+            <h3 className="text-sm font-bold text-stone-800">{stage.label}</h3>
+          </div>
+          <span className="text-xs font-semibold text-stone-500 bg-stone-100 rounded-full px-2.5 py-0.5 tabular-nums">
+            {leads.length}
+          </span>
+        </div>
+        <p className="text-xs text-stone-400 mt-0.5 ml-4">
+          {leads.length} {leads.length === 1 ? "opportunity" : "opportunities"}
+        </p>
       </div>
 
-      {/* Droppable column */}
+      {/* Droppable zone */}
       <Droppable droppableId={stage.value}>
         {(provided, snapshot) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`flex-1 min-h-[160px] rounded-2xl p-2.5 space-y-2.5 transition-colors ${
-              snapshot.isDraggingOver ? "bg-stone-200/80 ring-2 ring-stone-300/50" : "bg-stone-100/70"
+            className={`flex-1 min-h-[120px] rounded-2xl p-2 space-y-2.5 transition-colors ${
+              snapshot.isDraggingOver
+                ? "bg-stone-200/70 ring-2 ring-inset ring-stone-300/50"
+                : "bg-stone-100/60"
             }`}
           >
             {leads.map((lead, index) => (
@@ -138,6 +193,7 @@ function Column({
   );
 }
 
+// ── Page ──────────────────────────────────────────────────────────────────────
 export default function LeadsPage() {
   const [columns, setColumns] = useState<Columns>(() => {
     const empty = {} as Columns;
@@ -156,17 +212,12 @@ export default function LeadsPage() {
       if (!user) return;
 
       const { data: venue } = await supabase
-        .from("venues")
-        .select("id")
-        .eq("owner_id", user.id)
-        .maybeSingle();
+        .from("venues").select("id").eq("owner_id", user.id).maybeSingle();
 
       if (!venue) { setLoading(false); return; }
 
       const { data } = await supabase
-        .from("leads")
-        .select("*")
-        .eq("venue_id", venue.id)
+        .from("leads").select("*").eq("venue_id", venue.id)
         .order("created_at", { ascending: false });
 
       const next: Columns = {} as Columns;
@@ -188,87 +239,72 @@ export default function LeadsPage() {
     toastTimer.current = setTimeout(() => setToast(null), 3000);
   }
 
-  const handleDragEnd = useCallback(
-    async (result: DropResult) => {
-      const { source, destination, draggableId } = result;
-      if (!destination) return;
-      if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+  const handleDragEnd = useCallback(async (result: DropResult) => {
+    const { source, destination, draggableId } = result;
+    if (!destination) return;
+    if (source.droppableId === destination.droppableId && source.index === destination.index) return;
 
-      const srcStage = source.droppableId as PipelineStage;
-      const dstStage = destination.droppableId as PipelineStage;
+    const srcStage = source.droppableId as PipelineStage;
+    const dstStage = destination.droppableId as PipelineStage;
 
-      // Optimistic update
-      setColumns((prev) => {
-        const next = { ...prev };
-        const srcList = [...prev[srcStage]];
-        const [moved] = srcList.splice(source.index, 1);
-        const dstList = srcStage === dstStage ? srcList : [...prev[dstStage]];
-        dstList.splice(destination.index, 0, { ...moved, status: dstStage });
-        next[srcStage] = srcStage === dstStage ? dstList : srcList;
-        if (srcStage !== dstStage) next[dstStage] = dstList;
-        return next;
+    setColumns((prev) => {
+      const next = { ...prev };
+      const srcList = [...prev[srcStage]];
+      const [moved] = srcList.splice(source.index, 1);
+      const dstList = srcStage === dstStage ? srcList : [...prev[dstStage]];
+      dstList.splice(destination.index, 0, { ...moved, status: dstStage });
+      next[srcStage] = srcStage === dstStage ? dstList : srcList;
+      if (srcStage !== dstStage) next[dstStage] = dstList;
+      return next;
+    });
+
+    if (selectedLead?.id === draggableId) {
+      setSelectedLead((l) => l ? { ...l, status: dstStage } : l);
+    }
+
+    const res = await fetch(`/api/leads/${draggableId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: dstStage }),
+    });
+    showToast(res.ok
+      ? `Moved to ${LEAD_STATUSES.find((s) => s.value === dstStage)?.label}`
+      : "Failed to update — please try again"
+    );
+  }, [selectedLead]);
+
+  const handleStatusChange = useCallback(async (leadId: string, status: string) => {
+    const newStage = status as PipelineStage;
+    let movedLead: Lead | undefined;
+
+    setColumns((prev) => {
+      const next = { ...prev };
+      LEAD_STATUSES.forEach(({ value }) => {
+        const stage = value as PipelineStage;
+        const idx = next[stage].findIndex((l) => l.id === leadId);
+        if (idx !== -1) {
+          [movedLead] = next[stage].splice(idx, 1);
+          movedLead = { ...movedLead, status: newStage };
+        }
       });
+      if (movedLead) next[newStage] = [movedLead, ...next[newStage]];
+      return next;
+    });
 
-      // Update selected lead if open
-      if (selectedLead?.id === draggableId) {
-        setSelectedLead((l) => l ? { ...l, status: dstStage } : l);
-      }
+    if (selectedLead?.id === leadId) {
+      setSelectedLead((l) => l ? { ...l, status: newStage } : l);
+    }
 
-      // Persist
-      const res = await fetch(`/api/leads/${draggableId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: dstStage }),
-      });
-
-      if (res.ok) {
-        const stageName = LEAD_STATUSES.find((s) => s.value === dstStage)?.label;
-        showToast(`Moved to ${stageName}`);
-      } else {
-        showToast("Failed to update — please try again");
-      }
-    },
-    [selectedLead]
-  );
-
-  const handleStatusChange = useCallback(
-    async (leadId: string, status: string) => {
-      const newStage = status as PipelineStage;
-      let movedLead: Lead | undefined;
-
-      setColumns((prev) => {
-        const next = { ...prev };
-        LEAD_STATUSES.forEach(({ value }) => {
-          const stage = value as PipelineStage;
-          const idx = next[stage].findIndex((l) => l.id === leadId);
-          if (idx !== -1) {
-            [movedLead] = next[stage].splice(idx, 1);
-            movedLead = { ...movedLead, status: newStage };
-          }
-        });
-        if (movedLead) next[newStage] = [movedLead, ...next[newStage]];
-        return next;
-      });
-
-      if (selectedLead?.id === leadId) {
-        setSelectedLead((l) => l ? { ...l, status: newStage } : l);
-      }
-
-      const res = await fetch(`/api/leads/${leadId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStage }),
-      });
-
-      if (res.ok) {
-        const stageName = LEAD_STATUSES.find((s) => s.value === newStage)?.label;
-        showToast(`Moved to ${stageName}`);
-      } else {
-        showToast("Failed to update");
-      }
-    },
-    [selectedLead]
-  );
+    const res = await fetch(`/api/leads/${leadId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStage }),
+    });
+    showToast(res.ok
+      ? `Moved to ${LEAD_STATUSES.find((s) => s.value === newStage)?.label}`
+      : "Failed to update"
+    );
+  }, [selectedLead]);
 
   const totalLeads = Object.values(columns).reduce((s, col) => s + col.length, 0);
 
@@ -282,26 +318,23 @@ export default function LeadsPage() {
 
   return (
     <>
-      {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-stone-900">Leads Pipeline</h1>
         <p className="mt-1 text-sm text-stone-500">
-          {totalLeads} {totalLeads === 1 ? "lead" : "leads"} · Drag cards to move between stages
+          {totalLeads} {totalLeads === 1 ? "lead" : "leads"} · Drag cards between stages
         </p>
       </div>
 
       {totalLeads === 0 ? (
         <div className="rounded-2xl border border-dashed border-stone-200 px-6 py-16 text-center">
-          <p className="text-stone-500">
-            No leads yet. Share your venue listing to start receiving inquiries.
-          </p>
+          <p className="text-stone-500">No leads yet. Share your venue listing to start receiving inquiries.</p>
         </div>
       ) : (
         <DragDropContext onDragEnd={handleDragEnd}>
-          {/* Full-bleed horizontal scroll on mobile, flex on desktop */}
           <div className="overflow-x-auto pb-6 -mx-4 px-4 lg:-mx-8 lg:px-8">
-            <div className="flex gap-4 min-w-max lg:min-w-0">
-
+            <div className="flex gap-4 min-w-max lg:min-w-0 lg:grid lg:gap-5"
+              style={{ gridTemplateColumns: `repeat(${LEAD_STATUSES.length}, minmax(0, 1fr))` }}
+            >
               {LEAD_STATUSES.map((stage) => (
                 <Column
                   key={stage.value}
