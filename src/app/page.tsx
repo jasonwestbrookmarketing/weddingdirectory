@@ -55,13 +55,22 @@ export default async function HomePage() {
           </a>
         </div>
 
-        <Link
-          href="/signup"
-          className="shrink-0 rounded-full bg-white text-stone-900 px-5 py-2.5 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-sm"
-          style={{ fontFamily: "var(--font-open-sans)" }}
-        >
-          List Your Venue
-        </Link>
+        <div className="flex items-center gap-2 shrink-0">
+          <Link
+            href="/login"
+            className="rounded-full bg-white/10 border border-white/20 text-white px-4 py-2.5 text-sm font-medium hover:bg-white/20 active:scale-[0.98] transition-all backdrop-blur-sm"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
+            Venue Login
+          </Link>
+          <Link
+            href="/signup"
+            className="rounded-full bg-white text-stone-900 px-5 py-2.5 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-sm"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
+            List Your Venue
+          </Link>
+        </div>
       </nav>
 
       {/* Hero — cinematic video background */}
