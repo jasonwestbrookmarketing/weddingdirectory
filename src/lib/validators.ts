@@ -41,16 +41,22 @@ export const leadSettingsSchema = z.object({
   email_notifications: z.boolean().default(true),
 });
 
-export const leadFormSchema = z.object({
-  venue_id: z.string().uuid(),
-  name: z.string().min(1, "Name is required"),
-  email: z.email("Valid email required"),
-  phone: z.string().min(7, "Phone number is required"),
-  wedding_date: z.string().optional(),
-  guest_count: z.number().int().min(1).optional(),
-  booking_timeline: z.string().optional(),
-  message: z.string().optional(),
-});
+export const leadFormSchema = z
+  .object({
+    venue_listing_id: z.string().uuid().optional(),
+    listing_slug: z.string().min(1).optional(),
+    name: z.string().min(1, "Name is required"),
+    email: z.email("Valid email required"),
+    phone: z.string().min(7, "Phone number is required"),
+    wedding_date: z.string().optional(),
+    guest_count: z.number().int().min(1).optional(),
+    booking_timeline: z.string().optional(),
+    message: z.string().optional(),
+  })
+  .refine((d) => d.venue_listing_id || d.listing_slug, {
+    message: "venue_listing_id or listing_slug required",
+    path: ["venue_listing_id"],
+  });
 
 export type SignupInput = z.infer<typeof signupSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;

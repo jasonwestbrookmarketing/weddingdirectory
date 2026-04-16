@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 
 export default function MaintenancePage() {
@@ -32,17 +31,6 @@ export default function MaintenancePage() {
           background: "radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.55) 100%)",
         }}
       />
-
-      {/* Subtle admin gear — top right */}
-      <div className="absolute top-5 right-5 z-20">
-        <Link
-          href="/admin/login"
-          className="text-white/20 hover:text-white/50 transition-colors text-lg leading-none"
-          title="Admin"
-        >
-          ⚙
-        </Link>
-      </div>
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center text-center max-w-lg">

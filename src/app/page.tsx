@@ -6,10 +6,12 @@ import VenueCard from "@/components/search/VenueCard";
 
 export const revalidate = 120;
 
+const STORYPAY_URL = process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
+
 export default async function HomePage() {
   const supabase = await createClient();
   const { data: venues } = await supabase
-    .from("venues")
+    .from("venue_listings")
     .select(
       "id, name, slug, location_full, cover_image_url, capacity_min, capacity_max, price_min, venue_type"
     )
@@ -56,20 +58,20 @@ export default async function HomePage() {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <Link
-            href="/login"
+          <a
+            href={`${STORYPAY_URL}/login`}
             className="rounded-full bg-white/10 border border-white/20 text-white px-4 py-2.5 text-sm font-medium hover:bg-white/20 active:scale-[0.98] transition-all backdrop-blur-sm"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             Venue Login
-          </Link>
-          <Link
-            href="/signup"
+          </a>
+          <a
+            href={`${STORYPAY_URL}/signup`}
             className="rounded-full bg-white text-stone-900 px-5 py-2.5 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-sm"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             List Your Venue
-          </Link>
+          </a>
         </div>
       </nav>
 
@@ -225,12 +227,12 @@ export default async function HomePage() {
           <p className="text-sm text-stone-500">
             &copy; {new Date().getFullYear()} StoryVenue. All rights reserved.
           </p>
-          <Link
-            href="/signup"
+          <a
+            href={`${STORYPAY_URL}/signup`}
             className="text-sm text-stone-500 hover:text-stone-900 transition-colors"
           >
             List Your Venue
-          </Link>
+          </a>
         </div>
       </footer>
     </>

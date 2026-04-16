@@ -1,205 +1,69 @@
+/**
+ * Public types for the read-only directory site.
+ *
+ * Writes happen in the StoryPay dashboard; here we only read the public
+ * `venue_listings` table and `site_settings`.
+ */
+
 export type Json =
   | string
   | number
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export type Database = {
-  __InternalSupabase: {
-    PostgrestVersion: "14.5"
-  }
   public: {
     Tables: {
-      leads: {
-        Row: {
-          booking_timeline: string | null
-          created_at: string | null
-          email: string
-          guest_count: number | null
-          id: string
-          message: string | null
-          name: string
-          notes: string | null
-          phone: string
-          status: string
-          venue_id: string
-          wedding_date: string | null
-        }
-        Insert: {
-          booking_timeline?: string | null
-          created_at?: string | null
-          email: string
-          guest_count?: number | null
-          id?: string
-          message?: string | null
-          name: string
-          notes?: string | null
-          phone: string
-          status?: string
-          venue_id: string
-          wedding_date?: string | null
-        }
-        Update: {
-          booking_timeline?: string | null
-          created_at?: string | null
-          email?: string
-          guest_count?: number | null
-          id?: string
-          message?: string | null
-          name?: string
-          notes?: string | null
-          phone?: string
-          status?: string
-          venue_id?: string
-          wedding_date?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "leads_venue_id_fkey"
-            columns: ["venue_id"]
-            isOneToOne: false
-            referencedRelation: "venues"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      profiles: {
-        Row: {
-          created_at: string | null
-          full_name: string | null
-          id: string
-          role: string
-        }
-        Insert: {
-          created_at?: string | null
-          full_name?: string | null
-          id: string
-          role?: string
-        }
-        Update: {
-          created_at?: string | null
-          full_name?: string | null
-          id?: string
-          role?: string
-        }
-        Relationships: []
-      }
-      venues: {
-        Row: {
-          availability_notes: string | null
-          capacity_max: number | null
-          capacity_min: number | null
-          cover_image_url: string | null
-          created_at: string | null
-          description: string | null
-          email_notifications: boolean | null
-          features: Json | null
-          gallery_images: Json | null
-          id: string
-          indoor_outdoor: string | null
-          is_published: boolean | null
-          lat: number | null
-          lng: number | null
-          location_city: string | null
-          location_full: string | null
-          location_state: string | null
-          name: string | null
-          notification_email: string | null
-          onboarding_completed: boolean | null
-          onboarding_step: number | null
-          owner_id: string
-          price_max: number | null
-          price_min: number | null
-          slug: string | null
-          updated_at: string | null
-          venue_type: string | null
-        }
-        Insert: {
-          availability_notes?: string | null
-          capacity_max?: number | null
-          capacity_min?: number | null
-          cover_image_url?: string | null
-          created_at?: string | null
-          description?: string | null
-          email_notifications?: boolean | null
-          features?: Json | null
-          gallery_images?: Json | null
-          id?: string
-          indoor_outdoor?: string | null
-          is_published?: boolean | null
-          lat?: number | null
-          lng?: number | null
-          location_city?: string | null
-          location_full?: string | null
-          location_state?: string | null
-          name?: string | null
-          notification_email?: string | null
-          onboarding_completed?: boolean | null
-          onboarding_step?: number | null
-          owner_id: string
-          price_max?: number | null
-          price_min?: number | null
-          slug?: string | null
-          updated_at?: string | null
-          venue_type?: string | null
-        }
-        Update: {
-          availability_notes?: string | null
-          capacity_max?: number | null
-          capacity_min?: number | null
-          cover_image_url?: string | null
-          created_at?: string | null
-          description?: string | null
-          email_notifications?: boolean | null
-          features?: Json | null
-          gallery_images?: Json | null
-          id?: string
-          indoor_outdoor?: string | null
-          is_published?: boolean | null
-          lat?: number | null
-          lng?: number | null
-          location_city?: string | null
-          location_full?: string | null
-          location_state?: string | null
-          name?: string | null
-          notification_email?: string | null
-          onboarding_completed?: boolean | null
-          onboarding_step?: number | null
-          owner_id?: string
-          price_max?: number | null
-          price_min?: number | null
-          slug?: string | null
-          updated_at?: string | null
-          venue_type?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "venues_owner_id_fkey"
-            columns: ["owner_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      [_ in never]: never
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
+      venue_listings: {
+        Row: VenueListing;
+        Insert: Partial<VenueListing> & { storypay_venue_id: string };
+        Update: Partial<VenueListing>;
+        Relationships: [];
+      };
+      site_settings: {
+        Row: { key: string; value: string | null };
+        Insert: { key: string; value?: string | null };
+        Update: { key?: string; value?: string | null };
+        Relationships: [];
+      };
+    };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
+  };
+};
+
+export interface VenueListing {
+  id: string;
+  storypay_venue_id: string;
+  slug: string | null;
+  name: string | null;
+  description: string | null;
+  venue_type: string | null;
+  location_full: string | null;
+  location_city: string | null;
+  location_state: string | null;
+  lat: number | null;
+  lng: number | null;
+  capacity_min: number | null;
+  capacity_max: number | null;
+  price_min: number | null;
+  price_max: number | null;
+  indoor_outdoor: string | null;
+  features: Json | null;
+  cover_image_url: string | null;
+  gallery_images: Json | null;
+  availability_notes: string | null;
+  is_published: boolean;
+  onboarding_completed: boolean;
+  notification_email: string | null;
+  email_notifications: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
-export type Venue = Database["public"]["Tables"]["venues"]["Row"];
-export type Lead = Database["public"]["Tables"]["leads"]["Row"];
-export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+// Back-compat alias so existing components that import `Venue` keep working.
+export type Venue = VenueListing;

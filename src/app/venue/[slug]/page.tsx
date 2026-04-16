@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const supabase = await createClient();
   const { data: venue } = await supabase
-    .from("venues")
+    .from("venue_listings")
     .select("name, description, location_full, cover_image_url")
     .eq("slug", slug)
     .eq("is_published", true)
@@ -42,7 +42,7 @@ export default async function VenuePage({ params }: Props) {
   const { slug } = await params;
   const supabase = await createClient();
   const { data: venue } = await supabase
-    .from("venues")
+    .from("venue_listings")
     .select("*")
     .eq("slug", slug)
     .eq("is_published", true)
@@ -65,12 +65,12 @@ export default async function VenuePage({ params }: Props) {
               priority
             />
           </Link>
-          <Link
-            href="/signup"
+          <a
+            href={`${process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com"}/signup`}
             className="text-sm font-medium text-stone-700 hover:text-stone-900 border border-stone-200 hover:border-stone-300 px-4 py-2 rounded-xl transition-colors"
           >
             List Your Venue
-          </Link>
+          </a>
         </div>
       </nav>
       <VenuePageClient venue={venue} />
