@@ -30,13 +30,6 @@ import {
   PRICE_SCALE_LABELS,
 } from "@/lib/constants";
 
-const ALL_FEATURE_ITEMS = [
-  ...AMENITIES_LIST,
-  ...CEREMONY_TYPES_LIST,
-  ...VENUE_SETTINGS_LIST,
-  ...SERVICES_LIST,
-] as const;
-
 const FEATURE_GROUPS = [
   { label: "Amenities", items: AMENITIES_LIST },
   { label: "Ceremony Types", items: CEREMONY_TYPES_LIST },
@@ -248,9 +241,6 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
   )?.label;
   const galleryImages = (venue.gallery_images as string[] | null) || [];
   const features = (venue.features as string[] | null) || [];
-  const featureLabels = features.map(
-    (f) => ALL_FEATURE_ITEMS.find((fl) => fl.value === f)?.label || f
-  );
   const groupedFeatures = FEATURE_GROUPS.map((g) => ({
     label: g.label,
     labels: g.items

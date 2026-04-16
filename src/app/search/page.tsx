@@ -12,6 +12,9 @@ import FilterBar, { type Filters } from "@/components/search/FilterBar";
 import VenueCard from "@/components/search/VenueCard";
 import type { Venue } from "@/types/database";
 
+const STORYPAY_URL =
+  process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
+
 function SearchContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -129,12 +132,12 @@ export default function SearchPage() {
               priority
             />
           </Link>
-          <Link
-            href="/signup"
+          <a
+            href={`${STORYPAY_URL}/signup`}
             className="text-sm font-medium text-stone-500 hover:text-stone-900 transition-colors"
           >
             List Your Venue
-          </Link>
+          </a>
         </div>
       </nav>
 
