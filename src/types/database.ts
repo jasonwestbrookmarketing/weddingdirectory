@@ -2,7 +2,9 @@
  * Public types for the read-only directory site.
  *
  * Writes happen in the StoryPay dashboard; here we only read the public
- * `venue_listings` table and `site_settings`.
+ * `venues` table and `site_settings`. `venues` is the single source of truth
+ * — it carries both directory-facing fields AND internal StoryPay columns.
+ * The projections below only expose the directory-safe subset.
  */
 
 export type Json =
@@ -16,10 +18,10 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      venue_listings: {
-        Row: VenueListing;
-        Insert: Partial<VenueListing> & { storypay_venue_id: string };
-        Update: Partial<VenueListing>;
+      venues: {
+        Row: Venue;
+        Insert: Partial<Venue> & { owner_id: string };
+        Update: Partial<Venue>;
         Relationships: [];
       };
       site_settings: {
@@ -36,9 +38,13 @@ export type Database = {
   };
 };
 
-export interface VenueListing {
+/**
+ * Directory-facing projection of a `public.venues` row. The table has more
+ * columns (brand_*, lunarpay_*, onboarding_*, etc.) but the public site
+ * never reads them — RLS + `is_published = true` gates what anon can see.
+ */
+export interface Venue {
   id: string;
-  storypay_venue_id: string;
   slug: string | null;
   name: string | null;
   description: string | null;
@@ -65,5 +71,5 @@ export interface VenueListing {
   updated_at: string;
 }
 
-// Back-compat alias so existing components that import `Venue` keep working.
-export type Venue = VenueListing;
+/** Back-compat alias so older imports keep compiling. */
+export type VenueListing = Venue;

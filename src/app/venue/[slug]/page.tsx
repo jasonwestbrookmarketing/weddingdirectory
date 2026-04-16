@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const supabase = await createClient();
   const { data: venue } = await supabase
-    .from("venue_listings")
+    .from("venues")
     .select("name, description, location_full, cover_image_url")
     .eq("slug", slug)
     .eq("is_published", true)
@@ -42,7 +42,7 @@ export default async function VenuePage({ params }: Props) {
   const { slug } = await params;
   const supabase = await createClient();
   const { data: venue } = await supabase
-    .from("venue_listings")
+    .from("venues")
     .select("*")
     .eq("slug", slug)
     .eq("is_published", true)

@@ -43,7 +43,7 @@ export const leadSettingsSchema = z.object({
 
 export const leadFormSchema = z
   .object({
-    venue_listing_id: z.string().uuid().optional(),
+    venue_id: z.string().uuid().optional(),
     listing_slug: z.string().min(1).optional(),
     name: z.string().min(1, "Name is required"),
     email: z.email("Valid email required"),
@@ -53,9 +53,9 @@ export const leadFormSchema = z
     booking_timeline: z.string().optional(),
     message: z.string().optional(),
   })
-  .refine((d) => d.venue_listing_id || d.listing_slug, {
-    message: "venue_listing_id or listing_slug required",
-    path: ["venue_listing_id"],
+  .refine((d) => d.venue_id || d.listing_slug, {
+    message: "venue_id or listing_slug required",
+    path: ["venue_id"],
   });
 
 export type SignupInput = z.infer<typeof signupSchema>;

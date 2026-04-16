@@ -11,7 +11,7 @@ const STORYPAY_URL = process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyv
 export default async function HomePage() {
   const supabase = await createClient();
   const { data: venues } = await supabase
-    .from("venue_listings")
+    .from("venues")
     .select(
       "id, name, slug, location_full, cover_image_url, capacity_min, capacity_max, price_min, venue_type"
     )

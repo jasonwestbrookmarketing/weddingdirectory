@@ -75,7 +75,7 @@ export default function LeadFormModal({
     setLoading(true);
 
     const payload = {
-      venue_listing_id: venueId,
+      venue_id: venueId,
       name,
       email,
       phone,

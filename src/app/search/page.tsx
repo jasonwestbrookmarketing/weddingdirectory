@@ -31,7 +31,7 @@ function SearchContent() {
   const fetchVenues = useCallback(async (f: Filters) => {
     setLoading(true);
     const supabase = createClient();
-    let query = supabase.from("venue_listings").select("*").eq("is_published", true);
+    let query = supabase.from("venues").select("*").eq("is_published", true);
 
     if (f.location) {
       query = query.or(

@@ -66,12 +66,12 @@ export async function POST(request: NextRequest) {
 
   const d = result.data;
   const forwarded = {
-    venue_listing_id: d.venue_listing_id,
+    venue_id: d.venue_id,
     listing_slug: d.listing_slug,
     name: d.name,
     email: d.email,
     phone: d.phone,
-    event_date: d.wedding_date ?? null,
+    wedding_date: d.wedding_date ?? null,
     guest_count: d.guest_count ?? null,
     booking_timeline: d.booking_timeline ?? null,
     message: d.message ?? null,
