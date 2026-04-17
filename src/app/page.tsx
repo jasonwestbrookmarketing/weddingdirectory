@@ -34,29 +34,6 @@ export default async function HomePage() {
           />
         </Link>
 
-        {/* Center links */}
-        <div
-          className="hidden sm:flex items-center gap-6 md:gap-8"
-          style={{ fontFamily: "var(--font-open-sans)" }}
-        >
-          <a
-            href="https://storypay.io"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-white/80 hover:text-white transition-colors"
-          >
-            StoryPay
-          </a>
-          <a
-            href="https://storyvenuemarketing.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-white/80 hover:text-white transition-colors"
-          >
-            StoryVenue Marketing
-          </a>
-        </div>
-
         <div className="flex items-center gap-2 shrink-0">
           <a
             href={`${STORYPAY_URL}/login`}
