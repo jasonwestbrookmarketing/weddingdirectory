@@ -31,7 +31,12 @@ export type Database = {
         Relationships: [];
       };
     };
-    Views: Record<string, never>;
+    Views: {
+      listing_reviews_public: {
+        Row: ListingReview;
+        Relationships: [];
+      };
+    };
     Functions: Record<string, never>;
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
@@ -73,3 +78,22 @@ export interface Venue {
 
 /** Back-compat alias so older imports keep compiling. */
 export type VenueListing = Venue;
+
+/**
+ * Public-safe projection of a review row, read from the
+ * `public.listing_reviews_public` view. The view filters to status =
+ * 'published' and strips reviewer_email / status / source so anon clients
+ * never see moderation state or contact info.
+ */
+export interface ListingReview {
+  id: string;
+  venue_id: string;
+  /** Integer 1–5, enforced at the DB level. */
+  rating: number;
+  title: string | null;
+  body: string;
+  reviewer_name: string;
+  /** ISO date (YYYY-MM-DD) or null. */
+  wedding_date: string | null;
+  created_at: string;
+}

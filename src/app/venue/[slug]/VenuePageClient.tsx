@@ -14,6 +14,7 @@ import {
   ChevronDown,
   X,
   Check,
+  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import LeadFormModal from "@/components/lead/LeadFormModal";
@@ -36,10 +37,92 @@ const FEATURE_GROUPS = [
   { label: "Venue Settings", items: VENUE_SETTINGS_LIST },
   { label: "Service Offerings", items: SERVICES_LIST },
 ] as const;
-import type { Venue } from "@/types/database";
+import type { Venue, ListingReview } from "@/types/database";
 
 interface VenuePageClientProps {
   venue: Venue;
+  reviews: ListingReview[];
+}
+
+function StarRow({
+  rating,
+  size = "sm",
+}: {
+  rating: number;
+  size?: "sm" | "md";
+}) {
+  const px = size === "md" ? "h-4 w-4" : "h-3.5 w-3.5";
+  return (
+    <span
+      className="inline-flex items-center gap-0.5"
+      aria-label={`${rating} out of 5 stars`}
+    >
+      {[1, 2, 3, 4, 5].map((n) => (
+        <Star
+          key={n}
+          className={`${px} ${
+            n <= rating
+              ? "fill-stone-900 text-stone-900"
+              : "fill-stone-200 text-stone-200"
+          }`}
+          strokeWidth={0}
+        />
+      ))}
+    </span>
+  );
+}
+
+function formatReviewDate(iso: string) {
+  try {
+    return new Date(iso).toLocaleDateString(undefined, {
+      month: "long",
+      year: "numeric",
+    });
+  } catch {
+    return "";
+  }
+}
+
+function ReviewCard({ review }: { review: ListingReview }) {
+  const initial = (review.reviewer_name || "?").trim().charAt(0).toUpperCase();
+  return (
+    <article className="space-y-3">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center flex-shrink-0">
+          <span className="text-stone-700 font-semibold text-sm">
+            {initial || "?"}
+          </span>
+        </div>
+        <div className="min-w-0">
+          <p className="font-semibold text-stone-900 text-sm truncate">
+            {review.reviewer_name}
+          </p>
+          <p className="text-xs text-stone-500">
+            {formatReviewDate(review.created_at)}
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <StarRow rating={review.rating} />
+        {review.wedding_date && (
+          <>
+            <span className="text-stone-300" aria-hidden>
+              ·
+            </span>
+            <span className="text-xs text-stone-500">
+              Wedding {formatReviewDate(review.wedding_date)}
+            </span>
+          </>
+        )}
+      </div>
+      {review.title && (
+        <h3 className="font-semibold text-stone-900 text-sm">{review.title}</h3>
+      )}
+      <p className="text-stone-700 text-sm leading-relaxed whitespace-pre-line">
+        {review.body}
+      </p>
+    </article>
+  );
 }
 
 function PhotoMosaic({
@@ -216,10 +299,25 @@ function PhotoGalleryModal({
   );
 }
 
-export default function VenuePageClient({ venue }: VenuePageClientProps) {
+export default function VenuePageClient({
+  venue,
+  reviews,
+}: VenuePageClientProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
+  const [showAllReviews, setShowAllReviews] = useState(false);
+
+  const reviewCount = reviews.length;
+  const avgRating =
+    reviewCount > 0
+      ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviewCount
+      : 0;
+  const REVIEWS_PREVIEW_LIMIT = 4;
+  const visibleReviews =
+    showAllReviews || reviewCount <= REVIEWS_PREVIEW_LIMIT
+      ? reviews
+      : reviews.slice(0, REVIEWS_PREVIEW_LIMIT);
 
   useEffect(() => {
     trackEvent("venue_page_viewed", {
@@ -283,12 +381,35 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
                 <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-stone-900">
                   {venue.name}
                 </h1>
-                {venue.location_full && (
-                  <p className="flex items-center gap-1.5 text-sm text-stone-500 mt-1.5">
-                    <MapPin className="h-4 w-4 flex-shrink-0" />
-                    {venue.location_full}
-                  </p>
-                )}
+                <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-stone-500">
+                  {reviewCount > 0 && (
+                    <a
+                      href="#reviews"
+                      className="inline-flex items-center gap-1.5 text-stone-900 font-medium hover:underline"
+                    >
+                      <Star
+                        className="h-3.5 w-3.5 fill-stone-900 text-stone-900"
+                        strokeWidth={0}
+                      />
+                      {avgRating.toFixed(avgRating === 5 ? 0 : 2)}
+                      <span className="text-stone-500 font-normal">
+                        · {reviewCount}{" "}
+                        {reviewCount === 1 ? "review" : "reviews"}
+                      </span>
+                    </a>
+                  )}
+                  {venue.location_full && (
+                    <span className="inline-flex items-center gap-1.5">
+                      {reviewCount > 0 && (
+                        <span className="text-stone-300" aria-hidden>
+                          ·
+                        </span>
+                      )}
+                      <MapPin className="h-4 w-4 flex-shrink-0" />
+                      {venue.location_full}
+                    </span>
+                  )}
+                </div>
               </div>
               {/* Action buttons */}
               <div className="flex items-center gap-1 flex-shrink-0">
@@ -427,6 +548,41 @@ export default function VenuePageClient({ venue }: VenuePageClientProps) {
                     </button>
                   )}
                 </div>
+                <hr className="border-stone-200 mb-8" />
+              </>
+            )}
+
+            {/* Reviews */}
+            {reviewCount > 0 && (
+              <>
+                <section id="reviews" className="mb-8 scroll-mt-24">
+                  <div className="flex items-baseline gap-3 mb-6">
+                    <h2 className="text-xl font-semibold text-stone-900 flex items-center gap-2">
+                      <Star
+                        className="h-5 w-5 fill-stone-900 text-stone-900"
+                        strokeWidth={0}
+                      />
+                      {avgRating.toFixed(avgRating === 5 ? 0 : 2)}
+                    </h2>
+                    <span className="text-stone-500 text-sm">
+                      · {reviewCount} {reviewCount === 1 ? "review" : "reviews"}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8">
+                    {visibleReviews.map((review) => (
+                      <ReviewCard key={review.id} review={review} />
+                    ))}
+                  </div>
+                  {reviewCount > REVIEWS_PREVIEW_LIMIT && !showAllReviews && (
+                    <button
+                      onClick={() => setShowAllReviews(true)}
+                      className="mt-6 inline-flex items-center gap-1 text-stone-900 font-semibold text-sm hover:underline"
+                    >
+                      Show all {reviewCount} reviews
+                      <ChevronDown className="h-4 w-4" />
+                    </button>
+                  )}
+                </section>
                 <hr className="border-stone-200 mb-8" />
               </>
             )}

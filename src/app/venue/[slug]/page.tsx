@@ -50,6 +50,20 @@ export default async function VenuePage({ params }: Props) {
 
   if (!venue) notFound();
 
+  // Reviews live on a dedicated public view (listing_reviews_public) that
+  // already filters to status = 'published' and hides moderation columns.
+  // If the view isn't present yet (e.g. a Supabase project that hasn't run
+  // migration 025), fall back to an empty list rather than 500-ing the page.
+  const { data: reviewsData } = await supabase
+    .from("listing_reviews_public")
+    .select(
+      "id, venue_id, rating, title, body, reviewer_name, wedding_date, created_at"
+    )
+    .eq("venue_id", venue.id)
+    .order("created_at", { ascending: false });
+
+  const reviews = reviewsData ?? [];
+
   return (
     <div className="min-h-screen bg-white">
       {/* Airbnb-style white top nav */}
@@ -73,7 +87,7 @@ export default async function VenuePage({ params }: Props) {
           </a>
         </div>
       </nav>
-      <VenuePageClient venue={venue} />
+      <VenuePageClient venue={venue} reviews={reviews} />
     </div>
   );
 }
