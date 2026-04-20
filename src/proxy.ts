@@ -2,9 +2,11 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 /**
- * Public-only middleware. The directory site has no logged-in users — all
+ * Public-only proxy. The directory site has no logged-in users — all
  * venue management now lives at app.storyvenue.com. Everything this runs is
  * the lightweight maintenance-mode check so we can take the site down cleanly.
+ *
+ * Renamed from middleware.ts per Next.js 16's middleware → proxy rename.
  */
 
 const MAINTENANCE_EXEMPT = [
@@ -14,7 +16,7 @@ const MAINTENANCE_EXEMPT = [
   "/api",
 ];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const isExempt = MAINTENANCE_EXEMPT.some((r) => path.startsWith(r));
   if (isExempt) return NextResponse.next();
