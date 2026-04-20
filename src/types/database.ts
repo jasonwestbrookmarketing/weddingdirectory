@@ -78,6 +78,23 @@ export interface Venue {
   social_links: Json | null;
   /** Array of { question, answer } pairs. See VenueFaqItem. */
   faq: Json | null;
+  /** Google Maps Place ID (e.g. ChIJ...) if the venue connected Google reviews. */
+  google_place_id: string | null;
+  /**
+   * Cached Google Places API payload. Shape is {
+   *   rating: number | null,
+   *   userRatingCount: number,
+   *   reviews: GoogleReviewItem[]
+   * } but stored as JSONB — use parseGoogleReviewsCache() before touching it.
+   *
+   * IMPORTANT: this directory site never refreshes this cache. The StoryPay
+   * dashboard owns the Places API key and auto-refreshes on its own public
+   * venue page whenever the cache is >24h old. The directory just renders
+   * whatever is there.
+   */
+  google_reviews_cache: Json | null;
+  /** ISO timestamp for when google_reviews_cache was last refreshed. */
+  google_reviews_fetched_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -116,4 +133,27 @@ export interface ListingReview {
   /** ISO date (YYYY-MM-DD) or null. */
   wedding_date: string | null;
   created_at: string;
+}
+
+/**
+ * Single normalized Google review (as written by the StoryPay backend into
+ * `venues.google_reviews_cache`).
+ */
+export interface GoogleReviewItem {
+  author_name: string;
+  /** 1–5 integer. */
+  rating: number;
+  text: string;
+  /** ISO timestamp or null. */
+  published_at: string | null;
+  profile_photo_url: string | null;
+}
+
+/** Normalized shape of the cached Places API payload. */
+export interface GoogleReviewsCache {
+  /** Aggregate Google rating (0–5, one decimal) or null if Google hasn't surfaced one. */
+  rating: number | null;
+  /** Total number of Google ratings (may exceed reviews.length — Places API only returns up to ~20). */
+  userRatingCount: number;
+  reviews: GoogleReviewItem[];
 }

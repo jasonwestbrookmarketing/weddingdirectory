@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
+import { parseGoogleReviewsCache } from "@/lib/google-reviews";
 import VenuePageClient from "./VenuePageClient";
 import type { Metadata } from "next";
 
@@ -67,6 +68,10 @@ export default async function VenuePage({ params }: Props) {
 
   const reviews = reviewsData ?? [];
 
+  // Google reviews cache is refreshed by the StoryPay dashboard (it owns the
+  // Places API key). Directory just surfaces whatever is in the JSONB column.
+  const googleReviews = parseGoogleReviewsCache(venue.google_reviews_cache);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Airbnb-style white top nav */}
@@ -105,7 +110,11 @@ export default async function VenuePage({ params }: Props) {
           </div>
         </div>
       </nav>
-      <VenuePageClient venue={venue} reviews={reviews} />
+      <VenuePageClient
+        venue={venue}
+        reviews={reviews}
+        googleReviews={googleReviews}
+      />
     </div>
   );
 }

@@ -24,6 +24,7 @@ import {
   parseSocialLinks,
   parseFaq,
 } from "@/components/venue/VenuePublicBlocks";
+import VenueReviewsBlock from "@/components/venue/VenueReviewsBlock";
 import { trackEvent } from "@/lib/analytics";
 
 const STORYPAY_URL =
@@ -46,92 +47,16 @@ const FEATURE_GROUPS = [
   { label: "Venue Settings", items: VENUE_SETTINGS_LIST },
   { label: "Service Offerings", items: SERVICES_LIST },
 ] as const;
-import type { Venue, ListingReview } from "@/types/database";
+import type {
+  Venue,
+  ListingReview,
+  GoogleReviewsCache,
+} from "@/types/database";
 
 interface VenuePageClientProps {
   venue: Venue;
   reviews: ListingReview[];
-}
-
-function StarRow({
-  rating,
-  size = "sm",
-}: {
-  rating: number;
-  size?: "sm" | "md";
-}) {
-  const px = size === "md" ? "h-4 w-4" : "h-3.5 w-3.5";
-  return (
-    <span
-      className="inline-flex items-center gap-0.5"
-      aria-label={`${rating} out of 5 stars`}
-    >
-      {[1, 2, 3, 4, 5].map((n) => (
-        <Star
-          key={n}
-          className={`${px} ${
-            n <= rating
-              ? "fill-stone-900 text-stone-900"
-              : "fill-stone-200 text-stone-200"
-          }`}
-          strokeWidth={0}
-        />
-      ))}
-    </span>
-  );
-}
-
-function formatReviewDate(iso: string) {
-  try {
-    return new Date(iso).toLocaleDateString(undefined, {
-      month: "long",
-      year: "numeric",
-    });
-  } catch {
-    return "";
-  }
-}
-
-function ReviewCard({ review }: { review: ListingReview }) {
-  const initial = (review.reviewer_name || "?").trim().charAt(0).toUpperCase();
-  return (
-    <article className="space-y-3">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center flex-shrink-0">
-          <span className="text-stone-700 font-semibold text-sm">
-            {initial || "?"}
-          </span>
-        </div>
-        <div className="min-w-0">
-          <p className="font-semibold text-stone-900 text-sm truncate">
-            {review.reviewer_name}
-          </p>
-          <p className="text-xs text-stone-500">
-            {formatReviewDate(review.created_at)}
-          </p>
-        </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <StarRow rating={review.rating} />
-        {review.wedding_date && (
-          <>
-            <span className="text-stone-300" aria-hidden>
-              ·
-            </span>
-            <span className="text-xs text-stone-500">
-              Wedding {formatReviewDate(review.wedding_date)}
-            </span>
-          </>
-        )}
-      </div>
-      {review.title && (
-        <h3 className="font-semibold text-stone-900 text-sm">{review.title}</h3>
-      )}
-      <p className="text-stone-700 text-sm leading-relaxed whitespace-pre-line">
-        {review.body}
-      </p>
-    </article>
-  );
+  googleReviews: GoogleReviewsCache | null;
 }
 
 function PhotoMosaic({
@@ -311,22 +236,27 @@ function PhotoGalleryModal({
 export default function VenuePageClient({
   venue,
   reviews,
+  googleReviews,
 }: VenuePageClientProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
-  const [showAllReviews, setShowAllReviews] = useState(false);
 
-  const reviewCount = reviews.length;
-  const avgRating =
-    reviewCount > 0
-      ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviewCount
+  // Headline rating next to the title: prefer our own (moderated) aggregate;
+  // fall back to Google's if we don't have StoryVenue reviews yet. Keeps the
+  // inline star count honest when a venue only has Google data.
+  const storyCount = reviews.length;
+  const storyAvg =
+    storyCount > 0
+      ? reviews.reduce((sum, r) => sum + r.rating, 0) / storyCount
       : 0;
-  const REVIEWS_PREVIEW_LIMIT = 4;
-  const visibleReviews =
-    showAllReviews || reviewCount <= REVIEWS_PREVIEW_LIMIT
-      ? reviews
-      : reviews.slice(0, REVIEWS_PREVIEW_LIMIT);
+  const googleCount = googleReviews?.userRatingCount ?? 0;
+  const googleAvg = googleReviews?.rating ?? 0;
+
+  const hasStory = storyCount > 0;
+  const hasGoogle = googleCount > 0 || (googleReviews?.reviews.length ?? 0) > 0;
+  const headlineAvg = hasStory ? storyAvg : hasGoogle ? googleAvg : 0;
+  const headlineCount = hasStory ? storyCount : googleCount;
 
   useEffect(() => {
     trackEvent("venue_page_viewed", {
@@ -437,7 +367,7 @@ export default function VenuePageClient({
                   {venue.name}
                 </h1>
                 <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-stone-500">
-                  {reviewCount > 0 && (
+                  {headlineCount > 0 && (
                     <a
                       href="#reviews"
                       className="inline-flex items-center gap-1.5 text-stone-900 font-medium hover:underline"
@@ -446,16 +376,16 @@ export default function VenuePageClient({
                         className="h-3.5 w-3.5 fill-stone-900 text-stone-900"
                         strokeWidth={0}
                       />
-                      {avgRating.toFixed(avgRating === 5 ? 0 : 2)}
+                      {headlineAvg.toFixed(headlineAvg === 5 ? 0 : 2)}
                       <span className="text-stone-500 font-normal">
-                        · {reviewCount}{" "}
-                        {reviewCount === 1 ? "review" : "reviews"}
+                        · {headlineCount}{" "}
+                        {headlineCount === 1 ? "review" : "reviews"}
                       </span>
                     </a>
                   )}
                   {venue.location_full && (
                     <span className="inline-flex items-center gap-1.5">
-                      {reviewCount > 0 && (
+                      {headlineCount > 0 && (
                         <span className="text-stone-300" aria-hidden>
                           ·
                         </span>
@@ -614,37 +544,13 @@ export default function VenuePageClient({
               </>
             )}
 
-            {/* Reviews */}
-            {reviewCount > 0 && (
+            {/* Reviews — tabs appear when Google is connected */}
+            {(hasStory || hasGoogle) && (
               <>
-                <section id="reviews" className="mb-8 scroll-mt-24">
-                  <div className="flex items-baseline gap-3 mb-6">
-                    <h2 className="text-xl font-semibold text-stone-900 flex items-center gap-2">
-                      <Star
-                        className="h-5 w-5 fill-stone-900 text-stone-900"
-                        strokeWidth={0}
-                      />
-                      {avgRating.toFixed(avgRating === 5 ? 0 : 2)}
-                    </h2>
-                    <span className="text-stone-500 text-sm">
-                      · {reviewCount} {reviewCount === 1 ? "review" : "reviews"}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8">
-                    {visibleReviews.map((review) => (
-                      <ReviewCard key={review.id} review={review} />
-                    ))}
-                  </div>
-                  {reviewCount > REVIEWS_PREVIEW_LIMIT && !showAllReviews && (
-                    <button
-                      onClick={() => setShowAllReviews(true)}
-                      className="mt-6 inline-flex items-center gap-1 text-stone-900 font-semibold text-sm hover:underline"
-                    >
-                      Show all {reviewCount} reviews
-                      <ChevronDown className="h-4 w-4" />
-                    </button>
-                  )}
-                </section>
+                <VenueReviewsBlock
+                  reviews={reviews}
+                  google={googleReviews}
+                />
                 <hr className="border-stone-200 mb-8" />
               </>
             )}
