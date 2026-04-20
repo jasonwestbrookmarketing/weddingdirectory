@@ -10,14 +10,27 @@ const STORYPAY_URL = process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyv
 
 export default async function HomePage() {
   const supabase = await createClient();
-  const { data: venues } = await supabase
+  // Pull a wider window so the sponsored/verified re-sort below has something
+  // to work with; we still render at most 6.
+  const { data: rawVenues } = await supabase
     .from("venues")
     .select(
-      "id, name, slug, location_full, cover_image_url, capacity_min, capacity_max, price_min, venue_type"
+      "id, name, slug, location_full, cover_image_url, capacity_min, capacity_max, price_min, venue_type, directory_verified_status, directory_sponsored_status"
     )
     .eq("is_published", true)
     .order("created_at", { ascending: false })
-    .limit(6);
+    .limit(24);
+
+  // Directory promise: paid sponsors surface first, then verified venues, then
+  // everyone else in recency order. Matches the dashboard's public directory API.
+  const venues = (rawVenues ?? [])
+    .map((v) => ({
+      ...v,
+      _sp: v.directory_sponsored_status === "approved" ? 1 : 0,
+      _vf: v.directory_verified_status === "approved" ? 1 : 0,
+    }))
+    .sort((a, b) => b._sp - a._sp || b._vf - a._vf)
+    .slice(0, 6);
 
   return (
     <>

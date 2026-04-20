@@ -95,9 +95,31 @@ export interface Venue {
   google_reviews_cache: Json | null;
   /** ISO timestamp for when google_reviews_cache was last refreshed. */
   google_reviews_fetched_at: string | null;
+  /**
+   * Workflow status for the blue Instagram-style verified badge. Public UI
+   * surfaces the badge ONLY when the value is `'approved'` — other values
+   * represent internal workflow states (draft / pending / rejected / none).
+   */
+  directory_verified_status: DirectoryBadgeStatus | null;
+  /**
+   * Workflow status for the "Sponsored" label. Same rule as verified: the
+   * public badge only appears when this is `'approved'`.
+   */
+  directory_sponsored_status: DirectoryBadgeStatus | null;
   created_at: string;
   updated_at: string;
 }
+
+/**
+ * Workflow for the verified/sponsored directory badges. See migration 031.
+ * Only `'approved'` is surfaced publicly.
+ */
+export type DirectoryBadgeStatus =
+  | "none"
+  | "draft"
+  | "pending"
+  | "approved"
+  | "rejected";
 
 /** Known social channels rendered by the directory. Extra keys are ignored. */
 export interface VenueSocialLinks {

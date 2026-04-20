@@ -25,6 +25,8 @@ import {
   parseFaq,
 } from "@/components/venue/VenuePublicBlocks";
 import VenueReviewsBlock from "@/components/venue/VenueReviewsBlock";
+import { DirectoryListingBadges } from "@/components/venue/DirectoryListingBadges";
+import { resolveBadges } from "@/lib/directory-badges";
 import { trackEvent } from "@/lib/analytics";
 
 const STORYPAY_URL =
@@ -258,6 +260,8 @@ export default function VenuePageClient({
   const headlineAvg = hasStory ? storyAvg : hasGoogle ? googleAvg : 0;
   const headlineCount = hasStory ? storyCount : googleCount;
 
+  const badges = resolveBadges(venue);
+
   useEffect(() => {
     trackEvent("venue_page_viewed", {
       venue_id: venue.id,
@@ -363,8 +367,14 @@ export default function VenuePageClient({
             {/* Title row */}
             <div className="flex items-start justify-between gap-4 mb-3">
               <div>
-                <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-stone-900">
-                  {venue.name}
+                <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-stone-900 flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                  <span>{venue.name}</span>
+                  <DirectoryListingBadges
+                    verified={badges.verified}
+                    sponsored={badges.sponsored}
+                    variant="onLight"
+                    size="md"
+                  />
                 </h1>
                 <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-stone-500">
                   {headlineCount > 0 && (

@@ -5,6 +5,8 @@ import Image from "next/image";
 import { MapPin, Users } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { getPriceScale, PRICE_SCALE_LABELS } from "@/lib/constants";
+import { resolveBadges } from "@/lib/directory-badges";
+import { DirectoryListingBadges } from "@/components/venue/DirectoryListingBadges";
 import type { Venue } from "@/types/database";
 
 type VenueCardData = Pick<
@@ -18,6 +20,8 @@ type VenueCardData = Pick<
   | "capacity_max"
   | "price_min"
   | "venue_type"
+  | "directory_verified_status"
+  | "directory_sponsored_status"
 >;
 
 interface VenueCardProps {
@@ -32,13 +36,15 @@ export default function VenueCard({ venue }: VenueCardProps) {
     });
   };
 
+  const { verified, sponsored } = resolveBadges(venue);
+
   return (
     <Link
       href={`/venue/${venue.slug}`}
       onClick={handleClick}
       className="group block"
     >
-      <div className="overflow-hidden rounded-xl">
+      <div className="relative overflow-hidden rounded-xl">
         {venue.cover_image_url ? (
           <Image
             src={venue.cover_image_url}
@@ -55,11 +61,29 @@ export default function VenueCard({ venue }: VenueCardProps) {
             <MapPin className="h-10 w-10 text-stone-300" />
           </div>
         )}
+        {sponsored && (
+          <div className="absolute top-3 left-3">
+            <DirectoryListingBadges
+              verified={false}
+              sponsored
+              variant="onDark"
+              size="sm"
+            />
+          </div>
+        )}
       </div>
 
       <div className="mt-3 space-y-1">
-        <h3 className="font-semibold text-lg text-stone-900 group-hover:text-stone-700 transition-colors">
-          {venue.name || "Unnamed Venue"}
+        <h3 className="font-semibold text-lg text-stone-900 group-hover:text-stone-700 transition-colors flex items-center gap-1.5">
+          <span className="truncate">{venue.name || "Unnamed Venue"}</span>
+          {verified && (
+            <DirectoryListingBadges
+              verified
+              sponsored={false}
+              variant="onLight"
+              size="sm"
+            />
+          )}
         </h3>
         {venue.location_full && (
           <p className="text-stone-500 text-sm flex items-center gap-1">

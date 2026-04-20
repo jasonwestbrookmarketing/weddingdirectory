@@ -59,7 +59,19 @@ function SearchContent() {
     }
 
     const { data } = await query.order("created_at", { ascending: false });
-    setVenues(data || []);
+    // Sponsored first, then verified, then the server's recency order. Keeps
+    // paying-customer listings at the top regardless of how a visitor filters.
+    const sorted = (data ?? []).slice().sort((a, b) => {
+      const sp =
+        Number(b.directory_sponsored_status === "approved") -
+        Number(a.directory_sponsored_status === "approved");
+      if (sp !== 0) return sp;
+      return (
+        Number(b.directory_verified_status === "approved") -
+        Number(a.directory_verified_status === "approved")
+      );
+    });
+    setVenues(sorted);
     setLoading(false);
   }, []);
 
