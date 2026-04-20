@@ -121,8 +121,8 @@ export default function SearchPage() {
   return (
     <>
       <nav className="bg-white border-b border-stone-200">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-          <Link href="/" aria-label="StoryVenue home">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 gap-3">
+          <Link href="/" aria-label="StoryVenue home" className="shrink-0">
             <Image
               src="/storyvenue-dark-logo.png"
               alt="StoryVenue"
@@ -132,12 +132,27 @@ export default function SearchPage() {
               priority
             />
           </Link>
-          <a
-            href={`${STORYPAY_URL}/signup`}
-            className="text-sm font-medium text-stone-500 hover:text-stone-900 transition-colors"
-          >
-            List Your Venue
-          </a>
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            <a
+              href={`${STORYPAY_URL}/couple/login`}
+              className="hidden sm:inline text-sm font-medium text-stone-600 hover:text-stone-900 px-3 py-2 rounded-xl transition-colors"
+            >
+              Bride Login
+            </a>
+            <a
+              href={`${STORYPAY_URL}/couple/signup`}
+              className="text-sm font-semibold text-stone-900 bg-stone-100 hover:bg-stone-200 px-3 sm:px-4 py-2 rounded-xl transition-colors"
+            >
+              Join
+            </a>
+            <span className="hidden md:inline-block w-px h-5 bg-stone-200 mx-1" />
+            <a
+              href={`${STORYPAY_URL}/signup`}
+              className="hidden md:inline text-sm font-medium text-stone-500 hover:text-stone-900 transition-colors"
+            >
+              List Your Venue
+            </a>
+          </div>
         </div>
       </nav>
 

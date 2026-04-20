@@ -10,7 +10,6 @@ import {
   TreePine,
   Heart,
   Share2,
-  BookmarkIcon,
   ChevronDown,
   X,
   Check,
@@ -18,7 +17,17 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import LeadFormModal from "@/components/lead/LeadFormModal";
+import {
+  VenueMapEmbed,
+  VenueSocialRow,
+  VenueFaqSection,
+  parseSocialLinks,
+  parseFaq,
+} from "@/components/venue/VenuePublicBlocks";
 import { trackEvent } from "@/lib/analytics";
+
+const STORYPAY_URL =
+  process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
 import {
   CTA_LABEL,
   VENUE_TYPES,
@@ -331,6 +340,46 @@ export default function VenuePageClient({
     setIsOpen(true);
   };
 
+  // Save heart links out to the StoryPay dashboard's save-venue bounce page.
+  // Auth (bride / couple account) lives on app.storyvenue.com — this is a
+  // deliberately thin link-out so we don't duplicate auth on the directory.
+  const saveHref = venue.slug
+    ? `${STORYPAY_URL}/couple/save/${encodeURIComponent(venue.slug)}${
+        typeof window !== "undefined"
+          ? `?redirect=${encodeURIComponent(window.location.href)}`
+          : ""
+      }`
+    : `${STORYPAY_URL}/couple/login`;
+
+  const handleSaveClick = () => {
+    trackEvent("venue_save_clicked", {
+      venue_id: venue.id,
+      venue_slug: venue.slug,
+    });
+  };
+
+  const handleShareClick = async () => {
+    trackEvent("venue_share_clicked", { venue_id: venue.id });
+    if (typeof window === "undefined") return;
+    const url = window.location.href;
+    const title = venue.name || "StoryVenue";
+    try {
+      if (typeof navigator !== "undefined" && "share" in navigator) {
+        await (navigator as Navigator & {
+          share: (data: { title: string; url: string }) => Promise<void>;
+        }).share({ title, url });
+        return;
+      }
+    } catch {
+      // user-cancelled or unsupported — fall through to clipboard
+    }
+    try {
+      await navigator.clipboard?.writeText(url);
+    } catch {
+      // ignore — the button is decorative if neither Share API nor clipboard work
+    }
+  };
+
   const venueTypeLabel =
     VENUE_TYPES.find((t) => t.value === venue.venue_type)?.label ||
     venue.venue_type;
@@ -339,6 +388,12 @@ export default function VenuePageClient({
   )?.label;
   const galleryImages = (venue.gallery_images as string[] | null) || [];
   const features = (venue.features as string[] | null) || [];
+  const socialLinks = parseSocialLinks(venue.social_links);
+  const faqItems = parseFaq(venue.faq);
+  const showMap =
+    venue.show_map !== false && venue.lat != null && venue.lng != null;
+  const hasSocial = Object.keys(socialLinks).length > 0;
+  const hasFaq = faqItems.length > 0;
   const groupedFeatures = FEATURE_GROUPS.map((g) => ({
     label: g.label,
     labels: g.items
@@ -413,14 +468,21 @@ export default function VenuePageClient({
               </div>
               {/* Action buttons */}
               <div className="flex items-center gap-1 flex-shrink-0">
-                <button className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-3 py-2 rounded-xl transition-colors">
+                <button
+                  onClick={handleShareClick}
+                  className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-3 py-2 rounded-xl transition-colors"
+                >
                   <Share2 className="h-4 w-4" />
                   <span className="hidden sm:inline">Share</span>
                 </button>
-                <button className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-3 py-2 rounded-xl transition-colors">
-                  <BookmarkIcon className="h-4 w-4" />
+                <a
+                  href={saveHref}
+                  onClick={handleSaveClick}
+                  className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-3 py-2 rounded-xl transition-colors"
+                >
+                  <Heart className="h-4 w-4" />
                   <span className="hidden sm:inline">Save</span>
-                </button>
+                </a>
               </div>
             </div>
 
@@ -611,6 +673,41 @@ export default function VenuePageClient({
                       </div>
                     ))}
                   </div>
+                </div>
+                <hr className="border-stone-200 mb-8" />
+              </>
+            )}
+
+            {/* Map */}
+            {showMap && (
+              <>
+                <div className="mb-8">
+                  <VenueMapEmbed
+                    lat={venue.lat}
+                    lng={venue.lng}
+                    show
+                    venueName={venue.name}
+                  />
+                </div>
+                <hr className="border-stone-200 mb-8" />
+              </>
+            )}
+
+            {/* FAQ */}
+            {hasFaq && (
+              <>
+                <div className="mb-8">
+                  <VenueFaqSection items={faqItems} />
+                </div>
+                <hr className="border-stone-200 mb-8" />
+              </>
+            )}
+
+            {/* Social / Connect */}
+            {hasSocial && (
+              <>
+                <div className="mb-8">
+                  <VenueSocialRow social={socialLinks} />
                 </div>
                 <hr className="border-stone-200 mb-8" />
               </>

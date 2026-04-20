@@ -3,6 +3,8 @@ type AnalyticsEvent =
   | "search_filter_applied"
   | "venue_card_clicked"
   | "venue_page_viewed"
+  | "venue_save_clicked"
+  | "venue_share_clicked"
   | "lead_cta_clicked"
   | "lead_form_started"
   | "lead_form_submitted"

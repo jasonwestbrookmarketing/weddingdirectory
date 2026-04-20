@@ -72,8 +72,28 @@ export interface Venue {
   onboarding_completed: boolean;
   notification_email: string | null;
   email_notifications: boolean;
+  /** Owner toggle for the public map embed on the venue listing. */
+  show_map: boolean | null;
+  /** Sparse object of social URLs. See VenueSocialLinks for known keys. */
+  social_links: Json | null;
+  /** Array of { question, answer } pairs. See VenueFaqItem. */
+  faq: Json | null;
   created_at: string;
   updated_at: string;
+}
+
+/** Known social channels rendered by the directory. Extra keys are ignored. */
+export interface VenueSocialLinks {
+  facebook?: string;
+  instagram?: string;
+  tiktok?: string;
+  pinterest?: string;
+  website?: string;
+}
+
+export interface VenueFaqItem {
+  question: string;
+  answer: string;
 }
 
 /** Back-compat alias so older imports keep compiling. */

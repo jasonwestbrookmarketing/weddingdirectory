@@ -36,15 +36,30 @@ export default async function HomePage() {
 
         <div className="flex items-center gap-2 shrink-0">
           <a
+            href={`${STORYPAY_URL}/couple/login`}
+            className="hidden sm:inline rounded-full bg-white/10 border border-white/20 text-white px-4 py-2.5 text-sm font-medium hover:bg-white/20 active:scale-[0.98] transition-all backdrop-blur-sm"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
+            Bride Login
+          </a>
+          <a
+            href={`${STORYPAY_URL}/couple/signup`}
+            className="rounded-full bg-white text-stone-900 px-4 sm:px-5 py-2.5 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-sm"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
+            Join
+          </a>
+          <span className="hidden md:inline-block w-px h-5 bg-white/30 mx-1" />
+          <a
             href={`${STORYPAY_URL}/login`}
-            className="rounded-full bg-white/10 border border-white/20 text-white px-4 py-2.5 text-sm font-medium hover:bg-white/20 active:scale-[0.98] transition-all backdrop-blur-sm"
+            className="hidden md:inline rounded-full bg-white/10 border border-white/20 text-white px-4 py-2.5 text-sm font-medium hover:bg-white/20 active:scale-[0.98] transition-all backdrop-blur-sm"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             Venue Login
           </a>
           <a
             href={`${STORYPAY_URL}/signup`}
-            className="rounded-full bg-white text-stone-900 px-5 py-2.5 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-sm"
+            className="hidden md:inline rounded-full bg-white/0 border border-white/30 text-white px-4 py-2.5 text-sm font-medium hover:bg-white/10 active:scale-[0.98] transition-all"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             List Your Venue
