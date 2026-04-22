@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   MapPin,
@@ -18,12 +18,14 @@ import {
 import { Button } from "@/components/ui/Button";
 import LeadFormModal from "@/components/lead/LeadFormModal";
 import {
-  VenueMapEmbed,
   VenueSocialRow,
   VenueFaqSection,
   parseSocialLinks,
   parseFaq,
 } from "@/components/venue/VenuePublicBlocks";
+// VenueDarkMap is a "use client" component; Leaflet is loaded via dynamic
+// import inside its effect, so SSR stays safe without next/dynamic gymnastics.
+import VenueDarkMap from "@/components/venue/VenueDarkMap";
 import VenueReviewsBlock from "@/components/venue/VenueReviewsBlock";
 import { DirectoryListingBadges } from "@/components/venue/DirectoryListingBadges";
 import { resolveBadges } from "@/lib/directory-badges";
@@ -70,7 +72,9 @@ function PhotoMosaic({
   coverImage: string | null;
   galleryImages: string[];
   venueName: string;
-  onViewAll: () => void;
+  // Index is the 0-based position within the combined photo array so the modal
+  // can jump straight to whichever tile the user clicked.
+  onViewAll: (index?: number) => void;
 }) {
   const allPhotos = [
     ...(coverImage ? [coverImage] : []),
@@ -79,6 +83,13 @@ function PhotoMosaic({
 
   const placeholderClass = "bg-gradient-to-br from-stone-200 to-stone-300";
 
+  // Shared button classes so each mosaic tile reads as an interactive element:
+  // subtle image dim + cursor-zoom on hover, matching OTAs like Airbnb.
+  const tileBtnClass =
+    "group/photo relative w-full h-full overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 focus-visible:ring-offset-2";
+  const imgHoverClass =
+    "transition-[filter,transform] duration-200 ease-out group-hover/photo:brightness-95";
+
   return (
     <div className="relative">
       {/* Desktop mosaic: 1 large left + 2×2 right grid */}
@@ -86,16 +97,23 @@ function PhotoMosaic({
         {/* Main large photo */}
         <div className="col-span-2 row-span-2 overflow-hidden">
           {allPhotos[0] ? (
-            <Image
-              src={allPhotos[0]}
-              alt={`${venueName} – Main photo`}
-              fill={false}
-              width={900}
-              height={600}
-              unoptimized
-              className="w-full h-full object-cover"
-              priority
-            />
+            <button
+              type="button"
+              onClick={() => onViewAll(0)}
+              className={tileBtnClass}
+              aria-label={`Open photo 1 of ${allPhotos.length}`}
+            >
+              <Image
+                src={allPhotos[0]}
+                alt={`${venueName} – Main photo`}
+                fill={false}
+                width={900}
+                height={600}
+                unoptimized
+                className={`w-full h-full object-cover ${imgHoverClass}`}
+                priority
+              />
+            </button>
           ) : (
             <div className={`w-full h-full ${placeholderClass}`} />
           )}
@@ -104,15 +122,22 @@ function PhotoMosaic({
         {[1, 2].map((i) => (
           <div key={i} className="overflow-hidden">
             {allPhotos[i] ? (
-              <Image
-                src={allPhotos[i]}
-                alt={`${venueName} – Photo ${i + 1}`}
-                fill={false}
-                width={450}
-                height={300}
-                unoptimized
-                className="w-full h-full object-cover"
-              />
+              <button
+                type="button"
+                onClick={() => onViewAll(i)}
+                className={tileBtnClass}
+                aria-label={`Open photo ${i + 1} of ${allPhotos.length}`}
+              >
+                <Image
+                  src={allPhotos[i]}
+                  alt={`${venueName} – Photo ${i + 1}`}
+                  fill={false}
+                  width={450}
+                  height={300}
+                  unoptimized
+                  className={`w-full h-full object-cover ${imgHoverClass}`}
+                />
+              </button>
             ) : (
               <div className={`w-full h-full ${placeholderClass}`} />
             )}
@@ -122,22 +147,30 @@ function PhotoMosaic({
         {[3, 4].map((i) => (
           <div key={i} className="overflow-hidden relative">
             {allPhotos[i] ? (
-              <Image
-                src={allPhotos[i]}
-                alt={`${venueName} – Photo ${i + 1}`}
-                fill={false}
-                width={450}
-                height={300}
-                unoptimized
-                className="w-full h-full object-cover"
-              />
+              <button
+                type="button"
+                onClick={() => onViewAll(i)}
+                className={tileBtnClass}
+                aria-label={`Open photo ${i + 1} of ${allPhotos.length}`}
+              >
+                <Image
+                  src={allPhotos[i]}
+                  alt={`${venueName} – Photo ${i + 1}`}
+                  fill={false}
+                  width={450}
+                  height={300}
+                  unoptimized
+                  className={`w-full h-full object-cover ${imgHoverClass}`}
+                />
+              </button>
             ) : (
               <div className={`w-full h-full ${placeholderClass}`} />
             )}
             {/* "Show all photos" overlay on last tile */}
             {i === 4 && allPhotos.length > 5 && (
               <button
-                onClick={onViewAll}
+                type="button"
+                onClick={() => onViewAll(4)}
                 className="absolute inset-0 bg-black/40 flex items-center justify-center text-white font-semibold text-sm hover:bg-black/50 transition-colors"
               >
                 +{allPhotos.length - 5} photos
@@ -150,15 +183,22 @@ function PhotoMosaic({
       {/* Mobile: single hero */}
       <div className="md:hidden relative h-[280px] overflow-hidden">
         {allPhotos[0] ? (
-          <Image
-            src={allPhotos[0]}
-            alt={`${venueName} – Main photo`}
-            fill
-            unoptimized
-            sizes="100vw"
-            className="object-cover"
-            priority
-          />
+          <button
+            type="button"
+            onClick={() => onViewAll(0)}
+            className="relative w-full h-full cursor-zoom-in focus:outline-none"
+            aria-label={`Open photo 1 of ${allPhotos.length}`}
+          >
+            <Image
+              src={allPhotos[0]}
+              alt={`${venueName} – Main photo`}
+              fill
+              unoptimized
+              sizes="100vw"
+              className="object-cover"
+              priority
+            />
+          </button>
         ) : (
           <div className={`w-full h-full ${placeholderClass}`} />
         )}
@@ -167,7 +207,8 @@ function PhotoMosaic({
       {/* Show all photos button */}
       {allPhotos.length > 1 && (
         <button
-          onClick={onViewAll}
+          type="button"
+          onClick={() => onViewAll(0)}
           className="absolute bottom-4 right-4 hidden md:flex items-center gap-2 bg-white border border-stone-300 text-stone-900 text-sm font-semibold px-4 py-2.5 rounded-xl shadow-sm hover:bg-stone-50 transition-colors"
         >
           <span className="grid grid-cols-2 gap-0.5 w-4 h-4">
@@ -185,12 +226,17 @@ function PhotoMosaic({
 function PhotoGalleryModal({
   images,
   venueName,
+  initialIndex = 0,
   onClose,
 }: {
   images: string[];
   venueName: string;
+  initialIndex?: number;
   onClose: () => void;
 }) {
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
     const handleEsc = (e: KeyboardEvent) => {
@@ -203,8 +249,24 @@ function PhotoGalleryModal({
     };
   }, [onClose]);
 
+  // Jump to the tile the user clicked. `scrollIntoView` inside an RAF gives the
+  // modal one frame to lay out before we scroll; without it the target offset
+  // is 0 and we land on the first image every time.
+  useEffect(() => {
+    if (initialIndex <= 0) return;
+    const target = itemRefs.current[initialIndex];
+    if (!target) return;
+    const raf = requestAnimationFrame(() => {
+      target.scrollIntoView({ block: "start", behavior: "auto" });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [initialIndex]);
+
   return (
-    <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+    <div
+      ref={scrollRef}
+      className="fixed inset-0 z-50 bg-white overflow-y-auto"
+    >
       <div className="sticky top-0 z-10 bg-white border-b border-stone-200 px-6 py-4 flex items-center justify-between">
         <button
           onClick={onClose}
@@ -219,7 +281,13 @@ function PhotoGalleryModal({
       </div>
       <div className="max-w-4xl mx-auto px-6 py-8 space-y-4">
         {images.map((url, i) => (
-          <div key={i} className="overflow-hidden rounded-2xl">
+          <div
+            key={i}
+            ref={(el) => {
+              itemRefs.current[i] = el;
+            }}
+            className="overflow-hidden rounded-2xl scroll-mt-20"
+          >
             <Image
               src={url}
               alt={`${venueName} – Photo ${i + 1}`}
@@ -242,7 +310,13 @@ export default function VenuePageClient({
 }: VenuePageClientProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
+  const [galleryStart, setGalleryStart] = useState(0);
   const [descExpanded, setDescExpanded] = useState(false);
+
+  const openGallery = (index?: number) => {
+    setGalleryStart(typeof index === "number" && index >= 0 ? index : 0);
+    setShowGallery(true);
+  };
 
   // Headline rating next to the title: prefer our own (moderated) aggregate;
   // fall back to Google's if we don't have StoryVenue reviews yet. Keeps the
@@ -355,7 +429,7 @@ export default function VenuePageClient({
           coverImage={venue.cover_image_url}
           galleryImages={galleryImages}
           venueName={venue.name || "Venue"}
-          onViewAll={() => setShowGallery(true)}
+          onViewAll={openGallery}
         />
       </div>
 
@@ -531,10 +605,13 @@ export default function VenuePageClient({
 
             <hr className="border-stone-200 mb-8" />
 
-            {/* Description */}
+            {/* About */}
             {descriptionText && (
               <>
                 <div className="mb-8">
+                  <h2 className="text-xl font-semibold text-stone-900 mb-4">
+                    About {venue.name || "this venue"}
+                  </h2>
                   <p className="text-stone-700 leading-relaxed text-base whitespace-pre-line">
                     {displayedDesc}
                   </p>
@@ -595,16 +672,23 @@ export default function VenuePageClient({
             )}
 
             {/* Map */}
-            {showMap && (
+            {showMap && venue.lat != null && venue.lng != null && (
               <>
-                <div className="mb-8">
-                  <VenueMapEmbed
+                <section className="mb-8">
+                  <h2 className="text-xl font-semibold text-stone-900 mb-6">
+                    Where you&apos;ll be
+                  </h2>
+                  <VenueDarkMap
                     lat={venue.lat}
                     lng={venue.lng}
-                    show
                     venueName={venue.name}
                   />
-                </div>
+                  {venue.location_full && (
+                    <p className="mt-3 text-sm text-stone-500">
+                      {venue.location_full}
+                    </p>
+                  )}
+                </section>
                 <hr className="border-stone-200 mb-8" />
               </>
             )}
@@ -782,6 +866,7 @@ export default function VenuePageClient({
         <PhotoGalleryModal
           images={allPhotos}
           venueName={venue.name || "Venue"}
+          initialIndex={galleryStart}
           onClose={() => setShowGallery(false)}
         />
       )}

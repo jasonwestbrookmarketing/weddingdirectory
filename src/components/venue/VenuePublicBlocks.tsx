@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Globe } from "lucide-react";
+import { ChevronDown, Globe } from "lucide-react";
 import type { Json, VenueFaqItem, VenueSocialLinks } from "@/types/database";
 
 // Brand icons were removed from lucide-react 0.543+, so we ship our own small
@@ -107,42 +107,6 @@ export function parseFaq(raw: Json | null | undefined): VenueFaqItem[] {
   return items;
 }
 
-export function VenueMapEmbed({
-  lat,
-  lng,
-  show,
-  venueName,
-}: {
-  lat: number | null;
-  lng: number | null;
-  show: boolean;
-  venueName?: string | null;
-}) {
-  if (!show || lat == null || lng == null) return null;
-  const pad = 0.03;
-  const bbox = `${lng - pad},${lat - pad},${lng + pad},${lat + pad}`;
-  return (
-    <section>
-      <h2 className="text-xl font-semibold text-stone-900 mb-6">
-        Where you&apos;ll be
-      </h2>
-      <div className="overflow-hidden rounded-2xl border border-stone-200 bg-white">
-        <iframe
-          title={
-            venueName ? `Map showing ${venueName}` : "Venue location map"
-          }
-          className="h-[360px] w-full"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          src={`https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(
-            bbox
-          )}&layer=mapnik&marker=${encodeURIComponent(`${lat},${lng}`)}`}
-        />
-      </div>
-    </section>
-  );
-}
-
 const linkBtn =
   "inline-flex h-10 w-10 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-700 transition-colors hover:border-stone-300 hover:bg-stone-50";
 
@@ -206,25 +170,39 @@ export function VenueFaqSection({ items }: { items: VenueFaqItem[] }) {
       <h2 className="text-xl font-semibold text-stone-900 mb-6">
         Frequently asked questions
       </h2>
-      <dl className="space-y-4">
+      {/*
+        Native <details> gives us a closed-by-default accordion with full
+        keyboard + screen-reader support and no client JS. We style the open
+        state via the [&[open]] group selector so the chevron flips and
+        borders hug tighter when expanded.
+      */}
+      <div className="space-y-3">
         {items.map((item, i) => (
-          <div
+          <details
             key={i}
-            className="rounded-2xl border border-stone-200 bg-white px-5 py-4"
+            className="group rounded-2xl border border-stone-200 bg-white open:shadow-sm transition-shadow"
           >
-            {item.question && (
-              <dt className="font-semibold text-stone-900 text-sm">
-                {item.question}
-              </dt>
-            )}
+            <summary
+              className="flex cursor-pointer list-none items-start justify-between gap-4 px-5 py-4 text-left [&::-webkit-details-marker]:hidden"
+            >
+              <span className="font-semibold text-stone-900 text-sm leading-snug">
+                {item.question || "Question"}
+              </span>
+              <ChevronDown
+                className="mt-0.5 h-4 w-4 flex-shrink-0 text-stone-500 transition-transform duration-200 group-open:rotate-180"
+                aria-hidden
+              />
+            </summary>
             {item.answer && (
-              <dd className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-stone-600">
-                {item.answer}
-              </dd>
+              <div className="px-5 pb-5 -mt-1">
+                <p className="whitespace-pre-wrap text-sm leading-relaxed text-stone-600">
+                  {item.answer}
+                </p>
+              </div>
             )}
-          </div>
+          </details>
         ))}
-      </dl>
+      </div>
     </section>
   );
 }
