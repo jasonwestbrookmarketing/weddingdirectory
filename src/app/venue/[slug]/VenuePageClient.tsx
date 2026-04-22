@@ -358,7 +358,7 @@ export default function VenuePageClient({
           ? `?redirect=${encodeURIComponent(window.location.href)}`
           : ""
       }`
-    : `${STORYPAY_URL}/couple/login`;
+    : `${STORYPAY_URL}/login?as=couple`;
 
   const handleSaveClick = () => {
     trackEvent("venue_save_clicked", {

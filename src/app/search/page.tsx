@@ -144,25 +144,20 @@ export default function SearchPage() {
               priority
             />
           </Link>
+          {/* Unified auth: the dashboard handles Venue↔Couple via a toggle
+              on /login and /signup, so one pair of buttons serves both. */}
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             <a
-              href={`${STORYPAY_URL}/couple/login`}
+              href={`${STORYPAY_URL}/login?as=couple`}
               className="hidden sm:inline text-sm font-medium text-stone-600 hover:text-stone-900 px-3 py-2 rounded-xl transition-colors"
             >
-              Bride Login
+              Log in
             </a>
             <a
-              href={`${STORYPAY_URL}/couple/signup`}
+              href={`${STORYPAY_URL}/signup?as=couple`}
               className="text-sm font-semibold text-stone-900 bg-stone-100 hover:bg-stone-200 px-3 sm:px-4 py-2 rounded-xl transition-colors"
             >
-              Join
-            </a>
-            <span className="hidden md:inline-block w-px h-5 bg-stone-200 mx-1" />
-            <a
-              href={`${STORYPAY_URL}/signup`}
-              className="hidden md:inline text-sm font-medium text-stone-500 hover:text-stone-900 transition-colors"
-            >
-              List Your Venue
+              Sign up
             </a>
           </div>
         </div>
