@@ -107,58 +107,88 @@ export function parseFaq(raw: Json | null | undefined): VenueFaqItem[] {
   return items;
 }
 
-const linkBtn =
-  "inline-flex h-10 w-10 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-700 transition-colors hover:border-stone-300 hover:bg-stone-50";
+const linkBtnBase =
+  "inline-flex items-center justify-center rounded-full border border-stone-200 bg-white text-stone-700 transition-colors hover:border-stone-300 hover:bg-stone-50";
 
-export function VenueSocialRow({ social }: { social: VenueSocialLinks }) {
+/**
+ * Just the row of circular social buttons — no section wrapper, no heading.
+ * Used inline next to the venue identity card. `size="sm"` trims the button
+ * diameter so the row sits cleanly next to a 48px avatar without towering
+ * over it.
+ */
+export function VenueSocialButtons({
+  social,
+  size = "md",
+  className = "",
+}: {
+  social: VenueSocialLinks;
+  size?: "sm" | "md";
+  className?: string;
+}) {
   const entries = (Object.entries(social) as [keyof VenueSocialLinks, string][])
     .filter(([, u]) => typeof u === "string" && u.startsWith("http"));
   if (entries.length === 0) return null;
 
+  const sizeClass = size === "sm" ? "h-9 w-9" : "h-10 w-10";
+  const iconClass = size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4";
+
+  return (
+    <div className={`flex flex-wrap items-center gap-1.5 ${className}`}>
+      {entries.map(([key, url]) => {
+        let icon: ReactNode;
+        let label: string;
+        switch (key) {
+          case "facebook":
+            icon = <FacebookIcon className={iconClass} />;
+            label = "Facebook";
+            break;
+          case "instagram":
+            icon = <InstagramIcon className={iconClass} />;
+            label = "Instagram";
+            break;
+          case "tiktok":
+            icon = <TikTokIcon className={iconClass} />;
+            label = "TikTok";
+            break;
+          case "pinterest":
+            icon = <PinterestIcon className={iconClass} />;
+            label = "Pinterest";
+            break;
+          case "website":
+          default:
+            icon = <Globe className={iconClass} />;
+            label = "Website";
+            break;
+        }
+        return (
+          <a
+            key={key}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${linkBtnBase} ${sizeClass}`}
+            aria-label={label}
+          >
+            {icon}
+          </a>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * @deprecated Prefer `VenueSocialButtons` rendered inline near the venue
+ * identity; retained for backwards compatibility with any other callers.
+ */
+export function VenueSocialRow({ social }: { social: VenueSocialLinks }) {
+  const entries = (Object.entries(social) as [keyof VenueSocialLinks, string][])
+    .filter(([, u]) => typeof u === "string" && u.startsWith("http"));
+  if (entries.length === 0) return null;
   return (
     <section>
       <h2 className="text-xl font-semibold text-stone-900 mb-6">Connect</h2>
-      <div className="flex flex-wrap gap-2">
-        {entries.map(([key, url]) => {
-          let icon: ReactNode;
-          let label: string;
-          switch (key) {
-            case "facebook":
-              icon = <FacebookIcon className="h-4 w-4" />;
-              label = "Facebook";
-              break;
-            case "instagram":
-              icon = <InstagramIcon className="h-4 w-4" />;
-              label = "Instagram";
-              break;
-            case "tiktok":
-              icon = <TikTokIcon className="h-4 w-4" />;
-              label = "TikTok";
-              break;
-            case "pinterest":
-              icon = <PinterestIcon className="h-4 w-4" />;
-              label = "Pinterest";
-              break;
-            case "website":
-            default:
-              icon = <Globe className="h-4 w-4" />;
-              label = "Website";
-              break;
-          }
-          return (
-            <a
-              key={key}
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={linkBtn}
-              aria-label={label}
-            >
-              {icon}
-            </a>
-          );
-        })}
-      </div>
+      <VenueSocialButtons social={social} />
     </section>
   );
 }

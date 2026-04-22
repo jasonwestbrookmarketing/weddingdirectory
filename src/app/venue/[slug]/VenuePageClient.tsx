@@ -18,7 +18,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import LeadFormModal from "@/components/lead/LeadFormModal";
 import {
-  VenueSocialRow,
+  VenueSocialButtons,
   VenueFaqSection,
   parseSocialLinks,
   parseFaq,
@@ -534,22 +534,30 @@ export default function VenuePageClient({
 
             <hr className="border-stone-200 mb-8" />
 
-            {/* Host/venue identity row */}
-            <div className="flex items-center gap-4 mb-8">
+            {/* Host/venue identity row — social buttons live here now so
+                couples can jump to the venue's channels without scrolling. */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-3 mb-8">
               <div className="w-12 h-12 rounded-full bg-stone-900 flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-semibold text-lg">
                   {(venue.name || "V").charAt(0).toUpperCase()}
                 </span>
               </div>
-              <div>
-                <p className="font-semibold text-stone-900 text-base">
+              <div className="min-w-0">
+                <p className="font-semibold text-stone-900 text-base truncate">
                   {venue.name}
                 </p>
-                <p className="text-sm text-stone-500">
+                <p className="text-sm text-stone-500 truncate">
                   {venueTypeLabel} venue
                   {venue.location_city ? ` · ${venue.location_city}` : ""}
                 </p>
               </div>
+              {hasSocial && (
+                <VenueSocialButtons
+                  social={socialLinks}
+                  size="sm"
+                  className="ml-auto"
+                />
+              )}
             </div>
 
             <hr className="border-stone-200 mb-8" />
@@ -699,16 +707,6 @@ export default function VenuePageClient({
               <>
                 <div className="mb-8">
                   <VenueFaqSection items={faqItems} />
-                </div>
-                <hr className="border-stone-200 mb-8" />
-              </>
-            )}
-
-            {/* Social / Connect */}
-            {hasSocial && (
-              <>
-                <div className="mb-8">
-                  <VenueSocialRow social={socialLinks} />
                 </div>
                 <hr className="border-stone-200 mb-8" />
               </>
