@@ -562,8 +562,9 @@ export default function VenuePageClient({
 
             <hr className="border-stone-200 mb-8" />
 
-            {/* Key highlights */}
-            <div className="space-y-6 mb-8">
+            {/* Key highlights — two across on sm+ so Capacity/Pricing sit
+                side by side, then Venue Style/Setting wrap onto the next row. */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 mb-8">
               {(venue.capacity_min != null || venue.capacity_max != null) && (
                 <div className="flex items-start gap-4">
                   <Users className="h-6 w-6 text-stone-700 flex-shrink-0 mt-0.5" />
