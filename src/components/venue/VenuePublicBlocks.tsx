@@ -180,7 +180,7 @@ export function VenueFaqSection({ items }: { items: VenueFaqItem[] }) {
         {items.map((item, i) => (
           <details
             key={i}
-            className="group rounded-2xl border border-stone-200 bg-white open:shadow-sm transition-shadow"
+            className="group rounded-2xl border border-stone-200 bg-white"
           >
             <summary
               className="flex cursor-pointer list-none items-start justify-between gap-4 px-5 py-4 text-left [&::-webkit-details-marker]:hidden"

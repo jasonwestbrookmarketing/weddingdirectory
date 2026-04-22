@@ -1,33 +1,20 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import "leaflet/dist/leaflet.css";
+import "maplibre-gl/dist/maplibre-gl.css";
 
-// Signature brand charcoal used across the directory.
-const BRAND = "#1b1b1b";
+// Editorial palette: warm cream paper with near-black ink for roads and type.
+// Water/landuse pick up slightly cooler/warmer accents so the composition
+// reads without color beyond the single red pin.
+const CREAM = "#F5EEDC"; // page/background
+const CREAM_SHADE = "#EDE3CB"; // landuse / parks
+const WATER = "#E0D7BE"; // slightly darker cream for water
+const INK = "#1b1b1b"; // streets + type
+const PIN = "#D0342C"; // marker red
 
-// CartoDB Dark Matter: a minimal, near-monochrome basemap that lets the venue
-// marker stand out instead of fighting roads/park polygons like default OSM.
-// `dark_all` keeps place labels; swap to `dark_nolabels` if we ever want the
-// map to be purely decorative.
-const TILE_URL =
-  "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
-const TILE_ATTRIB =
-  '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>';
-
-function buildPinHtml() {
-  // Inline pin SVG so we don't need Leaflet's default marker PNGs (which 404
-  // unless you copy them into /public). Color matches the brand charcoal.
-  return `
-    <span class="relative flex items-center justify-center">
-      <span class="absolute inline-flex h-10 w-10 rounded-full opacity-30" style="background:${BRAND}"></span>
-      <svg width="34" height="44" viewBox="0 0 34 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M17 2C8.716 2 2 8.716 2 17c0 10.7 13.5 24 14.075 24.562a1.25 1.25 0 0 0 1.85 0C18.5 41 32 27.7 32 17 32 8.716 25.284 2 17 2Z" fill="${BRAND}" stroke="white" stroke-width="2.25"/>
-        <circle cx="17" cy="17" r="5.25" fill="white"/>
-      </svg>
-    </span>
-  `;
-}
+// OpenFreeMap serves free, API-key-less vector tiles. Positron is the cleanest
+// base — we swap colors at runtime to get the cream/ink look.
+const BASE_STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
 
 export default function VenueDarkMap({
   lat,
@@ -39,54 +26,68 @@ export default function VenueDarkMap({
   venueName?: string | null;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<import("leaflet").Map | null>(null);
+  const mapRef = useRef<import("maplibre-gl").Map | null>(null);
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-
     let cancelled = false;
 
-    // Dynamic import so Leaflet only loads on the client; it touches `window`
-    // during import and crashes SSR otherwise.
-    import("leaflet").then((LMod) => {
+    // Dynamic import keeps MapLibre out of the initial bundle and guarantees
+    // we never evaluate its `window` dependencies during SSR.
+    import("maplibre-gl").then((mod) => {
       if (cancelled || !el || mapRef.current) return;
-      const L = LMod.default ?? LMod;
+      const maplibregl = mod.default ?? mod;
 
-      const map = L.map(el, {
-        center: [lat, lng],
-        zoom: 13,
-        zoomControl: true,
-        scrollWheelZoom: false,
-        attributionControl: true,
+      const map = new maplibregl.Map({
+        container: el,
+        style: BASE_STYLE_URL,
+        center: [lng, lat],
+        zoom: 13.5,
+        attributionControl: false,
+        dragRotate: false,
+        pitchWithRotate: false,
+        scrollZoom: false,
       });
 
-      L.tileLayer(TILE_URL, {
-        attribution: TILE_ATTRIB,
-        subdomains: "abcd",
-        maxZoom: 20,
-      }).addTo(map);
+      map.touchZoomRotate?.disableRotation();
+      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+      map.addControl(
+        new maplibregl.AttributionControl({ compact: true }),
+        "bottom-right",
+      );
 
-      const icon = L.divIcon({
-        className: "sv-venue-pin",
-        html: buildPinHtml(),
-        iconSize: [34, 44],
-        iconAnchor: [17, 42],
-        popupAnchor: [0, -38],
+      map.on("load", () => {
+        applyCreamPalette(map);
       });
+      // Style can finish loading after `load` in some edge cases (e.g.
+      // network-slow sprite fetch); re-apply once the style is fully parsed.
+      map.on("styledata", () => applyCreamPalette(map));
 
-      const marker = L.marker([lat, lng], { icon }).addTo(map);
+      // Custom red pin as a DOM element so we don't need a marker image.
+      const pinEl = document.createElement("div");
+      pinEl.innerHTML = buildPinHtml();
+      pinEl.style.cursor = "default";
+
+      const marker = new maplibregl.Marker({ element: pinEl, anchor: "bottom" })
+        .setLngLat([lng, lat])
+        .addTo(map);
+
       if (venueName) {
-        marker.bindPopup(
-          `<div style="font-family:inherit;font-weight:600;color:#1b1b1b">${venueName}</div>`,
+        const popup = new maplibregl.Popup({
+          offset: 28,
+          closeButton: false,
+          className: "sv-venue-popup",
+        }).setHTML(
+          `<div style="font-family:inherit;font-weight:600;color:${INK};font-size:0.8125rem;padding:4px 2px">${escapeHtml(
+            venueName,
+          )}</div>`,
         );
+        marker.setPopup(popup);
       }
 
       mapRef.current = map;
-
-      // Leaflet sometimes mis-measures the container when it mounts inside a
-      // CSS grid; a single post-mount invalidate fixes the first-paint bug.
-      requestAnimationFrame(() => map.invalidateSize());
+      requestAnimationFrame(() => map.resize());
     });
 
     return () => {
@@ -101,9 +102,110 @@ export default function VenueDarkMap({
   return (
     <div
       ref={containerRef}
-      className="h-[380px] w-full rounded-2xl overflow-hidden border border-stone-200 bg-[#1b1b1b]"
+      className="h-[380px] w-full rounded-2xl overflow-hidden border border-stone-200"
+      style={{ background: CREAM }}
       role="img"
       aria-label={venueName ? `Map showing ${venueName}` : "Venue location map"}
     />
   );
+}
+
+// ---------- helpers ----------
+
+function escapeHtml(s: string) {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function buildPinHtml() {
+  return `
+    <div style="position:relative;display:flex;align-items:center;justify-content:center">
+      <svg width="30" height="40" viewBox="0 0 34 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="filter:drop-shadow(0 3px 6px rgba(0,0,0,0.25))">
+        <path d="M17 2C8.716 2 2 8.716 2 17c0 10.7 13.5 24 14.075 24.562a1.25 1.25 0 0 0 1.85 0C18.5 41 32 27.7 32 17 32 8.716 25.284 2 17 2Z" fill="${PIN}" stroke="white" stroke-width="2.25"/>
+        <circle cx="17" cy="17" r="5" fill="white"/>
+      </svg>
+    </div>
+  `;
+}
+
+// Walk the current MapLibre style and repaint into our cream/ink palette.
+// We don't know the exact layer ids (OpenFreeMap updates the style from time
+// to time), so we match on id patterns and layer types. That keeps us resilient
+// to style refreshes without having to hand-curate a style JSON.
+function applyCreamPalette(map: import("maplibre-gl").Map) {
+  const style = map.getStyle();
+  const layers = style?.layers ?? [];
+
+  for (const layer of layers) {
+    const id = layer.id;
+    const type = layer.type;
+
+    try {
+      if (type === "background") {
+        map.setPaintProperty(id, "background-color", CREAM);
+        continue;
+      }
+
+      if (type === "fill") {
+        if (/water|ocean|sea|river|lake|pond/i.test(id)) {
+          map.setPaintProperty(id, "fill-color", WATER);
+          map.setPaintProperty(id, "fill-outline-color", WATER);
+          continue;
+        }
+        if (/park|forest|wood|grass|landcover|vegetation|cemetery|golf/i.test(id)) {
+          map.setPaintProperty(id, "fill-color", CREAM_SHADE);
+          continue;
+        }
+        if (/building|structure/i.test(id)) {
+          map.setPaintProperty(id, "fill-color", CREAM_SHADE);
+          map.setPaintProperty(id, "fill-outline-color", CREAM_SHADE);
+          continue;
+        }
+        if (/landuse|land|residential|industrial|commercial/i.test(id)) {
+          map.setPaintProperty(id, "fill-color", CREAM);
+          continue;
+        }
+        // Unknown fills: flatten to cream so we don't leak positron gray.
+        map.setPaintProperty(id, "fill-color", CREAM);
+      }
+
+      if (type === "line") {
+        // Borders/admin stay subtle; roads become ink.
+        if (/boundary|admin/i.test(id)) {
+          map.setPaintProperty(id, "line-color", "#B8AF94");
+          continue;
+        }
+        if (/water|river|stream|canal/i.test(id)) {
+          map.setPaintProperty(id, "line-color", WATER);
+          continue;
+        }
+        // Road casings get the page color so the ink-colored centerline
+        // reads as a clean single stroke instead of a doubled tram line.
+        if (/(road|street|highway|motorway|path|track|bridge|tunnel).*(case|casing|outline)/i.test(id)) {
+          map.setPaintProperty(id, "line-color", CREAM);
+          continue;
+        }
+        if (/road|street|highway|motorway|trunk|primary|secondary|tertiary|minor|service|path|track|pedestrian|footway|cycleway|rail|transit/i.test(id)) {
+          map.setPaintProperty(id, "line-color", INK);
+          continue;
+        }
+        // Fallback: make unknown lines disappear rather than clash.
+        map.setPaintProperty(id, "line-color", CREAM);
+      }
+
+      if (type === "symbol") {
+        // All type (place names, POI, road labels) becomes ink; the soft
+        // cream halo keeps tiny text legible on top of road strokes.
+        map.setPaintProperty(id, "text-color", INK);
+        map.setPaintProperty(id, "text-halo-color", CREAM);
+        map.setPaintProperty(id, "text-halo-width", 1.25);
+      }
+    } catch {
+      // Some layers expose a restricted paint spec (e.g. heatmaps on other
+      // styles); skip silently so one outlier never breaks the whole map.
+    }
+  }
 }

@@ -83,10 +83,11 @@ function PhotoMosaic({
 
   const placeholderClass = "bg-gradient-to-br from-stone-200 to-stone-300";
 
-  // Shared button classes so each mosaic tile reads as an interactive element:
-  // subtle image dim + cursor-zoom on hover, matching OTAs like Airbnb.
+  // Shared button classes so each mosaic tile reads as an interactive element.
+  // We keep the default pointer cursor (same as the "Show all photos"
+  // button) instead of a zoom icon so the affordance matches.
   const tileBtnClass =
-    "group/photo relative w-full h-full overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 focus-visible:ring-offset-2";
+    "group/photo relative w-full h-full overflow-hidden cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 focus-visible:ring-offset-2";
   const imgHoverClass =
     "transition-[filter,transform] duration-200 ease-out group-hover/photo:brightness-95";
 
@@ -186,7 +187,7 @@ function PhotoMosaic({
           <button
             type="button"
             onClick={() => onViewAll(0)}
-            className="relative w-full h-full cursor-zoom-in focus:outline-none"
+            className="relative w-full h-full cursor-pointer focus:outline-none"
             aria-label={`Open photo 1 of ${allPhotos.length}`}
           >
             <Image
@@ -655,7 +656,7 @@ export default function VenuePageClient({
                         <p className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-3">
                           {group.label}
                         </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
                           {group.labels.map((label) => (
                             <div key={label} className="flex items-center gap-3">
                               <Check className="h-4 w-4 text-stone-500 flex-shrink-0" />
