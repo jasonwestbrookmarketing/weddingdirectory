@@ -83,11 +83,11 @@ function PhotoMosaic({
 
   const placeholderClass = "bg-gradient-to-br from-stone-200 to-stone-300";
 
-  // Shared button classes so each mosaic tile reads as an interactive element.
-  // We keep the default pointer cursor (same as the "Show all photos"
-  // button) instead of a zoom icon so the affordance matches.
+  // Shared button classes for each mosaic tile. We force `cursor-default`
+  // (the standard arrow cursor) instead of the hand/finger pointer so hover
+  // matches the rest of the page's clickable surfaces.
   const tileBtnClass =
-    "group/photo relative w-full h-full overflow-hidden cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 focus-visible:ring-offset-2";
+    "group/photo relative w-full h-full overflow-hidden cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 focus-visible:ring-offset-2";
   const imgHoverClass =
     "transition-[filter,transform] duration-200 ease-out group-hover/photo:brightness-95";
 
@@ -187,7 +187,7 @@ function PhotoMosaic({
           <button
             type="button"
             onClick={() => onViewAll(0)}
-            className="relative w-full h-full cursor-pointer focus:outline-none"
+            className="relative w-full h-full cursor-default focus:outline-none"
             aria-label={`Open photo 1 of ${allPhotos.length}`}
           >
             <Image
