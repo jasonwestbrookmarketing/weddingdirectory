@@ -402,15 +402,6 @@ export default function VenuePageClient({
   const showMap =
     venue.show_map !== false && venue.lat != null && venue.lng != null;
   const hasSocial = Object.keys(socialLinks).length > 0;
-  // Prefer precise lat/lng when we have it so directions drop on the
-  // actual venue pin rather than geocoding a (sometimes fuzzy) address.
-  const mapsQuery =
-    venue.lat != null && venue.lng != null
-      ? `${venue.lat},${venue.lng}`
-      : venue.location_full ?? "";
-  const mapsHref = mapsQuery
-    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}`
-    : null;
   const hasFaq = faqItems.length > 0;
   const groupedFeatures = FEATURE_GROUPS.map((g) => ({
     label: g.label,
@@ -460,61 +451,49 @@ export default function VenuePageClient({
                     size="md"
                   />
                 </h1>
-                <div className="mt-1.5 flex flex-col gap-1 text-sm text-stone-500">
+                <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-stone-500">
                   {venue.location_full && (
-                    mapsHref ? (
-                      <a
-                        href={mapsHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 hover:text-stone-900 hover:underline"
-                      >
-                        <MapPin className="h-4 w-4 flex-shrink-0" />
-                        {venue.location_full}
-                      </a>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5">
-                        <MapPin className="h-4 w-4 flex-shrink-0" />
-                        {venue.location_full}
-                      </span>
-                    )
-                  )}
-                  {headlineCount > 0 && (
                     <a
-                      href="#reviews"
-                      className="inline-flex items-center gap-2 hover:underline"
-                      aria-label={`${headlineAvg.toFixed(1)} out of 5 stars, ${headlineCount} ${headlineCount === 1 ? "review" : "reviews"}`}
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.location_full)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 hover:underline"
                     >
-                      <span className="flex items-center gap-0.5" aria-hidden>
-                        {[0, 1, 2, 3, 4].map((i) => {
-                          const filled = i < Math.round(headlineAvg);
-                          return (
-                            <Star
-                              key={i}
-                              className={`h-4 w-4 ${
-                                filled
-                                  ? "fill-amber-400 text-amber-400"
-                                  : "fill-stone-200 text-stone-200"
-                              }`}
-                              strokeWidth={0}
-                            />
-                          );
-                        })}
-                      </span>
-                      <span className="font-semibold text-stone-900">
-                        {headlineAvg.toFixed(1)}
-                      </span>
-                      <span className="text-stone-500">
-                        ({headlineCount}{" "}
-                        {headlineCount === 1 ? "review" : "reviews"})
-                      </span>
+                      <MapPin className="h-4 w-4 flex-shrink-0" />
+                      {venue.location_full}
                     </a>
                   )}
                 </div>
+                {headlineCount > 0 && (
+                  <a
+                    href="#reviews"
+                    className="inline-flex items-center gap-1.5 mt-2 hover:underline"
+                  >
+                    <div className="flex items-center gap-0.5">
+                      {[1, 2, 3, 4, 5].map((n) => (
+                        <Star
+                          key={n}
+                          className={`h-5 w-5 ${
+                            n <= Math.round(headlineAvg)
+                              ? "fill-yellow-400 text-yellow-400"
+                              : "fill-stone-200 text-stone-200"
+                          }`}
+                          strokeWidth={0}
+                        />
+                      ))}
+                    </div>
+                    <span className="font-semibold text-stone-900 text-base">
+                      {headlineAvg.toFixed(1)}
+                    </span>
+                    <span className="text-stone-500 text-sm">
+                      ({headlineCount}{" "}
+                      {headlineCount === 1 ? "review" : "reviews"})
+                    </span>
+                  </a>
+                )}
               </div>
-              {/* Action buttons — social links sit left of Share/Save so the
-                  "connect with the venue" cluster lives in one place. */}
-              <div className="flex items-center gap-2 flex-shrink-0">
+              {/* Action buttons */}
+              <div className="flex items-center gap-1 flex-shrink-0">
                 {hasSocial && (
                   <VenueSocialButtons
                     social={socialLinks}
