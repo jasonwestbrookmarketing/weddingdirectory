@@ -402,6 +402,15 @@ export default function VenuePageClient({
   const showMap =
     venue.show_map !== false && venue.lat != null && venue.lng != null;
   const hasSocial = Object.keys(socialLinks).length > 0;
+  // Prefer precise lat/lng when we have it so directions drop on the
+  // actual venue pin rather than geocoding a (sometimes fuzzy) address.
+  const mapsQuery =
+    venue.lat != null && venue.lng != null
+      ? `${venue.lat},${venue.lng}`
+      : venue.location_full ?? "";
+  const mapsHref = mapsQuery
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}`
+    : null;
   const hasFaq = faqItems.length > 0;
   const groupedFeatures = FEATURE_GROUPS.map((g) => ({
     label: g.label,
@@ -451,38 +460,68 @@ export default function VenuePageClient({
                     size="md"
                   />
                 </h1>
-                <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-stone-500">
+                <div className="mt-1.5 flex flex-col gap-1 text-sm text-stone-500">
+                  {venue.location_full && (
+                    mapsHref ? (
+                      <a
+                        href={mapsHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 hover:text-stone-900 hover:underline"
+                      >
+                        <MapPin className="h-4 w-4 flex-shrink-0" />
+                        {venue.location_full}
+                      </a>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5">
+                        <MapPin className="h-4 w-4 flex-shrink-0" />
+                        {venue.location_full}
+                      </span>
+                    )
+                  )}
                   {headlineCount > 0 && (
                     <a
                       href="#reviews"
-                      className="inline-flex items-center gap-1.5 text-stone-900 font-medium hover:underline"
+                      className="inline-flex items-center gap-2 hover:underline"
+                      aria-label={`${headlineAvg.toFixed(1)} out of 5 stars, ${headlineCount} ${headlineCount === 1 ? "review" : "reviews"}`}
                     >
-                      <Star
-                        className="h-3.5 w-3.5 fill-stone-900 text-stone-900"
-                        strokeWidth={0}
-                      />
-                      {headlineAvg.toFixed(headlineAvg === 5 ? 0 : 2)}
-                      <span className="text-stone-500 font-normal">
-                        · {headlineCount}{" "}
-                        {headlineCount === 1 ? "review" : "reviews"}
+                      <span className="flex items-center gap-0.5" aria-hidden>
+                        {[0, 1, 2, 3, 4].map((i) => {
+                          const filled = i < Math.round(headlineAvg);
+                          return (
+                            <Star
+                              key={i}
+                              className={`h-4 w-4 ${
+                                filled
+                                  ? "fill-amber-400 text-amber-400"
+                                  : "fill-stone-200 text-stone-200"
+                              }`}
+                              strokeWidth={0}
+                            />
+                          );
+                        })}
+                      </span>
+                      <span className="font-semibold text-stone-900">
+                        {headlineAvg.toFixed(1)}
+                      </span>
+                      <span className="text-stone-500">
+                        ({headlineCount}{" "}
+                        {headlineCount === 1 ? "review" : "reviews"})
                       </span>
                     </a>
                   )}
-                  {venue.location_full && (
-                    <span className="inline-flex items-center gap-1.5">
-                      {headlineCount > 0 && (
-                        <span className="text-stone-300" aria-hidden>
-                          ·
-                        </span>
-                      )}
-                      <MapPin className="h-4 w-4 flex-shrink-0" />
-                      {venue.location_full}
-                    </span>
-                  )}
                 </div>
               </div>
-              {/* Action buttons */}
-              <div className="flex items-center gap-1 flex-shrink-0">
+              {/* Action buttons — social links sit left of Share/Save so the
+                  "connect with the venue" cluster lives in one place. */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {hasSocial && (
+                  <VenueSocialButtons
+                    social={socialLinks}
+                    size="sm"
+                    className="mr-1"
+                  />
+                )}
                 <button
                   onClick={handleShareClick}
                   className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-3 py-2 rounded-xl transition-colors"
@@ -529,34 +568,6 @@ export default function VenuePageClient({
                   <DollarSign className="h-3.5 w-3.5" />
                   {getPriceScale(venue.price_min)} · {PRICE_SCALE_LABELS[getPriceScale(venue.price_min)!]}
                 </span>
-              )}
-            </div>
-
-            <hr className="border-stone-200 mb-8" />
-
-            {/* Host/venue identity row — social buttons live here now so
-                couples can jump to the venue's channels without scrolling. */}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-3 mb-8">
-              <div className="w-12 h-12 rounded-full bg-stone-900 flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-semibold text-lg">
-                  {(venue.name || "V").charAt(0).toUpperCase()}
-                </span>
-              </div>
-              <div className="min-w-0">
-                <p className="font-semibold text-stone-900 text-base truncate">
-                  {venue.name}
-                </p>
-                <p className="text-sm text-stone-500 truncate">
-                  {venueTypeLabel} venue
-                  {venue.location_city ? ` · ${venue.location_city}` : ""}
-                </p>
-              </div>
-              {hasSocial && (
-                <VenueSocialButtons
-                  social={socialLinks}
-                  size="sm"
-                  className="ml-auto"
-                />
               )}
             </div>
 
@@ -685,9 +696,6 @@ export default function VenuePageClient({
             {showMap && venue.lat != null && venue.lng != null && (
               <>
                 <section className="mb-8">
-                  <h2 className="text-xl font-semibold text-stone-900 mb-6">
-                    Where you&apos;ll be
-                  </h2>
                   <VenueDarkMap
                     lat={venue.lat}
                     lng={venue.lng}
