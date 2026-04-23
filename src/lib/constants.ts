@@ -18,12 +18,13 @@ export const INDOOR_OUTDOOR_OPTIONS = [
   { value: "both", label: "Both" },
 ] as const;
 
+// Ordered intent buckets for the lead form's "When do you plan to start
+// touring?" question. Order matters — hottest lead first so venues can
+// prioritize inbox follow-up.
 export const BOOKING_TIMELINES = [
-  { value: "asap", label: "ASAP" },
-  { value: "within_3_months", label: "Within 3 months" },
-  { value: "within_6_months", label: "Within 6 months" },
-  { value: "within_12_months", label: "Within 12 months" },
-  { value: "just_exploring", label: "Just exploring" },
+  { value: "ready_now", label: "I'm ready to schedule tours now" },
+  { value: "next_few_weeks", label: "Within the next few weeks" },
+  { value: "researching", label: "Just researching" },
 ] as const;
 
 export const LEAD_STATUSES = [

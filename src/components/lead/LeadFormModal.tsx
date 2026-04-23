@@ -207,7 +207,7 @@ export default function LeadFormModal({
 
           <Select
             id="lead-timeline"
-            label="When do you plan to book?"
+            label="When do you plan to start touring?"
             value={bookingTimeline}
             onChange={(e) => setBookingTimeline(e.target.value)}
             options={BOOKING_TIMELINES.map((t) => ({
