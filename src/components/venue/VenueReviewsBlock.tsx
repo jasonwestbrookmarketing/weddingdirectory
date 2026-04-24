@@ -290,9 +290,11 @@ export default function VenueReviewsBlock({
               No reviews yet.
             </p>
           ) : (
-            <div className="space-y-8">
+            <div className="divide-y divide-stone-100">
               {visibleStory.map((r) => (
-                <StoryReviewCard key={r.id} review={r} />
+                <div key={r.id} className="py-5 first:pt-0">
+                  <StoryReviewCard review={r} />
+                </div>
               ))}
             </div>
           )}
