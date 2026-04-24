@@ -98,9 +98,9 @@ function RatingSummary({
         </p>
         <a
           href={writeHref}
-          className="mt-3 inline-flex items-center justify-center gap-1.5 rounded-xl bg-stone-900 px-4 py-2.5 text-xs font-semibold text-white hover:bg-stone-700 transition-colors"
+          className="mt-3 inline-flex items-center justify-center gap-1.5 rounded-xl border border-stone-300 bg-transparent px-4 py-2.5 text-xs font-semibold text-stone-900 hover:bg-stone-50 transition-colors"
         >
-          <Star className="h-3.5 w-3.5 fill-white text-white" strokeWidth={0} />
+          <Star className="h-3.5 w-3.5 fill-stone-900 text-stone-900" strokeWidth={0} />
           Write a review
         </a>
       </div>
