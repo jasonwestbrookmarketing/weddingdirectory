@@ -638,6 +638,7 @@ export default function VenuePageClient({
                 <VenueReviewsBlock
                   reviews={reviews}
                   google={googleReviews}
+                  googlePlaceId={venue.google_place_id ?? null}
                 />
                 <hr className="border-stone-200 mb-8" />
               </>

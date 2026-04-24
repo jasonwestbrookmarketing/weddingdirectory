@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronDown, Star } from "lucide-react";
+import { ChevronDown, ExternalLink, Star } from "lucide-react";
 import type { GoogleReviewItem, GoogleReviewsCache, ListingReview } from "@/types/database";
 
 /**
@@ -17,7 +17,8 @@ import type { GoogleReviewItem, GoogleReviewsCache, ListingReview } from "@/type
  * back to the original single-source layout to avoid visual noise.
  */
 
-const PREVIEW_LIMIT = 4;
+const STORY_PREVIEW = 4;
+const GOOGLE_PREVIEW = 5;
 
 function StarRow({
   rating,
@@ -172,9 +173,11 @@ type TabKey = "story" | "google";
 export default function VenueReviewsBlock({
   reviews,
   google,
+  googlePlaceId,
 }: {
   reviews: ListingReview[];
   google: GoogleReviewsCache | null;
+  googlePlaceId?: string | null;
 }) {
   const storyCount = reviews.length;
   const storyAvg =
@@ -183,16 +186,14 @@ export default function VenueReviewsBlock({
       : 0;
 
   const hasGoogle = !!google && (google.reviews.length > 0 || google.userRatingCount > 0);
-  // Default to whichever tab actually has review text on load. If both, StoryVenue wins.
   const [tab, setTab] = useState<TabKey>(
     storyCount > 0 || !hasGoogle ? "story" : "google"
   );
-  const [showAll, setShowAll] = useState(false);
+  const [showAllStory, setShowAllStory] = useState(false);
 
   const googleAvgRaw = google?.rating ?? null;
   const googleCount = google?.userRatingCount ?? 0;
 
-  // Sorted copies so "top reviews first" feels natural.
   const storySorted = useMemo(() => {
     return [...reviews].sort(
       (a, b) =>
@@ -207,30 +208,31 @@ export default function VenueReviewsBlock({
 
   const googleReviewsLen = google?.reviews.length ?? 0;
 
-  // Nothing to render either side — caller decides to hide the whole block.
   if (storyCount === 0 && !hasGoogle) return null;
 
-  const activeList: Array<ListingReview | GoogleReviewItem> =
-    tab === "story" ? storySorted : googleSorted;
-  const activeCount = tab === "story" ? storyCount : googleReviewsLen;
-  const visibleList =
-    showAll || activeCount <= PREVIEW_LIMIT
-      ? activeList
-      : activeList.slice(0, PREVIEW_LIMIT);
-
-  // Aggregate rating shown next to the section heading — mirror the active tab
-  // so clicking between tabs updates the big number in sync.
   const headlineAvg = tab === "story" ? storyAvg : googleAvgRaw ?? 0;
   const headlineCount = tab === "story" ? storyCount : googleCount;
 
+  // Google Maps link for "See all" button
+  const googleMapsUrl = googlePlaceId
+    ? `https://www.google.com/maps/place/?q=place_id:${googlePlaceId}`
+    : null;
+
+  // StoryVenue reviews to show
+  const visibleStory =
+    showAllStory || storyCount <= STORY_PREVIEW
+      ? storySorted
+      : storySorted.slice(0, STORY_PREVIEW);
+
+  // Google reviews: always show first GOOGLE_PREVIEW only — rest via "See all" link
+  const visibleGoogle = googleSorted.slice(0, GOOGLE_PREVIEW);
+
   return (
     <section id="reviews" className="mb-8 scroll-mt-24">
+      {/* Headline avg */}
       <div className="flex items-baseline gap-3 mb-6">
         <h2 className="text-xl font-semibold text-stone-900 flex items-center gap-2">
-          <Star
-            className="h-5 w-5 fill-stone-900 text-stone-900"
-            strokeWidth={0}
-          />
+          <Star className="h-5 w-5 fill-stone-900 text-stone-900" strokeWidth={0} />
           {headlineAvg > 0 ? headlineAvg.toFixed(headlineAvg === 5 ? 0 : 2) : "—"}
         </h2>
         <span className="text-stone-500 text-sm">
@@ -238,49 +240,31 @@ export default function VenueReviewsBlock({
         </span>
       </div>
 
+      {/* Tab bar — only shown when both sources have data */}
       {hasGoogle && (
         <div className="mb-6 border-b border-stone-200">
           <div className="flex gap-0">
-            <button
-              type="button"
-              onClick={() => {
-                setTab("story");
-                setShowAll(false);
-              }}
+            <button type="button"
+              onClick={() => { setTab("story"); setShowAllStory(false); }}
               className={`flex min-w-0 flex-1 items-center gap-3 border-b-2 px-3 py-3 text-left transition-colors sm:px-4 ${
-                tab === "story"
-                  ? "border-stone-900 text-stone-900"
-                  : "border-transparent text-stone-500 hover:text-stone-800"
+                tab === "story" ? "border-stone-900 text-stone-900" : "border-transparent text-stone-500 hover:text-stone-800"
               }`}
               aria-pressed={tab === "story"}
             >
-              <span
-                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white ${
-                  tab === "story" ? "bg-stone-900" : "bg-stone-400"
-                }`}
-              >
+              <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white ${tab === "story" ? "bg-stone-900" : "bg-stone-400"}`}>
                 <Star className="h-4 w-4 fill-white text-white" strokeWidth={0} />
               </span>
               <span className="min-w-0">
-                <span className="block text-sm font-semibold text-stone-900">
-                  StoryVenue
-                </span>
+                <span className="block text-sm font-semibold text-stone-900">StoryVenue</span>
                 <span className="block text-xs text-stone-500">
-                  {storyCount > 0 ? `${storyAvg.toFixed(1)}/5` : "—"} ·{" "}
-                  {storyCount} {storyCount === 1 ? "review" : "reviews"}
+                  {storyCount > 0 ? `${storyAvg.toFixed(1)}/5` : "—"} · {storyCount} {storyCount === 1 ? "review" : "reviews"}
                 </span>
               </span>
             </button>
-            <button
-              type="button"
-              onClick={() => {
-                setTab("google");
-                setShowAll(false);
-              }}
+            <button type="button"
+              onClick={() => setTab("google")}
               className={`flex min-w-0 flex-1 items-center gap-3 border-b-2 px-3 py-3 text-left transition-colors sm:px-4 ${
-                tab === "google"
-                  ? "border-stone-900 text-stone-900"
-                  : "border-transparent text-stone-500 hover:text-stone-800"
+                tab === "google" ? "border-stone-900 text-stone-900" : "border-transparent text-stone-500 hover:text-stone-800"
               }`}
               aria-pressed={tab === "google"}
             >
@@ -288,12 +272,9 @@ export default function VenueReviewsBlock({
                 <GoogleGIcon className="h-5 w-5" />
               </span>
               <span className="min-w-0">
-                <span className="block text-sm font-semibold text-stone-900">
-                  Google
-                </span>
+                <span className="block text-sm font-semibold text-stone-900">Google</span>
                 <span className="block text-xs text-stone-500">
-                  {googleAvgRaw != null ? `${googleAvgRaw.toFixed(1)}/5` : "—"} ·{" "}
-                  {googleCount} {googleCount === 1 ? "review" : "reviews"}
+                  {googleAvgRaw != null ? `${googleAvgRaw.toFixed(1)}/5` : "—"} · {googleCount} {googleCount === 1 ? "review" : "reviews"}
                 </span>
               </span>
             </button>
@@ -301,48 +282,61 @@ export default function VenueReviewsBlock({
         </div>
       )}
 
-      {activeCount === 0 ? (
-        <p className="rounded-2xl border border-dashed border-stone-200 bg-stone-50 px-4 py-10 text-center text-sm text-stone-500">
-          {tab === "google"
-            ? "Google rating is synced, but no review text has been published for this venue yet."
-            : "No reviews yet."}
-        </p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8">
-          {visibleList.map((r) =>
-            tab === "story" ? (
-              <StoryReviewCard
-                key={(r as ListingReview).id}
-                review={r as ListingReview}
-              />
-            ) : (
-              <GoogleReviewCard
-                // Google reviews don't carry stable IDs — combine author +
-                // published_at for a reasonable React key.
-                key={`${(r as GoogleReviewItem).author_name}-${
-                  (r as GoogleReviewItem).published_at ?? ""
-                }`}
-                review={r as GoogleReviewItem}
-              />
-            )
+      {/* ── StoryVenue reviews ── */}
+      {tab === "story" && (
+        <>
+          {storyCount === 0 ? (
+            <p className="rounded-2xl border border-dashed border-stone-200 bg-stone-50 px-4 py-10 text-center text-sm text-stone-500">
+              No reviews yet.
+            </p>
+          ) : (
+            <div className="space-y-8">
+              {visibleStory.map((r) => (
+                <StoryReviewCard key={r.id} review={r} />
+              ))}
+            </div>
           )}
-        </div>
+          {storyCount > STORY_PREVIEW && !showAllStory && (
+            <button onClick={() => setShowAllStory(true)}
+              className="mt-6 inline-flex items-center gap-1 text-stone-900 font-semibold text-sm hover:underline">
+              Show all {storyCount} reviews
+              <ChevronDown className="h-4 w-4" />
+            </button>
+          )}
+        </>
       )}
 
-      {activeCount > PREVIEW_LIMIT && !showAll && (
-        <button
-          onClick={() => setShowAll(true)}
-          className="mt-6 inline-flex items-center gap-1 text-stone-900 font-semibold text-sm hover:underline"
-        >
-          Show all {activeCount} reviews
-          <ChevronDown className="h-4 w-4" />
-        </button>
-      )}
+      {/* ── Google reviews ── */}
+      {tab === "google" && (
+        <>
+          {googleReviewsLen === 0 ? (
+            <p className="rounded-2xl border border-dashed border-stone-200 bg-stone-50 px-4 py-10 text-center text-sm text-stone-500">
+              Google rating is synced, but no review text is available yet.
+            </p>
+          ) : (
+            <div className="divide-y divide-stone-100">
+              {visibleGoogle.map((r) => (
+                <div key={`${r.author_name}-${r.published_at ?? ""}`} className="py-5 first:pt-0">
+                  <GoogleReviewCard review={r} />
+                </div>
+              ))}
+            </div>
+          )}
 
-      {tab === "google" && hasGoogle && (
-        <p className="mt-6 text-center text-[11px] text-stone-400">
-          Reviews from Google Maps · counts reflect Google data
-        </p>
+          {/* Footer: count + See all link */}
+          <div className="mt-5 flex items-center justify-between">
+            <p className="text-xs text-stone-400">
+              Showing {Math.min(GOOGLE_PREVIEW, googleReviewsLen)} of {googleCount > 0 ? googleCount.toLocaleString() : googleReviewsLen} Google reviews
+            </p>
+            {googleMapsUrl && (
+              <a href={googleMapsUrl} target="_blank" rel="noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-stone-200 bg-white px-4 py-2 text-xs font-semibold text-stone-700 hover:bg-stone-50 transition-colors">
+                See all Google reviews
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            )}
+          </div>
+        </>
       )}
     </section>
   );
