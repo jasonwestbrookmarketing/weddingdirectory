@@ -119,7 +119,8 @@ function RatingSummary({
           </p>
           {barsMismatched && (
             <p className="text-xs text-stone-400">
-              based on {distributionTotal.toLocaleString()} with full text
+              {distributionTotal.toLocaleString()} StoryVenue{" "}
+              {distributionTotal === 1 ? "review" : "reviews"}
             </p>
           )}
         </div>
@@ -323,28 +324,18 @@ export default function VenueReviewsBlock({
     return googleAvgRaw ?? 0;
   }, [storyCount, googleCount, storyAvg, googleAvgRaw, combinedCount]);
 
-  // Distribution from all available individual reviews (both sources).
-  // NOTE: Google's userRatingCount may exceed google.reviews.length because
-  // the Places API only returns up to ~20 review objects. The bars are
-  // therefore relative to each other (maxBar scaling), not to the aggregate
-  // total. A "based on N with full text" note is shown when there's a gap.
+  // Distribution based solely on StoryVenue reviews — we own this data fully
+  // and every individual rating is available, so the bar counts are exact.
   const distribution = useMemo(() => {
     const counts = [0, 0, 0, 0, 0]; // index 0 = 1★ … 4 = 5★
     reviews.forEach((r) => {
       const idx = Math.min(Math.max(Math.round(r.rating), 1), 5) - 1;
       counts[idx] += 1;
     });
-    googleSorted.forEach((r) => {
-      const idx = Math.min(Math.max(Math.round(r.rating), 1), 5) - 1;
-      counts[idx] += 1;
-    });
     return counts;
-  }, [reviews, googleSorted]);
+  }, [reviews]);
 
-  const distributionTotal = useMemo(
-    () => distribution.reduce((a, b) => a + b, 0),
-    [distribution]
-  );
+  const distributionTotal = storyCount;
 
   if (storyCount === 0 && !hasGoogle) return null;
 
