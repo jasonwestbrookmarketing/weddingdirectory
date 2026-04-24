@@ -4,6 +4,7 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { parseGoogleReviewsCache } from "@/lib/google-reviews";
 import VenuePageClient from "./VenuePageClient";
+import ListingTracker from "@/components/venue/ListingTracker";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -105,6 +106,7 @@ export default async function VenuePage({ params }: Props) {
           </div>
         </div>
       </nav>
+      {venue.id && <ListingTracker venueId={venue.id} />}
       <VenuePageClient
         venue={venue}
         reviews={reviews}
