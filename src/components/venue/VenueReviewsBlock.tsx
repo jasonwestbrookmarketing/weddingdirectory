@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { ChevronDown, ExternalLink, Star } from "lucide-react";
 import type { GoogleReviewItem, GoogleReviewsCache, ListingReview } from "@/types/database";
 
@@ -392,8 +393,14 @@ export default function VenueReviewsBlock({
               }`}
               aria-pressed={tab === "story"}
             >
-              <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white ${tab === "story" ? "bg-stone-900" : "bg-stone-400"}`}>
-                <Star className="h-4 w-4 fill-white text-white" strokeWidth={0} />
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg overflow-hidden">
+                <Image
+                  src="/storyvenue-favicon.png"
+                  alt="StoryVenue"
+                  width={36}
+                  height={36}
+                  className="w-full h-full object-cover"
+                />
               </span>
               <span className="min-w-0">
                 <span className="block text-sm font-semibold text-stone-900">StoryVenue</span>
