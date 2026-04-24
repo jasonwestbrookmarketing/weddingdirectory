@@ -20,6 +20,10 @@ export const metadata: Metadata = {
   title: "StoryVenue — Find Your Perfect Wedding Venue",
   description:
     "Discover wedding venues that match your vision, guest count, and budget. Get pricing and check availability instantly.",
+  icons: {
+    icon: "/storyvenue-mark.png",
+    apple: "/storyvenue-mark.png",
+  },
 };
 
 export default function RootLayout({

@@ -395,7 +395,7 @@ export default function VenueReviewsBlock({
             >
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg overflow-hidden">
                 <Image
-                  src="/storyvenue-favicon.png"
+                  src="/storyvenue-mark.png"
                   alt="StoryVenue"
                   width={36}
                   height={36}
