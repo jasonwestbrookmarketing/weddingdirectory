@@ -55,16 +55,21 @@ function RatingSummary({
   combinedAvg,
   combinedCount,
   distribution,
+  distributionTotal,
   venueId,
 }: {
   combinedAvg: number;
+  /** True total (storyCount + google userRatingCount). */
   combinedCount: number;
-  /** How many reviews exist at each star level (index 0 = 1★ … index 4 = 5★). */
+  /** Per-star counts derived from all available individual reviews (index 0 = 1★ … 4 = 5★). */
   distribution: number[];
+  /** Sum of distribution — may be less than combinedCount when Google caches only a subset. */
+  distributionTotal: number;
   venueId: string;
 }) {
   const maxBar = Math.max(...distribution, 1);
   const writeHref = `${STORYPAY_URL}/login?as=couple&intent=review&venue=${encodeURIComponent(venueId)}`;
+  const barsMismatched = distributionTotal < combinedCount;
 
   return (
     <div className="flex flex-col sm:flex-row gap-4 mb-8 rounded-2xl border border-stone-200 overflow-hidden">
@@ -94,7 +99,8 @@ function RatingSummary({
           )}
         </div>
         <p className="text-xs text-stone-500">
-          {combinedCount} {combinedCount === 1 ? "review" : "reviews"}
+          {combinedCount.toLocaleString()}{" "}
+          {combinedCount === 1 ? "review" : "reviews"}
         </p>
         <a
           href={writeHref}
@@ -107,11 +113,21 @@ function RatingSummary({
 
       {/* Right — distribution bars */}
       <div className="flex flex-col justify-center gap-2 px-6 py-5 flex-1">
-        <p className="text-xs font-semibold uppercase tracking-wider text-stone-400 mb-1">
-          Rating Breakdown
-        </p>
+        <div className="flex items-baseline justify-between mb-1">
+          <p className="text-xs font-semibold uppercase tracking-wider text-stone-400">
+            Rating Breakdown
+          </p>
+          {barsMismatched && (
+            <p className="text-xs text-stone-400">
+              based on {distributionTotal.toLocaleString()} with full text
+            </p>
+          )}
+        </div>
         {[5, 4, 3, 2, 1].map((star) => {
           const count = distribution[star - 1];
+          // Bar width is relative to the most-popular star tier so all bars
+          // are proportional to each other (not to the Google aggregate total
+          // which we can't break down per-star from the cached data).
           const pct = Math.round((count / maxBar) * 100);
           return (
             <div key={star} className="flex items-center gap-3">
@@ -307,13 +323,28 @@ export default function VenueReviewsBlock({
     return googleAvgRaw ?? 0;
   }, [storyCount, googleCount, storyAvg, googleAvgRaw, combinedCount]);
 
-  // Distribution from all available individual reviews (both sources)
+  // Distribution from all available individual reviews (both sources).
+  // NOTE: Google's userRatingCount may exceed google.reviews.length because
+  // the Places API only returns up to ~20 review objects. The bars are
+  // therefore relative to each other (maxBar scaling), not to the aggregate
+  // total. A "based on N with full text" note is shown when there's a gap.
   const distribution = useMemo(() => {
     const counts = [0, 0, 0, 0, 0]; // index 0 = 1★ … 4 = 5★
-    reviews.forEach((r) => { counts[Math.round(r.rating) - 1] += 1; });
-    googleSorted.forEach((r) => { counts[Math.round(r.rating) - 1] += 1; });
+    reviews.forEach((r) => {
+      const idx = Math.min(Math.max(Math.round(r.rating), 1), 5) - 1;
+      counts[idx] += 1;
+    });
+    googleSorted.forEach((r) => {
+      const idx = Math.min(Math.max(Math.round(r.rating), 1), 5) - 1;
+      counts[idx] += 1;
+    });
     return counts;
   }, [reviews, googleSorted]);
+
+  const distributionTotal = useMemo(
+    () => distribution.reduce((a, b) => a + b, 0),
+    [distribution]
+  );
 
   if (storyCount === 0 && !hasGoogle) return null;
 
@@ -344,6 +375,7 @@ export default function VenueReviewsBlock({
         combinedAvg={combinedAvg}
         combinedCount={combinedCount}
         distribution={distribution}
+        distributionTotal={distributionTotal}
         venueId={venueId}
       />
 
