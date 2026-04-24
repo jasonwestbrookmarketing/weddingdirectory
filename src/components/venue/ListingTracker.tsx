@@ -66,6 +66,7 @@ export default function ListingTracker({ venueId }: Props) {
   });
   const firedPageView = useRef(false);
   const heartbeat = useRef<ReturnType<typeof setInterval> | null>(null);
+  const photoSeen = useRef<Set<number>>(new Set());
 
   function track(event_type: string, event_data: Record<string, unknown> = {}) {
     if (!sessionId.current) return;
@@ -194,16 +195,11 @@ export default function ListingTracker({ venueId }: Props) {
         }
       }
 
-      // Photos: images inside the gallery usually sit inside a role=button
-      // or aria-label like "Open photo 3 of 12".
-      const photoBtn = target.closest(
-        'button[aria-label*="photo" i], [role="button"][aria-label*="photo" i], a[aria-label*="photo" i]'
-      ) as HTMLElement | null;
-      if (photoBtn) {
-        const m = (photoBtn.getAttribute("aria-label") || "").match(/(\d+)/);
-        track("photo_view", { photo_index: m ? Number(m[1]) - 1 : 0 });
-        return;
-      }
+      // Photo views are handled by the IntersectionObserver below (every photo
+      // that crosses 50% visibility fires exactly once) so we skip click-based
+      // detection here — clicking a photo tile that opens the gallery will
+      // still fire once the tile was in view, and scrolling the modal will
+      // fire one event per photo automatically.
 
       // Map container click (the map div itself doesn't always have an href).
       const mapEl = target.closest(
@@ -232,10 +228,54 @@ export default function ListingTracker({ venueId }: Props) {
     }
     document.addEventListener("click", onClick);
 
+    // Photo view tracking via IntersectionObserver.
+    // Any element with `data-photo-view-index="N"` will fire a photo_view
+    // exactly once per N when it becomes 50% visible, so scrolling through
+    // the fullscreen gallery records every image viewed without per-element
+    // click handlers.
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const el = entry.target as HTMLElement;
+          const raw = el.dataset.photoViewIndex;
+          if (raw == null) continue;
+          const idx = Number(raw);
+          if (Number.isNaN(idx)) continue;
+          if (photoSeen.current.has(idx)) continue;
+          photoSeen.current.add(idx);
+          track("photo_view", { photo_index: idx });
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    // MutationObserver so the gallery modal (which mounts/unmounts dynamically)
+    // gets picked up automatically when its photos land in the DOM.
+    function observePhotoTargets(root: Node) {
+      const nodes =
+        root instanceof Element
+          ? [
+              ...(root.matches?.("[data-photo-view-index]") ? [root] : []),
+              ...Array.from(root.querySelectorAll?.("[data-photo-view-index]") || []),
+            ]
+          : [];
+      for (const n of nodes) io.observe(n);
+    }
+    observePhotoTargets(document.body);
+    const mo = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        m.addedNodes.forEach((n) => observePhotoTargets(n));
+      }
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       document.removeEventListener("click", onClick);
       if (heartbeat.current) clearInterval(heartbeat.current);
+      io.disconnect();
+      mo.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [venueId]);

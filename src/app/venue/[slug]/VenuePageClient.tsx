@@ -96,7 +96,7 @@ function PhotoMosaic({
       {/* Desktop mosaic: 1 large left + 2×2 right grid */}
       <div className="hidden md:grid grid-cols-4 grid-rows-2 gap-2 h-[480px] overflow-hidden rounded-none md:rounded-2xl">
         {/* Main large photo */}
-        <div className="col-span-2 row-span-2 overflow-hidden">
+        <div className="col-span-2 row-span-2 overflow-hidden" data-photo-view-index={0}>
           {allPhotos[0] ? (
             <button
               type="button"
@@ -121,7 +121,7 @@ function PhotoMosaic({
         </div>
         {/* Top-right two */}
         {[1, 2].map((i) => (
-          <div key={i} className="overflow-hidden">
+          <div key={i} className="overflow-hidden" data-photo-view-index={i}>
             {allPhotos[i] ? (
               <button
                 type="button"
@@ -146,7 +146,7 @@ function PhotoMosaic({
         ))}
         {/* Bottom-right two */}
         {[3, 4].map((i) => (
-          <div key={i} className="overflow-hidden relative">
+          <div key={i} className="overflow-hidden relative" data-photo-view-index={i}>
             {allPhotos[i] ? (
               <button
                 type="button"
@@ -182,7 +182,7 @@ function PhotoMosaic({
       </div>
 
       {/* Mobile: single hero */}
-      <div className="md:hidden relative h-[280px] overflow-hidden">
+      <div className="md:hidden relative h-[280px] overflow-hidden" data-photo-view-index={0}>
         {allPhotos[0] ? (
           <button
             type="button"
@@ -288,6 +288,7 @@ function PhotoGalleryModal({
               itemRefs.current[i] = el;
             }}
             className="overflow-hidden rounded-2xl scroll-mt-20"
+            data-photo-view-index={i}
           >
             <Image
               src={url}
