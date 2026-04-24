@@ -136,16 +136,99 @@ export default function ListingTracker({ venueId }: Props) {
     function onClick(e: MouseEvent) {
       const target = e.target as HTMLElement | null;
       if (!target) return;
-      const el = target.closest("[data-track]") as HTMLElement | null;
-      if (!el) return;
-      const type = el.dataset.track!;
-      const extra: Record<string, unknown> = {};
-      if (el.dataset.trackIndex)
-        extra.photo_index = Number(el.dataset.trackIndex);
-      if (el.dataset.trackPlatform)
-        extra.platform = el.dataset.trackPlatform;
-      if (el.dataset.trackFaq) extra.faq_index = Number(el.dataset.trackFaq);
-      track(type, extra);
+
+      // 1. Explicit data-track takes priority when present.
+      const tagged = target.closest("[data-track]") as HTMLElement | null;
+      if (tagged) {
+        const extra: Record<string, unknown> = {};
+        if (tagged.dataset.trackIndex)
+          extra.photo_index = Number(tagged.dataset.trackIndex);
+        if (tagged.dataset.trackPlatform)
+          extra.platform = tagged.dataset.trackPlatform;
+        if (tagged.dataset.trackFaq)
+          extra.faq_index = Number(tagged.dataset.trackFaq);
+        track(tagged.dataset.track!, extra);
+        return;
+      }
+
+      // 2. Auto-detect — infer the event from the element.
+      // FAQ: <summary> is the clickable row of a <details> accordion.
+      const summary = target.closest("summary") as HTMLElement | null;
+      if (summary) {
+        const details = summary.closest("details") as HTMLElement | null;
+        const faqIndex = details?.parentElement
+          ? Array.from(details.parentElement.children).indexOf(details)
+          : -1;
+        track("faq_open", { faq_index: faqIndex });
+        return;
+      }
+
+      // Anchor targets: social, map, or generic outbound.
+      const anchor = target.closest("a[href]") as HTMLAnchorElement | null;
+      if (anchor) {
+        const href = anchor.getAttribute("href") || "";
+        const mapMatch =
+          /google\.com\/maps|maps\.google|openstreetmap|apple\.com\/maps/i.test(
+            href
+          );
+        if (mapMatch) {
+          track("map_click", { href });
+          return;
+        }
+        const socialPlatforms: Record<string, RegExp> = {
+          instagram: /instagram\.com/i,
+          facebook: /facebook\.com|fb\.com/i,
+          tiktok: /tiktok\.com/i,
+          pinterest: /pinterest\.com|pin\.it/i,
+          youtube: /youtube\.com|youtu\.be/i,
+          twitter: /twitter\.com|x\.com/i,
+          website: /^https?:\/\//i,
+        };
+        for (const [platform, rx] of Object.entries(socialPlatforms)) {
+          if (rx.test(href)) {
+            if (anchor.target === "_blank" || platform !== "website") {
+              track("social_click", { platform, href });
+              return;
+            }
+          }
+        }
+      }
+
+      // Photos: images inside the gallery usually sit inside a role=button
+      // or aria-label like "Open photo 3 of 12".
+      const photoBtn = target.closest(
+        'button[aria-label*="photo" i], [role="button"][aria-label*="photo" i], a[aria-label*="photo" i]'
+      ) as HTMLElement | null;
+      if (photoBtn) {
+        const m = (photoBtn.getAttribute("aria-label") || "").match(/(\d+)/);
+        track("photo_view", { photo_index: m ? Number(m[1]) - 1 : 0 });
+        return;
+      }
+
+      // Map container click (the map div itself doesn't always have an href).
+      const mapEl = target.closest(
+        '[data-map], .leaflet-container, [aria-label*="map" i]'
+      ) as HTMLElement | null;
+      if (mapEl) {
+        track("map_click");
+        return;
+      }
+
+      // Contact / inquiry CTA — button text based.
+      const btn = target.closest("button,a") as HTMLElement | null;
+      if (btn) {
+        const text = (btn.innerText || btn.getAttribute("aria-label") || "")
+          .trim()
+          .toLowerCase();
+        if (
+          /^(inquire|contact|request|book|tour|get in touch|send message|check availability)/i.test(
+            text
+          )
+        ) {
+          track("contact_form_open", { label: text.slice(0, 40) });
+          return;
+        }
+      }
     }
     document.addEventListener("click", onClick);
 
