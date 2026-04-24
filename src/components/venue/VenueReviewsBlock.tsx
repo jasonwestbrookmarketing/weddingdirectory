@@ -314,16 +314,7 @@ export default function VenueReviewsBlock({
 
   const googleReviewsLen = google?.reviews.length ?? 0;
 
-  // Combined stats for the summary widget
   const combinedCount = storyCount + googleCount;
-  const combinedAvg = useMemo(() => {
-    if (storyCount === 0 && googleCount === 0) return 0;
-    if (storyCount > 0 && googleCount > 0 && googleAvgRaw != null) {
-      return (storyAvg * storyCount + googleAvgRaw * googleCount) / combinedCount;
-    }
-    if (storyCount > 0) return storyAvg;
-    return googleAvgRaw ?? 0;
-  }, [storyCount, googleCount, storyAvg, googleAvgRaw, combinedCount]);
 
   // Distribution based solely on StoryVenue reviews — we own this data fully
   // and every individual rating is available, so the bar counts are exact.
@@ -364,8 +355,8 @@ export default function VenueReviewsBlock({
 
       {/* Combined summary widget */}
       <RatingSummary
-        combinedAvg={combinedAvg}
-        combinedCount={combinedCount}
+        combinedAvg={storyAvg}
+        combinedCount={storyCount}
         distribution={distribution}
         distributionTotal={distributionTotal}
         venueId={venueId}
