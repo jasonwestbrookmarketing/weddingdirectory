@@ -19,6 +19,8 @@ import type { GoogleReviewItem, GoogleReviewsCache, ListingReview } from "@/type
 
 const STORY_PREVIEW = 4;
 const GOOGLE_PREVIEW = 5;
+const STORYPAY_URL =
+  process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
 
 function StarRow({
   rating,
@@ -38,13 +40,97 @@ function StarRow({
           key={n}
           className={`${px} ${
             n <= rating
-              ? "fill-stone-900 text-stone-900"
+              ? "fill-yellow-400 text-yellow-400"
               : "fill-stone-200 text-stone-200"
           }`}
           strokeWidth={0}
         />
       ))}
     </span>
+  );
+}
+
+/** Combined rating summary card + bar chart, shown above the tab/review list. */
+function RatingSummary({
+  combinedAvg,
+  combinedCount,
+  distribution,
+  venueId,
+}: {
+  combinedAvg: number;
+  combinedCount: number;
+  /** How many reviews exist at each star level (index 0 = 1★ … index 4 = 5★). */
+  distribution: number[];
+  venueId: string;
+}) {
+  const maxBar = Math.max(...distribution, 1);
+  const writeHref = `${STORYPAY_URL}/login?as=couple&intent=review&venue=${encodeURIComponent(venueId)}`;
+
+  return (
+    <div className="flex flex-col sm:flex-row gap-4 mb-8 rounded-2xl border border-stone-200 overflow-hidden">
+      {/* Left — aggregate */}
+      <div className="flex flex-col justify-center gap-2 px-6 py-5 sm:w-52 shrink-0 bg-stone-50 border-b sm:border-b-0 sm:border-r border-stone-200">
+        <p className="text-xs font-semibold uppercase tracking-wider text-stone-400">
+          Overall Rating
+        </p>
+        <div className="flex items-baseline gap-2">
+          <span className="text-4xl font-bold text-stone-900">
+            {combinedAvg > 0 ? combinedAvg.toFixed(1) : "—"}
+          </span>
+          {combinedAvg > 0 && (
+            <div className="flex items-center gap-0.5">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <Star
+                  key={n}
+                  className={`h-4 w-4 ${
+                    n <= Math.round(combinedAvg)
+                      ? "fill-yellow-400 text-yellow-400"
+                      : "fill-stone-200 text-stone-200"
+                  }`}
+                  strokeWidth={0}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+        <p className="text-xs text-stone-500">
+          {combinedCount} {combinedCount === 1 ? "review" : "reviews"}
+        </p>
+        <a
+          href={writeHref}
+          className="mt-3 inline-flex items-center justify-center gap-1.5 rounded-xl bg-stone-900 px-4 py-2.5 text-xs font-semibold text-white hover:bg-stone-700 transition-colors"
+        >
+          <Star className="h-3.5 w-3.5 fill-white text-white" strokeWidth={0} />
+          Write a review
+        </a>
+      </div>
+
+      {/* Right — distribution bars */}
+      <div className="flex flex-col justify-center gap-2 px-6 py-5 flex-1">
+        <p className="text-xs font-semibold uppercase tracking-wider text-stone-400 mb-1">
+          Rating Breakdown
+        </p>
+        {[5, 4, 3, 2, 1].map((star) => {
+          const count = distribution[star - 1];
+          const pct = Math.round((count / maxBar) * 100);
+          return (
+            <div key={star} className="flex items-center gap-3">
+              <span className="flex items-center gap-0.5 shrink-0 w-8 text-xs text-stone-500 font-medium">
+                {star}
+                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" strokeWidth={0} />
+              </span>
+              <div className="flex-1 h-2 rounded-full bg-stone-100 overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-yellow-400 transition-all duration-500"
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+              <span className="w-5 text-right text-xs text-stone-400 shrink-0">{count}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -174,10 +260,12 @@ export default function VenueReviewsBlock({
   reviews,
   google,
   googlePlaceId,
+  venueId,
 }: {
   reviews: ListingReview[];
   google: GoogleReviewsCache | null;
   googlePlaceId?: string | null;
+  venueId: string;
 }) {
   const storyCount = reviews.length;
   const storyAvg =
@@ -208,6 +296,25 @@ export default function VenueReviewsBlock({
 
   const googleReviewsLen = google?.reviews.length ?? 0;
 
+  // Combined stats for the summary widget
+  const combinedCount = storyCount + googleCount;
+  const combinedAvg = useMemo(() => {
+    if (storyCount === 0 && googleCount === 0) return 0;
+    if (storyCount > 0 && googleCount > 0 && googleAvgRaw != null) {
+      return (storyAvg * storyCount + googleAvgRaw * googleCount) / combinedCount;
+    }
+    if (storyCount > 0) return storyAvg;
+    return googleAvgRaw ?? 0;
+  }, [storyCount, googleCount, storyAvg, googleAvgRaw, combinedCount]);
+
+  // Distribution from all available individual reviews (both sources)
+  const distribution = useMemo(() => {
+    const counts = [0, 0, 0, 0, 0]; // index 0 = 1★ … 4 = 5★
+    reviews.forEach((r) => { counts[Math.round(r.rating) - 1] += 1; });
+    googleSorted.forEach((r) => { counts[Math.round(r.rating) - 1] += 1; });
+    return counts;
+  }, [reviews, googleSorted]);
+
   if (storyCount === 0 && !hasGoogle) return null;
 
   const headlineAvg = tab === "story" ? storyAvg : googleAvgRaw ?? 0;
@@ -229,12 +336,23 @@ export default function VenueReviewsBlock({
 
   return (
     <section id="reviews" className="mb-8 scroll-mt-24">
-      {/* Headline avg */}
+      {/* Section heading */}
+      <h2 className="text-xl font-semibold text-stone-900 mb-6">Reviews</h2>
+
+      {/* Combined summary widget */}
+      <RatingSummary
+        combinedAvg={combinedAvg}
+        combinedCount={combinedCount}
+        distribution={distribution}
+        venueId={venueId}
+      />
+
+      {/* Per-source headline */}
       <div className="flex items-baseline gap-3 mb-6">
-        <h2 className="text-xl font-semibold text-stone-900 flex items-center gap-2">
-          <Star className="h-5 w-5 fill-stone-900 text-stone-900" strokeWidth={0} />
+        <span className="text-lg font-semibold text-stone-900 flex items-center gap-2">
+          <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" strokeWidth={0} />
           {headlineAvg > 0 ? headlineAvg.toFixed(headlineAvg === 5 ? 0 : 2) : "—"}
-        </h2>
+        </span>
         <span className="text-stone-500 text-sm">
           · {headlineCount} {headlineCount === 1 ? "review" : "reviews"}
         </span>
