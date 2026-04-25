@@ -67,10 +67,12 @@ export default function ListingTracker({ venueId }: Props) {
   const firedPageView = useRef(false);
   const heartbeat = useRef<ReturnType<typeof setInterval> | null>(null);
   const photoSeen = useRef<Set<number>>(new Set());
+  // Precise browser coordinates — null until the visitor grants location access
+  const geoRef = useRef<{ lat: number; lon: number } | null>(null);
 
   function track(event_type: string, event_data: Record<string, unknown> = {}) {
     if (!sessionId.current) return;
-    const payload = {
+    const payload: Record<string, unknown> = {
       venue_id: venueId,
       session_id: sessionId.current,
       event_type,
@@ -78,6 +80,12 @@ export default function ListingTracker({ venueId }: Props) {
       referrer: document.referrer || null,
       ...getUtmParams(),
     };
+    // Include precise browser coordinates whenever available — the server
+    // will use these instead of the (often inaccurate) IP geolocation.
+    if (geoRef.current) {
+      payload.client_latitude  = geoRef.current.lat;
+      payload.client_longitude = geoRef.current.lon;
+    }
     fetch(TRACK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -110,6 +118,31 @@ export default function ListingTracker({ venueId }: Props) {
       () => track("session_heartbeat"),
       30_000
     );
+
+    // ── Browser Geolocation (precise) ─────────────────────────────────────
+    // Silently request the visitor's location. On mobile this is GPS-level
+    // accurate; on desktop it uses WiFi triangulation (usually within a few
+    // hundred metres). If the visitor denies permission we simply fall back
+    // to the server-side IP geolocation. We never block the page on this.
+    if (typeof navigator !== "undefined" && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          geoRef.current = {
+            lat: pos.coords.latitude,
+            lon: pos.coords.longitude,
+          };
+          // Fire an immediate heartbeat now that we have precise coordinates
+          // so the analytics map updates within seconds of page load.
+          track("session_heartbeat");
+        },
+        () => { /* permission denied or unavailable — IP geo is the fallback */ },
+        {
+          enableHighAccuracy: false, // network/WiFi — fast, no GPS battery drain
+          timeout: 8_000,
+          maximumAge: 600_000,       // accept a 10-min cached fix if available
+        }
+      );
+    }
 
     function onScroll() {
       const scrolled = window.scrollY + window.innerHeight;
