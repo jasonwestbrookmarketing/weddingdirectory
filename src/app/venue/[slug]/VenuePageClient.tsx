@@ -810,7 +810,7 @@ export default function VenuePageClient({
 
                 <Button
                   size="lg"
-                  className="w-full bg-stone-900 hover:bg-stone-800 text-white rounded-xl"
+                  className="w-full bg-stone-900 hover:bg-stone-800 text-white rounded-xl text-sm whitespace-nowrap"
                   onClick={handleCTAClick}
                 >
                   {CTA_LABEL}
@@ -840,7 +840,7 @@ export default function VenuePageClient({
           )}
           <Button
             size="md"
-            className="flex-1 bg-stone-900 hover:bg-stone-800 text-white rounded-xl"
+            className="flex-1 bg-stone-900 hover:bg-stone-800 text-white rounded-xl text-sm whitespace-nowrap"
             onClick={handleCTAClick}
           >
             {CTA_LABEL}
