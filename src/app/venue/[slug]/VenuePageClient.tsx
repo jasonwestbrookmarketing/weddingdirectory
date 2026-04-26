@@ -867,7 +867,6 @@ export default function VenuePageClient({
         onClose={() => setIsOpen(false)}
         venueId={venue.id}
         venueName={venue.name || undefined}
-        prefillGuestCount={venue.capacity_min || undefined}
       />
     </>
   );

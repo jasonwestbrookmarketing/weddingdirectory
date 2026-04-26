@@ -9,12 +9,13 @@ import { Select } from "@/components/ui/Select";
 import { BOOKING_TIMELINES, VENUE_MATTERS_OPTIONS, CTA_LABEL } from "@/lib/constants";
 import { trackEvent } from "@/lib/analytics";
 
+const SUBMIT_LABEL = "Download Pricing & Availability Guide";
+
 interface LeadFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   venueId: string;
   venueName?: string;
-  prefillGuestCount?: number;
 }
 
 export default function LeadFormModal({
@@ -22,19 +23,15 @@ export default function LeadFormModal({
   onClose,
   venueId,
   venueName,
-  prefillGuestCount,
 }: LeadFormModalProps) {
   const router = useRouter();
   const overlayRef = useRef<HTMLDivElement>(null);
   const formStarted = useRef(false);
 
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [weddingDate, setWeddingDate] = useState("");
-  const [guestCount, setGuestCount] = useState(
-    prefillGuestCount?.toString() || ""
-  );
   const [bookingTimeline, setBookingTimeline] = useState("");
   const [venueMatters, setVenueMatters] = useState("");
   const [message, setMessage] = useState("");
@@ -77,11 +74,12 @@ export default function LeadFormModal({
 
     const payload = {
       venue_id: venueId,
-      name,
+      first_name: firstName,
+      last_name: lastName,
+      // StoryPay's API also accepts a combined `name` field for compatibility
+      name: `${firstName} ${lastName}`.trim(),
       email,
       phone,
-      wedding_date: weddingDate || undefined,
-      guest_count: guestCount ? Number(guestCount) : undefined,
       booking_timeline: bookingTimeline || undefined,
       venue_matters: venueMatters || undefined,
       message: message || undefined,
@@ -154,16 +152,29 @@ export default function LeadFormModal({
           className="p-6 space-y-4"
           onFocus={handleFirstInteraction}
         >
-          <Input
-            id="lead-name"
-            label="Full Name"
-            type="text"
-            placeholder="Jane Doe"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            error={fieldErrors.name}
-          />
+          {/* First + Last name side by side */}
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              id="lead-first-name"
+              label="First Name"
+              type="text"
+              placeholder="Jane"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              error={fieldErrors.first_name}
+            />
+            <Input
+              id="lead-last-name"
+              label="Last Name"
+              type="text"
+              placeholder="Doe"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              error={fieldErrors.last_name}
+            />
+          </div>
 
           <Input
             id="lead-email"
@@ -186,26 +197,6 @@ export default function LeadFormModal({
             required
             error={fieldErrors.phone}
           />
-
-          <div className="grid grid-cols-2 gap-4">
-            <Input
-              id="lead-date"
-              label="Wedding Date"
-              type="date"
-              value={weddingDate}
-              onChange={(e) => setWeddingDate(e.target.value)}
-              error={fieldErrors.wedding_date}
-            />
-            <Input
-              id="lead-guests"
-              label="Guest Count"
-              type="number"
-              placeholder="150"
-              value={guestCount}
-              onChange={(e) => setGuestCount(e.target.value)}
-              error={fieldErrors.guest_count}
-            />
-          </div>
 
           <Select
             id="lead-timeline"
@@ -233,12 +224,14 @@ export default function LeadFormModal({
             error={fieldErrors.venue_matters}
           />
 
+          {/* Optional free-text — not required */}
           <div>
             <label
               htmlFor="lead-message"
               className="block text-sm font-medium text-stone-700 mb-1.5"
             >
-              Anything you&apos;d like the venue to know?
+              Anything you&apos;d like the venue to know?{" "}
+              <span className="text-stone-400 font-normal">(optional)</span>
             </label>
             <textarea
               id="lead-message"
@@ -262,7 +255,7 @@ export default function LeadFormModal({
             className="w-full bg-stone-900 hover:bg-stone-800 text-white"
             size="lg"
           >
-            {CTA_LABEL}
+            {SUBMIT_LABEL}
           </Button>
 
           <p className="text-xs text-stone-400 text-center">

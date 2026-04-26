@@ -9,11 +9,12 @@ export const leadFormSchema = z
   .object({
     venue_id: z.string().uuid().optional(),
     listing_slug: z.string().min(1).optional(),
-    name: z.string().min(1, "Name is required"),
+    // Accept combined name OR split first/last — both are forwarded to StoryPay
+    name: z.string().optional(),
+    first_name: z.string().optional(),
+    last_name: z.string().optional(),
     email: z.email("Valid email required"),
     phone: z.string().min(7, "Phone number is required"),
-    wedding_date: z.string().optional(),
-    guest_count: z.number().int().min(1).optional(),
     booking_timeline: z.string().optional(),
     venue_matters: z.string().optional(),
     message: z.string().optional(),
