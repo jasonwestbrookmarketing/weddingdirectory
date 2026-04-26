@@ -129,7 +129,7 @@ export default function LeadFormModal({
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-[fade-in_0.15s_ease-out]" />
 
-      <div className="relative z-10 w-full max-w-lg bg-white md:rounded-2xl rounded-t-2xl max-h-[90vh] overflow-y-auto animate-[slide-up_0.25s_ease-out] md:animate-[fade-in_0.15s_ease-out]">
+      <div className="relative z-10 w-full max-w-lg bg-white md:rounded-2xl rounded-t-2xl max-h-[90vh] overflow-y-auto scrollbar-hide [scrollbar-width:none] [&::-webkit-scrollbar]:hidden animate-[slide-up_0.25s_ease-out] md:animate-[fade-in_0.15s_ease-out]">
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-stone-100 bg-white px-6 py-4 md:rounded-t-2xl">
           <div>
             <h2 className="text-lg font-semibold text-stone-900">
