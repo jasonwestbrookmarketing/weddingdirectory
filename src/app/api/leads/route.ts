@@ -74,6 +74,7 @@ export async function POST(request: NextRequest) {
     wedding_date: d.wedding_date ?? null,
     guest_count: d.guest_count ?? null,
     booking_timeline: d.booking_timeline ?? null,
+    venue_matters: d.venue_matters ?? null,
     message: d.message ?? null,
     source: "directory",
   };

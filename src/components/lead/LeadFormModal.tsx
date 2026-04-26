@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
-import { BOOKING_TIMELINES, CTA_LABEL } from "@/lib/constants";
+import { BOOKING_TIMELINES, VENUE_MATTERS_OPTIONS, CTA_LABEL } from "@/lib/constants";
 import { trackEvent } from "@/lib/analytics";
 
 interface LeadFormModalProps {
@@ -36,6 +36,7 @@ export default function LeadFormModal({
     prefillGuestCount?.toString() || ""
   );
   const [bookingTimeline, setBookingTimeline] = useState("");
+  const [venueMatters, setVenueMatters] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -82,6 +83,7 @@ export default function LeadFormModal({
       wedding_date: weddingDate || undefined,
       guest_count: guestCount ? Number(guestCount) : undefined,
       booking_timeline: bookingTimeline || undefined,
+      venue_matters: venueMatters || undefined,
       message: message || undefined,
     };
 
@@ -216,6 +218,19 @@ export default function LeadFormModal({
             }))}
             placeholder="Select timeline"
             error={fieldErrors.booking_timeline}
+          />
+
+          <Select
+            id="lead-venue-matters"
+            label="What matters most when choosing a venue?"
+            value={venueMatters}
+            onChange={(e) => setVenueMatters(e.target.value)}
+            options={VENUE_MATTERS_OPTIONS.map((o) => ({
+              value: o,
+              label: o,
+            }))}
+            placeholder="Select what matters most"
+            error={fieldErrors.venue_matters}
           />
 
           <div>

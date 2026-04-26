@@ -314,7 +314,6 @@ export default function VenueReviewsBlock({
 
   const googleReviewsLen = google?.reviews.length ?? 0;
 
-  const combinedCount = storyCount + googleCount;
 
   // Distribution based solely on StoryVenue reviews — we own this data fully
   // and every individual rating is available, so the bar counts are exact.

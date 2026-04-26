@@ -27,6 +27,21 @@ export const BOOKING_TIMELINES = [
   { value: "researching", label: "Just researching" },
 ] as const;
 
+// Matches the dashboard's ListingLeadModal options exactly so leads are
+// consistently categorised across both surfaces.
+export const VENUE_MATTERS_OPTIONS = [
+  "Outdoor ceremony space",
+  "Inclusive pricing & all-in packages",
+  "Unique / non-traditional setting",
+  "On-site catering & bar",
+  "Guest capacity (large or intimate)",
+  "Location & accessibility",
+  "Photo-worthy aesthetics",
+  "Vendor flexibility",
+  "Bridal suite & getting-ready space",
+  "Experience & reputation",
+] as const;
+
 export const LEAD_STATUSES = [
   { value: "new",            label: "New Lead",        color: "bg-blue-50 text-blue-700" },
   { value: "contacted",      label: "Contacted",       color: "bg-amber-50 text-amber-700" },

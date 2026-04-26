@@ -15,6 +15,7 @@ export const leadFormSchema = z
     wedding_date: z.string().optional(),
     guest_count: z.number().int().min(1).optional(),
     booking_timeline: z.string().optional(),
+    venue_matters: z.string().optional(),
     message: z.string().optional(),
   })
   .refine((d) => d.venue_id || d.listing_slug, {
