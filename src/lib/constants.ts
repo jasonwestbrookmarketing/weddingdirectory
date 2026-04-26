@@ -149,7 +149,7 @@ export const FEATURES_LIST = [
   ...SERVICES_LIST,
 ] as const;
 
-export const CTA_LABEL = "Get Pricing & Check Availability";
+export const CTA_LABEL = "Download Pricing & Availability Guide";
 
 export const BUDGET_RANGES = [
   { value: "0-5000",    label: "$ · Budget-Friendly",   scale: "$",    min: 0,     max: 5000   },

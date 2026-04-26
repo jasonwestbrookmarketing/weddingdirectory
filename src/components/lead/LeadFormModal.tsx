@@ -6,9 +6,10 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
-import { BOOKING_TIMELINES, VENUE_MATTERS_OPTIONS, CTA_LABEL } from "@/lib/constants";
+import { BOOKING_TIMELINES, VENUE_MATTERS_OPTIONS } from "@/lib/constants";
 import { trackEvent } from "@/lib/analytics";
 
+const MODAL_HEADER = "Get Pricing & Check Availability";
 const SUBMIT_LABEL = "Download Pricing & Availability Guide";
 
 interface LeadFormModalProps {
@@ -132,7 +133,7 @@ export default function LeadFormModal({
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-stone-100 bg-white px-6 py-4 md:rounded-t-2xl">
           <div>
             <h2 className="text-lg font-semibold text-stone-900">
-              {CTA_LABEL}
+              {MODAL_HEADER}
             </h2>
             {venueName && (
               <p className="text-sm text-stone-500 mt-0.5">{venueName}</p>
