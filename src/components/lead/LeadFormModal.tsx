@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
-import { BOOKING_TIMELINES, VENUE_MATTERS_OPTIONS } from "@/lib/constants";
+import { BOOKING_TIMELINES } from "@/lib/constants";
 import { trackEvent } from "@/lib/analytics";
 
 const MODAL_HEADER = "Get Pricing & Check Availability";
@@ -212,16 +212,14 @@ export default function LeadFormModal({
             error={fieldErrors.booking_timeline}
           />
 
-          <Select
+          <Input
             id="lead-venue-matters"
             label="What matters most when choosing a venue?"
+            type="text"
+            placeholder="e.g. outdoor ceremony space, all-inclusive pricing…"
             value={venueMatters}
             onChange={(e) => setVenueMatters(e.target.value)}
-            options={VENUE_MATTERS_OPTIONS.map((o) => ({
-              value: o,
-              label: o,
-            }))}
-            placeholder="Select what matters most"
+            required
             error={fieldErrors.venue_matters}
           />
 
