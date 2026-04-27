@@ -38,15 +38,23 @@ function ConfirmationContent() {
         {/* Buttons — side by side on sm+, stacked on mobile */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           {website ? (
-            <a
-              href={website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-stone-900 text-white px-5 py-2.5 text-sm font-semibold hover:bg-stone-800 transition-colors whitespace-nowrap"
-            >
-              Visit {name}&apos;s Website
-              <ExternalLink className="h-3.5 w-3.5" />
-            </a>
+            <>
+              <a
+                href={website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-stone-900 text-white px-5 py-2.5 text-sm font-semibold hover:bg-stone-800 transition-colors whitespace-nowrap"
+              >
+                Visit {name}&apos;s Website
+                <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+              <Link
+                href={listingHref}
+                className="inline-flex items-center justify-center rounded-xl border border-stone-200 bg-white text-stone-900 px-5 py-2.5 text-sm font-semibold hover:bg-stone-50 transition-colors whitespace-nowrap"
+              >
+                Back to Listing
+              </Link>
+            </>
           ) : (
             <Link
               href={listingHref}
@@ -55,13 +63,6 @@ function ConfirmationContent() {
               Back to Listing
             </Link>
           )}
-
-          <Link
-            href={listingHref}
-            className="inline-flex items-center justify-center rounded-xl border border-stone-200 bg-white text-stone-900 px-5 py-2.5 text-sm font-semibold hover:bg-stone-50 transition-colors whitespace-nowrap"
-          >
-            Back to Listing
-          </Link>
         </div>
       </div>
     </main>
