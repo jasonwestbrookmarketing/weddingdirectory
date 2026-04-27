@@ -29,8 +29,8 @@ function ConfirmationContent() {
             Thanks for downloading our guide!
           </h1>
           <p className="text-stone-500 text-sm leading-relaxed">
-            We just sent your guide to your phone, and it&apos;s headed to your
-            inbox too. We&apos;ll personally reach out to answer any questions
+            We just sent your guide to your phone, and it&apos;s headed to your inbox too.<br />
+            We&apos;ll personally reach out to answer any questions<br />
             and make sure your date is still available!
           </p>
         </div>
