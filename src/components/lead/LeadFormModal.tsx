@@ -17,6 +17,8 @@ interface LeadFormModalProps {
   onClose: () => void;
   venueId: string;
   venueName?: string;
+  venueSlug?: string;
+  venueWebsite?: string;
 }
 
 export default function LeadFormModal({
@@ -24,6 +26,8 @@ export default function LeadFormModal({
   onClose,
   venueId,
   venueName,
+  venueSlug,
+  venueWebsite,
 }: LeadFormModalProps) {
   const router = useRouter();
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -109,7 +113,11 @@ export default function LeadFormModal({
         venue_id: venueId,
         lead_id: data.leadId,
       });
-      router.push("/confirmation");
+      const params = new URLSearchParams();
+      if (venueSlug) params.set("slug", venueSlug);
+      if (venueWebsite) params.set("website", venueWebsite);
+      if (venueName) params.set("name", venueName);
+      router.push(`/confirmation?${params.toString()}`);
     } catch {
       setError("Network error. Please check your connection and try again.");
       setLoading(false);

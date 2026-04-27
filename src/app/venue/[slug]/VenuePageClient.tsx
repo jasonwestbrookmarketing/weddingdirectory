@@ -867,6 +867,8 @@ export default function VenuePageClient({
         onClose={() => setIsOpen(false)}
         venueId={venue.id}
         venueName={venue.name || undefined}
+        venueSlug={venue.slug || undefined}
+        venueWebsite={venue.brand_website || undefined}
       />
     </>
   );

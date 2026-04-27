@@ -72,6 +72,8 @@ export interface Venue {
   onboarding_completed: boolean;
   notification_email: string | null;
   email_notifications: boolean;
+  /** Venue's public website URL set in Branding settings. */
+  brand_website: string | null;
   /** Owner toggle for the public map embed on the venue listing. */
   show_map: boolean | null;
   /** Sparse object of social URLs. See VenueSocialLinks for known keys. */
