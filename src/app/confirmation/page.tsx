@@ -25,10 +25,10 @@ function ConfirmationContent() {
 
         {/* Heading + copy */}
         <div className="space-y-3">
-          <h1 className="text-3xl font-bold text-stone-900">
+          <h1 className="text-2xl font-bold text-stone-900 whitespace-nowrap">
             Thanks for downloading our guide!
           </h1>
-          <p className="text-stone-500 text-base leading-relaxed max-w-sm mx-auto">
+          <p className="text-stone-500 text-sm leading-relaxed">
             We just sent your guide to your phone, and it&apos;s headed to your
             inbox too. We&apos;ll personally reach out to answer any questions
             and make sure your date is still available!
