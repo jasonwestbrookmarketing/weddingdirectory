@@ -206,29 +206,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Footer */}
-      <footer className="bg-stone-100 py-12 px-6 md:px-12 mt-auto">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <Link href="/" aria-label="StoryVenue home">
-            <Image
-              src="/storyvenue-dark-logo.png"
-              alt="StoryVenue"
-              width={140}
-              height={36}
-              className="h-8 w-auto object-contain"
-            />
-          </Link>
-          <p className="text-sm text-stone-500">
-            &copy; {new Date().getFullYear()} StoryVenue. All rights reserved.
-          </p>
-          <a
-            href={`${STORYPAY_URL}/signup?as=venue`}
-            className="text-sm text-stone-500 hover:text-stone-900 transition-colors"
-          >
-            List Your Venue
-          </a>
-        </div>
-      </footer>
     </>
   );
 }
