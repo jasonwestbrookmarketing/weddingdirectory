@@ -756,8 +756,8 @@ export default function VenuePageClient({
 
           {/* Right column — sticky booking card */}
           <div className="hidden lg:block">
-            <div className="sticky top-8">
-              <div className="border border-stone-200 rounded-2xl shadow-lg p-6 bg-white">
+            <div className="sticky top-[88px]">
+              <div className="border border-stone-200 rounded-2xl shadow-lg p-6 bg-white max-h-[calc(100vh-104px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {/* Pricing guide cover — replaces the stats box entirely.
                     Always shown: real cover when uploaded, placeholder otherwise. */}
                 <button
