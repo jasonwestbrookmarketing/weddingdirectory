@@ -73,6 +73,19 @@ export default async function VenuePage({ params }: Props) {
   // Places API key). Directory just surfaces whatever is in the JSONB column.
   const googleReviews = parseGoogleReviewsCache(venue.google_reviews_cache);
 
+  // Pricing guide cover — used as a teaser in the sticky booking card.
+  // Only show if the venue has enabled their guide and generated a cover.
+  const { data: guideRow } = await supabase
+    .from("venue_pricing_guides")
+    .select("cover_image_url, enabled")
+    .eq("venue_id", venue.id)
+    .maybeSingle();
+
+  const guidePreviewUrl =
+    guideRow?.enabled && guideRow?.cover_image_url
+      ? guideRow.cover_image_url
+      : null;
+
   return (
     <div className="min-h-screen bg-white">
       {/* Airbnb-style white top nav */}
@@ -111,6 +124,7 @@ export default async function VenuePage({ params }: Props) {
         venue={venue}
         reviews={reviews}
         googleReviews={googleReviews}
+        guidePreviewUrl={guidePreviewUrl}
       />
     </div>
   );

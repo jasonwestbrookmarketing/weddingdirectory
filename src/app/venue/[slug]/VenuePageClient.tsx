@@ -61,6 +61,7 @@ interface VenuePageClientProps {
   venue: Venue;
   reviews: ListingReview[];
   googleReviews: GoogleReviewsCache | null;
+  guidePreviewUrl?: string | null;
 }
 
 function PhotoMosaic({
@@ -309,6 +310,7 @@ export default function VenuePageClient({
   venue,
   reviews,
   googleReviews,
+  guidePreviewUrl,
 }: VenuePageClientProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
@@ -807,6 +809,33 @@ export default function VenuePageClient({
                     </div>
                   )}
                 </div>
+
+                {/* Pricing guide preview — teaser to encourage download */}
+                {guidePreviewUrl && (
+                  <button
+                    type="button"
+                    onClick={handleCTAClick}
+                    className="w-full mb-4 group relative rounded-xl overflow-hidden border border-stone-200 cursor-pointer focus:outline-none"
+                    aria-label="Preview pricing guide — click to download"
+                  >
+                    <img
+                      src={guidePreviewUrl}
+                      alt="Pricing guide preview"
+                      className="w-full object-cover object-top"
+                      style={{ maxHeight: "220px" }}
+                    />
+                    {/* Gradient overlay with CTA hint */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent flex items-end justify-center pb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <span className="text-white text-xs font-semibold tracking-wide drop-shadow">
+                        Click to download full guide ↓
+                      </span>
+                    </div>
+                    {/* Static badge */}
+                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 text-[11px] font-semibold text-stone-700 shadow-sm">
+                      Free Guide
+                    </div>
+                  </button>
+                )}
 
                 <Button
                   size="lg"
