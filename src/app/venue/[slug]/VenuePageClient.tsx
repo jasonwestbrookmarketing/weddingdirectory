@@ -769,7 +769,6 @@ export default function VenuePageClient({
                         {PRICE_SCALE_LABELS[getPriceScale(venue.price_min)!]}
                       </span>
                     </div>
-                    <p className="text-xs text-stone-400 mt-1">Inquire for exact pricing</p>
                   </div>
                 )}
 
@@ -836,9 +835,6 @@ export default function VenuePageClient({
                   {CTA_LABEL}
                 </Button>
 
-                <p className="text-xs text-stone-400 text-center mt-3">
-                  No commitment — just check availability
-                </p>
               </div>
             </div>
           </div>
