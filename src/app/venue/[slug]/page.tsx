@@ -74,17 +74,19 @@ export default async function VenuePage({ params }: Props) {
   const googleReviews = parseGoogleReviewsCache(venue.google_reviews_cache);
 
   // Pricing guide cover — used as a teaser in the sticky booking card.
-  // Only show if the venue has enabled their guide and generated a cover.
+  // guidePreviewUrl meanings:
+  //   undefined  → guide not enabled (show stats box instead)
+  //   ""         → guide enabled but no cover image yet (show placeholder)
+  //   string     → guide enabled + cover image URL (show cover)
   const { data: guideRow } = await supabase
     .from("venue_pricing_guides")
     .select("cover_image_url, enabled")
     .eq("venue_id", venue.id)
     .maybeSingle();
 
-  const guidePreviewUrl =
-    guideRow?.enabled && guideRow?.cover_image_url
-      ? guideRow.cover_image_url
-      : null;
+  const guidePreviewUrl: string | undefined = guideRow?.enabled
+    ? (guideRow.cover_image_url ?? "")
+    : undefined;
 
   return (
     <div className="min-h-screen bg-white">
