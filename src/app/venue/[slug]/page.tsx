@@ -73,16 +73,36 @@ export default async function VenuePage({ params }: Props) {
   // Places API key). Directory just surfaces whatever is in the JSONB column.
   const googleReviews = parseGoogleReviewsCache(venue.google_reviews_cache);
 
-  // Pricing guide cover — used as the centerpiece of the sticky booking card.
-  // We always render a cover slot (with a placeholder when there's no image).
-  // The stats box has been retired; the cover replaces it.
-  const { data: guideRow } = await supabase
-    .from("venue_pricing_guides")
-    .select("cover_image_url")
-    .eq("venue_id", venue.id)
-    .maybeSingle();
+  // ── Pricing guide plan gate ──────────────────────────────────────────────
+  // The floating booking card (cover image + download CTA) is only shown when
+  // the venue's directory plan has `nav_listing_pricing_guide` enabled.
+  // Venues without a plan (legacy) get access by default.
+  let pricingGuideEnabled = true;
+  if (venue.directory_plan_id) {
+    const { data: plan } = await supabase
+      .from("directory_plans")
+      .select("nav_permissions")
+      .eq("id", venue.directory_plan_id)
+      .maybeSingle();
+    if (plan) {
+      const perms = (plan.nav_permissions ?? {}) as Record<string, boolean>;
+      pricingGuideEnabled = perms["nav_listing_pricing_guide"] === true;
+    } else {
+      // Plan id set but row missing — fail closed.
+      pricingGuideEnabled = false;
+    }
+  }
 
-  const guidePreviewUrl: string = guideRow?.cover_image_url ?? "";
+  // Pricing guide cover — only fetched when the plan gate allows it.
+  let guidePreviewUrl = "";
+  if (pricingGuideEnabled) {
+    const { data: guideRow } = await supabase
+      .from("venue_pricing_guides")
+      .select("cover_image_url")
+      .eq("venue_id", venue.id)
+      .maybeSingle();
+    guidePreviewUrl = guideRow?.cover_image_url ?? "";
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -123,6 +143,7 @@ export default async function VenuePage({ params }: Props) {
         reviews={reviews}
         googleReviews={googleReviews}
         guidePreviewUrl={guidePreviewUrl}
+        pricingGuideEnabled={pricingGuideEnabled}
       />
     </div>
   );

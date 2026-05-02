@@ -63,6 +63,8 @@ interface VenuePageClientProps {
   googleReviews: GoogleReviewsCache | null;
   /** Empty string = no cover uploaded yet (placeholder shown); otherwise the cover URL. */
   guidePreviewUrl: string;
+  /** When false the entire booking card and mobile CTA are hidden. */
+  pricingGuideEnabled: boolean;
 }
 
 function PhotoMosaic({
@@ -312,6 +314,7 @@ export default function VenuePageClient({
   reviews,
   googleReviews,
   guidePreviewUrl,
+  pricingGuideEnabled,
 }: VenuePageClientProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
@@ -754,8 +757,8 @@ export default function VenuePageClient({
             </div>
           </div>
 
-          {/* Right column — sticky booking card */}
-          <div className="hidden lg:block">
+          {/* Right column — sticky booking card (only when plan allows pricing guide) */}
+          {pricingGuideEnabled && <div className="hidden lg:block">
             <div className="sticky top-[88px]">
               <div className="border border-stone-200 rounded-2xl shadow-lg p-6 bg-white max-h-[calc(100vh-104px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {/* Pricing guide cover — replaces the stats box entirely.
@@ -823,12 +826,12 @@ export default function VenuePageClient({
 
               </div>
             </div>
-          </div>
+          </div>}
         </div>
       </div>
 
-      {/* Mobile sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white border-t border-stone-200 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+      {/* Mobile sticky CTA (only when plan allows pricing guide) */}
+      {pricingGuideEnabled && <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white border-t border-stone-200 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <div className="flex items-center justify-between gap-4">
           {venue.price_min != null && getPriceScale(venue.price_min) && (
             <div>
@@ -848,10 +851,10 @@ export default function VenuePageClient({
             {CTA_LABEL}
           </Button>
         </div>
-      </div>
+      </div>}
 
       {/* Spacer for mobile sticky CTA */}
-      <div className="h-20 lg:hidden" />
+      {pricingGuideEnabled && <div className="h-20 lg:hidden" />}
 
       {/* Photo gallery modal */}
       {showGallery && (
