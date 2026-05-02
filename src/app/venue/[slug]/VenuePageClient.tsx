@@ -758,20 +758,6 @@ export default function VenuePageClient({
           <div className="hidden lg:block">
             <div className="sticky top-8">
               <div className="border border-stone-200 rounded-2xl shadow-lg p-6 bg-white">
-                {/* Price scale */}
-                {venue.price_min != null && getPriceScale(venue.price_min) && (
-                  <div className="mb-5">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-2xl font-bold tracking-wide text-stone-900">
-                        {getPriceScale(venue.price_min)}
-                      </span>
-                      <span className="text-base text-stone-500 font-normal">
-                        {PRICE_SCALE_LABELS[getPriceScale(venue.price_min)!]}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
                 {/* Pricing guide cover — replaces the stats box entirely.
                     Always shown: real cover when uploaded, placeholder otherwise. */}
                 <button
