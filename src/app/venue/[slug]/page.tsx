@@ -73,20 +73,16 @@ export default async function VenuePage({ params }: Props) {
   // Places API key). Directory just surfaces whatever is in the JSONB column.
   const googleReviews = parseGoogleReviewsCache(venue.google_reviews_cache);
 
-  // Pricing guide cover — used as a teaser in the sticky booking card.
-  // guidePreviewUrl meanings:
-  //   undefined  → guide not enabled (show stats box instead)
-  //   ""         → guide enabled but no cover image yet (show placeholder)
-  //   string     → guide enabled + cover image URL (show cover)
+  // Pricing guide cover — used as the centerpiece of the sticky booking card.
+  // We always render a cover slot (with a placeholder when there's no image).
+  // The stats box has been retired; the cover replaces it.
   const { data: guideRow } = await supabase
     .from("venue_pricing_guides")
-    .select("cover_image_url, enabled")
+    .select("cover_image_url")
     .eq("venue_id", venue.id)
     .maybeSingle();
 
-  const guidePreviewUrl: string | undefined = guideRow?.enabled
-    ? (guideRow.cover_image_url ?? "")
-    : undefined;
+  const guidePreviewUrl: string = guideRow?.cover_image_url ?? "";
 
   return (
     <div className="min-h-screen bg-white">

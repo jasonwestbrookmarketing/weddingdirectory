@@ -61,8 +61,8 @@ interface VenuePageClientProps {
   venue: Venue;
   reviews: ListingReview[];
   googleReviews: GoogleReviewsCache | null;
-  /** undefined = guide off (show stats); "" = guide on, no cover yet; string = cover URL */
-  guidePreviewUrl?: string;
+  /** Empty string = no cover uploaded yet (placeholder shown); otherwise the cover URL. */
+  guidePreviewUrl: string;
 }
 
 function PhotoMosaic({
@@ -773,101 +773,60 @@ export default function VenuePageClient({
                   </div>
                 )}
 
-                {/* Guide preview replaces stats when guide is enabled;
-                    falls back to the text stats when it's not. */}
-                {guidePreviewUrl !== undefined ? (
-                  /* Guide is enabled — show portrait cover (8.5×11 ratio) */
-                  <button
-                    type="button"
-                    onClick={handleCTAClick}
-                    className="w-full mb-4 group relative rounded-xl overflow-hidden border border-stone-200 focus:outline-none"
-                    aria-label="Preview pricing guide — click to download"
-                  >
-                    {/* 8.5 × 11 portrait aspect ratio */}
-                    <div style={{ paddingTop: "129.41%" }} className="relative w-full">
-                      {guidePreviewUrl ? (
-                        <img
-                          src={guidePreviewUrl}
-                          alt="Pricing guide preview"
-                          className="absolute inset-0 w-full h-full object-cover object-top"
-                        />
-                      ) : (
-                        /* Placeholder when guide is enabled but no cover yet */
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-50 gap-3">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-12 w-12 text-stone-300"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={1}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                            />
-                          </svg>
-                          <p className="text-xs text-stone-400 font-medium text-center px-4">
-                            Pricing guide<br />coming soon
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Hover overlay */}
-                      {guidePreviewUrl && (
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                          <span className="text-white text-xs font-semibold tracking-wide drop-shadow">
-                            Click to download full guide ↓
-                          </span>
-                        </div>
-                      )}
-
-                      {/* Free Guide badge */}
-                      <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 text-[11px] font-semibold text-stone-700 shadow-sm">
-                        Free Guide
+                {/* Pricing guide cover — replaces the stats box entirely.
+                    Always shown: real cover when uploaded, placeholder otherwise. */}
+                <button
+                  type="button"
+                  onClick={handleCTAClick}
+                  className="w-full mb-4 group relative rounded-xl overflow-hidden border border-stone-200 focus:outline-none"
+                  aria-label="Preview pricing guide — click to download"
+                >
+                  {/* 8.5 × 11 portrait aspect ratio */}
+                  <div style={{ paddingTop: "129.41%" }} className="relative w-full">
+                    {guidePreviewUrl ? (
+                      <img
+                        src={guidePreviewUrl}
+                        alt="Pricing guide preview"
+                        className="absolute inset-0 w-full h-full object-cover object-top"
+                      />
+                    ) : (
+                      /* Placeholder when no cover has been uploaded yet */
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-50 gap-3">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-12 w-12 text-stone-300"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={1}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          />
+                        </svg>
+                        <p className="text-xs text-stone-400 font-medium text-center px-4">
+                          Pricing guide<br />coming soon
+                        </p>
                       </div>
+                    )}
+
+                    {/* Hover overlay (only when a real cover is shown) */}
+                    {guidePreviewUrl && (
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <span className="text-white text-xs font-semibold tracking-wide drop-shadow">
+                          Click to download full guide ↓
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Free Guide badge */}
+                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 text-[11px] font-semibold text-stone-700 shadow-sm">
+                      Free Guide
                     </div>
-                  </button>
-                ) : (
-                  /* No guide — show the standard stats box */
-                  <div className="border border-stone-200 rounded-xl overflow-hidden mb-4 divide-y divide-stone-200">
-                    {(venue.capacity_min != null || venue.capacity_max != null) && (
-                      <div className="px-4 py-3">
-                        <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-0.5">
-                          Capacity
-                        </p>
-                        <p className="text-sm text-stone-900 font-medium">
-                          {venue.capacity_min && venue.capacity_max
-                            ? `${venue.capacity_min}–${venue.capacity_max} guests`
-                            : venue.capacity_max
-                              ? `Up to ${venue.capacity_max} guests`
-                              : `${venue.capacity_min}+ guests`}
-                        </p>
-                      </div>
-                    )}
-                    {venueTypeLabel && (
-                      <div className="px-4 py-3">
-                        <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-0.5">
-                          Venue Type
-                        </p>
-                        <p className="text-sm text-stone-900 font-medium">
-                          {venueTypeLabel}
-                        </p>
-                      </div>
-                    )}
-                    {indoorOutdoorLabel && (
-                      <div className="px-4 py-3">
-                        <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-0.5">
-                          Setting
-                        </p>
-                        <p className="text-sm text-stone-900 font-medium">
-                          {indoorOutdoorLabel}
-                        </p>
-                      </div>
-                    )}
                   </div>
-                )}
+                </button>
 
                 <Button
                   size="lg"
