@@ -16,6 +16,7 @@ import {
   Star,
   Phone,
   Mail,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import LeadFormModal from "@/components/lead/LeadFormModal";
@@ -407,10 +408,13 @@ export default function VenuePageClient({
   const galleryImages = (venue.gallery_images as string[] | null) || [];
   const features = (venue.features as string[] | null) || [];
   const socialLinks = parseSocialLinks(venue.social_links);
+  // Split website out so it can be rendered in the fixed order:
+  // phone → email → website → social media icons
+  const { website: socialWebsite, ...socialIconLinks } = socialLinks;
   const faqItems = parseFaq(venue.faq);
   const showMap =
     venue.show_map !== false && venue.lat != null && venue.lng != null;
-  const hasSocial = Object.keys(socialLinks).length > 0;
+  const hasSocial = Object.keys(socialIconLinks).length > 0;
   const hasFaq = faqItems.length > 0;
   const groupedFeatures = FEATURE_GROUPS.map((g) => ({
     label: g.label,
@@ -501,15 +505,8 @@ export default function VenuePageClient({
                   </a>
                 )}
               </div>
-              {/* Action buttons */}
+              {/* Action buttons — phone → email → website → social → share/save */}
               <div className="flex items-center gap-1 flex-shrink-0">
-                {hasSocial && (
-                  <VenueSocialButtons
-                    social={socialLinks}
-                    size="sm"
-                    className="mr-1"
-                  />
-                )}
                 {venue.phone && (
                   <a
                     href={`tel:${venue.phone}`}
@@ -527,6 +524,23 @@ export default function VenuePageClient({
                   >
                     <Mail className="h-4 w-4" />
                   </a>
+                )}
+                {socialWebsite && (
+                  <a
+                    href={socialWebsite}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center h-8 w-8 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-full transition-colors"
+                    aria-label="Website"
+                  >
+                    <Globe className="h-4 w-4" />
+                  </a>
+                )}
+                {hasSocial && (
+                  <VenueSocialButtons
+                    social={socialIconLinks}
+                    size="sm"
+                  />
                 )}
                 <button
                   onClick={handleShareClick}
