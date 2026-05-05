@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import SearchBar from "@/components/search/SearchBar";
 import VenueCard from "@/components/search/VenueCard";
+import SiteFooter from "@/components/SiteFooter";
 
 export const revalidate = 120;
 
@@ -206,6 +207,7 @@ export default async function HomePage() {
         </section>
       )}
 
+      <SiteFooter />
     </>
   );
 }

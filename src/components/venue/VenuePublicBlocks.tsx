@@ -108,7 +108,7 @@ export function parseFaq(raw: Json | null | undefined): VenueFaqItem[] {
 }
 
 const linkBtnBase =
-  "inline-flex items-center justify-center rounded-full border border-stone-200 bg-white text-stone-700 transition-colors hover:border-stone-300 hover:bg-stone-50";
+  "inline-flex items-center justify-center rounded-full text-stone-600 transition-colors hover:text-stone-900 hover:bg-stone-100";
 
 /**
  * Just the row of circular social buttons — no section wrapper, no heading.

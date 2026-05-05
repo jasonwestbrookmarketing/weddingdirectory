@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { parseGoogleReviewsCache } from "@/lib/google-reviews";
 import VenuePageClient from "./VenuePageClient";
 import ListingTracker from "@/components/venue/ListingTracker";
+import SiteFooter from "@/components/SiteFooter";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -147,6 +148,20 @@ export default async function VenuePage({ params }: Props) {
         guidePreviewUrl={guidePreviewUrl}
         pricingGuideEnabled={pricingGuideEnabled}
       />
+      {hideHeader ? (
+        <footer className="py-4 text-center">
+          <a
+            href="https://www.storyvenue.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
+          >
+            A StoryVenue Site
+          </a>
+        </footer>
+      ) : (
+        <SiteFooter />
+      )}
     </div>
   );
 }

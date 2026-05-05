@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Open_Sans, Playfair_Display } from "next/font/google";
-import SiteFooter from "@/components/SiteFooter";
 import "./globals.css";
 
 const openSans = Open_Sans({
@@ -36,7 +35,6 @@ export default function RootLayout({
     <html lang="en" className={`${openSans.variable} ${playfair.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-[family-name:var(--font-open-sans)] bg-white text-stone-900">
         {children}
-        <SiteFooter />
       </body>
     </html>
   );

@@ -8,6 +8,7 @@ import { Search } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { BUDGET_RANGES } from "@/lib/constants";
 import { trackEvent } from "@/lib/analytics";
+import SiteFooter from "@/components/SiteFooter";
 import FilterBar, { type Filters } from "@/components/search/FilterBar";
 import VenueCard from "@/components/search/VenueCard";
 import type { Venue } from "@/types/database";
@@ -172,6 +173,7 @@ export default function SearchPage() {
       >
         <SearchContent />
       </Suspense>
+      <SiteFooter />
     </>
   );
 }
