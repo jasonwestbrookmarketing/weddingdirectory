@@ -542,10 +542,10 @@ export default function VenuePageClient({
                     size="sm"
                   />
                 )}
-                <span className="w-px h-5 bg-stone-300 mx-1" aria-hidden />
+                <span className="w-px h-5 bg-stone-300" aria-hidden />
                 <button
                   onClick={handleShareClick}
-                  className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-3 py-2 rounded-xl transition-colors"
+                  className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-2 py-2 rounded-xl transition-colors"
                 >
                   <Share2 className="h-4 w-4" />
                   <span className="hidden sm:inline">Share</span>
@@ -553,7 +553,7 @@ export default function VenuePageClient({
                 <a
                   href={saveHref}
                   onClick={handleSaveClick}
-                  className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-3 py-2 rounded-xl transition-colors"
+                  className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-2 py-2 rounded-xl transition-colors"
                 >
                   <Heart className="h-4 w-4" />
                   <span className="hidden sm:inline">Save</span>
