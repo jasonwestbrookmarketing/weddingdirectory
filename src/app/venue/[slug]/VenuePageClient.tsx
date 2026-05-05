@@ -14,6 +14,8 @@ import {
   X,
   Check,
   Star,
+  Phone,
+  Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import LeadFormModal from "@/components/lead/LeadFormModal";
@@ -508,6 +510,24 @@ export default function VenuePageClient({
                     className="mr-1"
                   />
                 )}
+                {venue.phone && (
+                  <a
+                    href={`tel:${venue.phone}`}
+                    className="flex items-center justify-center h-8 w-8 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-full transition-colors"
+                    aria-label="Call venue"
+                  >
+                    <Phone className="h-4 w-4" />
+                  </a>
+                )}
+                {venue.email && (
+                  <a
+                    href={`mailto:${venue.email}`}
+                    className="flex items-center justify-center h-8 w-8 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-full transition-colors"
+                    aria-label="Email venue"
+                  >
+                    <Mail className="h-4 w-4" />
+                  </a>
+                )}
                 <button
                   onClick={handleShareClick}
                   className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-3 py-2 rounded-xl transition-colors"
@@ -690,9 +710,15 @@ export default function VenuePageClient({
                     venueName={venue.name}
                   />
                   {venue.location_full && (
-                    <p className="mt-3 text-sm text-stone-500">
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.location_full)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-900 hover:underline transition-colors"
+                    >
+                      <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
                       {venue.location_full}
-                    </p>
+                    </a>
                   )}
                 </section>
                 <hr className="border-stone-200 mb-8" />

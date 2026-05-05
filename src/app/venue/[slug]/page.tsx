@@ -73,22 +73,22 @@ export default async function VenuePage({ params }: Props) {
   // Places API key). Directory just surfaces whatever is in the JSONB column.
   const googleReviews = parseGoogleReviewsCache(venue.google_reviews_cache);
 
-  // ── Pricing guide plan gate ──────────────────────────────────────────────
-  // The floating booking card (cover image + download CTA) is only shown when
-  // the venue's directory plan has `nav_listing_pricing_guide` enabled.
-  // Venues without a plan (legacy) get access by default.
+  // ── Plan gates ───────────────────────────────────────────────────────────
+  // Fetch nav_permissions + hide_header in one query.
+  // Venues without a plan (legacy) get full access + header visible.
   let pricingGuideEnabled = true;
+  let hideHeader = false;
   if (venue.directory_plan_id) {
     const { data: plan } = await supabase
       .from("directory_plans")
-      .select("nav_permissions")
+      .select("nav_permissions, hide_header")
       .eq("id", venue.directory_plan_id)
       .maybeSingle();
     if (plan) {
       const perms = (plan.nav_permissions ?? {}) as Record<string, boolean>;
       pricingGuideEnabled = perms["nav_listing_pricing_guide"] === true;
+      hideHeader = (plan as Record<string, unknown>).hide_header === true;
     } else {
-      // Plan id set but row missing — fail closed.
       pricingGuideEnabled = false;
     }
   }
@@ -106,7 +106,8 @@ export default async function VenuePage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Airbnb-style white top nav */}
+      {/* Top nav — hidden when the plan has landing-page mode enabled */}
+      {!hideHeader && (
       <nav className="sticky top-0 z-30 bg-white border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between h-16 gap-3">
           <Link href="/" aria-label="StoryVenue home" className="shrink-0">
@@ -137,6 +138,7 @@ export default async function VenuePage({ params }: Props) {
           </div>
         </div>
       </nav>
+      )}
       {venue.id && <ListingTracker venueId={venue.id} />}
       <VenuePageClient
         venue={venue}
