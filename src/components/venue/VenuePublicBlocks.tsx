@@ -129,8 +129,8 @@ export function VenueSocialButtons({
     .filter(([, u]) => typeof u === "string" && u.startsWith("http"));
   if (entries.length === 0) return null;
 
-  const sizeClass = size === "sm" ? "h-9 w-9" : "h-10 w-10";
-  const iconClass = size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4";
+  const sizeClass = size === "sm" ? "h-8 w-8" : "h-10 w-10";
+  const iconClass = "h-4 w-4";
 
   return (
     <div className={`flex flex-wrap items-center gap-1.5 ${className}`}>

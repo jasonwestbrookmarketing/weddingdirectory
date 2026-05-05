@@ -542,6 +542,7 @@ export default function VenuePageClient({
                     size="sm"
                   />
                 )}
+                <span className="w-px h-5 bg-stone-300 mx-1" aria-hidden />
                 <button
                   onClick={handleShareClick}
                   className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-3 py-2 rounded-xl transition-colors"
