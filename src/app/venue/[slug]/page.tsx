@@ -149,12 +149,12 @@ export default async function VenuePage({ params }: Props) {
         pricingGuideEnabled={pricingGuideEnabled}
       />
       {hideHeader ? (
-        <footer className="py-4 text-center">
+        <footer className="bg-stone-100 py-4 text-center">
           <a
             href="https://www.storyvenue.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
+            className="text-xs text-stone-500 hover:text-stone-700 transition-colors"
           >
             A StoryVenue Site
           </a>
