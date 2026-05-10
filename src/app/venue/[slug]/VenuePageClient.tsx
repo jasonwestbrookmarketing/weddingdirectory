@@ -841,9 +841,12 @@ export default function VenuePageClient({
                       </div>
                     )}
 
-                    {/* Always-visible title bar at the bottom of the cover */}
-                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pt-10 pb-4 px-3 flex flex-col items-center justify-end">
-                      <span className="text-white text-sm font-semibold text-center leading-snug drop-shadow">
+                    {/* Always-visible centered title */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 pointer-events-none">
+                      <span
+                        className="text-white text-lg text-center leading-snug drop-shadow-lg px-4"
+                        style={{ fontFamily: "var(--font-playfair)", fontWeight: 300 }}
+                      >
                         Pricing &amp; Availability Guide
                       </span>
                     </div>
