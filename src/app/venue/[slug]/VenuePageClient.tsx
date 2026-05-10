@@ -820,7 +820,7 @@ export default function VenuePageClient({
                       />
                     ) : (
                       /* Placeholder when no cover has been uploaded yet */
-                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-50 gap-3">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-100 gap-3">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-12 w-12 text-stone-300"
@@ -836,19 +836,24 @@ export default function VenuePageClient({
                           />
                         </svg>
                         <p className="text-xs text-stone-400 font-medium text-center px-4">
-                          Pricing guide<br />coming soon
+                          Cover coming soon
                         </p>
                       </div>
                     )}
 
-                    {/* Hover overlay (only when a real cover is shown) */}
-                    {guidePreviewUrl && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                        <span className="text-white text-xs font-semibold tracking-wide drop-shadow">
-                          Click to download full guide ↓
-                        </span>
-                      </div>
-                    )}
+                    {/* Always-visible title bar at the bottom of the cover */}
+                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pt-10 pb-4 px-3 flex flex-col items-center justify-end">
+                      <span className="text-white text-sm font-semibold text-center leading-snug drop-shadow">
+                        Pricing &amp; Availability Guide
+                      </span>
+                    </div>
+
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <span className="text-white text-xs font-semibold tracking-wide drop-shadow bg-black/40 rounded-lg px-3 py-1.5">
+                        Click to download ↓
+                      </span>
+                    </div>
 
                     {/* Free Guide badge */}
                     <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 text-[11px] font-semibold text-stone-700 shadow-sm">
