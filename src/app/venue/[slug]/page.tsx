@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .select("name, description, location_full, cover_image_url")
     .eq("slug", slug)
     .eq("is_published", true)
+    .neq("is_demo", true)
     .single();
 
   if (!venue) return { title: "Venue Not Found — StoryVenue" };
@@ -52,6 +53,7 @@ export default async function VenuePage({ params }: Props) {
     .select("*")
     .eq("slug", slug)
     .eq("is_published", true)
+    .neq("is_demo", true)
     .single();
 
   if (!venue) notFound();

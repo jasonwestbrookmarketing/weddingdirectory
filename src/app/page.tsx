@@ -19,6 +19,7 @@ export default async function HomePage() {
       "id, name, slug, location_full, cover_image_url, capacity_min, capacity_max, price_min, venue_type, directory_verified_status, directory_sponsored_status"
     )
     .eq("is_published", true)
+    .neq("is_demo", true)
     .order("created_at", { ascending: false })
     .limit(24);
 
