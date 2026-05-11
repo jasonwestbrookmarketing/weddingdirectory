@@ -8,30 +8,50 @@ import ListingTracker from "@/components/venue/ListingTracker";
 import SiteFooter from "@/components/SiteFooter";
 import type { Metadata } from "next";
 
-export const revalidate = 60;
+// Demo venue pages must never be CDN-cached — the preview token is the
+// only auth mechanism and must be validated on every request.
+export const dynamic = "force-dynamic";
 
 const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
 
 interface Props {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+/** Fetch a venue allowing demo access when a valid preview token is supplied. */
+async function fetchVenueWithDemoCheck(slug: string, previewToken: string | null) {
   const supabase = await createClient();
   const { data: venue } = await supabase
     .from("venues")
-    .select("name, description, location_full, cover_image_url")
+    .select("*, demo_preview_token, is_demo")
     .eq("slug", slug)
     .eq("is_published", true)
-    .neq("is_demo", true)
     .single();
 
-  if (!venue) return { title: "Venue Not Found — StoryVenue" };
+  if (!venue) return null;
+
+  // Block demo venues unless the preview token matches
+  if (venue.is_demo === true) {
+    if (!previewToken || previewToken !== venue.demo_preview_token) return null;
+  }
+
+  return venue;
+}
+
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const sp = await searchParams;
+  const previewToken = typeof sp.preview === "string" ? sp.preview : null;
+  const venue = await fetchVenueWithDemoCheck(slug, previewToken);
+
+  if (!venue) return { title: "Venue Not Found — StoryVenue", robots: { index: false } };
 
   return {
     title: `${venue.name} — StoryVenue`,
+    // Demo venues accessed via preview token must never be indexed
+    ...(previewToken ? { robots: { index: false, follow: false } } : {}),
     description:
       venue.description?.slice(0, 160) ||
       `Discover ${venue.name} on StoryVenue`,
@@ -45,16 +65,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function VenuePage({ params }: Props) {
+export default async function VenuePage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const supabase = await createClient();
-  const { data: venue } = await supabase
-    .from("venues")
-    .select("*")
-    .eq("slug", slug)
-    .eq("is_published", true)
-    .neq("is_demo", true)
-    .single();
+  const sp = await searchParams;
+  const previewToken = typeof sp.preview === "string" ? sp.preview : null;
+  const venue = await fetchVenueWithDemoCheck(slug, previewToken);
 
   if (!venue) notFound();
 
