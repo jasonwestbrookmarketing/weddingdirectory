@@ -73,6 +73,9 @@ export default async function VenuePage({ params, searchParams }: Props) {
 
   if (!venue) notFound();
 
+  // New supabase client for the remaining queries in this function
+  const supabase = await createClient();
+
   // Reviews live on a dedicated public view (listing_reviews_public) that
   // already filters to status = 'published' and hides moderation columns.
   // If the view isn't present yet (e.g. a Supabase project that hasn't run
