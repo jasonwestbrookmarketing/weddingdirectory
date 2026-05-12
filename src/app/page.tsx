@@ -83,7 +83,7 @@ export default async function HomePage() {
           fill
           priority
           className="absolute inset-0 object-cover"
-          style={{ objectPosition: "70% center" }}
+          style={{ objectPosition: "center center" }}
           sizes="100vw"
         />
 
