@@ -35,21 +35,13 @@ interface Props {
   loading: boolean;
 }
 
-const sectionLabel = "block text-xs font-semibold text-stone-700 mb-2.5";
+const sectionLabel = "block text-sm font-semibold text-stone-900 mb-2";
 const inputClass =
-  "w-full border border-stone-200 rounded-lg px-3 py-2.5 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-stone-400 bg-white";
+  "w-full border border-stone-200 rounded-lg px-3 py-2.5 text-sm text-stone-700 placeholder:text-stone-400 focus:outline-none focus:border-stone-400 bg-white";
 const selectClass =
-  "w-full border border-stone-200 rounded-lg px-3 py-2.5 text-sm text-stone-900 focus:outline-none focus:border-stone-400 bg-white appearance-none cursor-pointer";
+  "w-full border border-stone-200 rounded-lg px-3 py-2.5 text-sm text-stone-700 focus:outline-none focus:border-stone-400 bg-white appearance-none cursor-pointer";
 
-function Section({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="px-5 py-4 border-b border-stone-100">
-      {children}
-    </div>
-  );
-}
-
-export default function FilterPanel({ filters, onChange, onApply, resultCount, loading }: Props) {
+export default function FilterPanel({ filters, onChange, onApply, loading }: Props) {
   const set = <K extends keyof SearchFilters>(key: K, value: SearchFilters[K]) =>
     onChange({ ...filters, [key]: value });
 
@@ -70,170 +62,162 @@ export default function FilterPanel({ filters, onChange, onApply, resultCount, l
     filters.amenities.length > 0;
 
   return (
-    <aside className="w-64 shrink-0 flex flex-col bg-white h-full overflow-y-auto">
+    <aside className="w-72 shrink-0 flex flex-col bg-white overflow-y-auto">
 
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-stone-200">
-        <span className="text-sm font-bold text-stone-900">Filters</span>
+      <div className="flex items-center justify-between pt-6 pb-5 px-1">
+        <span className="text-2xl font-bold text-stone-900">Filters</span>
         {hasFilters && (
           <button
             onClick={() => onChange(DEFAULT_FILTERS)}
-            className="text-xs font-medium text-blue-600 hover:text-blue-800 transition-colors"
+            className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
           >
             Reset
           </button>
         )}
       </div>
 
-      {/* Location */}
-      <Section>
-        <label className={sectionLabel}>Location</label>
-        <input
-          type="text"
-          placeholder="City, state, or zip"
-          value={filters.location}
-          onChange={(e) => set("location", e.target.value)}
-          className={inputClass}
-        />
-      </Section>
+      <div className="flex flex-col gap-5 px-1 pb-6">
 
-      {/* Price */}
-      <Section>
-        <label className={sectionLabel}>Price</label>
-        <div className="grid grid-cols-2 gap-2">
-          <input
-            type="number"
-            placeholder="From"
-            value={filters.priceMin}
-            onChange={(e) => set("priceMin", e.target.value)}
-            className={inputClass}
-            min={0}
-          />
-          <input
-            type="number"
-            placeholder="To"
-            value={filters.priceMax}
-            onChange={(e) => set("priceMax", e.target.value)}
-            className={inputClass}
-            min={0}
-          />
-        </div>
-      </Section>
-
-      {/* Venue Type */}
-      <Section>
-        <label className={sectionLabel}>Venue Type</label>
-        <div className="relative">
-          <select
-            value={filters.style}
-            onChange={(e) => set("style", e.target.value)}
-            className={selectClass}
-          >
-            <option value="">All types</option>
-            {VENUE_TYPES.map((t) => (
-              <option key={t.value} value={t.value}>{t.label}</option>
-            ))}
-          </select>
-          <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-stone-400">
-            <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor">
-              <path d="M6 8L1 3h10z"/>
-            </svg>
+        {/* Price */}
+        <div>
+          <label className={sectionLabel}>Price</label>
+          <div className="grid grid-cols-2 gap-2">
+            <input
+              type="number"
+              placeholder="From"
+              value={filters.priceMin}
+              onChange={(e) => set("priceMin", e.target.value)}
+              className={inputClass}
+              min={0}
+            />
+            <input
+              type="number"
+              placeholder="To"
+              value={filters.priceMax}
+              onChange={(e) => set("priceMax", e.target.value)}
+              className={inputClass}
+              min={0}
+            />
           </div>
         </div>
-      </Section>
 
-      {/* Setting */}
-      <Section>
-        <label className={sectionLabel}>Setting</label>
-        <div className="relative">
-          <select
-            value={filters.indoor_outdoor}
-            onChange={(e) => set("indoor_outdoor", e.target.value)}
-            className={selectClass}
-          >
-            <option value="">Any</option>
-            {INDOOR_OUTDOOR_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>{o.label}</option>
-            ))}
-          </select>
-          <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-stone-400">
-            <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor">
-              <path d="M6 8L1 3h10z"/>
-            </svg>
+        {/* Venue Type */}
+        <div>
+          <label className={sectionLabel}>Venue Type</label>
+          <div className="relative">
+            <select
+              value={filters.style}
+              onChange={(e) => set("style", e.target.value)}
+              className={selectClass}
+            >
+              <option value="">All types</option>
+              {VENUE_TYPES.map((t) => (
+                <option key={t.value} value={t.value}>{t.label}</option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-stone-400">
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L1 3h10z"/></svg>
+            </div>
           </div>
         </div>
-      </Section>
 
-      {/* Amenities */}
-      <Section>
-        <label className={sectionLabel}>Amenities</label>
-        <div className="grid grid-cols-2 gap-2">
-          {AMENITIES_LIST.map((a) => {
-            const active = filters.amenities.includes(a.value);
-            return (
-              <button
-                key={a.value}
-                type="button"
-                onClick={() => toggleAmenity(a.value)}
-                className={`text-xs px-3 py-2 rounded-lg border text-left transition-colors leading-tight ${
-                  active
-                    ? "bg-stone-900 text-white border-stone-900"
-                    : "border-stone-200 text-stone-700 hover:border-stone-400 bg-white"
-                }`}
-              >
-                {a.label}
-              </button>
-            );
-          })}
+        {/* Setting */}
+        <div>
+          <label className={sectionLabel}>Setting</label>
+          <div className="relative">
+            <select
+              value={filters.indoor_outdoor}
+              onChange={(e) => set("indoor_outdoor", e.target.value)}
+              className={selectClass}
+            >
+              <option value="">Any</option>
+              {INDOOR_OUTDOOR_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-stone-400">
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L1 3h10z"/></svg>
+            </div>
+          </div>
         </div>
-      </Section>
 
-      {/* Number of Guests */}
-      <Section>
-        <label className={sectionLabel}>Number of Guests</label>
-        <div className="flex items-center border border-stone-200 rounded-lg overflow-hidden">
-          <button
-            type="button"
-            onClick={() => {
-              const cur = Number(filters.guests) || 1;
-              if (cur <= 1) set("guests", "");
-              else set("guests", String(cur - 1));
-            }}
-            className="w-10 h-10 flex items-center justify-center text-stone-500 hover:bg-stone-50 text-lg border-r border-stone-200 select-none"
-          >
-            −
-          </button>
-          <span className="flex-1 text-center text-sm text-stone-900 tabular-nums">
-            {filters.guests || "1"}
-          </span>
-          <button
-            type="button"
-            onClick={() => set("guests", String((Number(filters.guests) || 1) + 1))}
-            className="w-10 h-10 flex items-center justify-center text-stone-500 hover:bg-stone-50 text-lg border-l border-stone-200 select-none"
-          >
-            +
-          </button>
+        {/* Amenities */}
+        <div>
+          <label className={sectionLabel}>Amenities</label>
+          <div className="grid grid-cols-2 gap-2">
+            {AMENITIES_LIST.map((a) => {
+              const active = filters.amenities.includes(a.value);
+              return (
+                <button
+                  key={a.value}
+                  type="button"
+                  onClick={() => toggleAmenity(a.value)}
+                  className={`flex items-center gap-2 text-xs px-3 py-2.5 rounded-xl border text-left transition-colors leading-tight ${
+                    active
+                      ? "bg-stone-900 text-white border-stone-900"
+                      : "border-stone-200 text-stone-700 hover:border-stone-400 bg-white"
+                  }`}
+                >
+                  <span className="w-4 h-4 shrink-0 opacity-60">
+                    <svg viewBox="0 0 16 16" fill="currentColor" className="w-full h-full">
+                      <circle cx="8" cy="8" r="3"/>
+                    </svg>
+                  </span>
+                  <span className="truncate">{a.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
-        {filters.guests && (
-          <button
-            className="mt-1.5 text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1"
-            onClick={() => set("guests", "")}
-          >
-            <X className="h-3 w-3" />Clear
-          </button>
-        )}
-      </Section>
 
-      {/* Apply */}
-      <div className="px-5 py-4 mt-auto">
+        {/* Number of Guests */}
+        <div>
+          <label className={sectionLabel}>Number of Guests</label>
+          <div className="flex items-center border border-stone-200 rounded-xl overflow-hidden bg-white">
+            <button
+              type="button"
+              onClick={() => {
+                const cur = Number(filters.guests) || 1;
+                if (cur <= 1) set("guests", "");
+                else set("guests", String(cur - 1));
+              }}
+              className="w-11 h-11 flex items-center justify-center text-stone-500 hover:bg-stone-50 text-xl select-none transition-colors"
+            >
+              −
+            </button>
+            <span className="flex-1 text-center text-sm font-medium text-stone-900 tabular-nums">
+              {filters.guests || "1"}
+            </span>
+            <button
+              type="button"
+              onClick={() => set("guests", String((Number(filters.guests) || 1) + 1))}
+              className="w-11 h-11 flex items-center justify-center text-stone-500 hover:bg-stone-50 text-xl select-none transition-colors"
+            >
+              +
+            </button>
+          </div>
+          {filters.guests && (
+            <button
+              className="mt-1.5 text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1"
+              onClick={() => set("guests", "")}
+            >
+              <X className="h-3 w-3" />Clear
+            </button>
+          )}
+        </div>
+
+      </div>
+
+      {/* APPLY */}
+      <div className="px-1 pb-6 mt-auto">
         <button
           onClick={onApply}
-          className="w-full bg-stone-900 text-white rounded-lg py-3 text-sm font-bold uppercase tracking-wider hover:bg-stone-700 active:scale-[0.98] transition-all"
+          className="w-full bg-stone-900 text-white rounded-xl py-3.5 text-sm font-bold tracking-widest uppercase hover:bg-stone-700 active:scale-[0.98] transition-all"
         >
           {loading ? "Searching…" : "Apply"}
         </button>
       </div>
-
     </aside>
   );
 }

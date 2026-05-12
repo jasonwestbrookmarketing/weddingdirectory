@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, Users } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
-import { getPriceScale, PRICE_SCALE_LABELS } from "@/lib/constants";
 import { resolveBadges } from "@/lib/directory-badges";
 import { DirectoryListingBadges } from "@/components/venue/DirectoryListingBadges";
 import type { Venue } from "@/types/database";
@@ -28,6 +27,12 @@ interface VenueCardProps {
   venue: VenueCardData;
 }
 
+function formatPrice(price: number | null | undefined): string | null {
+  if (price == null || price === 0) return null;
+  if (price >= 1000) return `$${(price / 1000).toFixed(price % 1000 === 0 ? 0 : 1)}k`;
+  return `$${price.toLocaleString()}`;
+}
+
 export default function VenueCard({ venue }: VenueCardProps) {
   const handleClick = () => {
     trackEvent("venue_card_clicked", {
@@ -37,6 +42,7 @@ export default function VenueCard({ venue }: VenueCardProps) {
   };
 
   const { verified, sponsored } = resolveBadges(venue);
+  const priceLabel = formatPrice(venue.price_min);
 
   return (
     <Link
@@ -44,76 +50,53 @@ export default function VenueCard({ venue }: VenueCardProps) {
       onClick={handleClick}
       className="group block"
     >
+      {/* Image */}
       <div className="relative overflow-hidden rounded-xl">
         {venue.cover_image_url ? (
           <Image
             src={venue.cover_image_url}
             alt={venue.name || "Venue"}
             width={600}
-            height={450}
+            height={420}
             unoptimized
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             loading="lazy"
-            className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
         ) : (
-          <div className="aspect-[4/3] w-full bg-gradient-to-br from-stone-100 to-stone-200 flex items-center justify-center">
+          <div className="aspect-[4/3] w-full bg-stone-100 flex items-center justify-center rounded-xl">
             <MapPin className="h-10 w-10 text-stone-300" />
           </div>
         )}
         {sponsored && (
           <div className="absolute top-3 left-3">
-            <DirectoryListingBadges
-              verified={false}
-              sponsored
-              variant="onDark"
-              size="sm"
-            />
+            <DirectoryListingBadges verified={false} sponsored variant="onDark" size="sm" />
           </div>
         )}
       </div>
 
+      {/* Info */}
       <div className="mt-3 space-y-1">
-        <h3 className="font-semibold text-lg text-stone-900 group-hover:text-stone-700 transition-colors flex items-center gap-1.5">
+        <h3 className="font-bold text-base text-stone-900 group-hover:text-stone-700 transition-colors flex items-center gap-1.5">
           <span className="truncate">{venue.name || "Unnamed Venue"}</span>
           {verified && (
-            <DirectoryListingBadges
-              verified
-              sponsored={false}
-              variant="onLight"
-              size="sm"
-            />
+            <DirectoryListingBadges verified sponsored={false} variant="onLight" size="sm" />
           )}
         </h3>
+
         {venue.location_full && (
           <p className="text-stone-500 text-sm flex items-center gap-1">
-            <MapPin className="h-3.5 w-3.5 shrink-0" />
+            <MapPin className="h-3.5 w-3.5 shrink-0 text-stone-400" />
             {venue.location_full}
           </p>
         )}
-        <div className="flex items-center justify-between pt-1.5 gap-2">
-          {(() => {
-            const scale = getPriceScale(venue.price_min);
-            if (!scale) return null;
-            const label = PRICE_SCALE_LABELS[scale];
-            return (
-              <span className="flex items-baseline gap-1.5">
-                <span className="text-sm font-bold tracking-wide text-stone-900">{scale}</span>
-                <span className="text-xs text-stone-400">{label}</span>
-              </span>
-            );
-          })()}
-          {(venue.capacity_min != null || venue.capacity_max != null) && (
-            <span className="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded-full flex items-center gap-1 shrink-0">
-              <Users className="h-3 w-3" />
-              {venue.capacity_min && venue.capacity_max
-                ? `${venue.capacity_min}–${venue.capacity_max}`
-                : venue.capacity_max
-                  ? `Up to ${venue.capacity_max}`
-                  : `${venue.capacity_min}+`}
-            </span>
-          )}
-        </div>
+
+        {priceLabel && (
+          <p className="text-sm text-stone-900 mt-1">
+            <span className="font-bold text-base">{priceLabel}</span>
+            <span className="text-stone-500 font-normal"> /event</span>
+          </p>
+        )}
       </div>
     </Link>
   );

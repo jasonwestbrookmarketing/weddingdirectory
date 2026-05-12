@@ -132,10 +132,10 @@ function SearchContent() {
   ].filter(Boolean).length + pendingFilters.amenities.length;
 
   return (
-    <div className="flex flex-1 overflow-hidden" style={{ height: "calc(100vh - 64px)" }}>
+    <div className="max-w-screen-xl mx-auto px-6 py-6 flex gap-10">
 
       {/* ── Sidebar (desktop) ── */}
-      <div className="hidden lg:flex flex-col h-full overflow-hidden border-r border-stone-200 w-64 shrink-0">
+      <div className="hidden lg:block shrink-0">
         <FilterPanel
           filters={pendingFilters}
           onChange={setPendingFilters}
@@ -149,31 +149,29 @@ function SearchContent() {
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 flex lg:hidden">
           <div className="absolute inset-0 bg-black/40" onClick={() => setSidebarOpen(false)} />
-          <div className="relative flex flex-col w-80 max-w-full bg-white h-full overflow-hidden z-10">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-stone-200">
-              <span className="font-semibold text-stone-900">Filters</span>
+          <div className="relative flex flex-col w-80 max-w-full bg-white h-full overflow-y-auto z-10 px-5">
+            <div className="flex items-center justify-between py-4 border-b border-stone-200 mb-2">
+              <span className="font-bold text-stone-900 text-lg">Filters</span>
               <button onClick={() => setSidebarOpen(false)}>
                 <X className="h-5 w-5 text-stone-500" />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto">
-              <FilterPanel
-                filters={pendingFilters}
-                onChange={setPendingFilters}
-                onApply={applyFilters}
-                resultCount={allVenues.length}
-                loading={loading}
-              />
-            </div>
+            <FilterPanel
+              filters={pendingFilters}
+              onChange={setPendingFilters}
+              onApply={() => { applyFilters(); setSidebarOpen(false); }}
+              resultCount={allVenues.length}
+              loading={loading}
+            />
           </div>
         </div>
       )}
 
       {/* ── Main content ── */}
-      <div className="flex-1 flex flex-col overflow-y-auto">
+      <div className="flex-1 min-w-0 flex flex-col gap-5">
 
-        {/* Toolbar */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-stone-100 bg-white sticky top-0 z-20">
+        {/* Results row */}
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* Mobile filter trigger */}
             <button
@@ -189,7 +187,7 @@ function SearchContent() {
               )}
             </button>
 
-            <h1 className="text-xl font-bold text-stone-900">
+            <h1 className="text-2xl font-bold text-stone-900">
               {loading ? (
                 <span className="text-stone-400 text-base font-normal">Searching…</span>
               ) : (
@@ -215,83 +213,75 @@ function SearchContent() {
           </div>
         </div>
 
-        {/* Map */}
+        {/* Map card */}
         <VenueMap venues={allVenues} />
 
-        {/* Grid */}
-        <div className="px-6 py-8">
-          {!loading && allVenues.length === 0 ? (
-            <div className="text-center py-24">
-              <Search className="h-12 w-12 text-stone-300 mx-auto mb-4" />
-              <h2 className="text-xl font-semibold text-stone-900 mb-2">No venues found</h2>
-              <p className="text-stone-500">Try adjusting your filters to see more results</p>
+        {/* Venue grid */}
+        {!loading && allVenues.length === 0 ? (
+          <div className="text-center py-24">
+            <Search className="h-12 w-12 text-stone-300 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-stone-900 mb-2">No venues found</h2>
+            <p className="text-stone-500">Try adjusting your filters to see more results</p>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-8">
+              {loading
+                ? Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i} className="animate-pulse">
+                      <div className="aspect-[4/3] bg-stone-100 rounded-xl mb-3" />
+                      <div className="h-4 bg-stone-100 rounded w-3/4 mb-2" />
+                      <div className="h-3 bg-stone-100 rounded w-1/2" />
+                    </div>
+                  ))
+                : pagedVenues.map((venue) => (
+                    <VenueCard key={venue.id} venue={venue} />
+                  ))}
             </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {loading
-                  ? Array.from({ length: 6 }).map((_, i) => (
-                      <div key={i} className="animate-pulse">
-                        <div className="aspect-[4/3] bg-stone-100 rounded-xl mb-3" />
-                        <div className="h-4 bg-stone-100 rounded w-3/4 mb-2" />
-                        <div className="h-3 bg-stone-100 rounded w-1/2" />
-                      </div>
-                    ))
-                  : pagedVenues.map((venue) => (
-                      <VenueCard key={venue.id} venue={venue} />
-                    ))}
+
+            {/* Pagination */}
+            {!loading && totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-8">
+                <button
+                  onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                  disabled={page === 1}
+                  className="px-4 py-2 text-sm border border-stone-200 rounded-lg text-stone-700 hover:border-stone-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                >
+                  Previous
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
+                  .reduce<(number | "…")[]>((acc, p, idx, arr) => {
+                    if (idx > 0 && typeof arr[idx - 1] === "number" && (p as number) - (arr[idx - 1] as number) > 1) acc.push("…");
+                    acc.push(p);
+                    return acc;
+                  }, [])
+                  .map((p, i) =>
+                    p === "…" ? (
+                      <span key={`ellipsis-${i}`} className="px-2 text-stone-400">…</span>
+                    ) : (
+                      <button
+                        key={p}
+                        onClick={() => { setPage(p as number); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                        className={`w-9 h-9 text-sm rounded-lg border transition-colors ${
+                          page === p ? "bg-stone-900 text-white border-stone-900" : "border-stone-200 text-stone-700 hover:border-stone-400"
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    )
+                  )}
+                <button
+                  onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                  disabled={page === totalPages}
+                  className="px-4 py-2 text-sm border border-stone-200 rounded-lg text-stone-700 hover:border-stone-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                >
+                  Next
+                </button>
               </div>
-
-              {/* Pagination */}
-              {!loading && totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-12">
-                  <button
-                    onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                    disabled={page === 1}
-                    className="px-4 py-2 text-sm border border-stone-200 rounded-lg text-stone-700 hover:border-stone-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Previous
-                  </button>
-
-                  {Array.from({ length: totalPages }, (_, i) => i + 1)
-                    .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
-                    .reduce<(number | "…")[]>((acc, p, idx, arr) => {
-                      if (idx > 0 && typeof arr[idx - 1] === "number" && (p as number) - (arr[idx - 1] as number) > 1) {
-                        acc.push("…");
-                      }
-                      acc.push(p);
-                      return acc;
-                    }, [])
-                    .map((p, i) =>
-                      p === "…" ? (
-                        <span key={`ellipsis-${i}`} className="px-2 text-stone-400">…</span>
-                      ) : (
-                        <button
-                          key={p}
-                          onClick={() => { setPage(p as number); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                          className={`w-9 h-9 text-sm rounded-lg border transition-colors ${
-                            page === p
-                              ? "bg-stone-900 text-white border-stone-900"
-                              : "border-stone-200 text-stone-700 hover:border-stone-400"
-                          }`}
-                        >
-                          {p}
-                        </button>
-                      )
-                    )}
-
-                  <button
-                    onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                    disabled={page === totalPages}
-                    className="px-4 py-2 text-sm border border-stone-200 rounded-lg text-stone-700 hover:border-stone-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Next
-                  </button>
-                </div>
-              )}
-            </>
-          )}
-        </div>
+            )}
+          </>
+        )}
 
         <SiteFooter />
       </div>
@@ -301,7 +291,7 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-white">
       {/* Nav */}
       <nav className="bg-white border-b border-stone-200 h-16 flex items-center shrink-0 z-30">
         <div className="w-full max-w-screen-2xl mx-auto flex items-center justify-between px-6 gap-3">
