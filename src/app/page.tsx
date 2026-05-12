@@ -121,21 +121,15 @@ export default async function HomePage() {
         {/* Hero content */}
         <div className="relative z-10 w-full max-w-4xl mx-auto text-center px-5 sm:px-8 pt-28 pb-24 sm:pt-32 sm:pb-28 flex flex-col items-center gap-5 sm:gap-6">
 
-          {/* Eyebrow */}
-          <p
-            className="text-xs sm:text-sm font-medium tracking-[0.22em] uppercase text-white/55"
-            style={{ fontFamily: "var(--font-open-sans)" }}
-          >
-            Wedding Venue Discovery
-          </p>
-
-          {/* Main headline — Playfair Display thin (400) */}
+          {/* Main headline — "Find Your Perfect" smaller to let StoryVenue dominate */}
           <h1
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal leading-[1.1] tracking-tight text-white drop-shadow-lg"
+            className="flex flex-col items-center gap-1 drop-shadow-lg"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
-            Find Your Perfect{" "}
-            <em className="not-italic" style={{ fontStyle: "italic" }}>
+            <span className="text-2xl sm:text-3xl md:text-4xl font-normal leading-tight tracking-tight text-white/90">
+              Find Your Perfect
+            </span>
+            <em className="not-italic text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal leading-[1.05] tracking-tight text-white" style={{ fontStyle: "italic" }}>
               StoryVenue
             </em>
           </h1>
@@ -157,26 +151,20 @@ export default async function HomePage() {
           <div className="w-full mt-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_12%,white_88%,transparent)]">
             <div className="flex gap-12 animate-[ticker_60s_linear_infinite] whitespace-nowrap w-max">
               {[
-                "Retreat at Evans Farms",
-                "The Barn of Hidden Valley",
-                "Irongate Wedding Venue",
-                "The Grand Estate",
-                "Willow Creek Farms",
-                "Stone Ridge Manor",
-                "Harvest Moon Venue",
-                "Blue Heron Farm",
-                "The Magnolia House",
-                "Rosewood Barn",
-                "Retreat at Evans Farms",
-                "The Barn of Hidden Valley",
-                "Irongate Wedding Venue",
-                "The Grand Estate",
-                "Willow Creek Farms",
-                "Stone Ridge Manor",
-                "Harvest Moon Venue",
-                "Blue Heron Farm",
-                "The Magnolia House",
-                "Rosewood Barn",
+                "White Pine Manor",
+                "Red Barn Acres",
+                "Atlantic Stables",
+                "Arbor Venues",
+                "Arete Event Center",
+                "Waters Building",
+                "Vista on the Docks",
+                "White Pine Manor",
+                "Red Barn Acres",
+                "Atlantic Stables",
+                "Arbor Venues",
+                "Arete Event Center",
+                "Waters Building",
+                "Vista on the Docks",
               ].map((name, i) => (
                 <span
                   key={i}

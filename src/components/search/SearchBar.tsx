@@ -40,7 +40,7 @@ export default function SearchBar() {
         {/* Location — takes remaining space */}
         <div className="flex items-center gap-2.5 flex-1 min-w-0 pl-5 pr-4 border-r border-stone-200">
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest leading-none mb-1">Where</p>
+            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest leading-none mb-1 text-left">Where</p>
             <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4 text-stone-400 shrink-0" />
               <input
@@ -57,7 +57,7 @@ export default function SearchBar() {
         {/* Guests — fixed narrow */}
         <div className="flex items-center w-[110px] shrink-0 px-4 border-r border-stone-200">
           <div className="w-full">
-            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest leading-none mb-1">Guests</p>
+            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest leading-none mb-1 text-left">Guests</p>
             <input
               type="number"
               placeholder="Any"
@@ -72,7 +72,7 @@ export default function SearchBar() {
         {/* Budget — fixed */}
         <div className="flex items-center w-[155px] shrink-0 px-4 border-r border-stone-200">
           <div className="w-full">
-            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest leading-none mb-1">Budget</p>
+            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest leading-none mb-1 text-left">Budget</p>
             <select
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
@@ -89,7 +89,7 @@ export default function SearchBar() {
         {/* Style — fixed */}
         <div className="flex items-center w-[150px] shrink-0 px-4">
           <div className="w-full">
-            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest leading-none mb-1">Style</p>
+            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest leading-none mb-1 text-left">Style</p>
             <select
               value={style}
               onChange={(e) => setStyle(e.target.value)}
@@ -130,7 +130,7 @@ export default function SearchBar() {
 
         <div className="grid grid-cols-2 border-b border-stone-100">
           <div className="px-4 py-3 border-r border-stone-100">
-            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Guests</p>
+            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1 text-left">Guests</p>
             <input
               type="number"
               placeholder="Any"
@@ -141,7 +141,7 @@ export default function SearchBar() {
             />
           </div>
           <div className="px-4 py-3">
-            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Budget</p>
+            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1 text-left">Budget</p>
             <select
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
@@ -156,7 +156,7 @@ export default function SearchBar() {
         </div>
 
         <div className="px-4 py-3 border-b border-stone-100">
-          <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Style</p>
+            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1 text-left">Style</p>
           <select
             value={style}
             onChange={(e) => setStyle(e.target.value)}
