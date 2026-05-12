@@ -4,64 +4,74 @@ import { useEffect, useState, useCallback, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Search } from "lucide-react";
+import dynamic from "next/dynamic";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { BUDGET_RANGES } from "@/lib/constants";
 import { trackEvent } from "@/lib/analytics";
 import SiteFooter from "@/components/SiteFooter";
-import FilterBar, { type Filters } from "@/components/search/FilterBar";
+import FilterPanel, { type SearchFilters, DEFAULT_FILTERS } from "@/components/search/FilterPanel";
 import VenueCard from "@/components/search/VenueCard";
 import type { Venue } from "@/types/database";
 
-const STORYPAY_URL =
-  process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
+const VenueMap = dynamic(() => import("@/components/search/VenueMap"), { ssr: false });
+
+const STORYPAY_URL = process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
+const PAGE_SIZE = 12;
 
 function SearchContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const isInitialMount = useRef(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const [filters, setFilters] = useState<Filters>({
+  const [filters, setFilters] = useState<SearchFilters>({
     location: searchParams.get("location") || "",
+    priceMin: searchParams.get("priceMin") || "",
+    priceMax: searchParams.get("priceMax") || "",
     guests: searchParams.get("guests") || "",
-    budget: searchParams.get("budget") || "",
     style: searchParams.get("style") || "",
     indoor_outdoor: searchParams.get("indoor_outdoor") || "",
+    amenities: searchParams.get("amenities")
+      ? searchParams.get("amenities")!.split(",")
+      : [],
   });
 
-  const [venues, setVenues] = useState<Venue[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Pending filters (applied only on "Apply" click)
+  const [pendingFilters, setPendingFilters] = useState<SearchFilters>(filters);
 
-  const fetchVenues = useCallback(async (f: Filters) => {
+  const [allVenues, setAllVenues] = useState<Venue[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+
+  const fetchVenues = useCallback(async (f: SearchFilters) => {
     setLoading(true);
     const supabase = createClient();
-    let query = supabase.from("venues").select("*").eq("is_published", true).neq("is_demo", true);
+
+    let query = supabase
+      .from("venues")
+      .select("*")
+      .eq("is_published", true)
+      .neq("is_demo", true);
 
     if (f.location) {
       query = query.or(
-        `location_full.ilike.%${f.location}%,location_city.ilike.%${f.location}%`
+        `location_full.ilike.%${f.location}%,location_city.ilike.%${f.location}%,location_state.ilike.%${f.location}%`
       );
     }
     if (f.guests) {
       const g = Number(f.guests);
-      query = query.lte("capacity_min", g).gte("capacity_max", g);
+      query = query.gte("capacity_max", g);
     }
-    if (f.budget) {
-      const range = BUDGET_RANGES.find((r) => r.value === f.budget);
-      if (range) {
-        query = query.lte("price_min", range.max).gte("price_max", range.min);
-      }
-    }
-    if (f.style) {
-      query = query.eq("venue_type", f.style);
-    }
-    if (f.indoor_outdoor) {
-      query = query.eq("indoor_outdoor", f.indoor_outdoor);
+    if (f.priceMin) query = query.gte("price_max", Number(f.priceMin));
+    if (f.priceMax) query = query.lte("price_min", Number(f.priceMax));
+    if (f.style) query = query.eq("venue_type", f.style);
+    if (f.indoor_outdoor) query = query.eq("indoor_outdoor", f.indoor_outdoor);
+    if (f.amenities.length > 0) {
+      query = query.contains("amenities", f.amenities);
     }
 
-    const { data } = await query.order("created_at", { ascending: false });
-    // Sponsored first, then verified, then the server's recency order. Keeps
-    // paying-customer listings at the top regardless of how a visitor filters.
+    const { data } = await query.order("created_at", { ascending: false }).limit(200);
+
     const sorted = (data ?? []).slice().sort((a, b) => {
       const sp =
         Number(b.directory_sponsored_status === "approved") -
@@ -72,7 +82,9 @@ function SearchContent() {
         Number(a.directory_verified_status === "approved")
       );
     });
-    setVenues(sorted);
+
+    setAllVenues(sorted);
+    setPage(1);
     setLoading(false);
   }, []);
 
@@ -82,59 +94,194 @@ function SearchContent() {
       fetchVenues(filters);
       return;
     }
-
-    const timer = setTimeout(() => {
-      const params = new URLSearchParams();
-      Object.entries(filters).forEach(([key, val]) => {
-        if (val) params.set(key, val);
-      });
-      router.replace(`/search?${params.toString()}`, { scroll: false });
-      trackEvent("search_filter_applied", { ...filters });
-      fetchVenues(filters);
-    }, 300);
-
-    return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
+  }, []);
+
+  const applyFilters = () => {
+    setFilters(pendingFilters);
+    setSidebarOpen(false);
+    const params = new URLSearchParams();
+    Object.entries(pendingFilters).forEach(([key, val]) => {
+      if (Array.isArray(val)) {
+        if (val.length > 0) params.set(key, val.join(","));
+      } else if (val) {
+        params.set(key, val);
+      }
+    });
+    router.replace(`/search?${params.toString()}`, { scroll: false });
+    trackEvent("search_filter_applied", { ...pendingFilters });
+    fetchVenues(pendingFilters);
+  };
+
+  const totalPages = Math.ceil(allVenues.length / PAGE_SIZE);
+  const pagedVenues = allVenues.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const activeFilterCount = [
+    pendingFilters.location,
+    pendingFilters.priceMin || pendingFilters.priceMax,
+    pendingFilters.guests,
+    pendingFilters.style,
+    pendingFilters.indoor_outdoor,
+  ].filter(Boolean).length + pendingFilters.amenities.length;
 
   return (
-    <>
-      <FilterBar filters={filters} onFilterChange={setFilters} />
+    <div className="flex flex-1 overflow-hidden" style={{ height: "calc(100vh - 64px)" }}>
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
-        <p className="text-sm text-stone-500 mb-6">
-          {loading
-            ? "Searching..."
-            : `${venues.length} venue${venues.length !== 1 ? "s" : ""} found`}
-        </p>
+      {/* ── Sidebar (desktop) ── */}
+      <div className="hidden lg:flex flex-col h-full overflow-hidden border-r border-stone-200">
+        <FilterPanel
+          filters={pendingFilters}
+          onChange={setPendingFilters}
+          onApply={applyFilters}
+          resultCount={allVenues.length}
+          loading={loading}
+        />
+      </div>
 
-        {!loading && venues.length === 0 ? (
-          <div className="text-center py-24">
-            <Search className="h-12 w-12 text-stone-300 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-stone-900 mb-2">
-              No venues found
-            </h2>
-            <p className="text-stone-500">
-              Try adjusting your filters to see more results
+      {/* ── Mobile sidebar drawer ── */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-50 flex lg:hidden">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setSidebarOpen(false)} />
+          <div className="relative flex flex-col w-80 max-w-full bg-white h-full overflow-hidden z-10">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-stone-200">
+              <span className="font-semibold text-stone-900">Filters</span>
+              <button onClick={() => setSidebarOpen(false)}>
+                <X className="h-5 w-5 text-stone-500" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              <FilterPanel
+                filters={pendingFilters}
+                onChange={setPendingFilters}
+                onApply={applyFilters}
+                resultCount={allVenues.length}
+                loading={loading}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Main content ── */}
+      <div className="flex-1 flex flex-col overflow-y-auto">
+
+        {/* Toolbar */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-stone-200 bg-white sticky top-0 z-20">
+          <div className="flex items-center gap-3">
+            {/* Mobile filter trigger */}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="lg:hidden flex items-center gap-2 text-sm font-medium text-stone-700 border border-stone-200 rounded-lg px-3 py-2 hover:border-stone-400 transition-colors"
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+              Filters
+              {activeFilterCount > 0 && (
+                <span className="bg-stone-900 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
+
+            <p className="text-sm font-semibold text-stone-900">
+              {loading ? (
+                <span className="text-stone-400">Searching…</span>
+              ) : (
+                `${allVenues.length} Result${allVenues.length !== 1 ? "s" : ""}`
+              )}
             </p>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {venues.map((venue) => (
-              <VenueCard key={venue.id} venue={venue} />
-            ))}
-          </div>
-        )}
-      </main>
-    </>
+        </div>
+
+        {/* Map */}
+        <VenueMap venues={allVenues} />
+
+        {/* Grid */}
+        <div className="px-6 py-8">
+          {!loading && allVenues.length === 0 ? (
+            <div className="text-center py-24">
+              <Search className="h-12 w-12 text-stone-300 mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-stone-900 mb-2">No venues found</h2>
+              <p className="text-stone-500">Try adjusting your filters to see more results</p>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                {loading
+                  ? Array.from({ length: 6 }).map((_, i) => (
+                      <div key={i} className="animate-pulse">
+                        <div className="aspect-[4/3] bg-stone-100 rounded-xl mb-3" />
+                        <div className="h-4 bg-stone-100 rounded w-3/4 mb-2" />
+                        <div className="h-3 bg-stone-100 rounded w-1/2" />
+                      </div>
+                    ))
+                  : pagedVenues.map((venue) => (
+                      <VenueCard key={venue.id} venue={venue} />
+                    ))}
+              </div>
+
+              {/* Pagination */}
+              {!loading && totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-12">
+                  <button
+                    onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                    disabled={page === 1}
+                    className="px-4 py-2 text-sm border border-stone-200 rounded-lg text-stone-700 hover:border-stone-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Previous
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, i) => i + 1)
+                    .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
+                    .reduce<(number | "…")[]>((acc, p, idx, arr) => {
+                      if (idx > 0 && typeof arr[idx - 1] === "number" && (p as number) - (arr[idx - 1] as number) > 1) {
+                        acc.push("…");
+                      }
+                      acc.push(p);
+                      return acc;
+                    }, [])
+                    .map((p, i) =>
+                      p === "…" ? (
+                        <span key={`ellipsis-${i}`} className="px-2 text-stone-400">…</span>
+                      ) : (
+                        <button
+                          key={p}
+                          onClick={() => { setPage(p as number); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                          className={`w-9 h-9 text-sm rounded-lg border transition-colors ${
+                            page === p
+                              ? "bg-stone-900 text-white border-stone-900"
+                              : "border-stone-200 text-stone-700 hover:border-stone-400"
+                          }`}
+                        >
+                          {p}
+                        </button>
+                      )
+                    )}
+
+                  <button
+                    onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                    disabled={page === totalPages}
+                    className="px-4 py-2 text-sm border border-stone-200 rounded-lg text-stone-700 hover:border-stone-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+
+        <SiteFooter />
+      </div>
+    </div>
   );
 }
 
 export default function SearchPage() {
   return (
-    <>
-      <nav className="bg-white border-b border-stone-200">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 gap-3">
+    <div className="flex flex-col min-h-screen">
+      {/* Nav */}
+      <nav className="bg-white border-b border-stone-200 h-16 flex items-center shrink-0 z-30">
+        <div className="w-full max-w-screen-2xl mx-auto flex items-center justify-between px-6 gap-3">
           <Link href="/" aria-label="StoryVenue home" className="shrink-0">
             <Image
               src="/storyvenue-dark-logo.png"
@@ -145,8 +292,6 @@ export default function SearchPage() {
               priority
             />
           </Link>
-          {/* Unified auth: the dashboard handles Venue↔Couple via a toggle
-              on /login and /signup, so one pair of buttons serves both. */}
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             <a
               href={`${STORYPAY_URL}/login?as=couple`}
@@ -166,14 +311,13 @@ export default function SearchPage() {
 
       <Suspense
         fallback={
-          <div className="flex items-center justify-center py-24">
+          <div className="flex-1 flex items-center justify-center">
             <div className="animate-spin h-8 w-8 border-2 border-stone-300 border-t-stone-900 rounded-full" />
           </div>
         }
       >
         <SearchContent />
       </Suspense>
-      <SiteFooter />
-    </>
+    </div>
   );
 }
