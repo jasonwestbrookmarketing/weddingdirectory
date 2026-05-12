@@ -63,44 +63,62 @@ export default function VenueMap({ venues }: Props) {
 
       leafletMapRef.current = map;
 
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 18,
+      // CartoDB Positron — clean light-grey minimal style matching the reference
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: "abcd",
+        maxZoom: 19,
       }).addTo(map);
 
-      // Custom circular pin icon
-      const createIcon = (imageUrl: string | null | undefined) => {
-        const html = imageUrl
+      // Circular photo pin + name label below — matches UKR Club reference style
+      const createIcon = (imageUrl: string | null | undefined, name: string) => {
+        const pinSize = 54;
+        const imgHtml = imageUrl
           ? `<div style="
-              width:48px;height:48px;border-radius:50%;
+              width:${pinSize}px;height:${pinSize}px;border-radius:50%;
               border:3px solid white;
               background:url(${imageUrl}) center/cover no-repeat;
-              box-shadow:0 2px 8px rgba(0,0,0,0.25);
+              box-shadow:0 1px 6px rgba(0,0,0,0.18);
               cursor:pointer;
+              flex-shrink:0;
             "></div>`
           : `<div style="
-              width:40px;height:40px;border-radius:50%;
+              width:${pinSize}px;height:${pinSize}px;border-radius:50%;
               border:3px solid white;
-              background:#1c1917;
+              background:#44403c;
               display:flex;align-items:center;justify-content:center;
-              box-shadow:0 2px 8px rgba(0,0,0,0.25);
+              box-shadow:0 1px 6px rgba(0,0,0,0.18);
               cursor:pointer;
+              flex-shrink:0;
             ">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
             </div>`;
 
+        const labelHtml = `<div style="
+          margin-top:5px;
+          text-align:center;
+          font-size:11.5px;
+          font-weight:600;
+          color:#1c1917;
+          line-height:1.3;
+          max-width:110px;
+          word-wrap:break-word;
+          text-shadow:0 1px 3px rgba(255,255,255,0.9),0 0 6px rgba(255,255,255,0.7);
+          pointer-events:none;
+        ">${name}</div>`;
+
         return L.divIcon({
-          html,
+          html: `<div style="display:flex;flex-direction:column;align-items:center;width:120px;margin-left:-33px;">${imgHtml}${labelHtml}</div>`,
           className: "",
-          iconSize: [48, 48],
-          iconAnchor: [24, 48],
-          popupAnchor: [0, -48],
+          iconSize: [120, 80],
+          iconAnchor: [60, pinSize + 4],
+          popupAnchor: [0, -(pinSize + 4)],
         });
       };
 
       mappable.forEach((venue) => {
         const marker = L.marker([venue.lat as number, venue.lng as number], {
-          icon: createIcon(venue.cover_image_url),
+          icon: createIcon(venue.cover_image_url, venue.name || "Venue"),
         }).addTo(map);
 
         marker.on("click", (e: { originalEvent: MouseEvent }) => {
