@@ -74,19 +74,23 @@ export default async function HomePage() {
       {/* Hero — cinematic video background */}
       <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
 
-        {/* Static hero image — shows while video loads and on devices where autoplay is blocked */}
+        {/* Static hero image — always visible; focal point shifts right on
+            mobile so the couple (center-right of the landscape frame) stays
+            in frame on portrait screens. */}
         <Image
           src="/hero-wedding.jpg"
           alt="Elegant wedding venue"
           fill
           priority
-          className="absolute inset-0 object-cover object-center"
+          className="absolute inset-0 object-cover"
+          style={{ objectPosition: "70% center" }}
           sizes="100vw"
         />
 
-        {/* Video layer — overlays the image once loaded */}
+        {/* Video layer — desktop/tablet only; autoplay is unreliable on
+            mobile and the static image looks better in portrait anyway. */}
         <video
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover hidden sm:block"
           autoPlay
           muted
           loop
