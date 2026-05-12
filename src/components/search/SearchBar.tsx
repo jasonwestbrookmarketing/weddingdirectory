@@ -35,7 +35,7 @@ export default function SearchBar() {
     <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto">
 
       {/* ── Desktop pill ── */}
-      <div className="hidden md:flex items-stretch bg-white rounded-full shadow-2xl overflow-hidden h-[68px]">
+      <div className="hidden md:flex items-stretch bg-white rounded-full overflow-hidden h-[68px] shadow-[0_8px_40px_rgba(0,0,0,0.55)]">
 
         {/* Location — takes remaining space */}
         <div className="flex items-center gap-2.5 flex-1 min-w-0 pl-5 pr-4 border-r border-stone-200">
@@ -116,7 +116,7 @@ export default function SearchBar() {
       </div>
 
       {/* ── Mobile stacked card ── */}
-      <div className="flex flex-col md:hidden bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div className="flex flex-col md:hidden bg-white rounded-2xl overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.55)]">
         <div className="flex items-center gap-3 px-4 py-3.5 border-b border-stone-100">
           <MapPin className="h-4 w-4 text-stone-400 shrink-0" />
           <input
