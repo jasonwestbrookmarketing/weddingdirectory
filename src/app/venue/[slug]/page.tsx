@@ -114,15 +114,19 @@ export default async function VenuePage({ params, searchParams }: Props) {
     }
   }
 
-  // Pricing guide cover — only fetched when the plan gate allows it.
+  // Pricing guide cover + owner toggle — only fetched when the plan gate allows it.
+  // The venue owner can independently disable the guide from their dashboard even
+  // when their plan grants access (venue_pricing_guides.enabled = false).
   let guidePreviewUrl = "";
   if (pricingGuideEnabled) {
     const { data: guideRow } = await supabase
       .from("venue_pricing_guides")
-      .select("cover_image_url")
+      .select("cover_image_url, enabled")
       .eq("venue_id", venue.id)
       .maybeSingle();
-    guidePreviewUrl = guideRow?.cover_image_url ?? "";
+    // Respect the owner's toggle — if the row doesn't exist yet, treat as disabled.
+    pricingGuideEnabled = guideRow?.enabled === true;
+    guidePreviewUrl = pricingGuideEnabled ? (guideRow?.cover_image_url ?? "") : "";
   }
 
   return (
