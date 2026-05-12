@@ -74,14 +74,24 @@ export default async function HomePage() {
       {/* Hero — cinematic video background */}
       <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
 
-        {/* Video layer */}
+        {/* Static hero image — shows while video loads and on devices where autoplay is blocked */}
+        <Image
+          src="/hero-wedding.jpg"
+          alt="Elegant wedding venue"
+          fill
+          priority
+          className="absolute inset-0 object-cover object-center"
+          sizes="100vw"
+        />
+
+        {/* Video layer — overlays the image once loaded */}
         <video
           className="absolute inset-0 w-full h-full object-cover"
           autoPlay
           muted
           loop
           playsInline
-          poster="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80&auto=format&fit=crop"
+          poster="/hero-wedding.jpg"
         >
           {/* Mixkit free license — https://mixkit.co/license/#videoFree */}
           <source
