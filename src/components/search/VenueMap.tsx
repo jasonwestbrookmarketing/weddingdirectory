@@ -136,7 +136,7 @@ export default function VenueMap({ venues }: Props) {
   }, [mounted, venues]);
 
   return (
-    <div className="relative w-full h-[420px] bg-stone-100 overflow-hidden rounded-none border-b border-stone-200">
+    <div className="relative w-full h-[50vh] min-h-[360px] max-h-[520px] bg-stone-100 overflow-hidden rounded-none border-b border-stone-200">
       {!mounted && (
         <div className="absolute inset-0 flex items-center justify-center bg-stone-100">
           <div className="animate-spin h-6 w-6 border-2 border-stone-300 border-t-stone-700 rounded-full" />

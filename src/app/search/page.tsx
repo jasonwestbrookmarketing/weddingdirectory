@@ -42,6 +42,7 @@ function SearchContent() {
   const [allVenues, setAllVenues] = useState<Venue[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [sortOrder, setSortOrder] = useState<"newest" | "price_asc" | "price_desc">("newest");
 
   const fetchVenues = useCallback(async (f: SearchFilters) => {
     setLoading(true);
@@ -113,8 +114,14 @@ function SearchContent() {
     fetchVenues(pendingFilters);
   };
 
-  const totalPages = Math.ceil(allVenues.length / PAGE_SIZE);
-  const pagedVenues = allVenues.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const sortedVenues = [...allVenues].sort((a, b) => {
+    if (sortOrder === "price_asc") return (a.price_min ?? 0) - (b.price_min ?? 0);
+    if (sortOrder === "price_desc") return (b.price_min ?? 0) - (a.price_min ?? 0);
+    return 0; // "newest" order already set by fetchVenues
+  });
+
+  const totalPages = Math.ceil(sortedVenues.length / PAGE_SIZE);
+  const pagedVenues = sortedVenues.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const activeFilterCount = [
     pendingFilters.location,
@@ -128,7 +135,7 @@ function SearchContent() {
     <div className="flex flex-1 overflow-hidden" style={{ height: "calc(100vh - 64px)" }}>
 
       {/* ── Sidebar (desktop) ── */}
-      <div className="hidden lg:flex flex-col h-full overflow-hidden border-r border-stone-200">
+      <div className="hidden lg:flex flex-col h-full overflow-hidden border-r border-stone-200 w-64 shrink-0">
         <FilterPanel
           filters={pendingFilters}
           onChange={setPendingFilters}
@@ -166,7 +173,7 @@ function SearchContent() {
       <div className="flex-1 flex flex-col overflow-y-auto">
 
         {/* Toolbar */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-stone-200 bg-white sticky top-0 z-20">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-stone-100 bg-white sticky top-0 z-20">
           <div className="flex items-center gap-3">
             {/* Mobile filter trigger */}
             <button
@@ -182,13 +189,29 @@ function SearchContent() {
               )}
             </button>
 
-            <p className="text-sm font-semibold text-stone-900">
+            <h1 className="text-xl font-bold text-stone-900">
               {loading ? (
-                <span className="text-stone-400">Searching…</span>
+                <span className="text-stone-400 text-base font-normal">Searching…</span>
               ) : (
                 `${allVenues.length} Result${allVenues.length !== 1 ? "s" : ""}`
               )}
-            </p>
+            </h1>
+          </div>
+
+          {/* Sort */}
+          <div className="relative">
+            <select
+              value={sortOrder}
+              onChange={(e) => { setSortOrder(e.target.value as typeof sortOrder); setPage(1); }}
+              className="text-sm text-stone-700 border border-stone-200 rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:border-stone-400 bg-white appearance-none cursor-pointer"
+            >
+              <option value="newest">Newest</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+            </select>
+            <div className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400">
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><path d="M6 8L1 3h10z"/></svg>
+            </div>
           </div>
         </div>
 
