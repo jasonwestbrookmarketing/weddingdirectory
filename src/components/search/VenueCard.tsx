@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { MapPin } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
+import { getPriceScale, PRICE_SCALE_LABELS } from "@/lib/constants";
 import { resolveBadges } from "@/lib/directory-badges";
 import { DirectoryListingBadges } from "@/components/venue/DirectoryListingBadges";
 import type { Venue } from "@/types/database";
@@ -27,12 +28,6 @@ interface VenueCardProps {
   venue: VenueCardData;
 }
 
-function formatPrice(price: number | null | undefined): string | null {
-  if (price == null || price === 0) return null;
-  if (price >= 1000) return `$${(price / 1000).toFixed(price % 1000 === 0 ? 0 : 1)}k`;
-  return `$${price.toLocaleString()}`;
-}
-
 export default function VenueCard({ venue }: VenueCardProps) {
   const handleClick = () => {
     trackEvent("venue_card_clicked", {
@@ -42,7 +37,8 @@ export default function VenueCard({ venue }: VenueCardProps) {
   };
 
   const { verified, sponsored } = resolveBadges(venue);
-  const priceLabel = formatPrice(venue.price_min);
+  const scale = getPriceScale(venue.price_min);
+  const scaleLabel = scale ? PRICE_SCALE_LABELS[scale] : null;
 
   return (
     <Link
@@ -91,10 +87,11 @@ export default function VenueCard({ venue }: VenueCardProps) {
           </p>
         )}
 
-        {priceLabel && (
-          <p className="text-sm text-stone-900 mt-1">
-            <span className="font-bold text-base">{priceLabel}</span>
-            <span className="text-stone-500 font-normal"> /event</span>
+        {scale && scaleLabel && (
+          <p className="text-sm text-stone-700 mt-1">
+            <span className="font-semibold text-stone-900">{scale}</span>
+            <span className="text-stone-400"> · </span>
+            <span>{scaleLabel}</span>
           </p>
         )}
       </div>
