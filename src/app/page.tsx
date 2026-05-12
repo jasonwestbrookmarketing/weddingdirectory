@@ -129,8 +129,8 @@ export default async function HomePage() {
             <span className="text-2xl sm:text-3xl md:text-4xl font-normal leading-tight tracking-tight text-white/90">
               Find Your Perfect
             </span>
-            <em className="not-italic text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal leading-[1.05] tracking-tight text-white relative" style={{ fontStyle: "italic" }}>
-              StoryVenue<sup className="text-[0.25em] align-super font-sans not-italic tracking-normal text-white/70">™</sup>
+            <em className="not-italic text-5xl sm:text-7xl md:text-8xl lg:text-9xl leading-[1.05] tracking-tight text-white relative" style={{ fontFamily: "EditorsNote, serif", fontWeight: 300, fontStyle: "italic" }}>
+              StoryVenue<sup className="text-[0.25em] align-super not-italic tracking-normal text-white/70" style={{ fontFamily: "var(--font-open-sans)", fontStyle: "normal" }}>™</sup>
             </em>
           </h1>
 
