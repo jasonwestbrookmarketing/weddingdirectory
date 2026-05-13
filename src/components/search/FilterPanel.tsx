@@ -11,8 +11,6 @@ import {
 export interface SearchFilters {
   location: string;
   budget: string;
-  priceMin: string;
-  priceMax: string;
   guests: string;
   style: string;
   indoor_outdoor: string;
@@ -22,8 +20,6 @@ export interface SearchFilters {
 export const DEFAULT_FILTERS: SearchFilters = {
   location: "",
   budget: "",
-  priceMin: "",
-  priceMax: "",
   guests: "",
   style: "",
   indoor_outdoor: "",
@@ -58,8 +54,6 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
   const hasFilters =
     filters.location ||
     filters.budget ||
-    filters.priceMin ||
-    filters.priceMax ||
     filters.guests ||
     filters.style ||
     filters.indoor_outdoor ||
@@ -101,7 +95,7 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
         {/* Budget */}
         <div>
           <label className={sectionLabel}>Budget</label>
-          <div className="grid grid-cols-3 gap-1.5 mb-3">
+          <div className="grid grid-cols-3 gap-2">
             {BUDGET_RANGES.map((r) => {
               const active = filters.budget === r.value;
               return (
@@ -109,34 +103,19 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
                   key={r.value}
                   type="button"
                   onClick={() => set("budget", active ? "" : r.value)}
-                  className={`text-xs py-2 rounded-lg border font-medium transition-colors ${
+                  className={`flex flex-col items-center gap-0.5 py-2.5 rounded-xl border font-medium transition-colors ${
                     active
                       ? "bg-stone-900 text-white border-stone-900"
                       : "border-stone-200 text-stone-600 hover:border-stone-400 bg-white"
                   }`}
                 >
-                  {r.scale}
+                  <span className="text-sm font-bold">{r.scale}</span>
+                  <span className={`text-[9px] leading-tight text-center ${active ? "text-white/70" : "text-stone-400"}`}>
+                    {r.label.split(" · ")[1]}
+                  </span>
                 </button>
               );
             })}
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <input
-              type="number"
-              placeholder="Price from"
-              value={filters.priceMin}
-              onChange={(e) => set("priceMin", e.target.value)}
-              className={inputClass}
-              min={0}
-            />
-            <input
-              type="number"
-              placeholder="Price to"
-              value={filters.priceMax}
-              onChange={(e) => set("priceMax", e.target.value)}
-              className={inputClass}
-              min={0}
-            />
           </div>
         </div>
 
