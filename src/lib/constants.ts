@@ -152,30 +152,27 @@ export const FEATURES_LIST = [
 export const CTA_LABEL = "Download Pricing & Availability Guide";
 
 export const BUDGET_RANGES = [
-  { value: "0-5000",    label: "$ · Budget-Friendly",   scale: "$",    min: 0,     max: 5000   },
-  { value: "5000-10000", label: "$$ · Moderate",         scale: "$$",   min: 5000,  max: 10000  },
-  { value: "10000-20000",label: "$$$ · Premium",          scale: "$$$",  min: 10000, max: 20000  },
-  { value: "20000-40000",label: "$$$$ · Luxury",          scale: "$$$$", min: 20000, max: 40000  },
-  { value: "40000+",    label: "$$$$$ · Ultra-Luxury",   scale: "$$$$$",min: 40000, max: 999999 },
+  { value: "0-15000",    label: "$ · Intimate & Charming",    scale: "$",   min: 0,     max: 15000  },
+  { value: "15000-35000", label: "$$ · Romantic & Refined",   scale: "$$",  min: 15000, max: 35000  },
+  { value: "35000+",     label: "$$$ · Grand & Luxurious",    scale: "$$$", min: 35000, max: 999999 },
 ] as const;
 
 /**
- * Returns a dollar-sign scale string for a given price_min value.
- * Used on venue cards and listing pages instead of showing raw dollar amounts.
+ * Returns a 3-tier dollar-sign scale for a given price_min value.
+ * Describes the venue experience, not the price point.
+ *   $   → Intimate & Charming   (up to $15k)
+ *   $$  → Romantic & Refined    ($15k–$35k)
+ *   $$$ → Grand & Luxurious     ($35k+)
  */
 export function getPriceScale(priceMin: number | null | undefined): string | null {
   if (priceMin == null) return null;
-  if (priceMin < 5000)  return "$";
-  if (priceMin < 10000) return "$$";
-  if (priceMin < 20000) return "$$$";
-  if (priceMin < 40000) return "$$$$";
-  return "$$$$$";
+  if (priceMin < 15000) return "$";
+  if (priceMin < 35000) return "$$";
+  return "$$$";
 }
 
 export const PRICE_SCALE_LABELS: Record<string, string> = {
-  "$":     "Budget-Friendly",
-  "$$":    "Moderate",
-  "$$$":   "Premium",
-  "$$$$":  "Luxury",
-  "$$$$$": "Ultra-Luxury",
+  "$":   "Intimate & Charming",
+  "$$":  "Romantic & Refined",
+  "$$$": "Grand & Luxurious",
 };

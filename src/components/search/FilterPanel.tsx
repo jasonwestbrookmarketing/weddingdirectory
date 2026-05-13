@@ -101,7 +101,7 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
         {/* Budget */}
         <div>
           <label className={sectionLabel}>Budget</label>
-          <div className="grid grid-cols-5 gap-1.5 mb-3">
+          <div className="grid grid-cols-3 gap-1.5 mb-3">
             {BUDGET_RANGES.map((r) => {
               const active = filters.budget === r.value;
               return (
