@@ -1,14 +1,16 @@
 "use client";
 
-import { X } from "lucide-react";
+import { MapPin, X } from "lucide-react";
 import {
   VENUE_TYPES,
   INDOOR_OUTDOOR_OPTIONS,
   AMENITIES_LIST,
+  BUDGET_RANGES,
 } from "@/lib/constants";
 
 export interface SearchFilters {
   location: string;
+  budget: string;
   priceMin: string;
   priceMax: string;
   guests: string;
@@ -19,6 +21,7 @@ export interface SearchFilters {
 
 export const DEFAULT_FILTERS: SearchFilters = {
   location: "",
+  budget: "",
   priceMin: "",
   priceMax: "",
   guests: "",
@@ -54,6 +57,7 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
 
   const hasFilters =
     filters.location ||
+    filters.budget ||
     filters.priceMin ||
     filters.priceMax ||
     filters.guests ||
@@ -79,13 +83,47 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
 
       <div className="flex flex-col gap-5 px-1 pb-6">
 
-        {/* Price */}
+        {/* Location */}
         <div>
-          <label className={sectionLabel}>Price</label>
+          <label className={sectionLabel}>Location</label>
+          <div className="relative">
+            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="City, state, address, or zip"
+              value={filters.location}
+              onChange={(e) => set("location", e.target.value)}
+              className="w-full border border-stone-200 rounded-lg pl-9 pr-3 py-2.5 text-sm text-stone-700 placeholder:text-stone-400 focus:outline-none focus:border-stone-400 bg-white"
+            />
+          </div>
+        </div>
+
+        {/* Budget */}
+        <div>
+          <label className={sectionLabel}>Budget</label>
+          <div className="grid grid-cols-5 gap-1.5 mb-3">
+            {BUDGET_RANGES.map((r) => {
+              const active = filters.budget === r.value;
+              return (
+                <button
+                  key={r.value}
+                  type="button"
+                  onClick={() => set("budget", active ? "" : r.value)}
+                  className={`text-xs py-2 rounded-lg border font-medium transition-colors ${
+                    active
+                      ? "bg-stone-900 text-white border-stone-900"
+                      : "border-stone-200 text-stone-600 hover:border-stone-400 bg-white"
+                  }`}
+                >
+                  {r.scale}
+                </button>
+              );
+            })}
+          </div>
           <div className="grid grid-cols-2 gap-2">
             <input
               type="number"
-              placeholder="From"
+              placeholder="Price from"
               value={filters.priceMin}
               onChange={(e) => set("priceMin", e.target.value)}
               className={inputClass}
@@ -93,7 +131,7 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
             />
             <input
               type="number"
-              placeholder="To"
+              placeholder="Price to"
               value={filters.priceMax}
               onChange={(e) => set("priceMax", e.target.value)}
               className={inputClass}

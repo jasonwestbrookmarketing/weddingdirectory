@@ -45,7 +45,7 @@ export default function SearchBar() {
               <MapPin className="h-4 w-4 text-stone-400 shrink-0" />
               <input
                 type="text"
-                placeholder="City or State"
+                placeholder="City, state, address or zip"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 className="w-full bg-transparent text-stone-900 placeholder:text-stone-400 text-sm focus:outline-none"
@@ -121,7 +121,7 @@ export default function SearchBar() {
           <MapPin className="h-4 w-4 text-stone-400 shrink-0" />
           <input
             type="text"
-            placeholder="City or state"
+            placeholder="City, state, address or zip"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             className="flex-1 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none"

@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { trackEvent } from "@/lib/analytics";
+import { BUDGET_RANGES } from "@/lib/constants";
 import SiteFooter from "@/components/SiteFooter";
 import FilterPanel, { type SearchFilters, DEFAULT_FILTERS } from "@/components/search/FilterPanel";
 import VenueCard from "@/components/search/VenueCard";
@@ -26,6 +27,7 @@ function SearchContent() {
 
   const [filters, setFilters] = useState<SearchFilters>({
     location: searchParams.get("location") || "",
+    budget: searchParams.get("budget") || "",
     priceMin: searchParams.get("priceMin") || "",
     priceMax: searchParams.get("priceMax") || "",
     guests: searchParams.get("guests") || "",
@@ -63,8 +65,16 @@ function SearchContent() {
       const g = Number(f.guests);
       query = query.gte("capacity_max", g);
     }
-    if (f.priceMin) query = query.gte("price_max", Number(f.priceMin));
-    if (f.priceMax) query = query.lte("price_min", Number(f.priceMax));
+    // Budget quick-select overrides manual price range when set
+    if (f.budget) {
+      const range = BUDGET_RANGES.find((r) => r.value === f.budget);
+      if (range) {
+        query = query.lte("price_min", range.max).gte("price_max", range.min);
+      }
+    } else {
+      if (f.priceMin) query = query.gte("price_max", Number(f.priceMin));
+      if (f.priceMax) query = query.lte("price_min", Number(f.priceMax));
+    }
     if (f.style) query = query.eq("venue_type", f.style);
     if (f.indoor_outdoor) query = query.eq("indoor_outdoor", f.indoor_outdoor);
     if (f.amenities.length > 0) {
