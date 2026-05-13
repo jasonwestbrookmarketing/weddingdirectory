@@ -32,10 +32,10 @@ export default function SearchBar() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto">
+    <form onSubmit={handleSubmit} className="w-full max-w-5xl mx-auto">
 
       {/* ── Desktop pill ── */}
-      <div className="hidden md:flex items-stretch bg-white rounded-full overflow-hidden h-[68px] shadow-[0_8px_40px_rgba(0,0,0,0.55)]">
+      <div className="hidden md:flex items-stretch bg-white rounded-full overflow-hidden h-[56px] shadow-[0_8px_40px_rgba(0,0,0,0.55)]">
 
         {/* Location — takes remaining space */}
         <div className="flex items-center gap-2.5 flex-1 min-w-0 pl-5 pr-4 border-r border-stone-200">
@@ -104,7 +104,7 @@ export default function SearchBar() {
         </div>
 
         {/* Search button — never shrinks */}
-        <div className="flex items-center p-2 shrink-0">
+        <div className="flex items-center p-1.5 shrink-0">
           <button
             type="submit"
             className="h-full flex items-center gap-2 rounded-full bg-stone-900 hover:bg-stone-700 active:scale-95 transition-all text-white px-6 text-sm font-semibold whitespace-nowrap"
