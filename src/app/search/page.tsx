@@ -296,6 +296,7 @@ function SearchContent() {
 
       </div>
     </div>
+    <div className="h-[500px]" aria-hidden="true" />
     <SiteFooter />
     </>
   );
