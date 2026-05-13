@@ -132,7 +132,8 @@ function SearchContent() {
   ].filter(Boolean).length + pendingFilters.amenities.length;
 
   return (
-    <div className="max-w-screen-xl mx-auto px-6 py-6 flex gap-10">
+    <>
+    <div className="max-w-screen-xl mx-auto px-6 py-6 flex gap-10 min-h-[calc(100vh-64px)]">
 
       {/* ── Sidebar (desktop) ── */}
       <div className="hidden lg:block shrink-0">
@@ -283,9 +284,10 @@ function SearchContent() {
           </>
         )}
 
-        <SiteFooter />
       </div>
     </div>
+    <SiteFooter />
+    </>
   );
 }
 
