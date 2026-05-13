@@ -594,8 +594,7 @@ export default function VenuePageClient({
                 </span>
               )}
               {venue.price_min != null && getPriceScale(venue.price_min) && (
-                <span className="bg-stone-100 text-stone-700 px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5">
-                  <DollarSign className="h-3.5 w-3.5" />
+                <span className="bg-stone-100 text-stone-700 px-3 py-1.5 rounded-full text-sm font-medium">
                   Pricing: {getPriceScale(venue.price_min)}
                 </span>
               )}

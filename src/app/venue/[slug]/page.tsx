@@ -150,7 +150,7 @@ export default async function VenuePage({ params, searchParams }: Props) {
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             <a
               href={`${STORYPAY_URL}/login?as=couple`}
-              className="hidden sm:inline text-sm font-medium text-stone-600 hover:text-stone-900 px-3 py-2 rounded-xl transition-colors"
+              className="text-sm font-medium text-stone-600 hover:text-stone-900 px-3 py-2 rounded-xl transition-colors"
             >
               Log in
             </a>
