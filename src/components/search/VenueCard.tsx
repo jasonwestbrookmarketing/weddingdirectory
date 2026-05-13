@@ -89,9 +89,8 @@ export default function VenueCard({ venue }: VenueCardProps) {
 
         {scale && scaleLabel && (
           <p className="text-sm text-stone-700 mt-1">
+            <span className="text-stone-500">Pricing: </span>
             <span className="font-semibold text-stone-900">{scale}</span>
-            <span className="text-stone-400"> · </span>
-            <span>{scaleLabel}</span>
           </p>
         )}
       </div>

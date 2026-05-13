@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Prevent iOS from zooming into inputs — font-size must be ≥16px */
+@media screen and (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
 @font-face {
   font-family: "EditorsNote";
   src: url("/fonts/EditorNote-Light.ttf") format("truetype");

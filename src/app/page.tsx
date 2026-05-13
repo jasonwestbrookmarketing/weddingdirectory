@@ -134,9 +134,9 @@ export default async function HomePage() {
             </em>
           </h1>
 
-          {/* Sub-headline — Open Sans, no wrap */}
+          {/* Sub-headline */}
           <p
-            className="text-base sm:text-lg md:text-xl text-white/75 whitespace-nowrap leading-relaxed font-light"
+            className="text-sm sm:text-lg md:text-xl text-white/75 leading-relaxed font-light text-center max-w-xs sm:max-w-none px-2"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             Discover venues that match your vision, guest count, and budget

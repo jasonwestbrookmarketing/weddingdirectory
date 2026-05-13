@@ -188,13 +188,13 @@ function PhotoMosaic({
         ))}
       </div>
 
-      {/* Mobile: single hero */}
-      <div className="md:hidden relative h-[280px] overflow-hidden" data-photo-view-index={0}>
+      {/* Mobile: card-style hero with photo count badge */}
+      <div className="md:hidden mx-4 mt-4 relative h-[260px] rounded-2xl overflow-hidden" data-photo-view-index={0}>
         {allPhotos[0] ? (
           <button
             type="button"
             onClick={() => onViewAll(0)}
-            className="relative w-full h-full cursor-default focus:outline-none"
+            className="relative w-full h-full focus:outline-none"
             aria-label={`Open photo 1 of ${allPhotos.length}`}
           >
             <Image
@@ -206,9 +206,18 @@ function PhotoMosaic({
               className="object-cover"
               priority
             />
+            {/* Photo count overlay */}
+            {allPhotos.length > 1 && (
+              <div className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                <span className="grid grid-cols-2 gap-0.5 w-3 h-3">
+                  {[0,1,2,3].map(n => <div key={n} className="bg-white rounded-[1px]" />)}
+                </span>
+                {allPhotos.length} photos
+              </div>
+            )}
           </button>
         ) : (
-          <div className={`w-full h-full ${placeholderClass}`} />
+          <div className={`w-full h-full rounded-2xl ${placeholderClass}`} />
         )}
       </div>
 
@@ -587,7 +596,7 @@ export default function VenuePageClient({
               {venue.price_min != null && getPriceScale(venue.price_min) && (
                 <span className="bg-stone-100 text-stone-700 px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5">
                   <DollarSign className="h-3.5 w-3.5" />
-                  {getPriceScale(venue.price_min)} · {PRICE_SCALE_LABELS[getPriceScale(venue.price_min)!]}
+                  Pricing: {getPriceScale(venue.price_min)}
                 </span>
               )}
             </div>
@@ -618,7 +627,7 @@ export default function VenuePageClient({
                   <div>
                     <p className="font-medium text-stone-900">Pricing</p>
                     <p className="text-stone-500 text-sm">
-                      <span className="font-semibold text-stone-700">{getPriceScale(venue.price_min)}</span>
+                      <span className="font-semibold text-stone-700">Pricing: {getPriceScale(venue.price_min)}</span>
                       {" · "}{PRICE_SCALE_LABELS[getPriceScale(venue.price_min)!]}
                     </p>
                     <p className="text-xs text-stone-400 mt-0.5">Inquire for exact pricing</p>
@@ -884,11 +893,9 @@ export default function VenuePageClient({
         <div className="flex items-center justify-between gap-4">
           {venue.price_min != null && getPriceScale(venue.price_min) && (
             <div>
+              <span className="text-xs text-stone-500">Pricing: </span>
               <span className="text-lg font-bold tracking-wide text-stone-900">
                 {getPriceScale(venue.price_min)}
-              </span>
-              <span className="text-stone-500 text-xs ml-1.5">
-                {PRICE_SCALE_LABELS[getPriceScale(venue.price_min)!]}
               </span>
             </div>
           )}

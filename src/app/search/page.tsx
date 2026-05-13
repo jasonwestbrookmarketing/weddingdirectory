@@ -193,9 +193,9 @@ function SearchContent() {
               )}
             </button>
 
-            <h1 className="text-2xl font-bold text-stone-900">
+            <h1 className="text-base sm:text-xl font-bold text-stone-900">
               {loading ? (
-                <span className="text-stone-400 text-base font-normal">Searching…</span>
+                <span className="text-stone-400 text-sm font-normal">Searching…</span>
               ) : (
                 `${allVenues.length} Result${allVenues.length !== 1 ? "s" : ""}`
               )}
