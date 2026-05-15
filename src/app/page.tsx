@@ -36,6 +36,28 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* Announcement ticker — homepage only */}
+      <div className="bg-black flex items-center h-10 overflow-hidden z-30 relative">
+        {/* NEWS label */}
+        <div className="shrink-0 flex items-center gap-2 h-full px-4 border-r border-white/20">
+          <span className="w-1.5 h-1.5 rounded-full bg-white inline-block" />
+          <span className="text-white text-[11px] font-bold tracking-[0.15em] uppercase">News</span>
+        </div>
+        {/* Scrolling text */}
+        <div className="flex-1 overflow-hidden">
+          <div className="flex items-center animate-[announcement-ticker_50s_linear_infinite] whitespace-nowrap w-max">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <span key={i} className="flex items-center text-[13px] font-medium text-white tracking-wide">
+                <span className="px-10">
+                  StoryVenue Public Beta is live! Get your venue in front of more couples — List your venue free →
+                </span>
+                <span className="text-white/30 text-xs select-none">•</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Navigation — absolute over video */}
       <nav className="absolute top-10 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6 gap-4">
         <Link href="/" aria-label="StoryVenue home" className="shrink-0">
