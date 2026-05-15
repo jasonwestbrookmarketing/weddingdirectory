@@ -1,14 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
-// Kept the file name for minimal churn; this is just a Google Maps embed now
-// so couples see the cartography they already recognize, with a one-tap
-// "Get directions" button that hands off to the real Google Maps app/site.
-
-const DEFAULT_ZOOM = 15;
-const MIN_ZOOM = 3;
-const MAX_ZOOM = 20;
+import { useEffect, useRef } from "react";
 
 export default function VenueDarkMap({
   lat,
@@ -19,72 +11,76 @@ export default function VenueDarkMap({
   lng: number;
   venueName?: string | null;
 }) {
-  // Google Maps' `output=embed` iframe doesn't render native +/- controls, so
-  // we drive zoom from React state and feed it back into the iframe URL. Each
-  // +/- click rewrites `src` with the new `z=` param; the iframe reloads but
-  // stays centered on the venue.
-  const [zoom, setZoom] = useState(DEFAULT_ZOOM);
-
-  const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(
-    `${lat},${lng}`,
-  )}&z=${zoom}&hl=en&output=embed`;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<unknown>(null);
 
   const directionsHref = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
     `${lat},${lng}`,
   )}`;
 
-  const directionsLabel = venueName
-    ? `Open directions to ${venueName} in Google Maps`
-    : "Open directions in Google Maps";
+  useEffect(() => {
+    const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+    if (!token || !containerRef.current || mapRef.current) return;
 
-  const canZoomIn = zoom < MAX_ZOOM;
-  const canZoomOut = zoom > MIN_ZOOM;
+    let map: mapboxgl.Map | null = null;
+
+    void import("mapbox-gl").then((mapboxgl) => {
+      if (!containerRef.current) return;
+
+      mapboxgl.default.accessToken = token;
+
+      map = new mapboxgl.default.Map({
+        container: containerRef.current,
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: [lng, lat],
+        zoom: 15,
+        attributionControl: true,
+      });
+
+      // Branded dark pin
+      const el = document.createElement("div");
+      el.style.cssText = [
+        "width:32px",
+        "height:44px",
+        "background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 40'%3E%3Cpath d='M14 0C6.3 0 0 6.3 0 14c0 9.3 12.6 24.5 13.1 25.1.5.6 1.3.6 1.8 0C15.4 38.5 28 23.3 28 14 28 6.3 21.7 0 14 0z' fill='%231c1917' stroke='%23ffffff' stroke-width='1.5'/%3E%3Ccircle cx='14' cy='14' r='5' fill='%23ffffff'/%3E%3C/svg%3E\")",
+        "background-size:contain",
+        "background-repeat:no-repeat",
+        "cursor:pointer",
+      ].join(";");
+
+      const marker = new mapboxgl.default.Marker({ element: el, anchor: "bottom" })
+        .setLngLat([lng, lat]);
+
+      if (venueName) {
+        marker.setPopup(
+          new mapboxgl.default.Popup({ offset: 25, closeButton: false })
+            .setHTML(
+              `<span style="font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;color:#1c1917">${venueName}</span>`,
+            ),
+        );
+      }
+
+      marker.addTo(map);
+      mapRef.current = map;
+    });
+
+    return () => {
+      map?.remove();
+      mapRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="relative h-[380px] w-full overflow-hidden rounded-2xl border border-stone-200 bg-stone-100">
-      <iframe
-        title={venueName ? `Map showing ${venueName}` : "Venue location map"}
-        src={embedSrc}
-        className="h-full w-full"
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        allow="geolocation"
-      />
-
-      {/* Google-Maps-style stacked +/- buttons, rendered above the iframe
-          in a shadowed white card like their native control. */}
-      <div
-        className="absolute right-3 top-3 flex flex-col overflow-hidden rounded-lg border border-stone-200 bg-white shadow-md"
-        role="group"
-        aria-label="Zoom"
-      >
-        <button
-          type="button"
-          onClick={() => setZoom((z) => Math.min(MAX_ZOOM, z + 1))}
-          disabled={!canZoomIn}
-          aria-label="Zoom in"
-          className="flex h-9 w-9 items-center justify-center text-stone-700 transition-colors hover:bg-stone-50 disabled:cursor-not-allowed disabled:text-stone-300 disabled:hover:bg-white"
-        >
-          <PlusIcon className="h-4 w-4" />
-        </button>
-        <div className="h-px bg-stone-200" aria-hidden />
-        <button
-          type="button"
-          onClick={() => setZoom((z) => Math.max(MIN_ZOOM, z - 1))}
-          disabled={!canZoomOut}
-          aria-label="Zoom out"
-          className="flex h-9 w-9 items-center justify-center text-stone-700 transition-colors hover:bg-stone-50 disabled:cursor-not-allowed disabled:text-stone-300 disabled:hover:bg-white"
-        >
-          <MinusIcon className="h-4 w-4" />
-        </button>
-      </div>
+      <div ref={containerRef} className="absolute inset-0" />
 
       <a
         href={directionsHref}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={directionsLabel}
-        className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-semibold text-stone-900 shadow-md transition-colors hover:bg-stone-50"
+        aria-label={venueName ? `Get directions to ${venueName}` : "Get directions"}
+        className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-semibold text-stone-900 shadow-md transition-colors hover:bg-stone-50 z-10"
       >
         <DirectionsIcon className="h-4 w-4" />
         Get directions
@@ -106,41 +102,6 @@ function DirectionsIcon({ className }: { className?: string }) {
       aria-hidden
     >
       <polygon points="3 11 22 2 13 21 11 13 3 11" />
-    </svg>
-  );
-}
-
-function PlusIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.25"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <line x1="12" y1="5" x2="12" y2="19" />
-      <line x1="5" y1="12" x2="19" y2="12" />
-    </svg>
-  );
-}
-
-function MinusIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.25"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <line x1="5" y1="12" x2="19" y2="12" />
     </svg>
   );
 }
