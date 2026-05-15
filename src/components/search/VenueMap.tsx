@@ -1,11 +1,13 @@
 "use client";
 
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, X, Users, ExternalLink, AlertCircle } from "lucide-react";
+import { MapPin, X, Users, ExternalLink, AlertCircle, Plus, Minus, Navigation } from "lucide-react";
 import type { Venue } from "@/types/database";
+
+const BRAND = "#1b1b1b";
 
 interface Props {
   venues: Venue[];
@@ -21,14 +23,41 @@ export default function VenueMap({ venues }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<unknown>(null);
   const markersRef = useRef<unknown[]>([]);
+  const initialBoundsRef = useRef<[[number, number], [number, number]] | null>(null);
   const [quickCard, setQuickCard] = useState<QuickCard | null>(null);
   const [mounted, setMounted] = useState(false);
   const [tokenMissing, setTokenMissing] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
+  const [mapReady, setMapReady] = useState(false);
 
   const mappable = venues.filter((v) => v.lat != null && v.lng != null);
 
   useEffect(() => setMounted(true), []);
+
+  const zoomIn = useCallback(() => {
+    (mapRef.current as { zoomIn?: () => void } | null)?.zoomIn?.();
+  }, []);
+
+  const zoomOut = useCallback(() => {
+    (mapRef.current as { zoomOut?: () => void } | null)?.zoomOut?.();
+  }, []);
+
+  const recenter = useCallback(() => {
+    const map = mapRef.current as {
+      fitBounds?: (b: [[number, number], [number, number]], opts: object) => void;
+      flyTo?: (opts: object) => void;
+    } | null;
+    if (!map) return;
+    if (initialBoundsRef.current) {
+      map.fitBounds?.(initialBoundsRef.current, { padding: 60, maxZoom: 12, duration: 600 });
+    } else if (mappable.length === 1) {
+      map.flyTo?.({
+        center: [mappable[0].lng as number, mappable[0].lat as number],
+        zoom: 11,
+        duration: 600,
+      });
+    }
+  }, [mappable]);
 
   useEffect(() => {
     if (!mounted || !containerRef.current) return;
@@ -62,12 +91,19 @@ export default function VenueMap({ venues }: Props) {
         try {
           map = new mapboxgl.default.Map({
             container: containerRef.current!,
-            style: "mapbox://styles/mapbox/streets-v12",
+            style: "mapbox://styles/mapbox/light-v11",
             center,
             zoom: mappable.length > 0 ? 7 : 4,
             scrollZoom: false,
-            attributionControl: true,
+            attributionControl: false,
+            dragRotate: false,
+            pitchWithRotate: false,
+            touchPitch: false,
           });
+          map.addControl(
+            new mapboxgl.default.AttributionControl({ compact: true }),
+            "bottom-left",
+          );
         } catch (err) {
           console.error("[VenueMap] Mapbox init failed", err);
           setMapError(err instanceof Error ? err.message : "Failed to initialize map");
@@ -75,6 +111,7 @@ export default function VenueMap({ venues }: Props) {
         }
 
         mapRef.current = map;
+        setMapReady(true);
 
         map.on("error", (e) => {
           const msg =
@@ -99,7 +136,6 @@ export default function VenueMap({ venues }: Props) {
         if (destroyed) return;
 
         mappable.forEach((venue) => {
-          // Circular photo pin — matches the previous Leaflet style
           const el = document.createElement("div");
           el.style.cssText = [
             "width:54px",
@@ -124,7 +160,6 @@ export default function VenueMap({ venues }: Props) {
             el.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
           }
 
-          // Venue name label underneath pin
           const wrapper = document.createElement("div");
           wrapper.style.cssText =
             "display:flex;flex-direction:column;align-items:center;width:120px;margin-left:-30px;cursor:pointer;";
@@ -163,17 +198,15 @@ export default function VenueMap({ venues }: Props) {
           markersRef.current.push(marker);
         });
 
-        // Fit all markers into view
         if (mappable.length > 1) {
           const lngs = mappable.map((v) => v.lng as number);
           const lats = mappable.map((v) => v.lat as number);
-          map.fitBounds(
-            [
-              [Math.min(...lngs), Math.min(...lats)],
-              [Math.max(...lngs), Math.max(...lats)],
-            ],
-            { padding: 60, maxZoom: 12 },
-          );
+          const bounds: [[number, number], [number, number]] = [
+            [Math.min(...lngs), Math.min(...lats)],
+            [Math.max(...lngs), Math.max(...lats)],
+          ];
+          initialBoundsRef.current = bounds;
+          map.fitBounds(bounds, { padding: 60, maxZoom: 12 });
         }
       });
 
@@ -188,6 +221,8 @@ export default function VenueMap({ venues }: Props) {
 
     return () => {
       destroyed = true;
+      setMapReady(false);
+      initialBoundsRef.current = null;
       if (mapRef.current) {
         const m = mapRef.current as mapboxgl.Map & { __ro?: ResizeObserver };
         m.__ro?.disconnect();
@@ -207,6 +242,42 @@ export default function VenueMap({ venues }: Props) {
         </div>
       )}
       <div ref={containerRef} className="absolute inset-0 w-full h-full z-0" />
+
+      {/* Custom map controls — round white buttons, bottom-right */}
+      {mapReady && !mapError && !tokenMissing && (
+        <div className="absolute bottom-4 right-4 z-[5] flex flex-col items-center gap-2">
+          <button
+            type="button"
+            aria-label="Recenter map"
+            onClick={recenter}
+            className="h-10 w-10 rounded-full bg-white shadow-md border border-stone-200/80 flex items-center justify-center transition-colors hover:bg-stone-50 active:bg-stone-100"
+            style={{ color: BRAND }}
+          >
+            <Navigation className="h-[18px] w-[18px]" strokeWidth={2.25} />
+          </button>
+          <div className="flex flex-col rounded-full bg-white shadow-md border border-stone-200/80 overflow-hidden">
+            <button
+              type="button"
+              aria-label="Zoom in"
+              onClick={zoomIn}
+              className="h-10 w-10 flex items-center justify-center transition-colors hover:bg-stone-50 active:bg-stone-100"
+              style={{ color: BRAND }}
+            >
+              <Plus className="h-[18px] w-[18px]" strokeWidth={2.25} />
+            </button>
+            <div className="h-px bg-stone-200/80 mx-2" aria-hidden />
+            <button
+              type="button"
+              aria-label="Zoom out"
+              onClick={zoomOut}
+              className="h-10 w-10 flex items-center justify-center transition-colors hover:bg-stone-50 active:bg-stone-100"
+              style={{ color: BRAND }}
+            >
+              <Minus className="h-[18px] w-[18px]" strokeWidth={2.25} />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Quick card popup */}
       {quickCard && (
