@@ -29,6 +29,7 @@ export default function VenueDarkMap({
     if (!containerRef.current || mapRef.current) return;
 
     let map: mapboxgl.Map | null = null;
+    let ro: ResizeObserver | null = null;
 
     void import("mapbox-gl").then((mapboxgl) => {
       if (!containerRef.current) return;
@@ -41,6 +42,15 @@ export default function VenueDarkMap({
         center: [lng, lat],
         zoom: 15,
         attributionControl: true,
+      });
+
+      ro = new ResizeObserver(() => {
+        map?.resize();
+      });
+      ro.observe(containerRef.current);
+
+      requestAnimationFrame(() => {
+        map?.resize();
       });
 
       // Branded dark pin
@@ -71,6 +81,7 @@ export default function VenueDarkMap({
     });
 
     return () => {
+      ro?.disconnect();
       map?.remove();
       mapRef.current = null;
     };
@@ -86,7 +97,7 @@ export default function VenueDarkMap({
           <p className="text-xs">Set NEXT_PUBLIC_MAPBOX_TOKEN to enable the map</p>
         </div>
       ) : (
-        <div ref={containerRef} className="absolute inset-0" />
+        <div ref={containerRef} className="absolute inset-0 w-full h-full" />
       )}
 
       <a

@@ -62,7 +62,7 @@ export default function VenueMap({ venues }: Props) {
         try {
           map = new mapboxgl.default.Map({
             container: containerRef.current!,
-            style: "mapbox://styles/mapbox/light-v11",
+            style: "mapbox://styles/mapbox/streets-v12",
             center,
             zoom: mappable.length > 0 ? 7 : 4,
             scrollZoom: false,
@@ -83,6 +83,16 @@ export default function VenueMap({ venues }: Props) {
             "Unknown Mapbox error";
           console.error("[VenueMap] Mapbox runtime error", e);
           setMapError(msg);
+        });
+
+        const ro = new ResizeObserver(() => {
+          map.resize();
+        });
+        ro.observe(containerRef.current!);
+        (map as unknown as { __ro?: ResizeObserver }).__ro = ro;
+
+        requestAnimationFrame(() => {
+          map.resize();
         });
 
         map.on("load", () => {
@@ -179,7 +189,9 @@ export default function VenueMap({ venues }: Props) {
     return () => {
       destroyed = true;
       if (mapRef.current) {
-        (mapRef.current as mapboxgl.Map).remove();
+        const m = mapRef.current as mapboxgl.Map & { __ro?: ResizeObserver };
+        m.__ro?.disconnect();
+        m.remove();
         mapRef.current = null;
         markersRef.current = [];
       }
@@ -194,7 +206,7 @@ export default function VenueMap({ venues }: Props) {
           <div className="animate-spin h-6 w-6 border-2 border-stone-300 border-t-stone-700 rounded-full" />
         </div>
       )}
-      <div ref={containerRef} className="absolute inset-0 z-0" />
+      <div ref={containerRef} className="absolute inset-0 w-full h-full z-0" />
 
       {/* Quick card popup */}
       {quickCard && (
