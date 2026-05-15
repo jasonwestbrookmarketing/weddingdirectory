@@ -23,6 +23,7 @@ export default function VenueMap({ venues }: Props) {
   const [quickCard, setQuickCard] = useState<QuickCard | null>(null);
   const [mounted, setMounted] = useState(false);
   const [tokenMissing, setTokenMissing] = useState(false);
+  const [mapError, setMapError] = useState<string | null>(null);
 
   const mappable = venues.filter((v) => v.lat != null && v.lng != null);
 
@@ -39,35 +40,51 @@ export default function VenueMap({ venues }: Props) {
 
     let destroyed = false;
 
-    void import("mapbox-gl").then((mapboxgl) => {
-      if (destroyed || !containerRef.current) return;
+    void import("mapbox-gl")
+      .then((mapboxgl) => {
+        if (destroyed || !containerRef.current) return;
 
-      // Clean up previous instance
-      if (mapRef.current) {
-        (mapRef.current as mapboxgl.Map).remove();
-        mapRef.current = null;
-        markersRef.current = [];
-      }
+        if (mapRef.current) {
+          (mapRef.current as mapboxgl.Map).remove();
+          mapRef.current = null;
+          markersRef.current = [];
+        }
 
-      mapboxgl.default.accessToken = token;
+        mapboxgl.default.accessToken = token;
 
-      const center: [number, number] =
-        mappable.length > 0
-          ? [mappable[0].lng as number, mappable[0].lat as number]
-          : [-98.35, 39.5];
+        const center: [number, number] =
+          mappable.length > 0
+            ? [mappable[0].lng as number, mappable[0].lat as number]
+            : [-98.35, 39.5];
 
-      const map = new mapboxgl.default.Map({
-        container: containerRef.current!,
-        style: "mapbox://styles/mapbox/light-v11",
-        center,
-        zoom: mappable.length > 0 ? 7 : 4,
-        scrollZoom: false,
-        attributionControl: true,
-      });
+        let map: mapboxgl.Map;
+        try {
+          map = new mapboxgl.default.Map({
+            container: containerRef.current!,
+            style: "mapbox://styles/mapbox/light-v11",
+            center,
+            zoom: mappable.length > 0 ? 7 : 4,
+            scrollZoom: false,
+            attributionControl: true,
+          });
+        } catch (err) {
+          console.error("[VenueMap] Mapbox init failed", err);
+          setMapError(err instanceof Error ? err.message : "Failed to initialize map");
+          return;
+        }
 
-      mapRef.current = map;
+        mapRef.current = map;
 
-      map.on("load", () => {
+        map.on("error", (e) => {
+          const msg =
+            (e?.error && (e.error as Error).message) ||
+            (e as unknown as { message?: string }).message ||
+            "Unknown Mapbox error";
+          console.error("[VenueMap] Mapbox runtime error", e);
+          setMapError(msg);
+        });
+
+        map.on("load", () => {
         if (destroyed) return;
 
         mappable.forEach((venue) => {
@@ -149,8 +166,14 @@ export default function VenueMap({ venues }: Props) {
         }
       });
 
-      map.on("click", () => setQuickCard(null));
-    });
+        map.on("click", () => setQuickCard(null));
+      })
+      .catch((err) => {
+        console.error("[VenueMap] Failed to load mapbox-gl module", err);
+        setMapError(
+          err instanceof Error ? err.message : "Failed to load Mapbox library",
+        );
+      });
 
     return () => {
       destroyed = true;
@@ -238,7 +261,19 @@ export default function VenueMap({ venues }: Props) {
         </div>
       )}
 
-      {mappable.length === 0 && mounted && !tokenMissing && (
+      {mapError && mounted && !tokenMissing && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-stone-500 z-10 p-6 text-center bg-stone-100">
+          <AlertCircle className="h-8 w-8 text-amber-500" />
+          <p className="text-sm font-medium">Map failed to load</p>
+          <p className="text-xs max-w-md break-words">{mapError}</p>
+          <p className="text-[11px] text-stone-400 mt-1">
+            Check the Mapbox token (must start with <code>pk.</code>) and any
+            URL restrictions in your Mapbox account.
+          </p>
+        </div>
+      )}
+
+      {mappable.length === 0 && mounted && !tokenMissing && !mapError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-stone-400 pointer-events-none z-10">
           <MapPin className="h-8 w-8" />
           <p className="text-sm">No venues with location data</p>
