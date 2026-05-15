@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "mapbox-gl/dist/mapbox-gl.css";
 
 /* Prevent iOS from zooming into inputs — font-size must be ≥16px */
 @media screen and (max-width: 768px) {
