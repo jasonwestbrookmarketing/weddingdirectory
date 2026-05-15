@@ -138,15 +138,15 @@ function SearchContent() {
 
   return (
     <>
-    {/* CSS grid keeps the sidebar column a hard 288 px on desktop regardless
-        of whether there are results — flexbox collapses when there's no content
-        weight in the right column. Mobile stays single-column. */}
-    <div className="max-w-screen-xl mx-auto px-6 py-6 min-h-[calc(100vh-64px)]
-                    lg:grid lg:grid-cols-[288px_1fr] lg:gap-10
-                    flex flex-col gap-5">
+    {/* Always CSS grid — mobile is a single column, desktop is a hard 288px
+        sidebar + minmax(0,1fr) main column so the right side always fills the
+        available width regardless of how much content it has. */}
+    <div className="w-full max-w-screen-xl mx-auto px-6 py-6 min-h-[calc(100vh-64px)]
+                    grid grid-cols-1 gap-5
+                    lg:grid-cols-[288px_minmax(0,1fr)] lg:gap-10">
 
       {/* ── Sidebar (desktop) ── */}
-      <div className="hidden lg:block">
+      <div className="hidden lg:block w-full">
         <FilterPanel
           filters={pendingFilters}
           onChange={setPendingFilters}
@@ -179,7 +179,7 @@ function SearchContent() {
       )}
 
       {/* ── Main content ── */}
-      <div className="flex flex-col gap-5 min-w-0">
+      <div className="w-full min-w-0 flex flex-col gap-5">
 
         {/* Results row */}
         <div className="flex items-center justify-between">
