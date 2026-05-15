@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function VenueDarkMap({
   lat,
@@ -13,6 +13,7 @@ export default function VenueDarkMap({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<unknown>(null);
+  const [tokenMissing, setTokenMissing] = useState(false);
 
   const directionsHref = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
     `${lat},${lng}`,
@@ -20,7 +21,11 @@ export default function VenueDarkMap({
 
   useEffect(() => {
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-    if (!token || !containerRef.current || mapRef.current) return;
+    if (!token) {
+      setTokenMissing(true);
+      return;
+    }
+    if (!containerRef.current || mapRef.current) return;
 
     let map: mapboxgl.Map | null = null;
 
@@ -73,7 +78,15 @@ export default function VenueDarkMap({
 
   return (
     <div className="relative h-[380px] w-full overflow-hidden rounded-2xl border border-stone-200 bg-stone-100">
-      <div ref={containerRef} className="absolute inset-0" />
+      {tokenMissing ? (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-stone-400">
+          <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p className="text-sm font-medium">Map not configured</p>
+          <p className="text-xs">Set NEXT_PUBLIC_MAPBOX_TOKEN to enable the map</p>
+        </div>
+      ) : (
+        <div ref={containerRef} className="absolute inset-0" />
+      )}
 
       <a
         href={directionsHref}

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, X, Users, ExternalLink } from "lucide-react";
+import { MapPin, X, Users, ExternalLink, AlertCircle } from "lucide-react";
 import type { Venue } from "@/types/database";
 
 interface Props {
@@ -22,6 +22,7 @@ export default function VenueMap({ venues }: Props) {
   const markersRef = useRef<unknown[]>([]);
   const [quickCard, setQuickCard] = useState<QuickCard | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [tokenMissing, setTokenMissing] = useState(false);
 
   const mappable = venues.filter((v) => v.lat != null && v.lng != null);
 
@@ -31,7 +32,10 @@ export default function VenueMap({ venues }: Props) {
     if (!mounted || !containerRef.current) return;
 
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-    if (!token) return;
+    if (!token) {
+      setTokenMissing(true);
+      return;
+    }
 
     let destroyed = false;
 
@@ -226,7 +230,15 @@ export default function VenueMap({ venues }: Props) {
         </div>
       )}
 
-      {mappable.length === 0 && mounted && (
+      {tokenMissing && mounted && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-stone-400 pointer-events-none z-10">
+          <AlertCircle className="h-8 w-8" />
+          <p className="text-sm font-medium">Map not configured</p>
+          <p className="text-xs">Set NEXT_PUBLIC_MAPBOX_TOKEN to enable the map</p>
+        </div>
+      )}
+
+      {mappable.length === 0 && mounted && !tokenMissing && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-stone-400 pointer-events-none z-10">
           <MapPin className="h-8 w-8" />
           <p className="text-sm">No venues with location data</p>
