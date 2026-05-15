@@ -43,7 +43,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-[family-name:var(--font-open-sans)] bg-white text-stone-900">
         {/* Announcement ticker */}
         <div className="bg-black overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_6%,white_94%,transparent)]">
-          <div className="flex items-center h-10 animate-[announcement-ticker_28s_linear_infinite] whitespace-nowrap w-max">
+          <div className="flex items-center h-10 animate-[announcement-ticker_50s_linear_infinite] whitespace-nowrap w-max">
             {Array.from({ length: 8 }).map((_, i) => (
               <span
                 key={i}

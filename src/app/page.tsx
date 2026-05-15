@@ -37,7 +37,7 @@ export default async function HomePage() {
   return (
     <>
       {/* Navigation — absolute over video */}
-      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6 gap-4">
+      <nav className="absolute top-10 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6 gap-4">
         <Link href="/" aria-label="StoryVenue home" className="shrink-0">
           <Image
             src="/storyvenue-light-logo.png"
