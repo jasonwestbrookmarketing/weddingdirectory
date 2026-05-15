@@ -87,6 +87,7 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
               placeholder="City, state, address, or zip"
               value={filters.location}
               onChange={(e) => set("location", e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); onApply(); } }}
               className="w-full border border-stone-200 rounded-lg pl-9 pr-3 py-2.5 text-sm text-stone-700 placeholder:text-stone-400 focus:outline-none focus:border-stone-400 bg-white"
             />
           </div>
@@ -103,14 +104,14 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
                   key={r.value}
                   type="button"
                   onClick={() => set("budget", active ? "" : r.value)}
-                  className={`flex flex-col items-center gap-0.5 py-2.5 rounded-xl border font-medium transition-colors ${
+                  className={`flex flex-col items-center justify-center gap-1 h-[68px] rounded-xl border font-medium transition-colors ${
                     active
                       ? "bg-stone-900 text-white border-stone-900"
                       : "border-stone-200 text-stone-600 hover:border-stone-400 bg-white"
                   }`}
                 >
                   <span className="text-sm font-bold">{r.scale}</span>
-                  <span className={`text-[9px] leading-tight text-center ${active ? "text-white/70" : "text-stone-400"}`}>
+                  <span className={`text-[9px] leading-tight text-center px-1 ${active ? "text-white/70" : "text-stone-400"}`}>
                     {r.label.split(" · ")[1]}
                   </span>
                 </button>

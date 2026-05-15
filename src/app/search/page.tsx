@@ -141,7 +141,7 @@ function SearchContent() {
     <div className="max-w-screen-xl mx-auto px-6 py-6 flex gap-10 min-h-[calc(100vh-64px)]">
 
       {/* ── Sidebar (desktop) ── */}
-      <div className="hidden lg:block shrink-0">
+      <div className="hidden lg:block w-72 shrink-0">
         <FilterPanel
           filters={pendingFilters}
           onChange={setPendingFilters}
@@ -224,10 +224,12 @@ function SearchContent() {
 
         {/* Venue grid */}
         {!loading && allVenues.length === 0 ? (
-          <div className="text-center py-24">
-            <Search className="h-12 w-12 text-stone-300 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-stone-900 mb-2">No venues found</h2>
-            <p className="text-stone-500">Try adjusting your filters to see more results</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-8 min-h-[320px]">
+            <div className="col-span-full flex flex-col items-center justify-center py-20">
+              <Search className="h-10 w-10 text-stone-300 mb-4" />
+              <h2 className="text-lg font-semibold text-stone-900 mb-1">No venues found</h2>
+              <p className="text-sm text-stone-500">Try adjusting your filters to see more results</p>
+            </div>
           </div>
         ) : (
           <>
