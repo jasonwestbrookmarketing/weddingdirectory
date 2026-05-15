@@ -1,6 +1,7 @@
 "use client";
 
-import { MapPin, X } from "lucide-react";
+import { useState } from "react";
+import { MapPin, X, Check, ChevronDown, ChevronUp } from "lucide-react";
 import {
   VENUE_TYPES,
   INDOOR_OUTDOOR_OPTIONS,
@@ -41,6 +42,11 @@ const selectClass =
   "w-full border border-stone-200 rounded-lg px-3 py-2.5 text-sm text-stone-700 focus:outline-none focus:border-stone-400 bg-white appearance-none cursor-pointer";
 
 export default function FilterPanel({ filters, onChange, onApply, loading }: Props) {
+  // Amenities collapse to first 6 with "Show all" toggle to keep the
+  // sidebar height reasonable while letting users browse the full list.
+  const AMENITY_INITIAL_VISIBLE = 6;
+  const [amenitiesExpanded, setAmenitiesExpanded] = useState(false);
+
   const set = <K extends keyof SearchFilters>(key: K, value: SearchFilters[K]) =>
     onChange({ ...filters, [key]: value });
 
@@ -50,6 +56,10 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
       : [...filters.amenities, val];
     set("amenities", next);
   };
+
+  const visibleAmenities = amenitiesExpanded
+    ? AMENITIES_LIST
+    : AMENITIES_LIST.slice(0, AMENITY_INITIAL_VISIBLE);
 
   const hasFilters =
     filters.location ||
@@ -160,33 +170,72 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
           </div>
         </div>
 
-        {/* Amenities */}
+        {/* Amenities — checkbox-style multi-select with full labels */}
         <div>
-          <label className={sectionLabel}>Amenities</label>
-          <div className="grid grid-cols-2 gap-2">
-            {AMENITIES_LIST.map((a) => {
+          <div className="mb-2 flex items-center justify-between">
+            <label className="block text-sm font-semibold text-stone-900">
+              Amenities
+              {filters.amenities.length > 0 && (
+                <span className="ml-1.5 inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-stone-900 text-white text-[10px] font-bold">
+                  {filters.amenities.length}
+                </span>
+              )}
+            </label>
+            {filters.amenities.length > 0 && (
+              <button
+                type="button"
+                onClick={() => set("amenities", [])}
+                className="text-xs text-stone-500 hover:text-stone-900 transition-colors"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+          <div className="space-y-1">
+            {visibleAmenities.map((a) => {
               const active = filters.amenities.includes(a.value);
               return (
                 <button
                   key={a.value}
                   type="button"
                   onClick={() => toggleAmenity(a.value)}
-                  className={`flex items-center gap-2 text-xs px-3 py-2.5 rounded-xl border text-left transition-colors leading-tight ${
+                  className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left text-sm transition-colors ${
                     active
-                      ? "bg-stone-900 text-white border-stone-900"
-                      : "border-stone-200 text-stone-700 hover:border-stone-400 bg-white"
+                      ? "bg-stone-50 text-stone-900"
+                      : "text-stone-700 hover:bg-stone-50"
                   }`}
                 >
-                  <span className="w-4 h-4 shrink-0 opacity-60">
-                    <svg viewBox="0 0 16 16" fill="currentColor" className="w-full h-full">
-                      <circle cx="8" cy="8" r="3"/>
-                    </svg>
+                  <span
+                    className={`w-[18px] h-[18px] shrink-0 rounded border flex items-center justify-center transition-colors ${
+                      active
+                        ? "bg-stone-900 border-stone-900"
+                        : "border-stone-300 bg-white"
+                    }`}
+                  >
+                    {active && <Check className="h-3 w-3 text-white" strokeWidth={3} />}
                   </span>
-                  <span className="truncate">{a.label}</span>
+                  <span className="flex-1">{a.label}</span>
                 </button>
               );
             })}
           </div>
+          {AMENITIES_LIST.length > AMENITY_INITIAL_VISIBLE && (
+            <button
+              type="button"
+              onClick={() => setAmenitiesExpanded((v) => !v)}
+              className="mt-2 flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 transition-colors"
+            >
+              {amenitiesExpanded ? (
+                <>
+                  Show less <ChevronUp className="h-3 w-3" />
+                </>
+              ) : (
+                <>
+                  Show all {AMENITIES_LIST.length} amenities <ChevronDown className="h-3 w-3" />
+                </>
+              )}
+            </button>
+          )}
         </div>
 
         {/* Number of Guests */}
