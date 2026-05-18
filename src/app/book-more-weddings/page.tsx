@@ -396,20 +396,14 @@ export default function BookMoreWeddingsPage() {
           {/* Left — copy */}
           <div className="lg:col-span-6">
 
-            {/* Creative pill — two-tone split badge */}
-            <div className="inline-flex items-stretch rounded-full overflow-hidden border border-stone-200 shadow-sm bg-white">
+            {/* Hero pre-heading badge */}
+            <div className="inline-flex items-center gap-2 rounded-full bg-stone-100 border border-stone-200/80 px-3.5 py-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-rose-500 shrink-0" />
               <span
-                className="flex items-center gap-1.5 bg-stone-900 text-white text-[11px] font-bold tracking-[0.12em] uppercase px-3.5 py-2"
+                className="text-[11px] font-semibold text-stone-700"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                <Sparkles className="w-3 h-3 text-rose-400 shrink-0" />
-                14-Day Free
-              </span>
-              <span
-                className="flex items-center px-3.5 text-[11px] font-semibold text-stone-600 tracking-[0.08em] uppercase"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                No contract · Cancel anytime
+                The First And Only All-In-One Directory, Booking System, And Marketing Platform For Wedding Venues
               </span>
             </div>
 
