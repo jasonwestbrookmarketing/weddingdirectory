@@ -321,6 +321,22 @@ export default function BookMoreWeddingsPage() {
   return (
     <>
       {/* ============================================================== */}
+      {/* ANNOUNCEMENT TICKER — matches homepage style exactly            */}
+      {/* ============================================================== */}
+      <div className="bg-black flex items-center h-10 overflow-hidden z-50 relative">
+        <div className="flex items-center animate-[announcement-ticker_180s_linear_infinite] whitespace-nowrap w-max">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <span key={i} className="flex items-center text-[13px] font-medium text-white tracking-wide" style={{ fontFamily: "var(--font-open-sans)" }}>
+              <span className="px-10">
+                StoryVenue — The All-In-One Platform For Wedding Venues · Meta Ads · CRM · Proposals · Payments · 14-Day Free Trial
+              </span>
+              <span className="text-white/30 text-xs select-none">•</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ============================================================== */}
       {/* NAV                                                             */}
       {/* ============================================================== */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/70">
@@ -343,24 +359,49 @@ export default function BookMoreWeddingsPage() {
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
       <section className="relative overflow-hidden bg-white">
+        {/* Background — bride & groom in white barn venue, very light so
+            text stays readable but the venue atmosphere comes through */}
+        <Image
+          src="/hero-wedding.jpg"
+          alt=""
+          aria-hidden
+          fill
+          priority
+          className="absolute inset-0 object-cover object-center"
+          sizes="100vw"
+        />
+        {/* Layered overlay: near-white left half (behind text), fades right */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-white/40" />
+        {/* Gentle top-to-bottom vignette keeps everything clean */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/30" />
+
         <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-12 pb-16 sm:pt-16 sm:pb-24 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
           {/* Left — copy */}
           <div className="lg:col-span-6">
-            <div className="inline-flex items-center gap-2 rounded-full bg-stone-100 border border-stone-200/80 px-3.5 py-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+
+            {/* Creative pill — two-tone split badge */}
+            <div className="inline-flex items-stretch rounded-full overflow-hidden border border-stone-200 shadow-sm bg-white">
               <span
-                className="text-[11px] font-semibold tracking-[0.14em] uppercase text-stone-700"
+                className="flex items-center gap-1.5 bg-stone-900 text-white text-[11px] font-bold tracking-[0.12em] uppercase px-3.5 py-2"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                The First And Only All-In-One Directory, Booking System, And Marketing Platform For Wedding Venues
+                <Sparkles className="w-3 h-3 text-rose-400 shrink-0" />
+                14-Day Free
+              </span>
+              <span
+                className="flex items-center px-3.5 text-[11px] font-semibold text-stone-600 tracking-[0.08em] uppercase"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                No contract · Cancel anytime
               </span>
             </div>
 
             <h1
-              className="mt-6 text-[38px] sm:text-[52px] md:text-[62px] leading-[1.05] text-stone-900"
+              className="mt-6 text-[38px] sm:text-[52px] md:text-[60px] leading-[1.05] text-stone-900"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              Fully Book Your Wedding Venue Without Empty Weekends.
+              Fully Book Your Wedding Venue<br />
+              Without Empty Weekends.
             </h1>
 
             <p
@@ -370,7 +411,7 @@ export default function BookMoreWeddingsPage() {
               StoryVenue combines a wedding venue directory, booking system, CRM, payments, proposals, Meta ads, concierge follow-up, and AI intelligence into one simple platform built to help venues find more couples, host more tours, and book more weddings.
             </p>
 
-            {/* Pill-style CTA input */}
+            {/* Pill-style CTA */}
             <div className="mt-7 max-w-md">
               <a
                 href={TRIAL_HREF}
@@ -389,7 +430,10 @@ export default function BookMoreWeddingsPage() {
                   Get Started <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </a>
-              <p className="mt-3 text-[12px] text-stone-500">
+              <p
+                className="mt-3 text-[12px] text-stone-500 text-center"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
                 No contract. No down payment. No cancellation fees.
               </p>
             </div>
