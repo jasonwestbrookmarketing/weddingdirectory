@@ -380,10 +380,10 @@ export default function BookMoreWeddingsPage() {
           {/* Left — copy */}
           <div className="lg:col-span-6">
 
-            {/* Pre-heading — solid black pill, no icon, single line */}
-            <div className="inline-block rounded-full bg-stone-900 px-4 py-1.5">
+            {/* Pre-heading — solid black pill, all caps, two lines */}
+            <div className="inline-block rounded-2xl bg-stone-900 px-4 py-2 max-w-xs">
               <span
-                className="text-[11px] font-semibold tracking-[0.06em] text-white whitespace-nowrap"
+                className="text-[10px] font-semibold tracking-[0.14em] uppercase text-white leading-relaxed"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
                 The First And Only All-In-One Directory, Booking System, And Marketing Platform For Wedding Venues
@@ -975,45 +975,61 @@ function PhonePreview() {
 
   return (
     <div className="relative flex justify-center">
-      {/* Phone shell */}
-      <div className="relative w-[300px] sm:w-[330px] rounded-[46px] bg-stone-900 p-[10px] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.5)]">
-        {/* Dynamic island */}
-        <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-[90px] h-[26px] rounded-full bg-stone-900 z-10" />
+      {/* Floating tile — top left */}
+      <div className="absolute -top-3 -left-4 sm:-left-8 z-20 rounded-2xl bg-white border border-stone-200 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.22)] px-3.5 py-2.5 flex items-center gap-2.5">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+          <CalendarCheck className="w-4 h-4" />
+        </span>
+        <div>
+          <p className="text-[9px] font-semibold tracking-[0.14em] uppercase text-stone-500">Weekend booked</p>
+          <p className="text-[12px] font-bold text-stone-900 leading-none mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>
+            Oct 12, 2026 ✓
+          </p>
+        </div>
+      </div>
 
-        {/* Screen */}
-        <div className="relative w-full rounded-[38px] bg-[#f5f5f4] overflow-hidden">
+      {/* Phone shell — iPhone 15 Pro aspect ratio (390 × 844) */}
+      <div
+        className="relative rounded-[44px] bg-stone-900 shadow-[0_50px_100px_-30px_rgba(0,0,0,0.55)]"
+        style={{ width: "300px", aspectRatio: "390/844", padding: "10px" }}
+      >
+        {/* Dynamic island */}
+        <div className="absolute top-[13px] left-1/2 -translate-x-1/2 w-[80px] h-[24px] rounded-full bg-stone-900 z-10" />
+
+        {/* Screen — fills full phone height */}
+        <div className="absolute inset-[10px] rounded-[36px] bg-[#f5f5f4] overflow-hidden flex flex-col">
 
           {/* Status bar */}
-          <div className="flex items-center justify-between px-6 pt-4 pb-1 text-[10px] font-semibold text-stone-800">
+          <div className="flex items-center justify-between px-5 pt-4 pb-1 text-[10px] font-semibold text-stone-800 shrink-0">
             <span>9:41</span>
             <span className="text-[9px] tracking-wide opacity-50">●●●●○</span>
           </div>
 
           {/* Screen header */}
-          <div className="px-4 pt-2 pb-3 flex items-center justify-between bg-[#f5f5f4]">
+          <div className="px-4 pt-1 pb-2 flex items-center justify-between shrink-0">
             <div>
-              <p className="text-[16px] font-bold text-stone-900 leading-tight" style={{ fontFamily: "var(--font-open-sans)" }}>
+              <p className="text-[15px] font-bold text-stone-900 leading-tight" style={{ fontFamily: "var(--font-open-sans)" }}>
                 Activity
               </p>
-              <p className="text-[10px] text-stone-500">White Pine Manor · Live</p>
+              <p className="text-[10px] text-stone-500">The Barn at New Albany · Live</p>
             </div>
             <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_6px_2px_rgba(16,185,129,0.4)]" />
           </div>
 
           {/* Revenue banner */}
-          <div className="mx-4 mb-3 rounded-2xl bg-stone-900 text-white px-4 py-3 flex items-center justify-between">
+          <div className="mx-3 mb-2.5 rounded-2xl bg-stone-900 text-white px-4 py-3 flex items-center justify-between shrink-0">
             <div>
-              <p className="text-[9px] uppercase tracking-[0.16em] text-white/60">Booked Revenue</p>
-              <p className="text-[20px] font-bold leading-tight" style={{ fontFamily: "var(--font-open-sans)" }}>$128,400</p>
+              <p className="text-[8px] uppercase tracking-[0.16em] text-white/60">Booked Revenue</p>
+              <p className="text-[19px] font-bold leading-tight" style={{ fontFamily: "var(--font-open-sans)" }}>$128,400</p>
             </div>
             <div className="text-right">
-              <p className="text-[9px] text-white/60">Weekends filled</p>
-              <p className="text-[18px] font-bold" style={{ fontFamily: "var(--font-open-sans)" }}>34 / 36</p>
+              <p className="text-[8px] text-white/60">Weekends filled</p>
+              <p className="text-[17px] font-bold" style={{ fontFamily: "var(--font-open-sans)" }}>34 / 36</p>
             </div>
           </div>
 
-          {/* Notification feed */}
-          <div className="px-4 pb-4 space-y-2 overflow-hidden" style={{ maxHeight: "420px" }}>
+          {/* Notification feed — fills remaining height, cards clip at bottom */}
+          <div className="px-3 pb-3 space-y-2 flex-1 overflow-hidden">
             {notifications.map((n, i) => {
               const Icon = n.icon;
               return (
@@ -1043,19 +1059,6 @@ function PhonePreview() {
               );
             })}
           </div>
-        </div>
-      </div>
-
-      {/* Floating revenue tile — top left */}
-      <div className="absolute -top-3 -left-4 sm:-left-8 z-20 rounded-2xl bg-white border border-stone-200 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.22)] px-3.5 py-2.5 flex items-center gap-2.5">
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-          <CalendarCheck className="w-4 h-4" />
-        </span>
-        <div>
-          <p className="text-[9px] font-semibold tracking-[0.14em] uppercase text-stone-500">Weekend booked</p>
-          <p className="text-[12px] font-bold text-stone-900 leading-none mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>
-            Oct 12, 2026 ✓
-          </p>
         </div>
       </div>
     </div>
