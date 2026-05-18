@@ -3,7 +3,6 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import {
   ArrowRight,
-  Check,
   Search,
   Inbox,
   Zap,
@@ -34,7 +33,6 @@ const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
 
 const TRIAL_HREF = `${STORYPAY_URL}/signup?as=venue&plan=trial&utm_source=meta&utm_medium=paid&utm_campaign=book-more-weddings`;
-const LOGIN_HREF = `${STORYPAY_URL}/login?as=venue`;
 
 export const metadata: Metadata = {
   title:
@@ -337,35 +335,7 @@ export default function BookMoreWeddingsPage() {
               priority
             />
           </Link>
-
-          <div
-            className="hidden md:flex items-center gap-8 text-sm text-stone-600"
-            style={{ fontFamily: "var(--font-open-sans)" }}
-          >
-            <a href="#how-it-works" className="hover:text-stone-900 transition-colors">
-              How it works
-            </a>
-            <a href="#features" className="hover:text-stone-900 transition-colors">
-              Features
-            </a>
-            <a href="#guarantee" className="hover:text-stone-900 transition-colors">
-              Guarantee
-            </a>
-            <a href="#faq" className="hover:text-stone-900 transition-colors">
-              FAQ
-            </a>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <a
-              href={LOGIN_HREF}
-              className="hidden sm:inline-flex items-center rounded-full px-4 py-2 text-sm font-medium text-stone-700 hover:text-stone-900 transition-colors"
-              style={{ fontFamily: "var(--font-open-sans)" }}
-            >
-              Log in
-            </a>
-            <PrimaryCTA size="md" label="Start Free Trial" />
-          </div>
+          <PrimaryCTA size="md" label="Start Free Trial" />
         </nav>
       </header>
 
@@ -373,26 +343,9 @@ export default function BookMoreWeddingsPage() {
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
       <section className="relative overflow-hidden bg-white">
-        {/* Decorative elements */}
-        <svg
-          aria-hidden
-          viewBox="0 0 600 600"
-          className="hidden lg:block absolute -top-10 right-[36%] w-[580px] h-[580px] opacity-[0.3] pointer-events-none"
-          fill="none"
-        >
-          <path
-            d="M50 300 C 50 150, 200 50, 350 80 S 600 250, 500 400 S 200 600, 100 500"
-            stroke="#1c1917"
-            strokeWidth="1"
-            strokeDasharray="4 6"
-          />
-        </svg>
-        <div aria-hidden className="absolute top-24 left-12 w-2 h-2 rounded-full bg-rose-400" />
-        <div aria-hidden className="absolute top-52 right-[43%] w-1.5 h-1.5 rounded-full bg-amber-400" />
-
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-12 pb-16 sm:pt-16 sm:pb-24 grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-12 pb-16 sm:pt-16 sm:pb-24 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
           {/* Left — copy */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-6">
             <div className="inline-flex items-center gap-2 rounded-full bg-stone-100 border border-stone-200/80 px-3.5 py-1.5">
               <Sparkles className="w-3.5 h-3.5 text-rose-500 shrink-0" />
               <span
@@ -404,31 +357,10 @@ export default function BookMoreWeddingsPage() {
             </div>
 
             <h1
-              className="mt-6 text-[40px] sm:text-[54px] md:text-[66px] leading-[1.02] tracking-[-0.02em] text-stone-900 font-bold"
-              style={{ fontFamily: "var(--font-open-sans)" }}
+              className="mt-6 text-[38px] sm:text-[52px] md:text-[62px] leading-[1.05] text-stone-900"
+              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              Fully book your wedding venue{" "}
-              <em
-                className="relative inline-block"
-                style={{ fontFamily: "EditorsNote, serif", fontStyle: "italic", fontWeight: 400 }}
-              >
-                without empty weekends
-                <svg
-                  aria-hidden
-                  viewBox="0 0 340 12"
-                  preserveAspectRatio="none"
-                  className="absolute left-0 -bottom-1 w-full h-2 text-rose-400"
-                >
-                  <path
-                    d="M2 8 C 70 2, 160 12, 250 4 S 330 8, 338 6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </em>
-              .
+              Fully Book Your Wedding Venue Without Empty Weekends.
             </h1>
 
             <p
@@ -464,7 +396,7 @@ export default function BookMoreWeddingsPage() {
           </div>
 
           {/* Right — phone mockup */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+          <div className="lg:col-span-6 flex justify-center lg:justify-end">
             <PhonePreview />
           </div>
         </div>
@@ -479,8 +411,8 @@ export default function BookMoreWeddingsPage() {
             — The real problem
           </p>
           <h2
-            className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.02em] text-stone-900 leading-[1.08]"
-            style={{ fontFamily: "var(--font-open-sans)" }}
+            className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
+            style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Most Wedding Venues Do Not Have A Lead Problem. They Have A{" "}
             <span className="relative inline-block">
@@ -526,8 +458,8 @@ export default function BookMoreWeddingsPage() {
               — The cost of doing nothing
             </p>
             <h2
-              className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.02em] text-stone-900 leading-[1.08]"
-              style={{ fontFamily: "var(--font-open-sans)" }}
+              className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
+              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
               Every Bride Who Slips Away Is More Than A Missed Inquiry.
             </h2>
@@ -563,17 +495,10 @@ export default function BookMoreWeddingsPage() {
             — Meet StoryVenue
           </p>
           <h2
-            className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.02em] text-stone-900 leading-[1.08] max-w-4xl"
-            style={{ fontFamily: "var(--font-open-sans)" }}
+            className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08] max-w-4xl"
+            style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            The First And Only All-In-One Directory, Booking System, And Marketing Platform{" "}
-            <em
-              className="italic font-normal"
-              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-            >
-              Built For Wedding Venues
-            </em>
-            .
+            The First And Only All-In-One Directory, Booking System, And Marketing Platform Built For Wedding Venues.
           </h2>
 
           <div
@@ -603,8 +528,8 @@ export default function BookMoreWeddingsPage() {
               — Process
             </p>
             <h2
-              className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.02em] text-stone-900 leading-[1.08]"
-              style={{ fontFamily: "var(--font-open-sans)" }}
+              className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
+              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
               How StoryVenue Turns Brides Into Booked Weddings.
             </h2>
@@ -656,8 +581,8 @@ export default function BookMoreWeddingsPage() {
               — What you get
             </p>
             <h2
-              className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.02em] text-stone-900 leading-[1.08]"
-              style={{ fontFamily: "var(--font-open-sans)" }}
+              className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
+              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
               Everything Your Venue Needs In One Place.
             </h2>
@@ -708,8 +633,8 @@ export default function BookMoreWeddingsPage() {
             — The bigger picture
           </p>
           <h2
-            className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.02em] leading-[1.08]"
-            style={{ fontFamily: "var(--font-open-sans)" }}
+            className="mt-4 text-3xl sm:text-4xl md:text-5xl leading-[1.08]"
+            style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             This Is Not Just Software.
           </h2>
@@ -746,8 +671,8 @@ export default function BookMoreWeddingsPage() {
                 — Risk free
               </p>
               <h2
-                className="mt-4 text-3xl sm:text-4xl font-bold tracking-[-0.02em] text-stone-900 leading-[1.08]"
-                style={{ fontFamily: "var(--font-open-sans)" }}
+                className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
+                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
                 Try StoryVenue Risk Free for 14-Days.
               </h2>
@@ -774,8 +699,8 @@ export default function BookMoreWeddingsPage() {
 
             <div className="mt-10 pt-10 border-t border-stone-200">
               <h3
-                className="text-xl font-bold text-stone-900"
-                style={{ fontFamily: "var(--font-open-sans)" }}
+                className="text-xl text-stone-900"
+                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
                 Our First Goal Is Simple.
               </h3>
@@ -812,8 +737,8 @@ export default function BookMoreWeddingsPage() {
               — Frequently asked
             </p>
             <h2
-              className="mt-4 text-3xl sm:text-4xl font-bold tracking-[-0.02em] text-stone-900 leading-[1.08]"
-              style={{ fontFamily: "var(--font-open-sans)" }}
+              className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
+              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
               Frequently Asked Questions.
             </h2>
@@ -864,8 +789,8 @@ export default function BookMoreWeddingsPage() {
             — Your next step
           </p>
           <h2
-            className="mt-4 text-3xl sm:text-5xl md:text-6xl font-bold leading-[1.05] tracking-[-0.02em]"
-            style={{ fontFamily: "var(--font-open-sans)" }}
+            className="mt-4 text-3xl sm:text-5xl md:text-6xl leading-[1.05]"
+            style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Stop Letting Brides Slip Through The Cracks.
           </h2>
@@ -912,116 +837,143 @@ export default function BookMoreWeddingsPage() {
 /*  Inline visual components                                             */
 /* ==================================================================== */
 
+/**
+ * Phone preview that faithfully recreates the actual StoryVenue mobile
+ * dashboard: header, 3 stat tiles, Quick Actions 2×4 grid, More list,
+ * and bottom navigation — matching the provided app screenshot.
+ */
 function PhonePreview() {
+  const quickActions = [
+    { icon: Users, label: "Add Contact" },
+    { icon: MessageSquare, label: "Make a Call" },
+    { icon: Inbox, label: "New Message" },
+    { icon: CreditCard, label: "New Payment" },
+    { icon: FileSignature, label: "New Proposal" },
+    { icon: CalendarDays, label: "Book Event" },
+    { icon: Search, label: "Venue Listing" },
+    { icon: Sparkles, label: "Ask AI" },
+  ] as const;
+
+  const moreItems = [
+    { icon: BarChart3, label: "Marketing Analytics" },
+    { icon: MessageSquare, label: "Help Center" },
+    { icon: Shield, label: "Settings" },
+  ] as const;
+
   return (
-    <div className="relative">
-      {/* Floating tile — top left */}
-      <div className="absolute -top-4 -left-4 sm:-left-8 z-20 rounded-2xl bg-white border border-stone-200 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.25)] px-4 py-3 flex items-center gap-3">
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-          <TrendingUp className="w-4 h-4" />
-        </span>
-        <div>
-          <p className="text-[10px] font-semibold tracking-[0.14em] uppercase text-stone-500">
-            New leads
-          </p>
-          <p
-            className="text-sm font-bold text-stone-900 leading-none mt-0.5"
-            style={{ fontFamily: "var(--font-open-sans)" }}
-          >
-            +42 this wk
-          </p>
-        </div>
-      </div>
+    <div className="relative flex justify-center">
+      {/* Phone shell — proportioned to match real phone screenshot */}
+      <div className="relative w-[300px] sm:w-[340px] rounded-[46px] bg-stone-900 p-[10px] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.5)]">
+        {/* Dynamic island */}
+        <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-[90px] h-[26px] rounded-full bg-stone-900 z-10" />
 
-      {/* Phone frame */}
-      <div className="relative w-[280px] sm:w-[316px] aspect-[9/19] rounded-[40px] bg-stone-900 p-2 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.45)]">
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-24 h-5 rounded-b-2xl bg-stone-900 z-10" />
-        <div className="relative w-full h-full rounded-[34px] bg-white overflow-hidden">
-          {/* Status */}
-          <div className="flex items-center justify-between px-5 pt-3 pb-2 text-[10px] text-stone-700 font-semibold">
+        {/* Screen */}
+        <div className="relative w-full rounded-[38px] bg-[#f5f5f4] overflow-hidden">
+
+          {/* Status bar */}
+          <div className="flex items-center justify-between px-6 pt-4 pb-1 text-[10px] font-semibold text-stone-800">
             <span>9:41</span>
-            <span className="opacity-60">●●●●○</span>
+            <span className="text-[9px] tracking-wide opacity-50">●●●●○</span>
           </div>
 
-          {/* Header */}
-          <div className="px-4 pt-1 pb-3 flex items-center justify-between">
-            <div>
-              <p className="text-[10px] text-stone-500">Welcome back,</p>
-              <p className="text-sm font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
-                White Pine Manor
-              </p>
+          {/* App header */}
+          <div className="flex items-center justify-between px-5 py-3 bg-[#f5f5f4]">
+            <Image
+              src="/storyvenue-dark-logo.png"
+              alt="StoryVenue"
+              width={110}
+              height={26}
+              className="h-5 w-auto object-contain"
+            />
+            <div className="flex items-center gap-3">
+              <ArrowRight className="w-4 h-4 text-stone-600 rotate-[0deg]" />
+              <div className="flex flex-col gap-[3px]">
+                <span className="block w-4 h-[1.5px] bg-stone-800 rounded" />
+                <span className="block w-4 h-[1.5px] bg-stone-800 rounded" />
+                <span className="block w-4 h-[1.5px] bg-stone-800 rounded" />
+              </div>
             </div>
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-stone-100 text-stone-700 text-[11px] font-bold">
-              WP
-            </span>
           </div>
 
-          {/* Hero card */}
-          <div className="mx-4 rounded-2xl p-4 bg-gradient-to-br from-stone-900 via-stone-800 to-stone-700 text-white shadow-[0_12px_28px_-10px_rgba(0,0,0,0.45)]">
-            <p className="text-[10px] uppercase tracking-[0.18em] text-white/60">
-              Booked this month
-            </p>
-            <p className="mt-1 text-2xl font-bold tracking-tight" style={{ fontFamily: "var(--font-open-sans)" }}>
-              $28,400
-            </p>
-            <div className="mt-3 flex items-center justify-between text-[10px] text-white/70">
-              <span>+12% vs last month</span>
-              <span className="font-semibold tracking-widest">VENUE PRO</span>
-            </div>
+          {/* Greeting */}
+          <div className="px-5 pb-3 bg-[#f5f5f4]">
+            <h2 className="text-[22px] font-bold text-stone-900 leading-tight" style={{ fontFamily: "var(--font-open-sans)" }}>
+              Good day
+            </h2>
+            <p className="text-[11px] text-stone-500 mt-0.5">Here&apos;s what&apos;s happening at your venue.</p>
           </div>
 
           {/* Stat tiles */}
-          <div className="mx-4 mt-3 grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-2 px-4 pb-4 bg-[#f5f5f4]">
             {[
-              { label: "Inquiries", value: "18", tone: "bg-stone-100 text-stone-700" },
-              { label: "Tours", value: "7", tone: "bg-amber-50 text-amber-700" },
-              { label: "Booked", value: "3", tone: "bg-emerald-50 text-emerald-700" },
+              { icon: "✉", value: "0", label: "UNREAD", iconBg: "bg-rose-100", iconColor: "text-rose-500" },
+              { icon: "✉", value: "0", label: "NEW LEADS", iconBg: "bg-orange-100", iconColor: "text-orange-500" },
+              { icon: "▦", value: "0", label: "TODAY", iconBg: "bg-emerald-100", iconColor: "text-emerald-600" },
             ].map((t) => (
-              <div key={t.label} className="rounded-xl bg-stone-50 p-2.5">
-                <p className="text-[9px] uppercase tracking-wide text-stone-500 font-semibold">{t.label}</p>
-                <p className={`mt-0.5 inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-bold ${t.tone}`}>{t.value}</p>
+              <div key={t.label} className="rounded-2xl bg-white border border-stone-200/60 p-3 text-center shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
+                <div className={`mx-auto mb-1.5 flex h-8 w-8 items-center justify-center rounded-full ${t.iconBg}`}>
+                  <span className={`text-sm ${t.iconColor}`}>{t.icon}</span>
+                </div>
+                <p className="text-[16px] font-bold text-stone-900 leading-none" style={{ fontFamily: "var(--font-open-sans)" }}>{t.value}</p>
+                <p className="mt-0.5 text-[8px] font-semibold tracking-[0.14em] text-stone-400 uppercase">{t.label}</p>
               </div>
             ))}
           </div>
 
-          {/* Inquiry feed */}
-          <div className="mx-4 mt-4">
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] font-bold text-stone-900">Recent inquiries</p>
-              <span className="text-[10px] text-stone-400">See all</span>
-            </div>
-            <ul className="mt-2 space-y-1.5">
-              {[
-                { who: "Emma + Jordan", what: "Signed proposal", amount: "+$9,800", tone: "text-emerald-600" },
-                { who: "Lauren + Mark", what: "Tour booked · Sat", amount: "Hold", tone: "text-amber-600" },
-                { who: "Hannah + Sam", what: "Inquired · Meta ad", amount: "New", tone: "text-rose-600" },
-              ].map((row) => (
-                <li key={row.who} className="flex items-center justify-between rounded-xl bg-stone-50 px-3 py-2">
-                  <div className="min-w-0">
-                    <p className="text-[11px] font-semibold text-stone-900 truncate" style={{ fontFamily: "var(--font-open-sans)" }}>
-                      {row.who}
-                    </p>
-                    <p className="text-[10px] text-stone-500 truncate">{row.what}</p>
+          {/* Quick Actions */}
+          <div className="px-5 pb-4 bg-white">
+            <p className="pt-4 pb-3 text-[13px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
+              Quick Actions
+            </p>
+            <div className="grid grid-cols-4 gap-y-4">
+              {quickActions.map(({ icon: Icon, label }) => (
+                <div key={label} className="flex flex-col items-center gap-1.5">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-stone-100 border border-stone-200/80">
+                    <Icon className="w-5 h-5 text-stone-700" />
                   </div>
-                  <span className={`text-[10px] font-bold ${row.tone}`}>{row.amount}</span>
-                </li>
+                  <span className="text-center text-[9px] text-stone-600 leading-tight max-w-[52px]">{label}</span>
+                </div>
               ))}
-            </ul>
+            </div>
+          </div>
+
+          {/* More section */}
+          <div className="px-5 pb-4 bg-white border-t border-stone-100">
+            <p className="pt-4 pb-2 text-[13px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>More</p>
+            <div className="rounded-2xl bg-stone-50 border border-stone-200/60 divide-y divide-stone-200/60 overflow-hidden">
+              {moreItems.map(({ icon: Icon, label }) => (
+                <div key={label} className="flex items-center justify-between px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    <Icon className="w-4 h-4 text-stone-500" />
+                    <span className="text-[12px] font-medium text-stone-800">{label}</span>
+                  </div>
+                  <ChevronDown className="-rotate-90 w-3.5 h-3.5 text-stone-400" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom nav */}
+          <div className="bg-white border-t border-stone-200/80 grid grid-cols-5 px-2 pt-2 pb-4">
+            {[
+              { icon: "⌂", label: "Home", active: true },
+              { icon: "◯", label: "Messages" },
+              { icon: "⬡", label: "Leads" },
+              { icon: "▦", label: "Calendar" },
+              { icon: "▭", label: "Payments" },
+            ].map((n) => (
+              <div key={n.label} className="flex flex-col items-center gap-0.5">
+                <span className={`text-sm ${n.active ? "text-stone-900" : "text-stone-400"}`}>{n.icon}</span>
+                <span className={`text-[9px] ${n.active ? "font-bold text-stone-900" : "text-stone-400"}`}>{n.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Floating tile — bottom right */}
-      <div className="absolute -bottom-4 -right-2 sm:-right-6 z-20 rounded-2xl bg-white border border-stone-200 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.25)] px-4 py-3 flex items-center gap-3">
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-stone-900 text-white">
-          <Check className="w-4 h-4" strokeWidth={3} />
-        </span>
-        <div>
-          <p className="text-[10px] font-semibold tracking-[0.14em] uppercase text-stone-500">Booked</p>
-          <p className="text-sm font-bold text-stone-900 leading-none mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>
-            Emma + Jordan
-          </p>
-        </div>
+      {/* Floating + FAB that shows in the screenshot */}
+      <div className="absolute bottom-[52px] right-[-8px] sm:right-[-16px] z-20 flex h-11 w-11 items-center justify-center rounded-full bg-stone-900 text-white text-xl font-light shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]">
+        +
       </div>
     </div>
   );
