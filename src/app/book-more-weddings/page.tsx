@@ -321,16 +321,33 @@ export default function BookMoreWeddingsPage() {
   return (
     <>
       {/* ============================================================== */}
-      {/* ANNOUNCEMENT TICKER — matches homepage style exactly            */}
+      {/* TICKER — matches deck.storyvenuemarketing.com exactly           */}
+      {/* charcoal bg (#1c1c1c), cream/80 text, subtle separator          */}
       {/* ============================================================== */}
-      <div className="bg-black flex items-center h-10 overflow-hidden z-50 relative">
-        <div className="flex items-center animate-[announcement-ticker_180s_linear_infinite] whitespace-nowrap w-max">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <span key={i} className="flex items-center text-[13px] font-medium text-white tracking-wide" style={{ fontFamily: "var(--font-open-sans)" }}>
-              <span className="px-10">
-                StoryVenue — The All-In-One Platform For Wedding Venues · Meta Ads · CRM · Proposals · Payments · 14-Day Free Trial
-              </span>
-              <span className="text-white/30 text-xs select-none">•</span>
+      <div className="w-full overflow-hidden shrink-0 py-2 relative z-50 bg-[#1c1c1c]">
+        <div className="flex animate-[announcement-ticker_60s_linear_infinite] whitespace-nowrap">
+          {[
+            { venue: "Manor", result: "2026 Dates Booked in 90 Days" },
+            { venue: "Waterloo Farms", result: "2 Weddings Booked in 7 Days" },
+            { venue: "Atlantic Stables", result: "$15,000 in Booked Weddings in 30 Days" },
+            { venue: "Retreat at Evans Farms", result: "258 Leads in 60 Days" },
+            { venue: "Red Barn Acres", result: "9 Weddings Booked in 4 Months" },
+            { venue: "Irongate Wedding Venue", result: "131 Leads in 60 Days" },
+            { venue: "Manor", result: "2026 Dates Booked in 90 Days" },
+            { venue: "Waterloo Farms", result: "2 Weddings Booked in 7 Days" },
+            { venue: "Atlantic Stables", result: "$15,000 in Booked Weddings in 30 Days" },
+            { venue: "Retreat at Evans Farms", result: "258 Leads in 60 Days" },
+            { venue: "Red Barn Acres", result: "9 Weddings Booked in 4 Months" },
+            { venue: "Irongate Wedding Venue", result: "131 Leads in 60 Days" },
+          ].map((item, i) => (
+            <span
+              key={i}
+              className="inline-flex items-center text-xs tracking-wide text-[rgba(250,250,250,0.8)]"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              <span>{item.venue}</span>
+              <span className="font-bold ml-1.5">{item.result}</span>
+              <span className="mx-4 text-[rgba(250,250,250,0.35)] select-none">•</span>
             </span>
           ))}
         </div>
