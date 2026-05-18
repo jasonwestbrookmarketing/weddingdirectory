@@ -321,86 +321,69 @@ export default function BookMoreWeddingsPage() {
   return (
     <>
       {/* ============================================================== */}
-      {/* TICKER — matches deck.storyvenuemarketing.com exactly           */}
-      {/* charcoal bg (#1c1c1c), cream/80 text, subtle separator          */}
+      {/* STICKY SHELL — ticker + nav scroll together as one unit         */}
       {/* ============================================================== */}
-      <div className="w-full overflow-hidden shrink-0 py-2 relative z-50 bg-[#1c1c1c]">
-        <div className="flex animate-[announcement-ticker_60s_linear_infinite] whitespace-nowrap">
-          {[
-            { venue: "Manor", result: "2026 Dates Booked in 90 Days" },
-            { venue: "Waterloo Farms", result: "2 Weddings Booked in 7 Days" },
-            { venue: "Atlantic Stables", result: "$15,000 in Booked Weddings in 30 Days" },
-            { venue: "Retreat at Evans Farms", result: "258 Leads in 60 Days" },
-            { venue: "Red Barn Acres", result: "9 Weddings Booked in 4 Months" },
-            { venue: "Irongate Wedding Venue", result: "131 Leads in 60 Days" },
-            { venue: "Manor", result: "2026 Dates Booked in 90 Days" },
-            { venue: "Waterloo Farms", result: "2 Weddings Booked in 7 Days" },
-            { venue: "Atlantic Stables", result: "$15,000 in Booked Weddings in 30 Days" },
-            { venue: "Retreat at Evans Farms", result: "258 Leads in 60 Days" },
-            { venue: "Red Barn Acres", result: "9 Weddings Booked in 4 Months" },
-            { venue: "Irongate Wedding Venue", result: "131 Leads in 60 Days" },
-          ].map((item, i) => (
-            <span
-              key={i}
-              className="inline-flex items-center text-xs tracking-wide text-[rgba(250,250,250,0.8)]"
-              style={{ fontFamily: "var(--font-open-sans)" }}
-            >
-              <span>{item.venue}</span>
-              <span className="font-bold ml-1.5">{item.result}</span>
-              <span className="mx-4 text-[rgba(250,250,250,0.35)] select-none">•</span>
-            </span>
-          ))}
+      <div className="sticky top-0 z-40">
+        {/* TICKER — matches deck.storyvenuemarketing.com exactly */}
+        <div className="w-full overflow-hidden shrink-0 py-2 bg-[#1c1c1c]">
+          <div className="flex animate-[announcement-ticker_60s_linear_infinite] whitespace-nowrap">
+            {[
+              { venue: "Manor", result: "2026 Dates Booked in 90 Days" },
+              { venue: "Waterloo Farms", result: "2 Weddings Booked in 7 Days" },
+              { venue: "Atlantic Stables", result: "$15,000 in Booked Weddings in 30 Days" },
+              { venue: "Retreat at Evans Farms", result: "258 Leads in 60 Days" },
+              { venue: "Red Barn Acres", result: "9 Weddings Booked in 4 Months" },
+              { venue: "Irongate Wedding Venue", result: "131 Leads in 60 Days" },
+              { venue: "Manor", result: "2026 Dates Booked in 90 Days" },
+              { venue: "Waterloo Farms", result: "2 Weddings Booked in 7 Days" },
+              { venue: "Atlantic Stables", result: "$15,000 in Booked Weddings in 30 Days" },
+              { venue: "Retreat at Evans Farms", result: "258 Leads in 60 Days" },
+              { venue: "Red Barn Acres", result: "9 Weddings Booked in 4 Months" },
+              { venue: "Irongate Wedding Venue", result: "131 Leads in 60 Days" },
+            ].map((item, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center text-xs tracking-wide text-[rgba(250,250,250,0.8)]"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                <span>{item.venue}</span>
+                <span className="font-bold ml-1.5">{item.result}</span>
+                <span className="mx-4 text-[rgba(250,250,250,0.35)] select-none">•</span>
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* ============================================================== */}
-      {/* NAV                                                             */}
-      {/* ============================================================== */}
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/70">
-        <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-10 py-4">
-          <Link href="/" aria-label="StoryVenue home" className="shrink-0">
-            <Image
-              src="/storyvenue-dark-logo.png"
-              alt="StoryVenue"
-              width={150}
-              height={36}
-              className="h-8 w-auto object-contain"
-              priority
-            />
-          </Link>
-          <PrimaryCTA size="md" label="Start Free Trial" />
-        </nav>
-      </header>
+        {/* NAV */}
+        <header className="bg-white/95 backdrop-blur-md border-b border-stone-200/70">
+          <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-10 py-4">
+            <Link href="/" aria-label="StoryVenue home" className="shrink-0">
+              <Image
+                src="/storyvenue-dark-logo.png"
+                alt="StoryVenue"
+                width={150}
+                height={36}
+                className="h-8 w-auto object-contain"
+                priority
+              />
+            </Link>
+            <PrimaryCTA size="md" label="Start Free Trial" />
+          </nav>
+        </header>
+      </div>
 
       {/* ============================================================== */}
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
-      <section className="relative overflow-hidden bg-white">
-        {/* Background — bride & groom in white barn venue, very light so
-            text stays readable but the venue atmosphere comes through */}
-        <Image
-          src="/hero-wedding.jpg"
-          alt=""
-          aria-hidden
-          fill
-          priority
-          className="absolute inset-0 object-cover object-center"
-          sizes="100vw"
-        />
-        {/* Layered overlay: near-white left half (behind text), fades right */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-white/40" />
-        {/* Gentle top-to-bottom vignette keeps everything clean */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/30" />
-
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-12 pb-16 sm:pt-16 sm:pb-24 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+      <section className="bg-white">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 pt-12 pb-16 sm:pt-16 sm:pb-24 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
           {/* Left — copy */}
           <div className="lg:col-span-6">
 
-            {/* Hero pre-heading badge */}
-            <div className="inline-flex items-center gap-2 rounded-full bg-stone-100 border border-stone-200/80 px-3.5 py-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+            {/* Pre-heading — solid black pill, no icon, single line */}
+            <div className="inline-block rounded-full bg-stone-900 px-4 py-1.5">
               <span
-                className="text-[11px] font-semibold text-stone-700"
+                className="text-[11px] font-semibold tracking-[0.06em] text-white whitespace-nowrap"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
                 The First And Only All-In-One Directory, Booking System, And Marketing Platform For Wedding Venues
@@ -456,6 +439,7 @@ export default function BookMoreWeddingsPage() {
           </div>
         </div>
       </section>
+
 
       {/* ============================================================== */}
       {/* 2. PAIN SECTION                                                 */}
@@ -893,32 +877,106 @@ export default function BookMoreWeddingsPage() {
 /* ==================================================================== */
 
 /**
- * Phone preview that faithfully recreates the actual StoryVenue mobile
- * dashboard: header, 3 stat tiles, Quick Actions 2×4 grid, More list,
- * and bottom navigation — matching the provided app screenshot.
+ * Phone showing a live notification feed of tours booked and weddings
+ * confirmed — filling the screen to illustrate the outcome: a fully
+ * booked venue with no empty weekends.
  */
 function PhonePreview() {
-  const quickActions = [
-    { icon: Users, label: "Add Contact" },
-    { icon: MessageSquare, label: "Make a Call" },
-    { icon: Inbox, label: "New Message" },
-    { icon: CreditCard, label: "New Payment" },
-    { icon: FileSignature, label: "New Proposal" },
-    { icon: CalendarDays, label: "Book Event" },
-    { icon: Search, label: "Venue Listing" },
-    { icon: Sparkles, label: "Ask AI" },
-  ] as const;
-
-  const moreItems = [
-    { icon: BarChart3, label: "Marketing Analytics" },
-    { icon: MessageSquare, label: "Help Center" },
-    { icon: Shield, label: "Settings" },
+  const notifications = [
+    {
+      type: "booked",
+      icon: CalendarCheck,
+      iconBg: "bg-emerald-500",
+      title: "Wedding Booked!",
+      body: "Emma + Jordan · Oct 12, 2026",
+      detail: "$9,800 deposit received",
+      time: "Just now",
+      badge: "BOOKED",
+      badgeTone: "bg-emerald-50 text-emerald-700",
+    },
+    {
+      type: "tour",
+      icon: CalendarDays,
+      iconBg: "bg-amber-500",
+      title: "Tour Confirmed",
+      body: "Lauren + Mark · Sat, Nov 8",
+      detail: "2:00 PM · White barn tour",
+      time: "3m ago",
+      badge: "TOUR",
+      badgeTone: "bg-amber-50 text-amber-700",
+    },
+    {
+      type: "signed",
+      icon: FileSignature,
+      iconBg: "bg-emerald-500",
+      title: "Proposal Signed",
+      body: "Sophie + Will · Sept 20, 2026",
+      detail: "$12,400 · Contract signed",
+      time: "11m ago",
+      badge: "SIGNED",
+      badgeTone: "bg-emerald-50 text-emerald-700",
+    },
+    {
+      type: "payment",
+      icon: CreditCard,
+      iconBg: "bg-stone-900",
+      title: "Deposit Received",
+      body: "Mia + Jack · Aug 14, 2026",
+      detail: "$2,500 · Final payment pending",
+      time: "28m ago",
+      badge: "PAID",
+      badgeTone: "bg-stone-100 text-stone-700",
+    },
+    {
+      type: "booked",
+      icon: CalendarCheck,
+      iconBg: "bg-emerald-500",
+      title: "Wedding Booked!",
+      body: "Olivia + Ryan · July 19, 2026",
+      detail: "$11,200 · All dates confirmed",
+      time: "1h ago",
+      badge: "BOOKED",
+      badgeTone: "bg-emerald-50 text-emerald-700",
+    },
+    {
+      type: "tour",
+      icon: CalendarDays,
+      iconBg: "bg-amber-500",
+      title: "Tour Confirmed",
+      body: "Hannah + Cole · Sun, Nov 9",
+      detail: "11:00 AM · Private tour",
+      time: "2h ago",
+      badge: "TOUR",
+      badgeTone: "bg-amber-50 text-amber-700",
+    },
+    {
+      type: "signed",
+      icon: FileSignature,
+      iconBg: "bg-emerald-500",
+      title: "Proposal Signed",
+      body: "Bella + Alex · June 7, 2026",
+      detail: "$8,900 · E-signature complete",
+      time: "3h ago",
+      badge: "SIGNED",
+      badgeTone: "bg-emerald-50 text-emerald-700",
+    },
+    {
+      type: "booked",
+      icon: CalendarCheck,
+      iconBg: "bg-emerald-500",
+      title: "Wedding Booked!",
+      body: "Ava + James · May 2, 2026",
+      detail: "$13,500 · Fully confirmed",
+      time: "5h ago",
+      badge: "BOOKED",
+      badgeTone: "bg-emerald-50 text-emerald-700",
+    },
   ] as const;
 
   return (
     <div className="relative flex justify-center">
-      {/* Phone shell — proportioned to match real phone screenshot */}
-      <div className="relative w-[300px] sm:w-[340px] rounded-[46px] bg-stone-900 p-[10px] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.5)]">
+      {/* Phone shell */}
+      <div className="relative w-[300px] sm:w-[330px] rounded-[46px] bg-stone-900 p-[10px] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.5)]">
         {/* Dynamic island */}
         <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-[90px] h-[26px] rounded-full bg-stone-900 z-10" />
 
@@ -931,104 +989,74 @@ function PhonePreview() {
             <span className="text-[9px] tracking-wide opacity-50">●●●●○</span>
           </div>
 
-          {/* App header */}
-          <div className="flex items-center justify-between px-5 py-3 bg-[#f5f5f4]">
-            <Image
-              src="/storyvenue-dark-logo.png"
-              alt="StoryVenue"
-              width={110}
-              height={26}
-              className="h-5 w-auto object-contain"
-            />
-            <div className="flex items-center gap-3">
-              <ArrowRight className="w-4 h-4 text-stone-600 rotate-[0deg]" />
-              <div className="flex flex-col gap-[3px]">
-                <span className="block w-4 h-[1.5px] bg-stone-800 rounded" />
-                <span className="block w-4 h-[1.5px] bg-stone-800 rounded" />
-                <span className="block w-4 h-[1.5px] bg-stone-800 rounded" />
-              </div>
+          {/* Screen header */}
+          <div className="px-4 pt-2 pb-3 flex items-center justify-between bg-[#f5f5f4]">
+            <div>
+              <p className="text-[16px] font-bold text-stone-900 leading-tight" style={{ fontFamily: "var(--font-open-sans)" }}>
+                Activity
+              </p>
+              <p className="text-[10px] text-stone-500">White Pine Manor · Live</p>
+            </div>
+            <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_6px_2px_rgba(16,185,129,0.4)]" />
+          </div>
+
+          {/* Revenue banner */}
+          <div className="mx-4 mb-3 rounded-2xl bg-stone-900 text-white px-4 py-3 flex items-center justify-between">
+            <div>
+              <p className="text-[9px] uppercase tracking-[0.16em] text-white/60">Booked Revenue</p>
+              <p className="text-[20px] font-bold leading-tight" style={{ fontFamily: "var(--font-open-sans)" }}>$128,400</p>
+            </div>
+            <div className="text-right">
+              <p className="text-[9px] text-white/60">Weekends filled</p>
+              <p className="text-[18px] font-bold" style={{ fontFamily: "var(--font-open-sans)" }}>34 / 36</p>
             </div>
           </div>
 
-          {/* Greeting */}
-          <div className="px-5 pb-3 bg-[#f5f5f4]">
-            <h2 className="text-[22px] font-bold text-stone-900 leading-tight" style={{ fontFamily: "var(--font-open-sans)" }}>
-              Good day
-            </h2>
-            <p className="text-[11px] text-stone-500 mt-0.5">Here&apos;s what&apos;s happening at your venue.</p>
-          </div>
-
-          {/* Stat tiles */}
-          <div className="grid grid-cols-3 gap-2 px-4 pb-4 bg-[#f5f5f4]">
-            {[
-              { icon: "✉", value: "0", label: "UNREAD", iconBg: "bg-rose-100", iconColor: "text-rose-500" },
-              { icon: "✉", value: "0", label: "NEW LEADS", iconBg: "bg-orange-100", iconColor: "text-orange-500" },
-              { icon: "▦", value: "0", label: "TODAY", iconBg: "bg-emerald-100", iconColor: "text-emerald-600" },
-            ].map((t) => (
-              <div key={t.label} className="rounded-2xl bg-white border border-stone-200/60 p-3 text-center shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
-                <div className={`mx-auto mb-1.5 flex h-8 w-8 items-center justify-center rounded-full ${t.iconBg}`}>
-                  <span className={`text-sm ${t.iconColor}`}>{t.icon}</span>
-                </div>
-                <p className="text-[16px] font-bold text-stone-900 leading-none" style={{ fontFamily: "var(--font-open-sans)" }}>{t.value}</p>
-                <p className="mt-0.5 text-[8px] font-semibold tracking-[0.14em] text-stone-400 uppercase">{t.label}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Quick Actions */}
-          <div className="px-5 pb-4 bg-white">
-            <p className="pt-4 pb-3 text-[13px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
-              Quick Actions
-            </p>
-            <div className="grid grid-cols-4 gap-y-4">
-              {quickActions.map(({ icon: Icon, label }) => (
-                <div key={label} className="flex flex-col items-center gap-1.5">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-stone-100 border border-stone-200/80">
-                    <Icon className="w-5 h-5 text-stone-700" />
+          {/* Notification feed */}
+          <div className="px-4 pb-4 space-y-2 overflow-hidden" style={{ maxHeight: "420px" }}>
+            {notifications.map((n, i) => {
+              const Icon = n.icon;
+              return (
+                <div
+                  key={i}
+                  className="flex items-start gap-2.5 rounded-2xl bg-white border border-stone-200/60 px-3 py-2.5 shadow-[0_1px_4px_rgba(0,0,0,0.05)]"
+                >
+                  <span className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${n.iconBg}`}>
+                    <Icon className="w-4 h-4 text-white" />
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-1">
+                      <p className="text-[11px] font-bold text-stone-900 truncate" style={{ fontFamily: "var(--font-open-sans)" }}>
+                        {n.title}
+                      </p>
+                      <span className="text-[9px] text-stone-400 shrink-0">{n.time}</span>
+                    </div>
+                    <p className="text-[11px] text-stone-700 truncate">{n.body}</p>
+                    <div className="mt-1 flex items-center gap-1.5">
+                      <span className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[8px] font-bold tracking-wide ${n.badgeTone}`}>
+                        {n.badge}
+                      </span>
+                      <p className="text-[10px] text-stone-500 truncate">{n.detail}</p>
+                    </div>
                   </div>
-                  <span className="text-center text-[9px] text-stone-600 leading-tight max-w-[52px]">{label}</span>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* More section */}
-          <div className="px-5 pb-4 bg-white border-t border-stone-100">
-            <p className="pt-4 pb-2 text-[13px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>More</p>
-            <div className="rounded-2xl bg-stone-50 border border-stone-200/60 divide-y divide-stone-200/60 overflow-hidden">
-              {moreItems.map(({ icon: Icon, label }) => (
-                <div key={label} className="flex items-center justify-between px-4 py-3">
-                  <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4 text-stone-500" />
-                    <span className="text-[12px] font-medium text-stone-800">{label}</span>
-                  </div>
-                  <ChevronDown className="-rotate-90 w-3.5 h-3.5 text-stone-400" />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Bottom nav */}
-          <div className="bg-white border-t border-stone-200/80 grid grid-cols-5 px-2 pt-2 pb-4">
-            {[
-              { icon: "⌂", label: "Home", active: true },
-              { icon: "◯", label: "Messages" },
-              { icon: "⬡", label: "Leads" },
-              { icon: "▦", label: "Calendar" },
-              { icon: "▭", label: "Payments" },
-            ].map((n) => (
-              <div key={n.label} className="flex flex-col items-center gap-0.5">
-                <span className={`text-sm ${n.active ? "text-stone-900" : "text-stone-400"}`}>{n.icon}</span>
-                <span className={`text-[9px] ${n.active ? "font-bold text-stone-900" : "text-stone-400"}`}>{n.label}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Floating + FAB that shows in the screenshot */}
-      <div className="absolute bottom-[52px] right-[-8px] sm:right-[-16px] z-20 flex h-11 w-11 items-center justify-center rounded-full bg-stone-900 text-white text-xl font-light shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]">
-        +
+      {/* Floating revenue tile — top left */}
+      <div className="absolute -top-3 -left-4 sm:-left-8 z-20 rounded-2xl bg-white border border-stone-200 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.22)] px-3.5 py-2.5 flex items-center gap-2.5">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+          <CalendarCheck className="w-4 h-4" />
+        </span>
+        <div>
+          <p className="text-[9px] font-semibold tracking-[0.14em] uppercase text-stone-500">Weekend booked</p>
+          <p className="text-[12px] font-bold text-stone-900 leading-none mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>
+            Oct 12, 2026 ✓
+          </p>
+        </div>
       </div>
     </div>
   );
