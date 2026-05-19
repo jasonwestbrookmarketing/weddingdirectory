@@ -519,7 +519,7 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       <section className="bg-stone-50/70 py-20 sm:py-28 border-y border-stone-200/60 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="grid lg:grid-cols-[5fr_7fr] gap-10 lg:gap-14 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
             {/* Left — copy */}
             <div>
