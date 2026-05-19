@@ -84,7 +84,9 @@ export default function ProcessTimeline() {
               <div
                 className="w-9 h-9 rounded-full border-2 flex items-center justify-center text-[13px] font-bold shrink-0"
                 style={{ fontFamily: "var(--font-open-sans)", ...circleStyle(step.n) }}
-              />
+              >
+                {step.n}
+              </div>
               <div style={textStyle(step.n)} className="mt-3">
                 <p className="text-[12px] sm:text-[13px] font-bold text-stone-900 leading-snug" style={{ fontFamily: "var(--font-open-sans)" }}>
                   {step.title}
@@ -131,7 +133,9 @@ export default function ProcessTimeline() {
               <div
                 className="w-9 h-9 rounded-full border-2 flex items-center justify-center text-[13px] font-bold shrink-0"
                 style={{ fontFamily: "var(--font-open-sans)", ...circleStyle(step.n) }}
-              />
+              >
+                {step.n}
+              </div>
               <div style={textStyle(step.n)} className="mt-3">
                 <p className="text-[12px] sm:text-[13px] font-bold text-stone-900 leading-snug" style={{ fontFamily: "var(--font-open-sans)" }}>
                   {step.title}
