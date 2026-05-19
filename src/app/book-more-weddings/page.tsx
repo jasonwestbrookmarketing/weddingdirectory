@@ -549,7 +549,7 @@ export default function BookMoreWeddingsPage() {
             </div>
 
             {/* Right — dashboard mockup */}
-            <div className="pr-10 lg:pr-14">
+            <div className="pr-4">
               <DashboardMockup />
             </div>
 
