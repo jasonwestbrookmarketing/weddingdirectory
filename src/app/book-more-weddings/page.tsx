@@ -559,37 +559,32 @@ export default function BookMoreWeddingsPage() {
       </section>
 
       {/* ============================================================== */}
-      {/* 5. HOW IT WORKS — animated vertical timeline                   */}
+      {/* 5. HOW IT WORKS — horizontal snake timeline                   */}
       {/* ============================================================== */}
       <section id="how-it-works" className="bg-white py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-start">
+          <div className="max-w-3xl mb-14">
+            <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
+              — Process
+            </p>
+            <h2
+              className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
+              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+            >
+              How StoryVenue Turns Brides Into Booked Weddings.
+            </h2>
+            <p
+              className="mt-5 text-base text-stone-500 leading-relaxed"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              Seven steps. One connected system. From first click to signed contract.
+            </p>
+          </div>
 
-            {/* Left — sticky heading + CTA, vertically centered while timeline scrolls */}
-            <div className="lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-center">
-              <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
-                — Process
-              </p>
-              <h2
-                className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
-                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-              >
-                How StoryVenue Turns Brides Into Booked Weddings.
-              </h2>
-              <p
-                className="mt-5 text-base text-stone-500 leading-relaxed max-w-sm"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                Seven steps. One connected system. From the moment she sees your ad to the moment she signs.
-              </p>
-              <div className="mt-8">
-                <PrimaryCTA />
-              </div>
-            </div>
+          <ProcessTimeline />
 
-            {/* Right — scrolling timeline */}
-            <ProcessTimeline />
-
+          <div className="mt-14 flex justify-center">
+            <PrimaryCTA />
           </div>
         </div>
       </section>
