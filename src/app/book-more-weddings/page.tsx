@@ -376,14 +376,16 @@ export default function BookMoreWeddingsPage() {
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
       <section className="relative min-h-[calc(100svh-2.5rem)] overflow-hidden flex items-center bg-white">
-        {/* Full-bleed wedding venue background — already has built-in white fade vignette */}
+        {/* Full-bleed wedding venue background */}
         <Image
-          src="/hero-venue-bg.jpg"
+          src="/hero-venue-bg.png"
           alt=""
           aria-hidden
           fill
           priority
+          unoptimized
           className="absolute inset-0 object-cover object-center"
+          style={{ imageRendering: "auto" }}
           sizes="100vw"
         />
 
