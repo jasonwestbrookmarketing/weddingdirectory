@@ -355,7 +355,7 @@ export default function BookMoreWeddingsPage() {
         </div>
 
         {/* NAV */}
-        <header className="bg-white/95 backdrop-blur-md border-b border-stone-200/70">
+        <header className="bg-white/75 backdrop-blur-md border-b border-white/20">
           <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-10 py-4">
             <Link href="/" aria-label="StoryVenue home" className="shrink-0">
               <Image
@@ -375,7 +375,7 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
-      <section className="relative min-h-[calc(100svh-2.5rem)] overflow-hidden flex items-center bg-white">
+      <section className="relative min-h-svh overflow-hidden flex items-center -mt-[92px]">
         {/* Full-bleed wedding couple background */}
         <Image
           src="/hero-wedding-couple.png"
@@ -389,7 +389,7 @@ export default function BookMoreWeddingsPage() {
           sizes="100vw"
         />
 
-        <div className="relative w-full max-w-7xl mx-auto px-6 md:px-10 py-16 sm:py-20 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+        <div className="relative w-full max-w-7xl mx-auto px-6 md:px-10 pt-36 pb-16 sm:pb-20 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left — copy */}
           <div className="lg:col-span-7">
             <h1
@@ -397,7 +397,7 @@ export default function BookMoreWeddingsPage() {
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
               <span className="block">Fully Book Your Wedding Venue</span>
-              <span className="block">Without Empty Weekends.</span>
+              <span className="block">Without Empty Weekends</span>
             </h1>
 
             <p
