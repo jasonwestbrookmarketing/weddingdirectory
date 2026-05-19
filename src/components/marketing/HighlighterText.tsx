@@ -66,13 +66,13 @@ export default function HighlighterText({
         className="pointer-events-none absolute inset-0 h-full w-full"
         style={{ mixBlendMode: "multiply" }}
       >
-        {/* Slightly irregular highlighter swipe — tilts a touch and
-            extends past both ends so the marker feels human, not pixel-perfect. */}
+        {/* Mostly-straight highlighter swipe — only a hair of waver so it
+            still feels human, but covers caps to descenders edge-to-edge. */}
         <path
-          d="M -10 58 C 110 44, 240 68, 348 52 S 508 46, 612 56"
+          d="M -22 41 C 120 39, 240 43, 350 40 S 500 42, 622 39"
           fill="none"
           stroke={color}
-          strokeWidth="46"
+          strokeWidth="66"
           strokeLinecap="round"
           strokeLinejoin="round"
           opacity={opacity}
