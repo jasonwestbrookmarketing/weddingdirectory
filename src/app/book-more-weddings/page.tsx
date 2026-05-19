@@ -375,7 +375,7 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
-      <section className="relative overflow-hidden">
+      <section className="relative min-h-[calc(100svh-2.5rem)] overflow-hidden flex items-center">
         {/* Full-bleed wedding venue background */}
         <Image
           src="/hero-venue-bg.jpg"
@@ -387,25 +387,14 @@ export default function BookMoreWeddingsPage() {
           sizes="100vw"
         />
 
-        {/* White gradient — strong on left (behind copy), fades to near-transparent on right */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/10" />
-        {/* Slight top vignette keeps the ticker edge clean */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
+        {/* White gradient — strong on left (behind copy), fades to transparent on right */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/5" />
 
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-12 pb-16 sm:pt-16 sm:pb-24 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+        <div className="relative w-full max-w-7xl mx-auto px-6 md:px-10 py-16 sm:py-20 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left — copy */}
           <div className="lg:col-span-6">
-
-            {/* Pre-heading — plain label style, no pill */}
-            <p
-              className="text-[10px] font-semibold tracking-[0.22em] uppercase text-stone-500 max-w-xs leading-relaxed"
-              style={{ fontFamily: "var(--font-open-sans)" }}
-            >
-              The First And Only All-In-One Directory, Booking System, And Marketing Platform For Wedding Venues
-            </p>
-
             <h1
-              className="mt-5 text-[38px] sm:text-[52px] md:text-[58px] leading-[1.05] text-stone-900"
+              className="text-[40px] sm:text-[52px] md:text-[60px] leading-[1.05] text-stone-900"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
               Fully Book Your Wedding Venue<br />
@@ -442,7 +431,7 @@ export default function BookMoreWeddingsPage() {
                 className="mt-3 text-[12px] text-stone-500 text-center"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                No contract. No down payment. No cancellation fees.
+                No contract. No down payment. No cancelation fees.
               </p>
             </div>
           </div>
