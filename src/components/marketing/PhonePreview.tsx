@@ -91,12 +91,18 @@ const notifications = [
 
 interface PhonePreviewProps {
   screenshotSrc?: string;
+  /**
+   * Height in px to cover at the bottom of the screenshot with white.
+   * Use to hide browser chrome / nav bars that appear in phone screenshots.
+   */
+  trimBottom?: number;
   badgeLabel?: string;
   badgeDetail?: string;
 }
 
 export default function PhonePreview({
   screenshotSrc,
+  trimBottom,
   badgeLabel = "Weekend booked",
   badgeDetail = "Oct 12, 2026 ✓",
 }: PhonePreviewProps) {
@@ -130,15 +136,24 @@ export default function PhonePreview({
         <div className="absolute inset-[10px] rounded-[36px] overflow-hidden bg-[#f5f5f4]">
           {screenshotSrc ? (
             /* Screenshot fills the screen area — 472×1024 matches 390/844 closely */
-            <Image
-              src={screenshotSrc}
-              alt=""
-              fill
-              unoptimized
-              placeholder="empty"
-              className="object-cover object-top"
-              sizes="280px"
-            />
+            <>
+              <Image
+                src={screenshotSrc}
+                alt=""
+                fill
+                unoptimized
+                placeholder="empty"
+                className="object-cover object-top"
+                sizes="280px"
+              />
+              {/* White block that hides browser/app chrome at the bottom */}
+              {trimBottom && (
+                <div
+                  className="absolute bottom-0 left-0 right-0 bg-white"
+                  style={{ height: trimBottom }}
+                />
+              )}
+            </>
           ) : (
             <div className="flex flex-col h-full">
               {/* Status bar */}
