@@ -626,6 +626,9 @@ export default function BookMoreWeddingsPage() {
               <p className="mt-5 text-[15px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
                 More visibility. More inquiries. More chances to book the wedding.
               </p>
+              <div className="mt-7">
+                <PrimaryCTA label="Start Free Trial" size="md" />
+              </div>
             </div>
             <div className="flex justify-center lg:justify-end">
               <PhonePreview
@@ -662,6 +665,9 @@ export default function BookMoreWeddingsPage() {
               <p className="mt-5 text-[15px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
                 Faster signatures. Faster deposits. Less chasing payments.
               </p>
+              <div className="mt-7">
+                <PrimaryCTA label="Start Free Trial" size="md" />
+              </div>
             </div>
           </div>
         </section>
@@ -683,6 +689,9 @@ export default function BookMoreWeddingsPage() {
               <p className="mt-5 text-[15px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
                 Fewer missed leads. More conversations. More tours on your calendar.
               </p>
+              <div className="mt-7">
+                <PrimaryCTA label="Start Free Trial" size="md" />
+              </div>
             </div>
             <div className="flex justify-center lg:justify-end">
               <PhonePreview
@@ -718,6 +727,9 @@ export default function BookMoreWeddingsPage() {
               <p className="mt-5 text-[15px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
                 Less chaos. More control. One system for your entire booking process.
               </p>
+              <div className="mt-7">
+                <PrimaryCTA label="Start Free Trial" size="md" />
+              </div>
             </div>
           </div>
         </section>
