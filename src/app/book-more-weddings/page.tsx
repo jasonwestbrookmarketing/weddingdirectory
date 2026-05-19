@@ -630,6 +630,8 @@ export default function BookMoreWeddingsPage() {
             <div className="flex justify-center lg:justify-end">
               <PhonePreview
                 screenshotSrc="/phone-directory-listing.png"
+                screenshotW={653}
+                screenshotH={1024}
                 badgeLabel="New inquiry received"
                 badgeDetail="Red Barn Acres · Just now"
               />
@@ -641,7 +643,13 @@ export default function BookMoreWeddingsPage() {
         <section className="bg-stone-50/70 py-20 sm:py-28 border-y border-stone-200/60">
           <div className="max-w-5xl mx-auto px-6 md:px-10 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
             <div className="flex justify-center lg:justify-start order-2 lg:order-1">
-              <PhonePreview />
+              <PhonePreview
+                screenshotSrc="/phone-proposals.png"
+                screenshotW={644}
+                screenshotH={1024}
+                badgeLabel="Proposal sent"
+                badgeDetail="Sophie + Will · Signed ✓"
+              />
             </div>
             <div className="order-1 lg:order-2">
               <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">— Proposals + Payments</p>
