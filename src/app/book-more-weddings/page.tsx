@@ -383,6 +383,8 @@ export default function BookMoreWeddingsPage() {
           aria-hidden
           fill
           priority
+          unoptimized
+          placeholder="empty"
           className="absolute inset-0 object-cover object-center"
           sizes="100vw"
         />
