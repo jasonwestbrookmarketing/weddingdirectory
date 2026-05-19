@@ -28,6 +28,7 @@ import {
 import SiteFooter from "@/components/SiteFooter";
 import HighlighterText from "@/components/marketing/HighlighterText";
 import LossStack from "@/components/marketing/LossStack";
+import DashboardMockup from "@/components/marketing/DashboardMockup";
 
 export const dynamic = "force-static";
 
@@ -515,31 +516,43 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 4. SOLUTION SECTION                                             */}
       {/* ============================================================== */}
-      <section className="bg-stone-50/70 py-20 sm:py-28 border-y border-stone-200/60">
-        <div className="max-w-5xl mx-auto px-6 md:px-10">
-          <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
-            — Meet StoryVenue
-          </p>
-          <h2
-            className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08] max-w-4xl"
-            style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-          >
-            The First And Only All-In-One Directory, Booking System, And Marketing Platform Built For Wedding Venues.
-          </h2>
+      <section className="bg-stone-50/70 py-20 sm:py-28 border-y border-stone-200/60 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-          <div
-            className="mt-8 space-y-4 text-stone-600 text-base sm:text-lg leading-relaxed max-w-3xl"
-            style={{ fontFamily: "var(--font-open-sans)" }}
-          >
-            <p>
-              StoryVenue gives your venue one connected system to get found, capture inquiries, follow up fast, book tours, send proposals, collect payments, and manage every lead from first click to signed contract.
-            </p>
-            <p>
-              No more disconnected tools. No more missed follow-ups. No more wondering where the lead went. No more relying on directories that send brides to every venue in your market.
-            </p>
-            <p className="font-semibold text-stone-900">
-              StoryVenue was built for one thing: Helping wedding venues turn more brides into booked weddings.
-            </p>
+            {/* Left — copy */}
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
+                — Meet StoryVenue
+              </p>
+              <h2
+                className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
+                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+              >
+                The First And Only All-In-One Directory, Booking System, And Marketing Platform Built For Wedding Venues.
+              </h2>
+
+              <div
+                className="mt-8 space-y-4 text-stone-600 text-base sm:text-lg leading-relaxed"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                <p>
+                  StoryVenue gives your venue one connected system to get found, capture inquiries, follow up fast, book tours, send proposals, collect payments, and manage every lead from first click to signed contract.
+                </p>
+                <p>
+                  No more disconnected tools. No more missed follow-ups. No more wondering where the lead went. No more relying on directories that send brides to every venue in your market.
+                </p>
+                <p className="font-semibold text-stone-900">
+                  StoryVenue was built for one thing: Helping wedding venues turn more brides into booked weddings.
+                </p>
+              </div>
+            </div>
+
+            {/* Right — dashboard mockup */}
+            <div className="pr-10 lg:pr-14">
+              <DashboardMockup />
+            </div>
+
           </div>
         </div>
       </section>
