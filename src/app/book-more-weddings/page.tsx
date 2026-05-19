@@ -396,8 +396,8 @@ export default function BookMoreWeddingsPage() {
               className="text-[40px] sm:text-[52px] md:text-[60px] leading-[1.05] text-stone-900"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              Fully Book Your Wedding Venue<br />
-              Without Empty Weekends.
+              <span className="block">Fully Book Your Wedding Venue</span>
+              <span className="block">Without Empty Weekends.</span>
             </h1>
 
             <p
