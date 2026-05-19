@@ -29,6 +29,7 @@ import SiteFooter from "@/components/SiteFooter";
 import HighlighterText from "@/components/marketing/HighlighterText";
 import LossStack from "@/components/marketing/LossStack";
 import DashboardMockup from "@/components/marketing/DashboardMockup";
+import ProcessTimeline from "@/components/marketing/ProcessTimeline";
 
 export const dynamic = "force-static";
 
@@ -558,54 +559,37 @@ export default function BookMoreWeddingsPage() {
       </section>
 
       {/* ============================================================== */}
-      {/* 5. HOW IT WORKS — 7 numbered steps                             */}
+      {/* 5. HOW IT WORKS — animated vertical timeline                   */}
       {/* ============================================================== */}
       <section id="how-it-works" className="bg-white py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="max-w-3xl">
-            <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
-              — Process
-            </p>
-            <h2
-              className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
-              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-            >
-              How StoryVenue Turns Brides Into Booked Weddings.
-            </h2>
-          </div>
+          <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-start">
 
-          <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {HOW_IT_WORKS_STEPS.map((s, i) => (
-              <div
-                key={s.step}
-                className={`relative rounded-2xl border border-stone-200/80 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_30px_-15px_rgba(0,0,0,0.14)] transition-all ${
-                  i === 6 ? "md:col-span-2 lg:col-span-1" : ""
-                }`}
+            {/* Left — sticky heading + CTA */}
+            <div className="lg:sticky lg:top-32">
+              <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
+                — Process
+              </p>
+              <h2
+                className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
+                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                <span
-                  className="text-[44px] leading-none text-stone-200 font-bold select-none"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  {s.step}
-                </span>
-                <h3
-                  className="mt-3 text-base font-bold text-stone-900"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  {s.title}
-                </h3>
-                <p
-                  className="mt-2 text-[13.5px] text-stone-600 leading-relaxed"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  {s.body}
-                </p>
+                How StoryVenue Turns Brides Into Booked Weddings.
+              </h2>
+              <p
+                className="mt-5 text-base text-stone-500 leading-relaxed max-w-sm"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                Seven steps. One connected system. From the moment she sees your ad to the moment she signs.
+              </p>
+              <div className="mt-8">
+                <PrimaryCTA />
               </div>
-            ))}
-          </div>
+            </div>
 
-          <div className="mt-10 flex justify-center">
-            <PrimaryCTA />
+            {/* Right — scrolling timeline */}
+            <ProcessTimeline />
+
           </div>
         </div>
       </section>
