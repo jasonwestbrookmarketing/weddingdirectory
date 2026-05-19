@@ -1,18 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import SearchBar from "@/components/search/SearchBar";
 import VenueCard from "@/components/search/VenueCard";
 import SiteFooter from "@/components/SiteFooter";
+import PhoneMockup from "@/components/marketing/PhoneMockup";
 
 export const revalidate = 120;
 
 const STORYPAY_URL = process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
 
+const TICKER_ITEMS = [
+  { venue: "Waterloo Farms", result: "2 Weddings Booked in 7 Days" },
+  { venue: "Atlantic Stables", result: "$15,000 in Booked Weddings in 30 Days" },
+  { venue: "Retreat at Evans Farms", result: "258 Leads in 60 Days" },
+  { venue: "Red Barn Acres", result: "9 Weddings Booked in 4 Months" },
+  { venue: "Irongate Wedding Venue", result: "14 Inquiries in First Week" },
+  { venue: "The White Barn", result: "$8,400 Booked in 2 Weeks" },
+  { venue: "Waterloo Farms", result: "2 Weddings Booked in 7 Days" },
+  { venue: "Atlantic Stables", result: "$15,000 in Booked Weddings in 30 Days" },
+  { venue: "Retreat at Evans Farms", result: "258 Leads in 60 Days" },
+  { venue: "Red Barn Acres", result: "9 Weddings Booked in 4 Months" },
+  { venue: "Irongate Wedding Venue", result: "14 Inquiries in First Week" },
+  { venue: "The White Barn", result: "$8,400 Booked in 2 Weeks" },
+];
+
 export default async function HomePage() {
   const supabase = await createClient();
-  // Pull a wider window so the sponsored/verified re-sort below has something
-  // to work with; we still render at most 6.
   const { data: rawVenues } = await supabase
     .from("venues")
     .select(
@@ -23,8 +36,6 @@ export default async function HomePage() {
     .order("created_at", { ascending: false })
     .limit(24);
 
-  // Directory promise: paid sponsors surface first, then verified venues, then
-  // everyone else in recency order. Matches the dashboard's public directory API.
   const venues = (rawVenues ?? [])
     .map((v) => ({
       ...v,
@@ -36,172 +47,134 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Announcement ticker — homepage only */}
-      <div className="bg-black flex items-center h-10 overflow-hidden z-30 relative">
-        <div className="flex items-center animate-[announcement-ticker_90s_linear_infinite] whitespace-nowrap w-max">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <span key={i} className="flex items-center text-[13px] font-medium text-white tracking-wide">
-              <span className="px-10">
-                StoryVenue Public Beta is live! Get your venue in front of more couples — List your venue FREE!
-              </span>
-              <span className="text-white/30 text-xs select-none">•</span>
+      {/* Social proof ticker */}
+      <div className="bg-stone-900 overflow-hidden py-2.5">
+        <div
+          className="flex whitespace-nowrap w-max animate-[ticker_50s_linear_infinite]"
+          style={{ gap: "3rem" }}
+        >
+          {TICKER_ITEMS.map((item, i) => (
+            <span
+              key={i}
+              className="text-xs text-white/70 shrink-0"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              <span className="font-semibold text-white">{item.venue}</span>
+              {" "}<span className="text-white/40 mx-1">·</span>{" "}
+              {item.result}
             </span>
           ))}
         </div>
       </div>
 
-      {/* Navigation — absolute over video */}
-      <nav className="absolute top-10 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6 gap-4">
-        <Link href="/" aria-label="StoryVenue home" className="shrink-0">
-          <Image
-            src="/storyvenue-light-logo.png"
-            alt="StoryVenue"
-            width={160}
-            height={40}
-            className="h-9 w-auto object-contain"
-            priority
-          />
-        </Link>
-
-        {/* Two unified auth buttons — the dashboard's /login and /signup
-            both have a Venue ↔ Couple toggle now, so one pair covers both
-            audiences. We default to ?as=couple because this is the
-            bride-facing directory. */}
-        <div className="flex items-center gap-2 shrink-0">
-          <a
-            href={`${STORYPAY_URL}/login?as=couple`}
-            className="rounded-full bg-white/10 border border-white/20 text-white px-4 py-2.5 text-sm font-medium hover:bg-white/20 active:scale-[0.98] transition-all backdrop-blur-sm"
-            style={{ fontFamily: "var(--font-open-sans)" }}
-          >
-            Log in
-          </a>
-          <a
-            href={`${STORYPAY_URL}/signup?as=couple`}
-            className="rounded-full bg-white text-stone-900 px-4 sm:px-5 py-2.5 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-sm"
-            style={{ fontFamily: "var(--font-open-sans)" }}
-          >
-            Sign up
-          </a>
-        </div>
-      </nav>
-
-      {/* Hero — cinematic video background */}
-      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-
-        {/* Static hero image — always visible; focal point shifts right on
-            mobile so the couple (center-right of the landscape frame) stays
-            in frame on portrait screens. */}
+      {/* Hero */}
+      <section className="relative min-h-[100svh] overflow-hidden bg-white">
+        {/* Background image — bright white barn, pulled right so couple shows beside mockup */}
         <Image
-          src="/hero-wedding.jpg"
-          alt="Elegant wedding venue"
+          src="/hero-venue-bg.jpg"
+          alt="Beautiful wedding venue interior"
           fill
           priority
           className="absolute inset-0 object-cover"
-          style={{ objectPosition: "center center" }}
+          style={{ objectPosition: "right center" }}
           sizes="100vw"
         />
 
-        {/* Video layer — desktop/tablet only; autoplay is unreliable on
-            mobile and the static image looks better in portrait anyway. */}
-        <video
-          className="absolute inset-0 w-full h-full object-cover hidden sm:block"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/hero-wedding.jpg"
-        >
-          {/* Mixkit free license — https://mixkit.co/license/#videoFree */}
-          <source
-            src="https://assets.mixkit.co/videos/preview/mixkit-happy-bride-walking-with-her-bouquet-40591-large.mp4"
-            type="video/mp4"
-          />
-          <source
-            src="https://assets.mixkit.co/videos/preview/mixkit-just-married-couple-40599-large.mp4"
-            type="video/mp4"
-          />
-        </video>
-
-        {/* Cinematic overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/35 to-black/70" />
+        {/* White gradient — opaque on left for text, dissolves right */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.5) 100%)",
+              "linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0.97) 32%, rgba(255,255,255,0.80) 52%, rgba(255,255,255,0.25) 72%, rgba(255,255,255,0) 100%)",
           }}
         />
 
-        {/* Hero content */}
-        <div className="relative z-10 w-full max-w-4xl mx-auto text-center px-5 sm:px-8 pt-28 pb-24 sm:pt-32 sm:pb-28 flex flex-col items-center gap-5 sm:gap-6">
+        {/* Nav */}
+        <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-5">
+          <Link href="/" aria-label="StoryVenue home" className="shrink-0">
+            <Image
+              src="/storyvenue-dark-logo.png"
+              alt="StoryVenue"
+              width={160}
+              height={40}
+              className="h-8 w-auto object-contain"
+              priority
+            />
+          </Link>
 
-          {/* Main headline — "Find Your Perfect" smaller to let StoryVenue dominate */}
-          <h1
-            className="flex flex-col items-center gap-1 drop-shadow-lg"
-            style={{ fontFamily: "var(--font-playfair)" }}
-          >
-            <span className="text-2xl sm:text-3xl md:text-4xl font-normal leading-tight tracking-tight text-white/90">
-              Find Your Perfect
-            </span>
-            <em className="not-italic text-5xl sm:text-7xl md:text-8xl lg:text-9xl leading-[1.05] tracking-tight text-white relative" style={{ fontFamily: "EditorsNote, serif", fontWeight: 300, fontStyle: "italic" }}>
-              StoryVenue<sup className="text-[0.25em] align-super not-italic tracking-normal text-white/70" style={{ fontFamily: "var(--font-open-sans)", fontStyle: "normal" }}>™</sup>
-            </em>
-          </h1>
-
-          {/* Sub-headline */}
-          <p
-            className="text-sm sm:text-lg md:text-xl text-white/75 leading-relaxed font-light text-center max-w-xs sm:max-w-none px-2"
+          <a
+            href={`${STORYPAY_URL}/signup?as=venue`}
+            className="rounded-full bg-stone-900 text-white px-5 py-2.5 text-sm font-semibold hover:bg-stone-800 active:scale-[0.98] transition-all shadow-sm inline-flex items-center gap-1.5"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Discover venues that match your vision, guest count, and budget
-          </p>
+            Start Free Trial
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+        </nav>
 
-          {/* Search bar */}
-          <div className="w-full mt-1 sm:mt-2">
-            <SearchBar />
-          </div>
+        {/* Two-column hero content */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 min-h-[100svh] flex items-center">
+          <div className="w-full flex flex-col lg:flex-row items-center gap-10 lg:gap-8 pt-28 pb-16 lg:pt-20 lg:pb-12">
 
-          {/* Venue trust ticker */}
-          <div className="w-full mt-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_12%,white_88%,transparent)]">
-            <div className="flex gap-12 animate-[ticker_60s_linear_infinite] whitespace-nowrap w-max">
-              {[
-                "White Pine Manor",
-                "Red Barn Acres",
-                "Atlantic Stables",
-                "Arbor Venues",
-                "Arete Event Center",
-                "Waters Building",
-                "Vista on the Docks",
-                "White Pine Manor",
-                "Red Barn Acres",
-                "Atlantic Stables",
-                "Arbor Venues",
-                "Arete Event Center",
-                "Waters Building",
-                "Vista on the Docks",
-              ].map((name, i) => (
-                <span
-                  key={i}
-                  className="text-xs sm:text-sm font-semibold text-white/40 tracking-widest uppercase shrink-0"
+            {/* Left — copy */}
+            <div className="flex-1 max-w-[560px]">
+              <h1
+                className="text-4xl sm:text-5xl lg:text-[3.25rem] xl:text-[3.75rem] font-normal leading-[1.1] tracking-tight text-stone-900 mb-6"
+                style={{ fontFamily: "var(--font-playfair)" }}
+              >
+                Fully Book Your Wedding Venue Without Empty Weekends.
+              </h1>
+
+              <p
+                className="text-base sm:text-[1.05rem] text-stone-600 leading-relaxed mb-8 max-w-lg"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                StoryVenue combines a wedding venue directory, booking system, CRM, payments,
+                proposals, Meta ads, concierge follow-up, and AI intelligence into one simple
+                platform built to help venues find more couples, host more tours, and book more
+                weddings.
+              </p>
+
+              {/* Email CTA */}
+              <form
+                action={`${STORYPAY_URL}/signup`}
+                method="get"
+                className="flex flex-col sm:flex-row gap-2 max-w-md"
+              >
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Start your 14-day free trial"
+                  className="flex-1 rounded-full border border-stone-200 bg-white px-5 py-3 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900/20 shadow-sm"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                />
+                <button
+                  type="submit"
+                  className="rounded-full bg-stone-900 text-white px-6 py-3 text-sm font-semibold hover:bg-stone-800 active:scale-[0.98] transition-all shadow-sm whitespace-nowrap inline-flex items-center justify-center gap-1.5"
                   style={{ fontFamily: "var(--font-open-sans)" }}
                 >
-                  {name}
-                </span>
-              ))}
+                  Get Started
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </form>
+
+              <p
+                className="text-xs text-stone-400 mt-3"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                No contract. No down payment. No cancelation fees.
+              </p>
+            </div>
+
+            {/* Right — phone mockup */}
+            <div className="flex-1 flex items-center justify-center lg:justify-end">
+              <PhoneMockup />
             </div>
           </div>
-
-        </div>
-
-        {/* Scroll hint */}
-        <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 opacity-50">
-          <span
-            className="text-white text-[10px] tracking-[0.2em] uppercase"
-            style={{ fontFamily: "var(--font-open-sans)" }}
-          >
-            Scroll
-          </span>
-          <div className="w-px h-6 sm:h-8 bg-white/60 animate-pulse" />
         </div>
       </section>
 
