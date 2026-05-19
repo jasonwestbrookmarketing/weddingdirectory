@@ -30,6 +30,7 @@ import HighlighterText from "@/components/marketing/HighlighterText";
 import LossStack from "@/components/marketing/LossStack";
 import DashboardMockup from "@/components/marketing/DashboardMockup";
 import ProcessTimeline from "@/components/marketing/ProcessTimeline";
+import PhonePreview from "@/components/marketing/PhonePreview";
 
 export const dynamic = "force-static";
 
@@ -590,11 +591,12 @@ export default function BookMoreWeddingsPage() {
       </section>
 
       {/* ============================================================== */}
-      {/* 6. FEATURE CARDS                                                */}
+      {/* 6. FEATURE SPOTLIGHTS — alternating layout                     */}
       {/* ============================================================== */}
-      <section id="features" className="bg-stone-50/70 py-20 sm:py-28 border-y border-stone-200/60">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="max-w-3xl text-center mx-auto">
+      <div id="features">
+        {/* Section heading */}
+        <div className="bg-stone-50/70 border-y border-stone-200/60 py-16 sm:py-20">
+          <div className="max-w-7xl mx-auto px-6 md:px-10 text-center">
             <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
               — What you get
             </p>
@@ -605,33 +607,149 @@ export default function BookMoreWeddingsPage() {
               Everything Your Venue Needs In One Place.
             </h2>
           </div>
+        </div>
 
-          <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {FEATURE_CARDS.map(({ icon: Icon, title, description }) => (
-              <div
-                key={title}
-                className="group rounded-2xl bg-white border border-stone-200/80 p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:shadow-[0_14px_32px_-15px_rgba(0,0,0,0.14)] hover:-translate-y-0.5 transition-all"
+        {/* 1. Directory — text left, phone right */}
+        <section className="bg-white py-20 sm:py-28">
+          <div className="max-w-7xl mx-auto px-6 md:px-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">— Directory</p>
+              <h3
+                className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
+                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-900 text-white">
-                  <Icon className="w-4.5 h-4.5 w-[18px] h-[18px]" />
-                </span>
-                <h3
-                  className="mt-4 text-[15px] font-bold text-stone-900"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  {title}
-                </h3>
-                <p
-                  className="mt-2 text-[13px] text-stone-600 leading-relaxed"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  {description}
+                Get Found by Couples Searching for Venues
+              </h3>
+              <p className="mt-5 text-base sm:text-lg text-stone-600 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
+                Get your venue in front of couples actively searching for their perfect wedding venue. Your StoryVenue Directory listing helps brides discover your space, view your photos, see your reviews, check your details, and inquire directly.
+              </p>
+              <div className="mt-6 rounded-2xl bg-stone-50 border border-stone-200 px-5 py-4">
+                <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-stone-400 mb-1">Outcome</p>
+                <p className="text-[15px] font-semibold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
+                  More visibility. More inquiries. More chances to book the wedding.
                 </p>
               </div>
-            ))}
+            </div>
+            <div className="flex justify-center lg:justify-end">
+              <PhonePreview />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* 2. Proposals + Payments — phone left, text right */}
+        <section className="bg-stone-50/70 py-20 sm:py-28 border-y border-stone-200/60">
+          <div className="max-w-7xl mx-auto px-6 md:px-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+              <PhonePreview />
+            </div>
+            <div className="order-1 lg:order-2">
+              <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">— Proposals + Payments</p>
+              <h3
+                className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
+                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+              >
+                Send Proposals and Get Paid Online
+              </h3>
+              <p className="mt-5 text-base sm:text-lg text-stone-600 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
+                Send branded proposals couples can review, sign, and pay from any device. Collect deposits, invoices, balances, and payment plans online while keeping the booking process simple, professional, and easy to complete.
+              </p>
+              <div className="mt-6 rounded-2xl bg-white border border-stone-200 px-5 py-4">
+                <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-stone-400 mb-1">Outcome</p>
+                <p className="text-[15px] font-semibold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
+                  Faster signatures. Faster deposits. Less chasing payments.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 3. Leads Into Tours — text left, phone right */}
+        <section className="bg-white py-20 sm:py-28">
+          <div className="max-w-7xl mx-auto px-6 md:px-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">— Leads Into Tours</p>
+              <h3
+                className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
+                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+              >
+                Turn More Inquiries Into Booked Tours
+              </h3>
+              <p className="mt-5 text-base sm:text-lg text-stone-600 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
+                Every inquiry goes into a clear booking process with follow-up, pipeline tracking, SMS, email, AI Concierge, and organized conversations so more brides move from interested to tour booked.
+              </p>
+              <div className="mt-6 rounded-2xl bg-stone-50 border border-stone-200 px-5 py-4">
+                <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-stone-400 mb-1">Outcome</p>
+                <p className="text-[15px] font-semibold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
+                  Fewer missed leads. More conversations. More tours on your calendar.
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-center lg:justify-end">
+              <PhonePreview />
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Run Venue From One Place — phone left, text right */}
+        <section className="bg-stone-50/70 py-20 sm:py-28 border-y border-stone-200/60">
+          <div className="max-w-7xl mx-auto px-6 md:px-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+              <PhonePreview />
+            </div>
+            <div className="order-1 lg:order-2">
+              <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">— Venue Management</p>
+              <h3
+                className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
+                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+              >
+                Run Your Venue From One Place
+              </h3>
+              <p className="mt-5 text-base sm:text-lg text-stone-600 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
+                Manage leads, conversations, tours, calendars, proposals, payments, documents, reports, and your team inside one connected system built specifically for wedding venues.
+              </p>
+              <div className="mt-6 rounded-2xl bg-white border border-stone-200 px-5 py-4">
+                <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-stone-400 mb-1">Outcome</p>
+                <p className="text-[15px] font-semibold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
+                  Less chaos. More control. One system for your entire booking process.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Feature cards grid */}
+        <section className="bg-white py-20 sm:py-28">
+          <div className="max-w-7xl mx-auto px-6 md:px-10">
+            <div className="max-w-2xl mb-12">
+              <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">— Full feature list</p>
+              <h2
+                className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
+                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+              >
+                Every Tool Your Venue Needs, Built Into One Platform.
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {FEATURE_CARDS.map(({ icon: Icon, title, description }) => (
+                <div
+                  key={title}
+                  className="group rounded-2xl bg-stone-50 border border-stone-200/80 p-5 hover:shadow-[0_14px_32px_-15px_rgba(0,0,0,0.14)] hover:-translate-y-0.5 transition-all"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-900 text-white">
+                    <Icon className="w-[18px] h-[18px]" />
+                  </span>
+                  <h3 className="mt-4 text-[15px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
+                    {title}
+                  </h3>
+                  <p className="mt-2 text-[13px] text-stone-600 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
+                    {description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
 
       {/* ============================================================== */}
       {/* 7. NOT JUST SOFTWARE                                            */}
@@ -852,15 +970,10 @@ export default function BookMoreWeddingsPage() {
 }
 
 /* ==================================================================== */
-/*  Inline visual components                                             */
+/*  PhonePreview is now in @/components/marketing/PhonePreview.tsx       */
 /* ==================================================================== */
-
-/**
- * Phone showing a live notification feed of tours booked and weddings
- * confirmed — filling the screen to illustrate the outcome: a fully
- * booked venue with no empty weekends.
- */
-function PhonePreview() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _deletedPhonePreview() {
   const notifications = [
     {
       type: "booked",
