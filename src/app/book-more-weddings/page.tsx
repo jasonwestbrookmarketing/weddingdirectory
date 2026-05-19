@@ -391,9 +391,9 @@ export default function BookMoreWeddingsPage() {
 
         <div className="relative w-full max-w-7xl mx-auto px-6 md:px-10 py-16 sm:py-20 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left — copy */}
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-7">
             <h1
-              className="text-[40px] sm:text-[52px] md:text-[60px] leading-[1.05] text-stone-900"
+              className="text-[32px] sm:text-[40px] md:text-[46px] lg:text-[50px] leading-[1.08] text-stone-900 whitespace-nowrap"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
               <span className="block">Fully Book Your Wedding Venue</span>
@@ -436,7 +436,7 @@ export default function BookMoreWeddingsPage() {
           </div>
 
           {/* Right — phone mockup over the image */}
-          <div className="lg:col-span-6 flex justify-center lg:justify-end lg:items-end">
+          <div className="lg:col-span-5 flex justify-center lg:justify-end lg:items-end">
             <PhonePreview />
           </div>
         </div>
