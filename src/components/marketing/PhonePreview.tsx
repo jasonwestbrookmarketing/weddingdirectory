@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 import {
   CalendarCheck,
@@ -96,6 +97,11 @@ interface PhonePreviewProps {
    * Use to hide browser chrome / nav bars that appear in phone screenshots.
    */
   trimBottom?: number;
+  /**
+   * Optional JSX rendered inside the phone screen, above the white trim.
+   * Use to replicate content that's cropped by trimBottom.
+   */
+  screenOverlay?: React.ReactNode;
   badgeLabel?: string;
   badgeDetail?: string;
 }
@@ -103,6 +109,7 @@ interface PhonePreviewProps {
 export default function PhonePreview({
   screenshotSrc,
   trimBottom,
+  screenOverlay,
   badgeLabel = "Weekend booked",
   badgeDetail = "Oct 12, 2026 ✓",
 }: PhonePreviewProps) {
@@ -146,6 +153,15 @@ export default function PhonePreview({
                 className="object-cover object-top"
                 sizes="280px"
               />
+              {/* Overlay content rendered above the white trim */}
+              {screenOverlay && (
+                <div
+                  className="absolute left-0 right-0 bg-white"
+                  style={{ bottom: trimBottom ?? 0 }}
+                >
+                  {screenOverlay}
+                </div>
+              )}
               {/* White block that hides browser/app chrome at the bottom */}
               {trimBottom && (
                 <div
