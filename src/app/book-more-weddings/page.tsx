@@ -771,41 +771,90 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 7. NOT JUST SOFTWARE                                            */}
       {/* ============================================================== */}
-      <section className="bg-stone-900 text-white py-20 sm:py-28 relative overflow-hidden">
-        <div
+      <section className="relative overflow-hidden text-white" style={{ minHeight: "480px" }}>
+        {/* Background image */}
+        <Image
+          src="/hero-wedding-couple.png"
+          alt=""
           aria-hidden
-          className="absolute inset-0 opacity-[0.05] pointer-events-none"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 30% 30%, white 0px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
+          fill
+          unoptimized
+          placeholder="empty"
+          priority={false}
+          className="absolute inset-0 object-cover object-center"
+          sizes="100vw"
         />
-        <div className="relative max-w-5xl mx-auto px-6 md:px-10 text-center">
-          <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-white/50">
-            — The bigger picture
-          </p>
+        {/* Dark overlay — matches the deep moody tone in the design */}
+        <div className="absolute inset-0 bg-stone-950/75" />
+
+        {/* Content */}
+        <div className="relative flex flex-col items-center justify-center text-center px-6 md:px-10 py-24 sm:py-32">
+          {/* Eyebrow */}
+          <div className="flex items-center gap-3 mb-6">
+            <span className="block h-px w-8 bg-white/40" />
+            <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-white/60">
+              The Bigger Picture
+            </p>
+            <span className="block h-px w-8 bg-white/40" />
+          </div>
+
+          {/* Heading */}
           <h2
-            className="mt-4 text-3xl sm:text-4xl md:text-5xl leading-[1.08]"
+            className="text-4xl sm:text-5xl md:text-6xl leading-[1.06] max-w-3xl"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             This Is Not Just Software.
           </h2>
+
+          {/* Body */}
           <p
-            className="mt-6 text-base sm:text-lg text-white/75 leading-relaxed max-w-3xl mx-auto"
+            className="mt-6 text-base sm:text-lg text-white/75 leading-relaxed max-w-2xl"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            StoryVenue is a complete growth system for wedding venues. It helps your venue get seen by more brides. It helps every inquiry get followed up. It helps your team respond faster. It helps silent leads come back. It helps tours turn into signed weddings. And it helps your venue stop losing revenue in the gaps.
+            StoryVenue is a complete growth system for wedding venues. It helps venues get seen by more brides, follow up faster, book more tours, and turn more inquiries into booked weddings.
           </p>
-          <div className="mt-8">
+
+          {/* CTA */}
+          <div className="mt-9">
             <a
               href={TRIAL_HREF}
-              className="group inline-flex items-center justify-center gap-2 rounded-full bg-white text-stone-900 font-semibold px-6 py-3.5 text-[15px] hover:bg-stone-100 active:scale-[0.98] transition-all shadow-[0_12px_30px_-10px_rgba(0,0,0,0.5)]"
+              className="group inline-flex items-center justify-center gap-2 rounded-full bg-white text-stone-900 font-semibold px-7 py-3.5 text-[15px] hover:bg-stone-100 active:scale-[0.98] transition-all shadow-[0_12px_40px_-10px_rgba(0,0,0,0.6)]"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               Start My 14-Day Free Trial
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </a>
+          </div>
+
+          {/* Four benefit pills */}
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-2.5">
+            {[
+              { icon: Users,         label: "More Brides"      },
+              { icon: MessageSquare, label: "Faster Follow-Up" },
+              { icon: CalendarDays,  label: "More Tours"       },
+              { icon: CalendarCheck, label: "More Bookings"    },
+            ].map(({ icon: Icon, label }) => (
+              <div
+                key={label}
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-1.5"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                <Icon className="w-3.5 h-3.5 text-white/70" />
+                <span className="text-[13px] text-white/90 font-medium">{label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* SV monogram */}
+          <div className="mt-10 opacity-30">
+            <Image
+              src="/storyvenue-mark.png"
+              alt="StoryVenue"
+              width={28}
+              height={28}
+              unoptimized
+              className="invert"
+            />
           </div>
         </div>
       </section>
