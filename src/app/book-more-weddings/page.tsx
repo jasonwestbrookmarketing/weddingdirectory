@@ -385,21 +385,8 @@ export default function BookMoreWeddingsPage() {
           priority
           unoptimized
           placeholder="empty"
-          className="absolute inset-0 object-cover object-center"
+          className="absolute inset-0 object-cover object-top"
           sizes="100vw"
-        />
-
-        {/* Horizontal gradient overlay:
-            far-left  → strong white so headline/body text is legible
-            center    → near-transparent so the couple shines through
-            far-right → light veil so the phone mockup UI stays crisp */}
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to right, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.72) 28%, rgba(255,255,255,0.18) 52%, rgba(255,255,255,0.28) 72%, rgba(255,255,255,0.55) 100%)",
-          }}
         />
 
         <div className="relative w-full max-w-7xl mx-auto px-6 md:px-10 py-16 sm:py-20 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
