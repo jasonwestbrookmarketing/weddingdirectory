@@ -630,7 +630,7 @@ export default function BookMoreWeddingsPage() {
             <div className="flex justify-center lg:justify-end">
               <PhonePreview
                 screenshotSrc="/phone-directory-listing.png"
-                screenshotW={653}
+                screenshotW={472}
                 screenshotH={1024}
                 badgeLabel="New inquiry received"
                 badgeDetail="Red Barn Acres · Just now"
