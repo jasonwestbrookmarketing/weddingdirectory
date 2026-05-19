@@ -771,24 +771,21 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 7. NOT JUST SOFTWARE                                            */}
       {/* ============================================================== */}
-      <section className="relative overflow-hidden text-white" style={{ minHeight: "480px" }}>
-        {/* Background image */}
+      <section className="relative overflow-hidden text-white">
+        {/* Background image — rendered raw, no overlay, no optimization */}
         <Image
-          src="/hero-wedding-couple.png"
+          src="/not-just-software-bg.png"
           alt=""
           aria-hidden
           fill
           unoptimized
           placeholder="empty"
-          priority={false}
           className="absolute inset-0 object-cover object-center"
           sizes="100vw"
         />
-        {/* Dark overlay — matches the deep moody tone in the design */}
-        <div className="absolute inset-0 bg-stone-950/75" />
 
-        {/* Content */}
-        <div className="relative flex flex-col items-center justify-center text-center px-6 md:px-10 py-24 sm:py-32">
+        {/* Content — sits as a separate layer above the image */}
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 md:px-10 py-24 sm:py-32">
           {/* Eyebrow */}
           <div className="flex items-center gap-3 mb-6">
             <span className="block h-px w-8 bg-white/40" />
