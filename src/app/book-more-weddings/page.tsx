@@ -628,7 +628,11 @@ export default function BookMoreWeddingsPage() {
               </p>
             </div>
             <div className="flex justify-center lg:justify-end">
-              <PhonePreview />
+              <PhonePreview
+                screenshotSrc="/phone-directory-listing.png"
+                badgeLabel="New inquiry received"
+                badgeDetail="Red Barn Acres · Just now"
+              />
             </div>
           </div>
         </section>

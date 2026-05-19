@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   CalendarCheck,
   CalendarDays,
@@ -88,7 +89,17 @@ const notifications = [
   },
 ] as const;
 
-export default function PhonePreview() {
+interface PhonePreviewProps {
+  screenshotSrc?: string;
+  badgeLabel?: string;
+  badgeDetail?: string;
+}
+
+export default function PhonePreview({
+  screenshotSrc,
+  badgeLabel = "Weekend booked",
+  badgeDetail = "Oct 12, 2026 ✓",
+}: PhonePreviewProps) {
   return (
     <div className="relative flex justify-center">
       {/* Floating tile */}
@@ -97,9 +108,9 @@ export default function PhonePreview() {
           <CalendarCheck className="w-4 h-4" />
         </span>
         <div>
-          <p className="text-[9px] font-semibold tracking-[0.14em] uppercase text-stone-500">Weekend booked</p>
+          <p className="text-[9px] font-semibold tracking-[0.14em] uppercase text-stone-500">{badgeLabel}</p>
           <p className="text-[12px] font-bold text-stone-900 leading-none mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>
-            Oct 12, 2026 ✓
+            {badgeDetail}
           </p>
         </div>
       </div>
@@ -113,67 +124,81 @@ export default function PhonePreview() {
         <div className="absolute top-[13px] left-1/2 -translate-x-1/2 w-[80px] h-[24px] rounded-full bg-stone-900 z-10" />
 
         {/* Screen */}
-        <div className="absolute inset-[10px] rounded-[36px] bg-[#f5f5f4] overflow-hidden flex flex-col">
-          {/* Status bar */}
-          <div className="flex items-center justify-between px-5 pt-4 pb-1 text-[10px] font-semibold text-stone-800 shrink-0">
-            <span>9:41</span>
-            <span className="text-[9px] tracking-wide opacity-50">●●●●○</span>
-          </div>
+        <div className="absolute inset-[10px] rounded-[36px] overflow-hidden flex flex-col bg-[#f5f5f4]">
+          {screenshotSrc ? (
+            <Image
+              src={screenshotSrc}
+              alt=""
+              fill
+              unoptimized
+              placeholder="empty"
+              className="object-cover object-top"
+              sizes="300px"
+            />
+          ) : (
+            <>
+              {/* Status bar */}
+              <div className="flex items-center justify-between px-5 pt-4 pb-1 text-[10px] font-semibold text-stone-800 shrink-0">
+                <span>9:41</span>
+                <span className="text-[9px] tracking-wide opacity-50">●●●●○</span>
+              </div>
 
-          {/* Screen header */}
-          <div className="px-4 pt-1 pb-2 flex items-center justify-between shrink-0">
-            <div>
-              <p className="text-[15px] font-bold text-stone-900 leading-tight" style={{ fontFamily: "var(--font-open-sans)" }}>
-                Activity
-              </p>
-              <p className="text-[10px] text-stone-500">The Barn at New Albany · Live</p>
-            </div>
-            <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_6px_2px_rgba(16,185,129,0.4)]" />
-          </div>
-
-          {/* Revenue banner */}
-          <div className="mx-3 mb-2.5 rounded-2xl bg-stone-900 text-white px-4 py-3 flex items-center justify-between shrink-0">
-            <div>
-              <p className="text-[8px] uppercase tracking-[0.16em] text-white/60">Booked Revenue</p>
-              <p className="text-[19px] font-bold leading-tight" style={{ fontFamily: "var(--font-open-sans)" }}>$128,400</p>
-            </div>
-            <div className="text-right">
-              <p className="text-[8px] text-white/60">Weekends filled</p>
-              <p className="text-[17px] font-bold" style={{ fontFamily: "var(--font-open-sans)" }}>34 / 36</p>
-            </div>
-          </div>
-
-          {/* Notification feed */}
-          <div className="px-3 pb-3 space-y-2 flex-1 overflow-hidden">
-            {notifications.map((n, i) => {
-              const Icon = n.icon;
-              return (
-                <div
-                  key={i}
-                  className="flex items-start gap-2.5 rounded-2xl bg-white border border-stone-200/60 px-3 py-2.5 shadow-[0_1px_4px_rgba(0,0,0,0.05)]"
-                >
-                  <span className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${n.iconBg}`}>
-                    <Icon className="w-4 h-4 text-white" />
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-1">
-                      <p className="text-[11px] font-bold text-stone-900 truncate" style={{ fontFamily: "var(--font-open-sans)" }}>
-                        {n.title}
-                      </p>
-                      <span className="text-[9px] text-stone-400 shrink-0">{n.time}</span>
-                    </div>
-                    <p className="text-[11px] text-stone-700 truncate">{n.body}</p>
-                    <div className="mt-1 flex items-center gap-1.5">
-                      <span className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[8px] font-bold tracking-wide ${n.badgeTone}`}>
-                        {n.badge}
-                      </span>
-                      <p className="text-[10px] text-stone-500 truncate">{n.detail}</p>
-                    </div>
-                  </div>
+              {/* Screen header */}
+              <div className="px-4 pt-1 pb-2 flex items-center justify-between shrink-0">
+                <div>
+                  <p className="text-[15px] font-bold text-stone-900 leading-tight" style={{ fontFamily: "var(--font-open-sans)" }}>
+                    Activity
+                  </p>
+                  <p className="text-[10px] text-stone-500">The Barn at New Albany · Live</p>
                 </div>
-              );
-            })}
-          </div>
+                <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_6px_2px_rgba(16,185,129,0.4)]" />
+              </div>
+
+              {/* Revenue banner */}
+              <div className="mx-3 mb-2.5 rounded-2xl bg-stone-900 text-white px-4 py-3 flex items-center justify-between shrink-0">
+                <div>
+                  <p className="text-[8px] uppercase tracking-[0.16em] text-white/60">Booked Revenue</p>
+                  <p className="text-[19px] font-bold leading-tight" style={{ fontFamily: "var(--font-open-sans)" }}>$128,400</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[8px] text-white/60">Weekends filled</p>
+                  <p className="text-[17px] font-bold" style={{ fontFamily: "var(--font-open-sans)" }}>34 / 36</p>
+                </div>
+              </div>
+
+              {/* Notification feed */}
+              <div className="px-3 pb-3 space-y-2 flex-1 overflow-hidden">
+                {notifications.map((n, i) => {
+                  const Icon = n.icon;
+                  return (
+                    <div
+                      key={i}
+                      className="flex items-start gap-2.5 rounded-2xl bg-white border border-stone-200/60 px-3 py-2.5 shadow-[0_1px_4px_rgba(0,0,0,0.05)]"
+                    >
+                      <span className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${n.iconBg}`}>
+                        <Icon className="w-4 h-4 text-white" />
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-1">
+                          <p className="text-[11px] font-bold text-stone-900 truncate" style={{ fontFamily: "var(--font-open-sans)" }}>
+                            {n.title}
+                          </p>
+                          <span className="text-[9px] text-stone-400 shrink-0">{n.time}</span>
+                        </div>
+                        <p className="text-[11px] text-stone-700 truncate">{n.body}</p>
+                        <div className="mt-1 flex items-center gap-1.5">
+                          <span className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[8px] font-bold tracking-wide ${n.badgeTone}`}>
+                            {n.badge}
+                          </span>
+                          <p className="text-[10px] text-stone-500 truncate">{n.detail}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
