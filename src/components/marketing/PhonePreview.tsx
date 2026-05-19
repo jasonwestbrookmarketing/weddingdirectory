@@ -92,6 +92,8 @@ const notifications = [
 
 interface PhonePreviewProps {
   screenshotSrc?: string;
+  /** "cover" (default) fills the screen, cropping if needed. "contain" shows the full image with white space. */
+  screenshotFit?: "cover" | "contain";
   /**
    * Height in px to cover at the bottom of the screenshot with white.
    * Use to hide browser chrome / nav bars that appear in phone screenshots.
@@ -108,6 +110,7 @@ interface PhonePreviewProps {
 
 export default function PhonePreview({
   screenshotSrc,
+  screenshotFit = "cover",
   trimBottom,
   screenOverlay,
   badgeLabel = "Weekend booked",
@@ -150,7 +153,7 @@ export default function PhonePreview({
                 fill
                 unoptimized
                 placeholder="empty"
-                className="object-cover object-top"
+                className={screenshotFit === "contain" ? "object-contain object-top" : "object-cover object-top"}
                 sizes="280px"
               />
               {/* Overlay content rendered above the white trim */}

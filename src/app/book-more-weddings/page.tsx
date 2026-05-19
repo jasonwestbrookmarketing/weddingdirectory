@@ -24,7 +24,6 @@ import {
   MessageSquare,
   Shield,
   ChevronDown,
-  TreePine,
 } from "lucide-react";
 import SiteFooter from "@/components/SiteFooter";
 import HighlighterText from "@/components/marketing/HighlighterText";
@@ -631,23 +630,7 @@ export default function BookMoreWeddingsPage() {
             <div className="flex justify-center lg:justify-end">
               <PhonePreview
                 screenshotSrc="/phone-directory-listing.png"
-                trimBottom={148}
-                screenOverlay={
-                  <div style={{ fontFamily: "var(--font-open-sans)" }}>
-                    {[
-                      { Icon: Sparkles, label: "Venue Style", value: "Barn" },
-                      { Icon: TreePine,  label: "Setting",     value: "Both" },
-                    ].map(({ Icon, label, value }) => (
-                      <div key={label} className="flex items-start gap-3 px-4 py-3 border-t border-stone-100">
-                        <Icon className="w-5 h-5 text-stone-500 mt-0.5 shrink-0" strokeWidth={1.5} />
-                        <div>
-                          <p className="text-[12px] font-semibold text-stone-800">{label}</p>
-                          <p className="text-[11px] text-stone-500">{value}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                }
+                screenshotFit="contain"
                 badgeLabel="New inquiry received"
                 badgeDetail="Red Barn Acres · Just now"
               />
