@@ -375,8 +375,8 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
-      <section className="relative min-h-[calc(100svh-2.5rem)] overflow-hidden flex items-center">
-        {/* Full-bleed wedding venue background */}
+      <section className="relative min-h-[calc(100svh-2.5rem)] overflow-hidden flex items-center bg-white">
+        {/* Full-bleed wedding venue background — already has built-in white fade vignette */}
         <Image
           src="/hero-venue-bg.jpg"
           alt=""
@@ -386,9 +386,6 @@ export default function BookMoreWeddingsPage() {
           className="absolute inset-0 object-cover object-center"
           sizes="100vw"
         />
-
-        {/* White gradient — strong on left (behind copy), fades to transparent on right */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/5" />
 
         <div className="relative w-full max-w-7xl mx-auto px-6 md:px-10 py-16 sm:py-20 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left — copy */}
