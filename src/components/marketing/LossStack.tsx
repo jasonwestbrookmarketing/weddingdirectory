@@ -79,8 +79,8 @@ export default function LossStack() {
               ? "translateY(0) scale(1)"
               : "translateY(16px) scale(0.94)",
             transition:
-              "opacity 520ms cubic-bezier(0.16,1,0.3,1), transform 620ms cubic-bezier(0.34,1.56,0.64,1)",
-            transitionDelay: `${i * 180}ms`,
+              "opacity 750ms cubic-bezier(0.16,1,0.3,1), transform 880ms cubic-bezier(0.34,1.56,0.64,1)",
+            transitionDelay: `${i * 300}ms`,
             willChange: "opacity, transform",
           }}
         >
