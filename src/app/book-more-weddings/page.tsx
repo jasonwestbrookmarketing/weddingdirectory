@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import SiteFooter from "@/components/SiteFooter";
 import HighlighterText from "@/components/marketing/HighlighterText";
+import LossStack from "@/components/marketing/LossStack";
 
 export const dynamic = "force-static";
 
@@ -1051,38 +1052,3 @@ function PhonePreview() {
   );
 }
 
-/**
- * Visual for the Agitate section — a stack of "missed" event tiles
- * showing the compounding cost of a dropped lead.
- */
-function LossStack() {
-  const items = [
-    { label: "Missed inquiry", sub: "She never got a reply", tone: "border-stone-200 bg-white" },
-    { label: "Missed tour", sub: "She booked with a competitor", tone: "border-rose-100 bg-rose-50/70" },
-    { label: "Missed proposal", sub: "$12,000 never sent", tone: "border-rose-200 bg-rose-50" },
-    { label: "Missed deposit", sub: "Weekend still open", tone: "border-rose-300 bg-rose-100/80" },
-    { label: "Empty weekend", sub: "Revenue gone", tone: "border-rose-400 bg-rose-100" },
-  ];
-
-  return (
-    <div className="relative flex flex-col gap-3 max-w-xs mx-auto">
-      {items.map((item, i) => (
-        <div
-          key={item.label}
-          className={`flex items-start gap-3 rounded-xl border px-4 py-3 ${item.tone}`}
-          style={{ marginLeft: `${i * 6}px` }}
-        >
-          <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white border border-stone-200">
-            <span className="text-[11px] font-bold text-stone-400">{i + 1}</span>
-          </span>
-          <div>
-            <p className="text-[13px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
-              {item.label}
-            </p>
-            <p className="text-[12px] text-stone-500">{item.sub}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
