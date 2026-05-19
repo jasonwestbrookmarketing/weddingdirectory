@@ -565,8 +565,8 @@ export default function BookMoreWeddingsPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-start">
 
-            {/* Left — sticky heading + CTA */}
-            <div className="lg:sticky lg:top-32">
+            {/* Left — sticky heading + CTA, vertically centered while timeline scrolls */}
+            <div className="lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-center">
               <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
                 — Process
               </p>
