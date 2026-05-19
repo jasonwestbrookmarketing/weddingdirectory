@@ -26,6 +26,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import SiteFooter from "@/components/SiteFooter";
+import HighlighterText from "@/components/marketing/HighlighterText";
 
 export const dynamic = "force-static";
 
@@ -456,24 +457,7 @@ export default function BookMoreWeddingsPage() {
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Most Wedding Venues Do Not Have A Lead Problem. They Have A{" "}
-            <span className="relative inline-block">
-              Booking System Problem
-              <svg
-                aria-hidden
-                viewBox="0 0 380 12"
-                preserveAspectRatio="none"
-                className="absolute left-0 -bottom-1 w-full h-2 text-rose-400"
-              >
-                <path
-                  d="M2 8 C 80 2, 190 12, 290 4 S 370 8, 378 6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-            .
+            <HighlighterText>Booking System Problem</HighlighterText>.
           </h2>
           <div
             className="mt-8 space-y-4 text-stone-600 text-base sm:text-lg leading-relaxed"
