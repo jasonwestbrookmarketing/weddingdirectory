@@ -378,7 +378,7 @@ export default function BookMoreWeddingsPage() {
       <section className="relative min-h-[calc(100svh-2.5rem)] overflow-hidden flex items-center bg-white">
         {/* Full-bleed wedding couple background */}
         <Image
-          src="/hero-wedding-couple.jpg"
+          src="/hero-wedding-couple.png"
           alt=""
           aria-hidden
           fill
