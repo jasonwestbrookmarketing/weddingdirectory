@@ -378,7 +378,7 @@ export default function BookMoreWeddingsPage() {
       <section className="relative overflow-hidden">
         {/* Full-bleed wedding venue background */}
         <Image
-          src="/hero-wedding.jpg"
+          src="/hero-venue-bg.jpg"
           alt=""
           aria-hidden
           fill
@@ -828,7 +828,7 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       <section className="relative bg-stone-900 text-white overflow-hidden">
         <Image
-          src="/hero-wedding.jpg"
+          src="/hero-venue-bg.jpg"
           alt=""
           fill
           aria-hidden
