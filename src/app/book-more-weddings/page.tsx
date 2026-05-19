@@ -375,23 +375,37 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
-      <section className="bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 pt-12 pb-16 sm:pt-16 sm:pb-24 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+      <section className="relative overflow-hidden">
+        {/* Full-bleed wedding venue background */}
+        <Image
+          src="/hero-wedding.jpg"
+          alt=""
+          aria-hidden
+          fill
+          priority
+          className="absolute inset-0 object-cover object-center"
+          sizes="100vw"
+        />
+
+        {/* White gradient — strong on left (behind copy), fades to near-transparent on right */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/10" />
+        {/* Slight top vignette keeps the ticker edge clean */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-12 pb-16 sm:pt-16 sm:pb-24 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left — copy */}
           <div className="lg:col-span-6">
 
-            {/* Pre-heading — solid black pill, all caps, two lines */}
-            <div className="inline-block rounded-2xl bg-stone-900 px-4 py-2 max-w-xs">
-              <span
-                className="text-[10px] font-semibold tracking-[0.14em] uppercase text-white leading-relaxed"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                The First And Only All-In-One Directory, Booking System, And Marketing Platform For Wedding Venues
-              </span>
-            </div>
+            {/* Pre-heading — plain label style, no pill */}
+            <p
+              className="text-[10px] font-semibold tracking-[0.22em] uppercase text-stone-500 max-w-xs leading-relaxed"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              The First And Only All-In-One Directory, Booking System, And Marketing Platform For Wedding Venues
+            </p>
 
             <h1
-              className="mt-6 text-[38px] sm:text-[52px] md:text-[60px] leading-[1.05] text-stone-900"
+              className="mt-5 text-[38px] sm:text-[52px] md:text-[58px] leading-[1.05] text-stone-900"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
               Fully Book Your Wedding Venue<br />
@@ -399,7 +413,7 @@ export default function BookMoreWeddingsPage() {
             </h1>
 
             <p
-              className="mt-6 text-base sm:text-lg text-stone-600 leading-relaxed max-w-xl"
+              className="mt-5 text-base sm:text-[17px] text-stone-700 leading-relaxed max-w-md"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               StoryVenue combines a wedding venue directory, booking system, CRM, payments, proposals, Meta ads, concierge follow-up, and AI intelligence into one simple platform built to help venues find more couples, host more tours, and book more weddings.
@@ -433,8 +447,8 @@ export default function BookMoreWeddingsPage() {
             </div>
           </div>
 
-          {/* Right — phone mockup */}
-          <div className="lg:col-span-6 flex justify-center lg:justify-end">
+          {/* Right — phone mockup over the image */}
+          <div className="lg:col-span-6 flex justify-center lg:justify-end lg:items-end">
             <PhonePreview />
           </div>
         </div>
