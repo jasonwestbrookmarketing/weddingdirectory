@@ -367,9 +367,9 @@ export default function BookMoreWeddingsPage() {
               <Image
                 src="/storyvenue-dark-logo.png"
                 alt="StoryVenue"
-                width={150}
-                height={36}
-                className="h-8 w-auto object-contain"
+                width={185}
+                height={44}
+                className="h-11 w-auto object-contain"
                 priority
               />
             </Link>
@@ -458,7 +458,7 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1b. LOGO STRIP — social proof                                  */}
       {/* ============================================================== */}
-      <div className="bg-white border-t border-stone-100 py-6 overflow-hidden">
+      <div className="bg-white py-6 overflow-hidden">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="flex items-center justify-between gap-6 flex-nowrap">
             {[
@@ -849,9 +849,9 @@ export default function BookMoreWeddingsPage() {
             This Is Not Just Software.
           </h2>
 
-          {/* Body — max-w-lg keeps it to ~3 lines */}
+          {/* Body — max-w-sm forces exactly 3 lines */}
           <p
-            className="mt-6 text-base sm:text-lg text-white/75 leading-relaxed max-w-lg text-center"
+            className="mt-6 text-base sm:text-lg text-white/75 leading-relaxed max-w-xl text-center"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             StoryVenue is a complete growth system for wedding venues. It helps venues get seen by more brides, follow up faster, book more tours, and turn more inquiries into booked weddings.
@@ -951,7 +951,7 @@ export default function BookMoreWeddingsPage() {
             </div>
 
             {/* Booking System */}
-            <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col">
+            <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col my-4">
               <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Booking System</h3>
               <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>We bring the brides. You close them.</p>
               <div className="mt-4 flex items-baseline gap-1">
@@ -982,7 +982,7 @@ export default function BookMoreWeddingsPage() {
             </div>
 
             {/* Venue Pro */}
-            <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col">
+            <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col my-4">
               <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Venue Pro</h3>
               <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>Run your venue like a business.</p>
               <div className="mt-4 flex items-baseline gap-1">
@@ -1014,7 +1014,7 @@ export default function BookMoreWeddingsPage() {
             </div>
 
             {/* Free */}
-            <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col">
+            <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col my-4">
               <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Free</h3>
               <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>Get listed. Get paid.</p>
               <div className="mt-4 flex items-baseline gap-1">
