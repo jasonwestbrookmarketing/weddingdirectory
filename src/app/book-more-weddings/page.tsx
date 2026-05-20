@@ -382,33 +382,35 @@ export default function BookMoreWeddingsPage() {
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
       {/*
-        * Hero — the photo renders crisp at full quality. We don't overlay any
-        * gradient ON TOP of the image; instead we mask the image itself so it
-        * fades to transparent on the left and right edges only. The white
-        * section background shows through where the mask is transparent,
-        * which gives the photo a narrower visual width and clean white wings.
+        * Hero — image is centered at its native resolution so it renders 1:1
+        * pixels (no upscaling = no softness). The white section background fills
+        * the wings. A mask fades only the left and right edges; nothing sits on
+        * top of the photo.
         */}
       <section
         className="relative overflow-hidden flex items-center -mt-[92px] bg-white"
         style={{ height: "min(56.25vw, 1080px)", minHeight: "520px" }}
       >
-        <Image
-          src="/hero-wedding-couple.jpg"
-          alt=""
-          aria-hidden
-          fill
-          priority
-          unoptimized
-          placeholder="empty"
-          className="absolute inset-0 object-cover object-center"
-          style={{
-            maskImage:
-              "linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%)",
-          }}
-          sizes="100vw"
-        />
+        {/* Centred wrapper — constrains the photo to its native width */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <Image
+            src="/hero-wedding-couple.jpg"
+            alt=""
+            aria-hidden
+            width={1024}
+            height={576}
+            priority
+            unoptimized
+            placeholder="empty"
+            className="max-h-full w-auto"
+            style={{
+              maskImage:
+                "linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%)",
+            }}
+          />
+        </div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pt-36 pb-16 sm:pb-20 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left — copy */}
