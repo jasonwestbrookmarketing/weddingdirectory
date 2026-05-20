@@ -24,6 +24,7 @@ import {
   MessageSquare,
   Shield,
   ChevronDown,
+  Check,
 } from "lucide-react";
 import SiteFooter from "@/components/SiteFooter";
 import HighlighterText from "@/components/marketing/HighlighterText";
@@ -923,7 +924,7 @@ export default function BookMoreWeddingsPage() {
           </div>
 
           {/* Plan cards */}
-          <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-5 items-start">
+          <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-5 items-stretch">
 
             {/* All-Inclusive — MOST POPULAR */}
             <div className="relative rounded-2xl border-2 border-stone-900 bg-white p-7 flex flex-col">
@@ -940,16 +941,16 @@ export default function BookMoreWeddingsPage() {
               </div>
               <ul className="mt-5 space-y-2.5 flex-1" style={{ fontFamily: "var(--font-open-sans)" }}>
                 {[
-                  "Everything in Booking System, plus:",
-                  "Venue Concierge: our team personally works your leads",
-                  "Every bride followed up without you lifting a finger",
-                  "Leads re-engaged for months automatically",
-                  "Nothing falls through the cracks. Ever.",
-                  "Verified and Sponsored badges included",
-                ].map((item, i) => (
-                  <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${i === 0 ? "font-semibold text-stone-900" : "text-stone-600"}`}>
-                    <span className="mt-[3px] shrink-0 text-stone-400">·</span>
-                    {item}
+                  { text: "Everything in Booking System, plus:", bold: true },
+                  { text: "Venue Concierge: our team personally works your leads" },
+                  { text: "Every bride followed up without you lifting a finger" },
+                  { text: "Leads re-engaged for months automatically" },
+                  { text: "Nothing falls through the cracks. Ever." },
+                  { text: "Verified and Sponsored badges included" },
+                ].map(({ text, bold }, i) => (
+                  <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${bold ? "font-semibold text-stone-900" : "text-stone-600"}`}>
+                    <Check className="mt-[1px] shrink-0 w-3.5 h-3.5 text-emerald-500" strokeWidth={2.5} />
+                    {text}
                   </li>
                 ))}
               </ul>
@@ -972,15 +973,15 @@ export default function BookMoreWeddingsPage() {
               </div>
               <ul className="mt-5 space-y-2.5 flex-1" style={{ fontFamily: "var(--font-open-sans)" }}>
                 {[
-                  "Everything in Venue Pro, plus:",
-                  "Managed Meta ads so brides come to you",
-                  "Tour-ready leads in your pipeline daily",
-                  "Verified badge included",
-                  "You handle the follow-up",
-                ].map((item, i) => (
-                  <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${i === 0 ? "font-semibold text-stone-900" : "text-stone-600"}`}>
-                    <span className="mt-[3px] shrink-0 text-stone-400">·</span>
-                    {item}
+                  { text: "Everything in Venue Pro, plus:", bold: true },
+                  { text: "Managed Meta ads so brides come to you" },
+                  { text: "Tour-ready leads in your pipeline daily" },
+                  { text: "Verified badge included" },
+                  { text: "You handle the follow-up" },
+                ].map(({ text, bold }, i) => (
+                  <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${bold ? "font-semibold text-stone-900" : "text-stone-600"}`}>
+                    <Check className="mt-[1px] shrink-0 w-3.5 h-3.5 text-emerald-500" strokeWidth={2.5} />
+                    {text}
                   </li>
                 ))}
               </ul>
@@ -1003,16 +1004,16 @@ export default function BookMoreWeddingsPage() {
               </div>
               <ul className="mt-5 space-y-2.5 flex-1" style={{ fontFamily: "var(--font-open-sans)" }}>
                 {[
-                  "Everything in Free, plus:",
-                  "Full lead pipeline so no inquiry gets lost",
-                  "Marketing Automations so follow-up runs without you",
-                  "Every message in one inbox",
-                  "Calendar with conflict detection so you never double-book",
-                  "Revenue reports so you know where you stand",
-                ].map((item, i) => (
-                  <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${i === 0 ? "font-semibold text-stone-900" : "text-stone-600"}`}>
-                    <span className="mt-[3px] shrink-0 text-stone-400">·</span>
-                    {item}
+                  { text: "Everything in Free, plus:", bold: true },
+                  { text: "Full lead pipeline so no inquiry gets lost" },
+                  { text: "Marketing Automations so follow-up runs without you" },
+                  { text: "Every message in one inbox" },
+                  { text: "Calendar with conflict detection so you never double-book" },
+                  { text: "Revenue reports so you know where you stand" },
+                ].map(({ text, bold }, i) => (
+                  <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${bold ? "font-semibold text-stone-900" : "text-stone-600"}`}>
+                    <Check className="mt-[1px] shrink-0 w-3.5 h-3.5 text-emerald-500" strokeWidth={2.5} />
+                    {text}
                   </li>
                 ))}
               </ul>
@@ -1040,7 +1041,7 @@ export default function BookMoreWeddingsPage() {
                   "Built-in payments. 0% processing fees. You keep 100%.",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-[13px] text-stone-600 leading-snug">
-                    <span className="mt-[3px] shrink-0 text-stone-400">·</span>
+                    <Check className="mt-[1px] shrink-0 w-3.5 h-3.5 text-emerald-500" strokeWidth={2.5} />
                     {item}
                   </li>
                 ))}
