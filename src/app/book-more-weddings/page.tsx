@@ -454,8 +454,8 @@ export default function BookMoreWeddingsPage() {
               <div className="mt-5 flex items-center justify-center gap-3">
                 {/* Overlapping avatar circles */}
                 <div className="flex -space-x-2.5 shrink-0">
-                  {["/avatars/av1.jpg", "/avatars/av2.jpg", "/avatars/av3.jpg"].map((src, i) => (
-                    <div key={i} className="relative w-9 h-9 rounded-full border-2 border-white overflow-hidden" style={{ zIndex: 3 - i }}>
+                  {["/avatars/av1.jpg", "/avatars/av2.jpg", "/avatars/av3.jpg", "/avatars/av4.jpg", "/avatars/av5.jpg"].map((src, i) => (
+                    <div key={i} className="relative w-9 h-9 rounded-full border-2 border-white overflow-hidden" style={{ zIndex: 5 - i }}>
                       <Image src={src} alt="" fill unoptimized placeholder="empty" className="object-cover object-center" sizes="36px" />
                     </div>
                   ))}
