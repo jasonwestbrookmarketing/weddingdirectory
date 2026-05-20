@@ -380,7 +380,14 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
-      <section className="relative min-h-svh overflow-hidden flex items-center -mt-[92px]">
+      {/*
+        * Hero height = 16:9 aspect ratio of the viewport, capped at 1080px.
+        * The image is also 16:9 so object-cover fills it with zero stretch.
+        */}
+      <section
+        className="relative overflow-hidden flex items-center -mt-[92px]"
+        style={{ height: "min(56.25vw, 1080px)", minHeight: "520px" }}
+      >
         <Image
           src="/hero-wedding-couple.png"
           alt=""
