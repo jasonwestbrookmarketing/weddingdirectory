@@ -973,17 +973,20 @@ export default function BookMoreWeddingsPage() {
       {/* 10. FINAL CTA                                                   */}
       {/* ============================================================== */}
       <section className="relative bg-stone-900 text-white overflow-hidden">
+        {/* Background image — rendered raw, no opacity, no gradient on top */}
         <Image
-          src="/hero-venue-bg.jpg"
+          src="/your-next-step-bg.png"
           alt=""
-          fill
           aria-hidden
-          className="absolute inset-0 object-cover opacity-20"
+          fill
+          unoptimized
+          placeholder="empty"
+          className="absolute inset-0 object-cover object-center"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-stone-900/90 via-stone-900/95 to-stone-900" />
 
-        <div className="relative max-w-4xl mx-auto px-6 md:px-10 py-24 sm:py-32 text-center">
+        {/* Content layer above the image */}
+        <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-10 py-24 sm:py-32 text-center">
           <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-white/50">
             — Your next step
           </p>
