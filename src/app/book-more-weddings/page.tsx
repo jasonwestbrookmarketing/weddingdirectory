@@ -382,15 +382,16 @@ export default function BookMoreWeddingsPage() {
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
       {/*
-        * Hero height = 16:9 aspect ratio of the viewport, capped at 1080px.
-        * The image is also 16:9 so object-cover fills it with zero stretch.
+        * Hero — 3:2 image (4992×3744) displayed with object-cover object-center.
+        * Two gradient overlays fade the left and right edges to white so text
+        * and phone graphic stay crisp on both sides.
         */}
       <section
         className="relative overflow-hidden flex items-center -mt-[92px]"
         style={{ height: "min(56.25vw, 1080px)", minHeight: "520px" }}
       >
         <Image
-          src="/hero-wedding-couple.png"
+          src="/hero-wedding-couple.jpg"
           alt=""
           aria-hidden
           fill
@@ -400,8 +401,18 @@ export default function BookMoreWeddingsPage() {
           className="absolute inset-0 object-cover object-center"
           sizes="100vw"
         />
+        {/* Left fade — white to transparent */}
+        <div
+          className="absolute inset-y-0 left-0 w-1/2 pointer-events-none z-[1]"
+          style={{ background: "linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 30%, rgba(255,255,255,0) 100%)" }}
+        />
+        {/* Right fade — transparent to white */}
+        <div
+          className="absolute inset-y-0 right-0 w-1/2 pointer-events-none z-[1]"
+          style={{ background: "linear-gradient(to left, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 30%, rgba(255,255,255,0) 100%)" }}
+        />
 
-        <div className="relative w-full max-w-7xl mx-auto px-6 md:px-10 pt-36 pb-16 sm:pb-20 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pt-36 pb-16 sm:pb-20 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left — copy */}
           <div className="lg:col-span-7">
             <h1
