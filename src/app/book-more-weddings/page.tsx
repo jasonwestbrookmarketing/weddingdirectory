@@ -872,7 +872,7 @@ export default function BookMoreWeddingsPage() {
                 className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                Try StoryVenue Risk Free for 14-Days.
+                Try StoryVenue Free for 14 Days
               </h2>
             </div>
 
@@ -881,18 +881,14 @@ export default function BookMoreWeddingsPage() {
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               <p>
-                You should not have to gamble on another marketing tool, directory, agency, or software platform. You have probably already paid for things that promised more visibility, more leads, or more bookings. But visibility does not matter if the lead is not followed up. Leads do not matter if they never turn into tours. Tours do not matter if they never turn into signed weddings.
+                Start free with no payment upfront, no long-term contract, and no cancellation fees.
               </p>
               <p>
-                StoryVenue was built to connect the full path from first click to booked wedding. That is why we back it with a simple guarantee. Go live with StoryVenue. Follow the process. Let us help you generate leads, follow up, and book more tours.
+                After your trial, you are still protected by our 30-day money-back guarantee.
               </p>
               <p className="font-semibold text-stone-900">
-                If we do not deliver the results we agreed to within your first 14 days, you do not pay.
+                If StoryVenue does not deliver the results we agreed to in your first 30 days, you don&rsquo;t pay.
               </p>
-              <p>
-                No long-term contract. No cancellation fees. No complicated fine print.
-              </p>
-              <p>Just a system built to help your venue book more weddings.</p>
             </div>
 
             <div className="mt-10 pt-10 border-t border-stone-200">
@@ -907,10 +903,7 @@ export default function BookMoreWeddingsPage() {
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
                 <p>
-                  Help you make your investment back. For many venues, just 1 to 2 extra weddings can cover the system for the entire year. That means the question is not: &ldquo;Can I afford StoryVenue?&rdquo;
-                </p>
-                <p className="font-semibold text-stone-900">
-                  The better question is: &ldquo;How many more empty weekends can I afford without it?&rdquo;
+                  Help you make your investment back. For many venues, just 1 to 2 extra weddings can cover the system for the entire year.
                 </p>
               </div>
 
