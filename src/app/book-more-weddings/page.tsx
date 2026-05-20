@@ -1119,9 +1119,9 @@ export default function BookMoreWeddingsPage() {
         />
 
         {/* Content layer above the image */}
-        <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-10 py-24 sm:py-32 text-center">
+        <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-10 py-24 sm:py-32 text-center">
           <h2
-            className="text-3xl sm:text-5xl md:text-6xl leading-[1.05]"
+            className="text-3xl sm:text-5xl md:text-6xl leading-[1.05] whitespace-nowrap"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Stop Letting Brides Slip Through The Cracks
@@ -1133,7 +1133,7 @@ export default function BookMoreWeddingsPage() {
             Try StoryVenue Free for 14 Days
           </p>
           <p
-            className="mt-5 text-base sm:text-lg text-white/75 leading-relaxed max-w-3xl mx-auto"
+            className="mt-5 text-base sm:text-lg text-white/75 leading-relaxed max-w-xl mx-auto"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             StoryVenue helps your venue get found by more brides, capture more inquiries, follow up faster, book more tours, send proposals, collect payments, and manage the entire booking process from one place.
@@ -1150,7 +1150,7 @@ export default function BookMoreWeddingsPage() {
             </a>
           </div>
           <p className="mt-5 text-[12px] text-white/50">
-            No contract. No down payment. No cancellation fees.
+            No contracts. No down payments. No cancellation fees.
           </p>
         </div>
       </section>
