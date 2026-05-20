@@ -851,9 +851,9 @@ export default function BookMoreWeddingsPage() {
             This Is Not Just Software.
           </h2>
 
-          {/* Body */}
+          {/* Body — max-w-lg keeps it to ~3 lines */}
           <p
-            className="mt-6 text-base sm:text-lg text-white/75 leading-relaxed max-w-2xl"
+            className="mt-6 text-base sm:text-lg text-white/75 leading-relaxed max-w-lg text-center"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             StoryVenue is a complete growth system for wedding venues. It helps venues get seen by more brides, follow up faster, book more tours, and turn more inquiries into booked weddings.
@@ -890,17 +890,6 @@ export default function BookMoreWeddingsPage() {
             ))}
           </div>
 
-          {/* SV monogram */}
-          <div className="mt-10 opacity-30">
-            <Image
-              src="/storyvenue-mark.png"
-              alt="StoryVenue"
-              width={28}
-              height={28}
-              unoptimized
-              className="invert"
-            />
-          </div>
         </div>
       </section>
 
