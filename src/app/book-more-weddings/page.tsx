@@ -1078,26 +1078,24 @@ export default function BookMoreWeddingsPage() {
 
         {/* Content layer above the image */}
         <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-10 py-24 sm:py-32 text-center">
-          <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-white/50">
-            — Your next step
-          </p>
           <h2
-            className="mt-4 text-3xl sm:text-5xl md:text-6xl leading-[1.05]"
+            className="text-3xl sm:text-5xl md:text-6xl leading-[1.05]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Stop Letting Brides Slip Through The Cracks.
+            Stop Letting Brides Slip Through The Cracks
           </h2>
-          <div
-            className="mt-7 space-y-4 text-white/75 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto"
+          <p
+            className="mt-5 text-lg sm:text-xl font-semibold text-white"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            <p>
-              You do not need another tool to manage. You need one system built to help your venue grow.
-            </p>
-            <p>
-              StoryVenue helps your venue get found by more brides, capture more inquiries, follow up faster, book more tours, send proposals, collect payments, and manage the entire booking process from one place.
-            </p>
-          </div>
+            Try StoryVenue Free for 14 Days
+          </p>
+          <p
+            className="mt-5 text-base sm:text-lg text-white/75 leading-relaxed max-w-3xl mx-auto"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
+            StoryVenue helps your venue get found by more brides, capture more inquiries, follow up faster, book more tours, send proposals, collect payments, and manage the entire booking process from one place.
+          </p>
 
           <div className="mt-10 flex justify-center">
             <a
