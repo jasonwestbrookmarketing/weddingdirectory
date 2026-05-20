@@ -453,8 +453,29 @@ export default function BookMoreWeddingsPage() {
                 className="mt-3 text-[12px] text-stone-500 text-center"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                No contract. No down payment. No cancelation fees.
+                No contracts. No down payments. No cancelation fees.
               </p>
+
+              {/* Google Reviews social proof */}
+              <div className="mt-5 flex items-center gap-3">
+                {/* Overlapping avatar circles */}
+                <div className="flex -space-x-2.5 shrink-0">
+                  {["/avatars/av1.jpg", "/avatars/av2.jpg", "/avatars/av3.jpg"].map((src, i) => (
+                    <div key={i} className="relative w-9 h-9 rounded-full border-2 border-white overflow-hidden" style={{ zIndex: 3 - i }}>
+                      <Image src={src} alt="" fill unoptimized placeholder="empty" className="object-cover object-top" sizes="36px" />
+                    </div>
+                  ))}
+                </div>
+                {/* Stars + label */}
+                <div>
+                  <div className="flex gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-4 h-4" viewBox="0 0 24 24" fill="#1c1917"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-stone-500 mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>Google Reviews</p>
+                </div>
+              </div>
             </div>
           </div>
 
