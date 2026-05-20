@@ -951,7 +951,7 @@ export default function BookMoreWeddingsPage() {
             </div>
 
             {/* Booking System */}
-            <div className="rounded-2xl border border-stone-200 bg-white p-7 flex flex-col">
+            <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col">
               <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Booking System</h3>
               <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>We bring the brides. You close them.</p>
               <div className="mt-4 flex items-baseline gap-1">
@@ -982,7 +982,7 @@ export default function BookMoreWeddingsPage() {
             </div>
 
             {/* Venue Pro */}
-            <div className="rounded-2xl border border-stone-200 bg-white p-7 flex flex-col">
+            <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col">
               <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Venue Pro</h3>
               <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>Run your venue like a business.</p>
               <div className="mt-4 flex items-baseline gap-1">
@@ -1014,7 +1014,7 @@ export default function BookMoreWeddingsPage() {
             </div>
 
             {/* Free */}
-            <div className="rounded-2xl border border-stone-200 bg-white p-7 flex flex-col">
+            <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col">
               <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Free</h3>
               <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>Get listed. Get paid.</p>
               <div className="mt-4 flex items-baseline gap-1">
