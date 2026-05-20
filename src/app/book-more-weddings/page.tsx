@@ -380,9 +380,7 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
-      <section className="relative overflow-hidden flex items-center -mt-[92px] bg-white"
-        style={{ minHeight: "clamp(480px, 50vw, 720px)" }}>
-        {/* Background — contain keeps the image at its natural proportions, no stretching */}
+      <section className="relative min-h-svh overflow-hidden flex items-center -mt-[92px]">
         <Image
           src="/hero-wedding-couple.png"
           alt=""
@@ -391,7 +389,7 @@ export default function BookMoreWeddingsPage() {
           priority
           unoptimized
           placeholder="empty"
-          className="absolute inset-0 object-contain object-right"
+          className="absolute inset-0 object-cover object-center"
           sizes="100vw"
         />
 
