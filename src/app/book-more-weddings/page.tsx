@@ -927,7 +927,7 @@ export default function BookMoreWeddingsPage() {
           <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-5 items-stretch">
 
             {/* All-Inclusive — MOST POPULAR */}
-            <div className="relative rounded-2xl border-2 border-stone-900 bg-white p-7 flex flex-col">
+            <div className="relative rounded-2xl border-2 border-stone-900 bg-white p-7 flex flex-col shadow-[0_20px_60px_-12px_rgba(0,0,0,0.25),0_8px_24px_-8px_rgba(0,0,0,0.15)] -translate-y-1">
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
                 <span className="inline-flex items-center rounded-full bg-stone-900 text-white text-[10px] font-bold tracking-[0.16em] uppercase px-3 py-1" style={{ fontFamily: "var(--font-open-sans)" }}>
                   Most Popular
