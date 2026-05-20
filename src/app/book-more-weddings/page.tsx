@@ -458,7 +458,7 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1b. LOGO STRIP — social proof                                  */}
       {/* ============================================================== */}
-      <div className="bg-white py-6 overflow-hidden">
+      <div className="bg-stone-50/70 py-6 overflow-hidden">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="flex items-center justify-between gap-6 flex-nowrap">
             {[
