@@ -458,12 +458,10 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1b. LOGO STRIP — social proof                                  */}
       {/* ============================================================== */}
-      <div className="bg-white border-y border-stone-100 py-6 overflow-hidden">
-        {/* Single row — all 10 logos distributed evenly across full width */}
+      <div className="bg-white border-t border-stone-100 py-6 overflow-hidden">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
           <div className="flex items-center justify-between gap-6 flex-nowrap">
             {[
-              { src: "/logos/irongate.png",   alt: "Irongate Equestrian Center", h: 40 },
               { src: "/logos/arbor.png",       alt: "Arbor at the Port",          h: 36 },
               { src: "/logos/vista.png",       alt: "Vista on the Docks",         h: 34 },
               { src: "/logos/bogart.png",      alt: "Bogart House",               h: 52 },
