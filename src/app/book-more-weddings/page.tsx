@@ -1003,12 +1003,6 @@ export default function BookMoreWeddingsPage() {
             <p>
               StoryVenue helps your venue get found by more brides, capture more inquiries, follow up faster, book more tours, send proposals, collect payments, and manage the entire booking process from one place.
             </p>
-            <p>
-              Your listing can go live instantly. Your proposals and payment tools can be ready right away.
-            </p>
-            <p>
-              And if your plan includes managed marketing, ads, landing pages, guide setup, or Concierge follow-up, our team will help install the full system behind your venue.
-            </p>
           </div>
 
           <div className="mt-10 flex justify-center">
