@@ -449,20 +449,14 @@ export default function BookMoreWeddingsPage() {
                   Get Started <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </a>
-              <p
-                className="mt-3 text-[12px] text-stone-500 text-center"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                No contracts. No down payments. No cancelation fees.
-              </p>
 
-              {/* Google Reviews social proof */}
-              <div className="mt-5 flex items-center gap-3">
+              {/* Google Reviews social proof — centered under the CTA */}
+              <div className="mt-5 flex items-center justify-center gap-3">
                 {/* Overlapping avatar circles */}
                 <div className="flex -space-x-2.5 shrink-0">
                   {["/avatars/av1.jpg", "/avatars/av2.jpg", "/avatars/av3.jpg"].map((src, i) => (
                     <div key={i} className="relative w-9 h-9 rounded-full border-2 border-white overflow-hidden" style={{ zIndex: 3 - i }}>
-                      <Image src={src} alt="" fill unoptimized placeholder="empty" className="object-cover object-top" sizes="36px" />
+                      <Image src={src} alt="" fill unoptimized placeholder="empty" className="object-cover object-center" sizes="36px" />
                     </div>
                   ))}
                 </div>
