@@ -863,64 +863,156 @@ export default function BookMoreWeddingsPage() {
       </section>
 
       {/* ============================================================== */}
-      {/* 8. GUARANTEE SECTION                                            */}
+      {/* 8. PRICING PLANS                                               */}
       {/* ============================================================== */}
-      <section id="guarantee" className="bg-white py-20 sm:py-28">
-        <div className="max-w-5xl mx-auto px-6 md:px-10">
-          <div className="rounded-3xl border border-stone-200 bg-stone-50/60 p-8 sm:p-12 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-            <div className="max-w-xl">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-stone-900 text-white mb-6">
-                <Shield className="w-6 h-6" />
-              </div>
-              <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
-                — Risk free
-              </p>
-              <h2
-                className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
-                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-              >
-                Try StoryVenue Free for 14 Days
-              </h2>
-            </div>
+      <section id="pricing" className="bg-white py-20 sm:py-28">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
 
-            <div
-              className="mt-8 space-y-4 text-stone-600 text-base leading-relaxed max-w-3xl"
-              style={{ fontFamily: "var(--font-open-sans)" }}
+          {/* Heading */}
+          <div className="text-center mb-12">
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
+              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              <p>
-                Start free with no payment upfront, no long-term contract, and no cancellation fees.
-              </p>
-              <p>
-                After your trial, you are still protected by our 30-day money-back guarantee.
-              </p>
-              <p className="font-semibold text-stone-900">
-                If StoryVenue does not deliver the results we agreed to in your first 30 days, you don&rsquo;t pay.
-              </p>
-            </div>
+              StoryVenue Plans
+            </h2>
+            <p className="mt-3 text-[14px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>
+              14-day free trial. No down payment. No contracts. No cancellation fees.
+            </p>
+          </div>
 
-            <div className="mt-10 pt-10 border-t border-stone-200">
-              <h3
-                className="text-xl text-stone-900"
-                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-              >
-                Our First Goal Is Simple.
-              </h3>
-              <div
-                className="mt-4 space-y-3 text-stone-600 text-base leading-relaxed max-w-3xl"
+          {/* Plan cards */}
+          <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-5 items-start">
+
+            {/* All-Inclusive — MOST POPULAR */}
+            <div className="relative rounded-2xl border-2 border-stone-900 bg-white p-7 flex flex-col">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                <span className="inline-flex items-center rounded-full bg-stone-900 text-white text-[10px] font-bold tracking-[0.16em] uppercase px-3 py-1" style={{ fontFamily: "var(--font-open-sans)" }}>
+                  Most Popular
+                </span>
+              </div>
+              <h3 className="text-xl font-bold text-stone-900 mt-2" style={{ fontFamily: "var(--font-open-sans)" }}>All-Inclusive</h3>
+              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>We fill your calendar. You host.</p>
+              <div className="mt-4 flex items-baseline gap-1">
+                <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$1,499</span>
+                <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
+              </div>
+              <ul className="mt-5 space-y-2.5 flex-1" style={{ fontFamily: "var(--font-open-sans)" }}>
+                {[
+                  "Everything in Booking System, plus:",
+                  "Venue Concierge: our team personally works your leads",
+                  "Every bride followed up without you lifting a finger",
+                  "Leads re-engaged for months automatically",
+                  "Nothing falls through the cracks. Ever.",
+                  "Verified and Sponsored badges included",
+                ].map((item, i) => (
+                  <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${i === 0 ? "font-semibold text-stone-900" : "text-stone-600"}`}>
+                    <span className="mt-[3px] shrink-0 text-stone-400">·</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={TRIAL_HREF}
+                className="mt-7 w-full inline-flex items-center justify-center rounded-xl bg-stone-900 text-white text-[14px] font-semibold px-5 py-3 hover:bg-stone-800 transition-colors"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                <p>
-                  Help you make your investment back. For many venues, just 1 to 2 extra weddings can cover the system for the entire year.
-                </p>
-              </div>
-
-              <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
-                <PrimaryCTA />
-                <p className="text-[13px] text-stone-500">
-                  No contract. No down payment. No cancellation fees.
-                </p>
-              </div>
+                Start 14-day trial
+              </a>
             </div>
+
+            {/* Booking System */}
+            <div className="rounded-2xl border border-stone-200 bg-white p-7 flex flex-col">
+              <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Booking System</h3>
+              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>We bring the brides. You close them.</p>
+              <div className="mt-4 flex items-baseline gap-1">
+                <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$999</span>
+                <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
+              </div>
+              <ul className="mt-5 space-y-2.5 flex-1" style={{ fontFamily: "var(--font-open-sans)" }}>
+                {[
+                  "Everything in Venue Pro, plus:",
+                  "Managed Meta ads so brides come to you",
+                  "Tour-ready leads in your pipeline daily",
+                  "Verified badge included",
+                  "You handle the follow-up",
+                ].map((item, i) => (
+                  <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${i === 0 ? "font-semibold text-stone-900" : "text-stone-600"}`}>
+                    <span className="mt-[3px] shrink-0 text-stone-400">·</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={TRIAL_HREF}
+                className="mt-7 w-full inline-flex items-center justify-center rounded-xl border border-stone-300 text-stone-900 text-[14px] font-semibold px-5 py-3 hover:bg-stone-50 transition-colors"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                Start 14-day trial
+              </a>
+            </div>
+
+            {/* Venue Pro */}
+            <div className="rounded-2xl border border-stone-200 bg-white p-7 flex flex-col">
+              <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Venue Pro</h3>
+              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>Run your venue like a business.</p>
+              <div className="mt-4 flex items-baseline gap-1">
+                <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$299</span>
+                <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
+              </div>
+              <ul className="mt-5 space-y-2.5 flex-1" style={{ fontFamily: "var(--font-open-sans)" }}>
+                {[
+                  "Everything in Free, plus:",
+                  "Full lead pipeline so no inquiry gets lost",
+                  "Marketing Automations so follow-up runs without you",
+                  "Every message in one inbox",
+                  "Calendar with conflict detection so you never double-book",
+                  "Revenue reports so you know where you stand",
+                ].map((item, i) => (
+                  <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${i === 0 ? "font-semibold text-stone-900" : "text-stone-600"}`}>
+                    <span className="mt-[3px] shrink-0 text-stone-400">·</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={TRIAL_HREF}
+                className="mt-7 w-full inline-flex items-center justify-center rounded-xl border border-stone-300 text-stone-900 text-[14px] font-semibold px-5 py-3 hover:bg-stone-50 transition-colors"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                Start 14-day trial
+              </a>
+            </div>
+
+            {/* Free */}
+            <div className="rounded-2xl border border-stone-200 bg-white p-7 flex flex-col">
+              <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Free</h3>
+              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>Get listed. Get paid.</p>
+              <div className="mt-4 flex items-baseline gap-1">
+                <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$0</span>
+                <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
+              </div>
+              <ul className="mt-5 space-y-2.5 flex-1" style={{ fontFamily: "var(--font-open-sans)" }}>
+                {[
+                  "Directory listing couples actually find",
+                  "Proposals with e-signatures built in",
+                  "Built-in payments. 0% processing fees. You keep 100%.",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-[13px] text-stone-600 leading-snug">
+                    <span className="mt-[3px] shrink-0 text-stone-400">·</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={TRIAL_HREF}
+                className="mt-7 w-full inline-flex items-center justify-center rounded-xl border border-stone-300 text-stone-900 text-[14px] font-semibold px-5 py-3 hover:bg-stone-50 transition-colors"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                Start for free
+              </a>
+            </div>
+
           </div>
         </div>
       </section>
