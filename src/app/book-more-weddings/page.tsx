@@ -646,7 +646,7 @@ export default function BookMoreWeddingsPage() {
         <div className="bg-stone-50/70 border-y border-stone-200/60 py-16 sm:py-20">
           <div className="max-w-7xl mx-auto px-6 md:px-10 text-center">
             <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
-              — What you get
+              What you get
             </p>
             <h2
               className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
