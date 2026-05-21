@@ -104,13 +104,25 @@ export default function ExitIntentModal() {
           </p>
         </div>
 
-        {/* Calendar embed — no border, no outline, no divider on any device */}
-        <div className="bg-white">
+        {/* Calendar embed — iframe is intentionally oversized and offset so   */}
+        {/* the GHL widget's internal 1-2px border is cropped out by the      */}
+        {/* parent's overflow-hidden on every device.                         */}
+        <div className="bg-white overflow-hidden">
           <iframe
             src={CALENDAR_URL}
             id={CALENDAR_ID}
-            className="w-full bg-white block"
-            style={{ height: 600, border: 0, outline: "none", boxShadow: "none", overflow: "hidden" }}
+            className="bg-white block"
+            style={{
+              width: "calc(100% + 8px)",
+              height: 610,
+              marginLeft: -4,
+              marginTop: -4,
+              marginBottom: -4,
+              border: 0,
+              outline: "none",
+              boxShadow: "none",
+              overflow: "hidden",
+            }}
             scrolling="no"
             frameBorder={0}
             title="Book a free demo"
