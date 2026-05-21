@@ -984,7 +984,7 @@ export default function BookMoreWeddingsPage() {
                   { text: "Verified and Sponsored badges included" },
                 ].map(({ text, bold }, i) => (
                   <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${bold ? "font-semibold text-stone-900" : "text-stone-600"}`}>
-                    <Check className="mt-[1px] shrink-0 w-3.5 h-3.5" style={{ color: "#10b981" }} strokeWidth={2.5} />
+                    {!bold && <Check className="mt-[1px] shrink-0 w-3.5 h-3.5" style={{ color: "#10b981" }} strokeWidth={2.5} />}
                     {text}
                   </li>
                 ))}
@@ -1015,7 +1015,7 @@ export default function BookMoreWeddingsPage() {
                   { text: "You handle the follow-up" },
                 ].map(({ text, bold }, i) => (
                   <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${bold ? "font-semibold text-stone-900" : "text-stone-600"}`}>
-                    <Check className="mt-[1px] shrink-0 w-3.5 h-3.5" style={{ color: "#10b981" }} strokeWidth={2.5} />
+                    {!bold && <Check className="mt-[1px] shrink-0 w-3.5 h-3.5" style={{ color: "#10b981" }} strokeWidth={2.5} />}
                     {text}
                   </li>
                 ))}
@@ -1047,7 +1047,7 @@ export default function BookMoreWeddingsPage() {
                   { text: "Revenue reports so you know where you stand" },
                 ].map(({ text, bold }, i) => (
                   <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${bold ? "font-semibold text-stone-900" : "text-stone-600"}`}>
-                    <Check className="mt-[1px] shrink-0 w-3.5 h-3.5" style={{ color: "#10b981" }} strokeWidth={2.5} />
+                    {!bold && <Check className="mt-[1px] shrink-0 w-3.5 h-3.5" style={{ color: "#10b981" }} strokeWidth={2.5} />}
                     {text}
                   </li>
                 ))}
