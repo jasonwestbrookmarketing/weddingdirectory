@@ -293,16 +293,16 @@ export default function BookMoreWeddingsPage() {
           </div>
         </div>
 
-        {/* NAV — smaller on mobile to free up vertical real estate */}
+        {/* NAV — logo & button vertically centered with equal padding above/below */}
         <header className="bg-white/75 backdrop-blur-md border-b border-white/20">
-          <nav className="max-w-7xl mx-auto flex items-center justify-between px-5 md:px-10 py-2.5 lg:py-4">
-            <Link href="/" aria-label="StoryVenue home" className="shrink-0">
+          <nav className="max-w-7xl mx-auto flex items-center justify-between px-5 md:px-10 py-3 lg:py-4">
+            <Link href="/" aria-label="StoryVenue home" className="shrink-0 flex items-center">
               <Image
                 src="/storyvenue-dark-logo.png"
                 alt="StoryVenue"
                 width={185}
                 height={44}
-                className="h-8 lg:h-11 w-auto object-contain"
+                className="h-9 lg:h-11 w-auto object-contain"
                 priority
               />
             </Link>
