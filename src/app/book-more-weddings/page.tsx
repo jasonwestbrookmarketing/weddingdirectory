@@ -265,7 +265,7 @@ export default function BookMoreWeddingsPage() {
       <div className="sticky top-0 z-40">
         {/* TICKER — matches deck.storyvenuemarketing.com exactly */}
         <div className="w-full overflow-hidden shrink-0 py-2 bg-[#1c1c1c]">
-          <div className="flex animate-[announcement-ticker_60s_linear_infinite] whitespace-nowrap">
+          <div className="flex animate-[announcement-ticker_25s_linear_infinite] lg:animate-[announcement-ticker_60s_linear_infinite] whitespace-nowrap">
             {[
               { venue: "Manor", result: "2026 Dates Booked in 90 Days" },
               { venue: "Waterloo Farms", result: "2 Weddings Booked in 7 Days" },
