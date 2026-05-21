@@ -56,7 +56,7 @@ export default function ExitIntentModal() {
   // background. We toggle visibility with display instead of unmounting.
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[9999] flex items-start sm:items-center justify-center p-2 sm:p-4"
       style={{ display: open ? "flex" : "none" }}
       aria-hidden={!open}
     >
@@ -66,20 +66,24 @@ export default function ExitIntentModal() {
         onClick={() => setOpen(false)}
       />
 
-      {/* Modal card */}
-      <div className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] overflow-hidden">
-
-        {/* Close button */}
-        <button
-          onClick={() => setOpen(false)}
-          className="absolute top-4 right-4 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-800 transition-colors"
-          aria-label="Close"
-        >
-          <X className="w-4 h-4" />
-        </button>
+      {/* Modal card — scrollable on mobile so nothing is clipped */}
+      <div
+        className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] flex flex-col"
+        style={{ maxHeight: "calc(100svh - 16px)", overflowY: "auto" }}
+      >
+        {/* Sticky close button — always reachable regardless of scroll */}
+        <div className="sticky top-0 z-20 flex justify-end px-4 pt-4 bg-white rounded-t-3xl">
+          <button
+            onClick={() => setOpen(false)}
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-800 transition-colors"
+            aria-label="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
 
         {/* Header */}
-        <div className="px-8 pt-10 pb-5 text-center border-b border-stone-100">
+        <div className="px-8 pt-2 pb-5 text-center border-b border-stone-100">
           <p
             className="text-[10px] font-semibold tracking-[0.22em] uppercase text-stone-400"
             style={{ fontFamily: "var(--font-open-sans)" }}
@@ -87,7 +91,7 @@ export default function ExitIntentModal() {
             — Before you go
           </p>
           <h2
-            className="mt-2 text-[28px] sm:text-[34px] leading-[1.1] text-stone-900"
+            className="mt-2 text-[26px] sm:text-[34px] leading-[1.1] text-stone-900"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             See StoryVenue Live.
@@ -113,7 +117,7 @@ export default function ExitIntentModal() {
         </div>
 
         {/* Footer dismiss */}
-        <div className="py-4 text-center bg-white">
+        <div className="py-4 text-center bg-white rounded-b-3xl">
           <button
             onClick={() => setOpen(false)}
             className="text-[12px] text-stone-400 hover:text-stone-600 transition-colors underline underline-offset-2"
