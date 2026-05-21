@@ -603,7 +603,10 @@ export default function BookMoreWeddingsPage() {
             </div>
 
             {/* Right — dashboard mockup (floating badges hidden on mobile via component) */}
-            <div className="lg:pr-4">
+            {/* min-w-0 + overflow-hidden ensures the mockup never widens the    */}
+            {/* grid column past the mobile viewport, regardless of intrinsic    */}
+            {/* content sizes inside the chrome.                                  */}
+            <div className="min-w-0 max-w-full overflow-hidden lg:pr-4">
               <DashboardMockup />
             </div>
 

@@ -7,6 +7,13 @@
   }
 }
 
+/* Guard against any descendant pushing the page wider than the viewport.    */
+/* overflow-x: clip preserves sticky positioning (unlike overflow-x: hidden) */
+/* and prevents horizontal page scroll on mobile.                             */
+html, body {
+  overflow-x: clip;
+}
+
 @font-face {
   font-family: "EditorsNote";
   src: url("/fonts/EditorNote-Light.ttf") format("truetype");
