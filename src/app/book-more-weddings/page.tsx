@@ -389,18 +389,21 @@ export default function BookMoreWeddingsPage() {
         className="relative overflow-hidden flex items-center -mt-[92px]"
         style={{ height: "min(56.25vw, 1080px)", minHeight: "520px" }}
       >
-        <Image
-          src="/hero-wedding-couple.jpg"
-          alt=""
-          aria-hidden
-          fill
-          priority
-          unoptimized
-          placeholder="empty"
-          className="absolute inset-0 object-cover object-center"
-          sizes="100vw"
-          style={{ transform: "scaleX(-1)" }}
-        />
+        {/* Wrapper shifts the couple rightward; section overflow:hidden clips the edge */}
+        <div className="absolute pointer-events-none" style={{ inset: 0, transform: "translateX(12%)" }}>
+          <Image
+            src="/hero-wedding-couple.jpg"
+            alt=""
+            aria-hidden
+            fill
+            priority
+            unoptimized
+            placeholder="empty"
+            className="object-cover object-center"
+            sizes="100vw"
+            style={{ transform: "scaleX(-1)" }}
+          />
+        </div>
 
         {/* Left fade — keeps heading & text legible */}
         <div
