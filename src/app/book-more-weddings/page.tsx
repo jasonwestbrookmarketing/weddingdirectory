@@ -399,6 +399,7 @@ export default function BookMoreWeddingsPage() {
           placeholder="empty"
           className="absolute inset-0 object-cover object-center"
           sizes="100vw"
+          style={{ transform: "scaleX(-1)" }}
         />
 
         {/* Left fade — keeps heading & text legible */}
