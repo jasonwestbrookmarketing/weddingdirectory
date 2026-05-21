@@ -1125,7 +1125,7 @@ export default function BookMoreWeddingsPage() {
       <section className="relative bg-stone-900 text-white overflow-hidden">
         {/* Background image — rendered raw, no opacity, no gradient on top */}
         <Image
-          src="/your-next-step-bg.png"
+          src="/your-next-step-bg.jpg"
           alt=""
           aria-hidden
           fill
