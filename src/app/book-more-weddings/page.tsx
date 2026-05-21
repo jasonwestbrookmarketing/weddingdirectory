@@ -350,6 +350,9 @@ export default function BookMoreWeddingsPage() {
         </div>
 
         {/* ── DESKTOP: couple image fills the full section ──────────────── */}
+        {/* Image source was cropped at top, so couple now sits higher in    */}
+        {/* the frame. objectPosition center 75% pushes the visible content  */}
+        {/* down so heads no longer bleed into the navbar area.              */}
         <div className="hidden lg:block absolute pointer-events-none" style={{ inset: 0, transform: "translateX(8%)" }}>
           <Image
             src="/hero-wedding-couple.jpg"
@@ -359,9 +362,9 @@ export default function BookMoreWeddingsPage() {
             priority
             unoptimized
             placeholder="empty"
-            className="object-cover object-center"
+            className="object-cover"
             sizes="100vw"
-            style={{ transform: "scaleX(-1)" }}
+            style={{ transform: "scaleX(-1)", objectPosition: "center 75%" }}
           />
         </div>
 
