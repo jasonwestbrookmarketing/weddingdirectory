@@ -1150,7 +1150,7 @@ export default function BookMoreWeddingsPage() {
             Try StoryVenue Free for 14 Days
           </p>
           <p
-            className="mt-5 text-base sm:text-lg text-white/75 leading-relaxed max-w-xl mx-auto"
+            className="mt-5 text-base sm:text-lg text-white/75 leading-relaxed max-w-4xl mx-auto"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             StoryVenue helps your venue get found by more brides, capture more inquiries, follow up faster, book more tours, send proposals, collect payments, and manage the entire booking process from one place.
