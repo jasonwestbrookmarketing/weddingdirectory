@@ -128,7 +128,7 @@ function DashboardScreen() {
   const stats = [
     { label: "LEADS",           value: "47",       trend: "+312%", color: "#ec4899" },
     { label: "TOURS BOOKED",    value: "18",       trend: "+180%", color: "#6366f1" },
-    { label: "PROPOSALS",       value: "12",       trend: "+240%", color: "#3b82f6" },
+    { label: "PROPOSALS",       value: "12",       trend: "+240%", color: "#1b1b1b" },
     { label: "WEDDINGS BOOKED", value: "34",       trend: "+225%", color: "#f43f5e" },
     { label: "REVENUE",         value: "$142,800", trend: "+654%", color: "#22c55e" },
   ];
@@ -136,7 +136,7 @@ function DashboardScreen() {
   const proposals = [
     { name: "Sarah & Michael Thompson", email: "sarah.thompson@gmail.com", status: "Paid",   sColor: "#22c55e", sBg: "#f0fdf4", amount: "$10,000" },
     { name: "Emily & James Hartwell",   email: "emily.hartwell@gmail.com", status: "Signed", sColor: "#6366f1", sBg: "#eef2ff", amount: "$9,800" },
-    { name: "Madison & Connor Wright",  email: "madison.wright@gmail.com", status: "Sent",   sColor: "#3b82f6", sBg: "#eff6ff", amount: "$11,200" },
+    { name: "Madison & Connor Wright",  email: "madison.wright@gmail.com", status: "Sent",   sColor: "#1b1b1b", sBg: "#f3f4f6", amount: "$11,200" },
   ];
 
   const chartW = 360; const chartH = 72;
@@ -247,13 +247,13 @@ function DashboardScreen() {
             <div className="flex gap-0.5 h-1.5 rounded-full overflow-hidden mb-1.5">
               <div className="bg-emerald-500" style={{ width: "42%" }} />
               <div className="bg-indigo-500" style={{ width: "33%" }} />
-              <div className="bg-blue-400" style={{ width: "16%" }} />
+              <div className="bg-stone-400" style={{ width: "16%" }} />
               <div className="bg-amber-400" style={{ width: "9%" }} />
             </div>
             {[
               { label: "Paid",   count: 5,  color: "#22c55e" },
               { label: "Signed", count: 4,  color: "#6366f1" },
-              { label: "Sent",   count: 2,  color: "#60a5fa" },
+              { label: "Sent",   count: 2,  color: "#1b1b1b" },
               { label: "Opened", count: 1,  color: "#fbbf24" },
             ].map((r) => (
               <div key={r.label} className="flex items-center justify-between mb-0.5">

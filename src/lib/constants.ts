@@ -43,7 +43,7 @@ export const VENUE_MATTERS_OPTIONS = [
 ] as const;
 
 export const LEAD_STATUSES = [
-  { value: "new",            label: "New Lead",        color: "bg-blue-50 text-blue-700" },
+  { value: "new",            label: "New Lead",        color: "bg-stone-100 text-stone-700" },
   { value: "contacted",      label: "Contacted",       color: "bg-amber-50 text-amber-700" },
   { value: "tour_booked",    label: "Booked Tour",     color: "bg-purple-50 text-purple-700" },
   { value: "proposal_sent",  label: "Proposal Sent",   color: "bg-orange-50 text-orange-700" },

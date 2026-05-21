@@ -78,7 +78,7 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
         {hasFilters && (
           <button
             onClick={() => onChange(DEFAULT_FILTERS)}
-            className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+            className="text-sm font-medium text-stone-900 hover:text-stone-600 transition-colors"
           >
             Reset
           </button>
@@ -223,7 +223,7 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
             <button
               type="button"
               onClick={() => setAmenitiesExpanded((v) => !v)}
-              className="mt-2 flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 transition-colors"
+              className="mt-2 flex items-center gap-1 text-xs font-medium text-stone-900 hover:text-stone-600 transition-colors"
             >
               {amenitiesExpanded ? (
                 <>
