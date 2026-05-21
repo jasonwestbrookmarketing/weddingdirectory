@@ -11,8 +11,19 @@ export default function ExitIntentModal() {
   const [open, setOpen] = useState(false);
   const [shown, setShown] = useState(false);
 
+  // Load GHL embed script immediately on mount so the calendar is already
+  // initialised by the time the user triggers the modal.
   useEffect(() => {
-    // Desktop: fire when cursor leaves viewport toward browser chrome
+    if (document.querySelector(`script[src="${GHL_SCRIPT}"]`)) return;
+    const script = document.createElement("script");
+    script.src = GHL_SCRIPT;
+    script.type = "text/javascript";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  // Exit-intent detection
+  useEffect(() => {
     const onMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0 && !shown) {
         setOpen(true);
@@ -20,15 +31,11 @@ export default function ExitIntentModal() {
       }
     };
 
-    // Mobile/tablet: fire after 45 s of inactivity as a soft prompt
     let mobileTimer: ReturnType<typeof setTimeout>;
     const isMobile = window.innerWidth < 1024;
     if (isMobile) {
       mobileTimer = setTimeout(() => {
-        if (!shown) {
-          setOpen(true);
-          setShown(true);
-        }
+        if (!shown) { setOpen(true); setShown(true); }
       }, 45_000);
     }
 
@@ -39,27 +46,20 @@ export default function ExitIntentModal() {
     };
   }, [shown]);
 
-  // Prevent body scroll while modal is open
+  // Prevent body scroll while open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  // Load GHL embed script once the modal opens
-  useEffect(() => {
-    if (!open) return;
-    if (document.querySelector(`script[src="${GHL_SCRIPT}"]`)) return;
-    const script = document.createElement("script");
-    script.src = GHL_SCRIPT;
-    script.type = "text/javascript";
-    script.async = true;
-    document.body.appendChild(script);
-  }, [open]);
-
-  if (!open) return null;
-
+  // Keep the component always mounted so the iframe pre-loads in the
+  // background. We toggle visibility with display instead of unmounting.
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      style={{ display: open ? "flex" : "none" }}
+      aria-hidden={!open}
+    >
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -67,7 +67,7 @@ export default function ExitIntentModal() {
       />
 
       {/* Modal card */}
-      <div className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] overflow-hidden">
 
         {/* Close button */}
         <button
@@ -96,8 +96,7 @@ export default function ExitIntentModal() {
             className="mt-2 text-sm text-stone-500 max-w-sm mx-auto"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Book a free 15-minute demo. We'll show you exactly how StoryVenue
-            fills your calendar — no pressure, no pitch deck.
+            Book a free 30-minute demo. We&rsquo;ll show you exactly how we fully book wedding venues.
           </p>
         </div>
 
@@ -120,7 +119,7 @@ export default function ExitIntentModal() {
             className="text-[12px] text-stone-400 hover:text-stone-600 transition-colors underline underline-offset-2"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            No thanks, I'll figure it out on my own
+            No thanks, I&apos;ll figure it out on my own
           </button>
         </div>
       </div>
