@@ -105,11 +105,11 @@ export default function ExitIntentModal() {
         </div>
 
         {/* Calendar embed */}
-        <div className="bg-stone-50 px-2 py-2">
+        <div className="bg-white px-0 py-0">
           <iframe
             src={CALENDAR_URL}
             id={CALENDAR_ID}
-            className="w-full rounded-2xl bg-white"
+            className="w-full bg-white"
             style={{ height: 600, border: "none", overflow: "hidden" }}
             scrolling="no"
             title="Book a free demo"

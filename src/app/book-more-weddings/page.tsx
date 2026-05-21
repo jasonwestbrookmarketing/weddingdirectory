@@ -330,7 +330,7 @@ export default function BookMoreWeddingsPage() {
             placeholder="empty"
             className="object-cover"
             sizes="100vw"
-            style={{ transform: "scaleX(-1)", objectPosition: "center 44%" }}
+            style={{ transform: "scaleX(-1)", objectPosition: "center 54%" }}
           />
           {/* Top fade — 20% so heads are clear of nav, not washed out */}
           <div
@@ -520,7 +520,7 @@ export default function BookMoreWeddingsPage() {
             — The real problem
           </p>
           <h2
-            className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
+            className="mt-4 text-[22px] sm:text-4xl md:text-5xl text-stone-900 leading-[1.12]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Most Wedding Venues Do Not Have A Lead Problem. They Have A{" "}
