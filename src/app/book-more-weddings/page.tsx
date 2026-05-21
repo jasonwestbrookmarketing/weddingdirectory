@@ -314,17 +314,37 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
-      {/*
-        * Hero — image fills the section via object-cover. CSS gradient overlays
-        * create white fades on left (text legibility) and right (phone pop).
-        */}
-      {/* Mobile: white bg, auto height, content stacks naturally.
-          Desktop (lg+): 16:9 viewport height, couple image, side-by-side grid. */}
-      <section
-        className="relative bg-white -mt-[92px] flex items-center lg:overflow-hidden"
-        style={{ minHeight: 520 }}
-      >
-        {/* Couple image — desktop only */}
+      <section className="relative bg-white -mt-[92px] lg:flex lg:items-center lg:overflow-hidden" style={{ minHeight: 520 }}>
+
+        {/* ── MOBILE / TABLET: hero image block ─────────────────────────── */}
+        {/* Shows the couple above the copy. Fades to white at the bottom   */}
+        {/* so the headline feels anchored to the image.                    */}
+        <div className="lg:hidden relative overflow-hidden" style={{ height: "min(76vw, 420px)", minHeight: 240 }}>
+          <Image
+            src="/hero-wedding-couple.jpg"
+            alt=""
+            aria-hidden
+            fill
+            priority
+            unoptimized
+            placeholder="empty"
+            className="object-cover object-center"
+            sizes="100vw"
+            style={{ transform: "scaleX(-1)" }}
+          />
+          {/* Top fade — keeps navbar readable */}
+          <div
+            className="absolute inset-x-0 top-0 pointer-events-none"
+            style={{ height: "35%", background: "linear-gradient(to bottom, rgba(255,255,255,0.88) 0%, transparent 100%)" }}
+          />
+          {/* Bottom fade — transitions into headline below */}
+          <div
+            className="absolute inset-x-0 bottom-0 pointer-events-none"
+            style={{ height: "50%", background: "linear-gradient(to top, white 0%, rgba(255,255,255,0.85) 40%, transparent 100%)" }}
+          />
+        </div>
+
+        {/* ── DESKTOP: couple image fills the full section ──────────────── */}
         <div className="hidden lg:block absolute pointer-events-none" style={{ inset: 0, transform: "translateX(8%)" }}>
           <Image
             src="/hero-wedding-couple.jpg"
@@ -351,7 +371,13 @@ export default function BookMoreWeddingsPage() {
           style={{ background: "linear-gradient(to left, white 0%, white 15%, rgba(255,255,255,0.85) 45%, rgba(255,255,255,0.3) 75%, transparent 100%)" }}
         />
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pt-[116px] pb-12 lg:pt-36 lg:pb-16 grid lg:grid-cols-12 lg:gap-8 items-center">
+        {/* ── Content ─────────────────────────────────────────────────────── */}
+        {/* Mobile: -mt-14 pulls the text up so the h1 overlaps the image   */}
+        {/* bottom-fade, giving the visual effect of text "on" the image.   */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10
+                        -mt-14 pb-12
+                        lg:mt-0 lg:pt-36 lg:pb-16
+                        grid lg:grid-cols-12 lg:gap-8 lg:items-center">
           {/* Left — copy */}
           <div className="lg:col-span-7 text-center lg:text-left">
             <h1
@@ -426,8 +452,42 @@ export default function BookMoreWeddingsPage() {
       {/* 1b. LOGO STRIP — social proof                                  */}
       {/* ============================================================== */}
       <div className="bg-stone-50/70 py-6 overflow-hidden">
-        <div className="max-w-[1600px] mx-auto px-6 md:px-10">
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-5 lg:flex-nowrap lg:justify-between lg:gap-6">
+        {/* Mobile / tablet: auto-scrolling ticker */}
+        <div className="lg:hidden">
+          <div className="flex animate-[ticker_32s_linear_infinite] whitespace-nowrap gap-10 items-center">
+            {[
+              { src: "/logos/arbor.png",       alt: "Arbor at the Port",          h: 36 },
+              { src: "/logos/vista.png",       alt: "Vista on the Docks",         h: 34 },
+              { src: "/logos/bogart.png",      alt: "Bogart House",               h: 52 },
+              { src: "/logos/pinetree.png",    alt: "The Pinetree",               h: 44 },
+              { src: "/logos/rachel.png",      alt: "Rachel Marie Events & Co.",  h: 44 },
+              { src: "/logos/waterloo.png",    alt: "Waterloo Farms",             h: 48 },
+              { src: "/logos/white-pine.png",  alt: "White Pine Manor",           h: 48 },
+              { src: "/logos/willowcreek.png", alt: "Willow Creek",               h: 40 },
+              { src: "/logos/atlantic.png",    alt: "Atlantic Stables",           h: 44 },
+              { src: "/logos/arbor.png",       alt: "",                           h: 36 },
+              { src: "/logos/vista.png",       alt: "",                           h: 34 },
+              { src: "/logos/bogart.png",      alt: "",                           h: 52 },
+              { src: "/logos/pinetree.png",    alt: "",                           h: 44 },
+              { src: "/logos/rachel.png",      alt: "",                           h: 44 },
+              { src: "/logos/waterloo.png",    alt: "",                           h: 48 },
+              { src: "/logos/white-pine.png",  alt: "",                           h: 48 },
+              { src: "/logos/willowcreek.png", alt: "",                           h: 40 },
+              { src: "/logos/atlantic.png",    alt: "",                           h: 44 },
+            ].map(({ src, alt, h }, i) => (
+              <div key={i} className="shrink-0 flex items-center justify-center">
+                <Image
+                  src={src} alt={alt} width={160} height={h} unoptimized placeholder="empty"
+                  className="w-auto object-contain"
+                  style={{ height: h, maxWidth: 140, filter: "brightness(0) invert(0) sepia(0) saturate(0) hue-rotate(0deg) brightness(0.11)", mixBlendMode: "multiply" }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Desktop: static evenly-spaced row */}
+        <div className="hidden lg:block max-w-[1600px] mx-auto px-6 md:px-10">
+          <div className="flex items-center justify-between gap-6">
             {[
               { src: "/logos/arbor.png",       alt: "Arbor at the Port",          h: 36 },
               { src: "/logos/vista.png",       alt: "Vista on the Docks",         h: 34 },
@@ -441,19 +501,9 @@ export default function BookMoreWeddingsPage() {
             ].map(({ src, alt, h }) => (
               <div key={src} className="shrink-0 flex items-center justify-center">
                 <Image
-                  src={src}
-                  alt={alt}
-                  width={160}
-                  height={h}
-                  unoptimized
-                  placeholder="empty"
+                  src={src} alt={alt} width={160} height={h} unoptimized placeholder="empty"
                   className="w-auto object-contain"
-                  style={{
-                    height: h,
-                    maxWidth: 140,
-                    filter: "brightness(0) invert(0) sepia(0) saturate(0) hue-rotate(0deg) brightness(0.11)",
-                    mixBlendMode: "multiply",
-                  }}
+                  style={{ height: h, maxWidth: 140, filter: "brightness(0) invert(0) sepia(0) saturate(0) hue-rotate(0deg) brightness(0.11)", mixBlendMode: "multiply" }}
                 />
               </div>
             ))}
@@ -474,7 +524,7 @@ export default function BookMoreWeddingsPage() {
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Most Wedding Venues Do Not Have A Lead Problem. They Have A{" "}
-            <HighlighterText>Booking System Problem</HighlighterText>.
+            <HighlighterText>Booking System Problem.</HighlighterText>
           </h2>
           <div
             className="mt-8 space-y-4 text-stone-600 text-base sm:text-lg leading-relaxed"
@@ -531,12 +581,12 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 4. SOLUTION SECTION                                             */}
       {/* ============================================================== */}
-      <section className="bg-stone-50/70 py-20 sm:py-28 border-y border-stone-200/60 overflow-hidden">
+      <section className="bg-stone-50/70 py-20 sm:py-28 border-y border-stone-200/60 overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
             {/* Left — copy */}
-            <div>
+            <div className="min-w-0">
               <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
                 — Meet StoryVenue
               </p>
@@ -563,8 +613,10 @@ export default function BookMoreWeddingsPage() {
               </div>
             </div>
 
-            {/* Right — dashboard mockup */}
-            <div className="pr-4">
+            {/* Right — dashboard mockup; overflow-hidden clips the floating */}
+            {/* stat badges so they never push the layout wider than the     */}
+            {/* viewport on mobile.                                          */}
+            <div className="overflow-hidden lg:overflow-visible lg:pr-4">
               <DashboardMockup />
             </div>
 
