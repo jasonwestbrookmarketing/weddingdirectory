@@ -395,7 +395,7 @@ export default function BookMoreWeddingsPage() {
             </h1>
 
             <p
-              className="mt-3 sm:mt-4 text-[13.5px] sm:text-[17px] text-stone-700 leading-snug sm:leading-relaxed max-w-md mx-auto lg:mx-0"
+              className="mt-3 sm:mt-4 text-[13.5px] sm:text-[17px] text-stone-700 leading-snug sm:leading-relaxed max-w-md lg:max-w-2xl mx-auto lg:mx-0"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               StoryVenue combines a wedding venue directory, booking system, CRM, payments, proposals, Meta ads, concierge follow-up, and AI into one simple platform to help venues find more couples and book more weddings.
@@ -723,7 +723,7 @@ export default function BookMoreWeddingsPage() {
                 className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                Send Proposals and<br className="sm:hidden" /> Get Paid Online
+                Send Proposals and<br className="sm:hidden lg:inline" /> Get Paid Online
               </h3>
               <p className="mt-5 text-base sm:text-lg text-stone-600 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
                 Send branded proposals couples can review, sign, and pay from any device. Collect deposits, invoices, balances, and payment plans online while keeping the booking process simple, professional, and easy to complete.
@@ -785,7 +785,7 @@ export default function BookMoreWeddingsPage() {
                 className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                Run Your Venue From One Place
+                Run Your Venue From<br className="hidden lg:inline" /> One Place
               </h3>
               <p className="mt-5 text-base sm:text-lg text-stone-600 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
                 Manage leads, conversations, tours, calendars, proposals, payments, documents, reports, and your team inside one connected system built specifically for wedding venues.
@@ -809,7 +809,7 @@ export default function BookMoreWeddingsPage() {
                 className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                Every Tool Your Venue Needs, Built Into One Platform.
+                Every Tool Your Venue Needs,<br className="hidden lg:inline" /> Built Into One Platform.
               </h2>
             </div>
 
