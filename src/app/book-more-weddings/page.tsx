@@ -390,7 +390,7 @@ export default function BookMoreWeddingsPage() {
         style={{ height: "min(56.25vw, 1080px)", minHeight: "520px" }}
       >
         {/* Wrapper shifts the couple rightward; section overflow:hidden clips the edge */}
-        <div className="absolute pointer-events-none" style={{ inset: 0, transform: "translateX(6%)" }}>
+        <div className="absolute pointer-events-none" style={{ inset: 0, transform: "translateX(8%)" }}>
           <Image
             src="/hero-wedding-couple.jpg"
             alt=""
