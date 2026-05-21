@@ -385,12 +385,14 @@ export default function BookMoreWeddingsPage() {
         * Hero — image fills the section via object-cover. CSS gradient overlays
         * create white fades on left (text legibility) and right (phone pop).
         */}
+      {/* Mobile: white bg, auto height, content stacks naturally.
+          Desktop (lg+): 16:9 viewport height, couple image, side-by-side grid. */}
       <section
-        className="relative overflow-hidden flex items-center -mt-[92px]"
-        style={{ height: "min(56.25vw, 1080px)", minHeight: "520px" }}
+        className="relative bg-white -mt-[92px] flex items-center lg:overflow-hidden"
+        style={{ minHeight: 520 }}
       >
-        {/* Wrapper shifts the couple rightward; section overflow:hidden clips the edge */}
-        <div className="absolute pointer-events-none" style={{ inset: 0, transform: "translateX(8%)" }}>
+        {/* Couple image — desktop only */}
+        <div className="hidden lg:block absolute pointer-events-none" style={{ inset: 0, transform: "translateX(8%)" }}>
           <Image
             src="/hero-wedding-couple.jpg"
             alt=""
@@ -405,22 +407,22 @@ export default function BookMoreWeddingsPage() {
           />
         </div>
 
-        {/* Left fade — keeps heading & text legible */}
+        {/* Left fade — desktop only */}
         <div
-          className="absolute inset-y-0 left-0 w-[50%] z-[1] pointer-events-none"
+          className="hidden lg:block absolute inset-y-0 left-0 w-[50%] z-[1] pointer-events-none"
           style={{ background: "linear-gradient(to right, white 0%, white 25%, rgba(255,255,255,0.92) 50%, rgba(255,255,255,0.4) 75%, transparent 100%)" }}
         />
-        {/* Right fade — lets phone pop against white */}
+        {/* Right fade — desktop only */}
         <div
-          className="absolute inset-y-0 right-0 w-[40%] z-[1] pointer-events-none"
+          className="hidden lg:block absolute inset-y-0 right-0 w-[40%] z-[1] pointer-events-none"
           style={{ background: "linear-gradient(to left, white 0%, white 15%, rgba(255,255,255,0.85) 45%, rgba(255,255,255,0.3) 75%, transparent 100%)" }}
         />
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pt-36 pb-16 sm:pb-20 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pt-[116px] pb-12 lg:pt-36 lg:pb-16 grid lg:grid-cols-12 lg:gap-8 items-center">
           {/* Left — copy */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 text-center lg:text-left">
             <h1
-              className="text-[32px] sm:text-[40px] md:text-[46px] lg:text-[50px] leading-[1.08] text-stone-900 whitespace-nowrap"
+              className="text-[30px] sm:text-[38px] md:text-[44px] lg:text-[50px] leading-[1.1] text-stone-900 lg:whitespace-nowrap"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
               <span className="block">Fully Book Your Wedding Venue</span>
@@ -428,14 +430,14 @@ export default function BookMoreWeddingsPage() {
             </h1>
 
             <p
-              className="mt-5 text-base sm:text-[17px] text-stone-700 leading-relaxed max-w-md"
+              className="mt-4 text-base sm:text-[17px] text-stone-700 leading-relaxed max-w-md mx-auto lg:mx-0"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              StoryVenue combines a wedding venue directory, booking system, CRM, payments, proposals, Meta ads, concierge follow-up, and AI intelligence into one simple platform built to help venues find more couples, host more tours, and book more weddings.
+              StoryVenue combines a wedding venue directory, booking system, CRM, payments, proposals, Meta ads, concierge follow-up, and AI into one simple platform to help venues find more couples and book more weddings.
             </p>
 
             {/* Pill-style CTA */}
-            <div className="mt-7 max-w-md">
+            <div className="mt-7 max-w-md mx-auto lg:mx-0">
               <a
                 href={TRIAL_HREF}
                 className="group flex items-center justify-between rounded-full bg-white border border-stone-200 pl-5 pr-1.5 py-1.5 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.18)] hover:shadow-[0_14px_36px_-12px_rgba(0,0,0,0.22)] transition-shadow"
@@ -454,9 +456,8 @@ export default function BookMoreWeddingsPage() {
                 </span>
               </a>
 
-              {/* Google Reviews social proof — centered under the CTA */}
+              {/* Google Reviews social proof */}
               <div className="mt-5 flex items-center justify-center gap-3">
-                {/* Overlapping avatar circles */}
                 <div className="flex -space-x-2.5 shrink-0">
                   {["/avatars/av1.jpg", "/avatars/av2.jpg", "/avatars/av3.jpg", "/avatars/av4.jpg", "/avatars/av5.jpg"].map((src, i) => (
                     <div key={i} className="relative w-9 h-9 rounded-full border-2 border-white overflow-hidden" style={{ zIndex: 5 - i }}>
@@ -464,7 +465,6 @@ export default function BookMoreWeddingsPage() {
                     </div>
                   ))}
                 </div>
-                {/* Stars + label */}
                 <div>
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
@@ -477,8 +477,8 @@ export default function BookMoreWeddingsPage() {
             </div>
           </div>
 
-          {/* Right — phone mockup over the image */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end lg:items-end">
+          {/* Right — phone mockup, desktop only */}
+          <div className="hidden lg:flex lg:col-span-5 justify-center lg:justify-end lg:items-end">
             <PhonePreview />
           </div>
         </div>
@@ -490,7 +490,7 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       <div className="bg-stone-50/70 py-6 overflow-hidden">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10">
-          <div className="flex items-center justify-between gap-6 flex-nowrap">
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-5 lg:flex-nowrap lg:justify-between lg:gap-6">
             {[
               { src: "/logos/arbor.png",       alt: "Arbor at the Port",          h: 36 },
               { src: "/logos/vista.png",       alt: "Vista on the Docks",         h: 34 },
