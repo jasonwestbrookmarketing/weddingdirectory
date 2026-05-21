@@ -850,7 +850,7 @@ export default function BookMoreWeddingsPage() {
       <section className="relative overflow-hidden text-white">
         {/* Background image — rendered raw, no overlay, no optimization */}
         <Image
-          src="/not-just-software-bg.png"
+          src="/not-just-software-bg.jpg"
           alt=""
           aria-hidden
           fill
