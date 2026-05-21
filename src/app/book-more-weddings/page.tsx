@@ -521,7 +521,7 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 2. PAIN SECTION                                                 */}
       {/* ============================================================== */}
-      <section className="bg-stone-50/70 py-20 sm:py-28 border-y border-stone-200/60">
+      <section className="bg-stone-50/70 py-20 sm:py-28 border-b border-stone-200/60">
         <div className="max-w-5xl mx-auto px-6 md:px-10">
           <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
             — The real problem
