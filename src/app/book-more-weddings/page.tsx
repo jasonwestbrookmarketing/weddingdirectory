@@ -107,130 +107,62 @@ const HOW_IT_WORKS_STEPS = [
   },
 ] as const;
 
-const FEATURE_CARDS: Array<{
-  icon: React.ComponentType<{ className?: string }>;
-  title: string;
+const FEATURE_GROUPS: Array<{
+  category: string;
   description: string;
+  defaultOpen?: boolean;
+  features: Array<{ icon: React.ComponentType<{ className?: string }>; title: string; description: string }>;
 }> = [
   {
-    icon: Search,
-    title: "Directory Listing",
-    description:
-      "Get your venue in front of couples actively searching for their perfect wedding venue, without relying only on crowded directories or word of mouth.",
+    category: "Get Found",
+    description: "Put your venue in front of brides who are actively looking.",
+    defaultOpen: true,
+    features: [
+      { icon: Search,        title: "Directory Listing",           description: "Get your venue in front of couples actively searching, without relying only on crowded directories or word of mouth." },
+      { icon: Megaphone,     title: "Meta Ads",                    description: "Show up while brides are dreaming, searching, and comparing venues so your venue gets seen before your competitors." },
+      { icon: LayoutTemplate,title: "Landing Pages",               description: "Turn ad clicks into real inquiries with focused pages built to capture interest and move brides toward the next step." },
+      { icon: ClipboardList, title: "Lead Capture Forms",          description: "Capture every inquiry from your website, ads, social bio, or directory listing and send it straight into your booking system." },
+      { icon: BookOpen,      title: "Pricing & Availability Guide",description: "Give brides the two answers they want most — instantly — so they feel confident and ready to take the next step." },
+    ],
   },
   {
-    icon: Megaphone,
-    title: "Meta Ads",
-    description:
-      "Show up while brides are dreaming, searching, and comparing venues, so your venue gets seen before your competitors.",
+    category: "Manage Leads",
+    description: "Keep every bride organized and no opportunity slipping through.",
+    features: [
+      { icon: Users,         title: "CRM",                  description: "Keep every bride, conversation, note, payment, proposal, and booking detail in one place so nothing gets lost." },
+      { icon: TrendingUp,    title: "Sales Pipeline",       description: "See exactly where every bride stands — from new inquiry to booked wedding — and know what needs to happen next." },
+      { icon: Inbox,         title: "Unified Inbox",        description: "Every email and text in one thread so your team can respond faster and never lose context." },
+      { icon: MessageSquare, title: "Email & SMS Follow-Up",description: "Follow up with every lead automatically so brides stay engaged and fewer opportunities go cold." },
+    ],
   },
   {
-    icon: LayoutTemplate,
-    title: "Landing Pages",
-    description:
-      "Turn ad clicks into real inquiries with focused pages built to capture interest, collect details, and move brides toward the next step.",
+    category: "Book Weddings",
+    description: "Turn interest into tours, and tours into signed contracts.",
+    features: [
+      { icon: Sparkles,      title: "StoryVenue Concierge",       description: "Our team personally follows up with leads, answers questions, and helps book 5-minute chats or tours on your behalf." },
+      { icon: BrainCircuit,  title: "AI Concierge",               description: "Re-engage silent leads with personalized follow-up every 1–3 days until they reply, so no bride is forgotten." },
+      { icon: CalendarDays,  title: "Calendar & Tour Scheduling", description: "Manage tours, events, holds, and booked dates in one calendar so your team stays organized and avoids double-bookings." },
+      { icon: FileSignature, title: "Proposals With E-Signatures",description: "Send professional proposals brides can review, sign, and pay from any device — close bookings faster." },
+    ],
   },
   {
-    icon: ClipboardList,
-    title: "Lead Capture Forms",
-    description:
-      "Capture every inquiry from your website, ads, social bio, or directory listing and send new leads directly into your booking system.",
+    category: "Get Paid",
+    description: "Collect revenue professionally without chasing checks.",
+    features: [
+      { icon: CreditCard,    title: "Online Payments", description: "Collect deposits, balances, add-ons, and invoices online so couples can pay instantly." },
+      { icon: Wallet,        title: "Payment Plans",   description: "Make it easier for couples to say yes with automatic installment plans — no manual tracking." },
+      { icon: Shield,        title: "Client Portal",   description: "One professional place for couples to view proposals, sign documents, and make payments." },
+    ],
   },
   {
-    icon: BookOpen,
-    title: "Pricing and Availability Guide",
-    description:
-      "Give brides the two answers they want most, pricing and availability, instantly so they feel clear, confident, and ready to take the next step.",
-  },
-  {
-    icon: Users,
-    title: "CRM",
-    description:
-      "Keep every bride, conversation, note, payment, proposal, and booking detail in one place so no lead or opportunity gets lost.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Sales Pipeline",
-    description:
-      "See exactly where every bride stands, from new inquiry to booked wedding, and know what needs to happen next.",
-  },
-  {
-    icon: MessageSquare,
-    title: "Email and SMS Follow-Up",
-    description:
-      "Follow up with every lead automatically so brides stay engaged, conversations continue, and fewer opportunities go cold.",
-  },
-  {
-    icon: Sparkles,
-    title: "StoryVenue Concierge",
-    description:
-      "Let our team personally follow up with leads, answer questions, build trust, and help book 5-minute chats or tours on your behalf.",
-  },
-  {
-    icon: BrainCircuit,
-    title: "AI Concierge",
-    description:
-      "Re-engage silent leads with personalized follow-up every 1 to 3 days until they reply, so no bride is forgotten.",
-  },
-  {
-    icon: CalendarDays,
-    title: "Calendar and Tour Scheduling",
-    description:
-      "Manage tours, events, meetings, holds, and booked dates in one calendar so your team stays organized and avoids double-bookings.",
-  },
-  {
-    icon: Inbox,
-    title: "Unified Inbox",
-    description:
-      "Keep every email and text conversation in one thread so your team can respond faster and never lose context.",
-  },
-  {
-    icon: FileSignature,
-    title: "Proposals With E-Signatures",
-    description:
-      "Send professional proposals brides can review, sign, and pay from any device, helping you close bookings faster.",
-  },
-  {
-    icon: CreditCard,
-    title: "Online Payments",
-    description:
-      "Collect deposits, balances, add-ons, and invoices online so couples can pay instantly and you can stop chasing checks.",
-  },
-  {
-    icon: Wallet,
-    title: "Payment Plans",
-    description:
-      "Make it easier for couples to say yes by offering automatic installment plans without manually tracking or chasing payments.",
-  },
-  {
-    icon: Star,
-    title: "Reviews",
-    description:
-      "Build trust with social proof by collecting, managing, and displaying reviews where future brides are already comparing venues.",
-  },
-  {
-    icon: BarChart3,
-    title: "Reporting",
-    description:
-      "See revenue, payments, outstanding balances, proposal activity, and booking performance clearly so you know where your business stands.",
-  },
-  {
-    icon: Zap,
-    title: "Marketing Automations",
-    description:
-      "Run follow-up, email sequences, SMS messages, lead nurturing, reminders, and internal notifications automatically.",
-  },
-  {
-    icon: CalendarCheck,
-    title: "Team Tools",
-    description:
-      "Give your team the access, notes, permissions, and notifications they need to stay aligned without giving everyone full control.",
-  },
-  {
-    icon: Shield,
-    title: "Client Portal",
-    description:
-      "Give couples one professional place to view proposals, sign documents, make payments, and stay connected with your venue.",
+    category: "Grow Your Business",
+    description: "Automate the work, measure what matters, and scale with confidence.",
+    features: [
+      { icon: Star,          title: "Reviews",               description: "Collect, manage, and display reviews where future brides are already comparing venues." },
+      { icon: BarChart3,     title: "Reporting",             description: "See revenue, payments, outstanding balances, and booking performance clearly so you always know where you stand." },
+      { icon: Zap,           title: "Marketing Automations", description: "Run follow-up sequences, SMS messages, lead nurturing, reminders, and notifications automatically." },
+      { icon: CalendarCheck, title: "Team Tools",            description: "Give your team the access, notes, and permissions they need to stay aligned without giving everyone full control." },
+    ],
   },
 ];
 
@@ -833,9 +765,9 @@ export default function BookMoreWeddingsPage() {
           </div>
         </section>
 
-        {/* Feature cards grid */}
+        {/* Feature accordion — grouped by category */}
         <section className="bg-white py-20 sm:py-28">
-          <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="max-w-5xl mx-auto px-6 md:px-10">
             <div className="max-w-2xl mb-12">
               <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">— Full feature list</p>
               <h2
@@ -845,22 +777,51 @@ export default function BookMoreWeddingsPage() {
                 Every Tool Your Venue Needs, Built Into One Platform.
               </h2>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {FEATURE_CARDS.map(({ icon: Icon, title, description }) => (
-                <div
-                  key={title}
-                  className="group rounded-2xl bg-stone-50 border border-stone-200/80 p-5 hover:shadow-[0_14px_32px_-15px_rgba(0,0,0,0.14)] hover:-translate-y-0.5 transition-all"
-                >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-900 text-white">
-                    <Icon className="w-[18px] h-[18px]" />
-                  </span>
-                  <h3 className="mt-4 text-[15px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
-                    {title}
-                  </h3>
-                  <p className="mt-2 text-[13px] text-stone-600 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
-                    {description}
-                  </p>
-                </div>
+
+            <div className="divide-y divide-stone-200 border-y border-stone-200">
+              {FEATURE_GROUPS.map(({ category, description, defaultOpen, features }) => (
+                <details key={category} open={defaultOpen} className="group/feat">
+                  <summary className="flex cursor-pointer items-center justify-between gap-4 py-5 list-none [&::-webkit-details-marker]:hidden">
+                    <div className="flex items-center gap-4">
+                      <div>
+                        <span
+                          className="text-[16px] font-bold text-stone-900"
+                          style={{ fontFamily: "var(--font-open-sans)" }}
+                        >
+                          {category}
+                        </span>
+                        <span className="ml-2.5 inline-flex items-center rounded-full bg-stone-100 px-2 py-0.5 text-[11px] font-semibold text-stone-500">
+                          {features.length}
+                        </span>
+                      </div>
+                      <p className="hidden sm:block text-[13px] text-stone-400" style={{ fontFamily: "var(--font-open-sans)" }}>
+                        {description}
+                      </p>
+                    </div>
+                    <ChevronDown
+                      className="w-5 h-5 shrink-0 text-stone-400 transition-transform duration-200 group-open/feat:rotate-180"
+                    />
+                  </summary>
+
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-8 pt-1">
+                    {features.map(({ icon: Icon, title, description: desc }) => (
+                      <div
+                        key={title}
+                        className="rounded-2xl bg-stone-50 border border-stone-200/80 p-5 hover:shadow-[0_14px_32px_-15px_rgba(0,0,0,0.14)] hover:-translate-y-0.5 transition-all"
+                      >
+                        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-stone-900 text-white">
+                          <Icon className="w-[16px] h-[16px]" />
+                        </span>
+                        <h3 className="mt-3 text-[14px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
+                          {title}
+                        </h3>
+                        <p className="mt-1.5 text-[12px] text-stone-500 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
+                          {desc}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </details>
               ))}
             </div>
           </div>
