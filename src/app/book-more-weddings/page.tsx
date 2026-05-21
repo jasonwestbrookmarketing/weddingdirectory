@@ -42,7 +42,12 @@ const STORYPAY_URL =
 
 const TRIAL_HREF = `${STORYPAY_URL}/signup?as=venue&plan=trial&utm_source=meta&utm_medium=paid&utm_campaign=book-more-weddings`;
 
+// Cache-busting query string forces iMessage / Facebook / LinkedIn / X to
+// re-scrape the OG image instead of serving the old (calendar modal) preview.
+const OG_IMAGE = "/og-book-more-weddings.jpg?v=2";
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://storyvenue.com"),
   title:
     "Book More Weddings — The All-In-One Directory, Booking System & Marketing Platform | StoryVenue",
   description:
@@ -54,7 +59,14 @@ export const metadata: Metadata = {
       "The first and only all-in-one directory, booking system, and marketing platform for wedding venues. 14-day free trial. No contract.",
     url: "/book-more-weddings",
     siteName: "StoryVenue",
-    images: [{ url: "/hero-wedding.jpg", width: 1200, height: 630 }],
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "StoryVenue — Fully book your wedding venue without empty weekends",
+      },
+    ],
     type: "website",
   },
   twitter: {
@@ -62,7 +74,7 @@ export const metadata: Metadata = {
     title: "Fully Book Your Wedding Venue Without Empty Weekends | StoryVenue",
     description:
       "Directory + booking system + CRM + Meta ads + concierge follow-up in one platform. 14-day free trial.",
-    images: ["/hero-wedding.jpg"],
+    images: [OG_IMAGE],
   },
 };
 
