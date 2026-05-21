@@ -382,10 +382,8 @@ export default function BookMoreWeddingsPage() {
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
       {/*
-        * Hero — image fills the section via object-cover. Both the hero and
-        * the source are 16:9 so there is zero cropping and zero distortion —
-        * it scales uniformly. The image already has white fades baked into
-        * its left and right edges so no CSS overlay is needed.
+        * Hero — image fills the section via object-cover. CSS gradient overlays
+        * create white fades on left (text legibility) and right (phone pop).
         */}
       <section
         className="relative overflow-hidden flex items-center -mt-[92px]"
@@ -401,6 +399,17 @@ export default function BookMoreWeddingsPage() {
           placeholder="empty"
           className="absolute inset-0 object-cover object-center"
           sizes="100vw"
+        />
+
+        {/* Left fade — keeps heading & text legible */}
+        <div
+          className="absolute inset-y-0 left-0 w-[50%] z-[1] pointer-events-none"
+          style={{ background: "linear-gradient(to right, white 0%, white 25%, rgba(255,255,255,0.92) 50%, rgba(255,255,255,0.4) 75%, transparent 100%)" }}
+        />
+        {/* Right fade — lets phone pop against white */}
+        <div
+          className="absolute inset-y-0 right-0 w-[40%] z-[1] pointer-events-none"
+          style={{ background: "linear-gradient(to left, white 0%, white 15%, rgba(255,255,255,0.85) 45%, rgba(255,255,255,0.3) 75%, transparent 100%)" }}
         />
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pt-36 pb-16 sm:pb-20 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
