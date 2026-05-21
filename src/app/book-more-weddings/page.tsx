@@ -1136,7 +1136,7 @@ export default function BookMoreWeddingsPage() {
         />
 
         {/* Content layer above the image */}
-        <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-10 pt-80 pb-24 sm:pt-96 sm:pb-32 text-center">
+        <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-10 pt-56 pb-24 sm:pt-64 sm:pb-32 text-center">
           <h2
             className="text-2xl sm:text-4xl md:text-5xl leading-[1.05] whitespace-nowrap"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
