@@ -314,7 +314,7 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
-      <section className="relative bg-white -mt-[92px] lg:flex lg:items-center lg:overflow-hidden" style={{ minHeight: 520 }}>
+      <section className="relative bg-white pt-6 lg:pt-0 lg:-mt-[92px] lg:flex lg:items-center lg:overflow-hidden" style={{ minHeight: 520 }}>
 
         {/* ── MOBILE / TABLET: hero image block ─────────────────────────── */}
         {/* Shows the couple above the copy. Fades to white at the bottom   */}
@@ -332,11 +332,7 @@ export default function BookMoreWeddingsPage() {
             sizes="100vw"
             style={{ transform: "scaleX(-1)", objectPosition: "center 54%" }}
           />
-          {/* Top fade — 20% so heads are clear of nav, not washed out */}
-          <div
-            className="absolute inset-x-0 top-0 pointer-events-none"
-            style={{ height: "20%", background: "linear-gradient(to bottom, rgba(255,255,255,0.72) 0%, transparent 100%)" }}
-          />
+          {/* Top fade removed on mobile — image now sits below nav with white gap */}
           {/* Bottom fade — starts at 38% so headline sits comfortably on leg area */}
           <div
             className="absolute inset-x-0 bottom-0 pointer-events-none"
