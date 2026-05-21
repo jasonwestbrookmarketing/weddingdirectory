@@ -172,6 +172,10 @@ const FAQ_ITEMS = [
     a: "No. StoryVenue is more than a directory.\n\nMost directories list your venue next to every competitor in your market and leave you to figure out the rest. StoryVenue gives your venue a full growth system: directory presence, Meta ads, landing pages, lead capture, CRM, SMS and email follow-up, Venue Concierge Team, AI Concierge, proposals, payments, calendar, reviews, and reporting. It is built to help you get found, book tours, and turn more inquiries into signed weddings.",
   },
   {
+    q: "How many extra weddings do I need for this to pay for itself?",
+    a: "For many venues, just 1 to 2 extra weddings can cover the system for the entire year.\n\nThat is why the first goal is simple: Help you make your investment back as quickly as possible.",
+  },
+  {
     q: "Is this just a CRM?",
     a: "No. A CRM helps you organize leads.\n\nStoryVenue helps you create leads, capture them, follow up with them, book tours, send proposals, collect payments, and manage the entire booking process from one place. It is not just where leads are stored. It is the system that helps move them forward.",
   },
@@ -218,10 +222,6 @@ const FAQ_ITEMS = [
   {
     q: "What if it does not work for my venue?",
     a: "StoryVenue includes a 14-day results guarantee after going live.\n\nIf we do not deliver the results we agreed to, you do not pay.",
-  },
-  {
-    q: "How many extra weddings do I need for this to pay for itself?",
-    a: "For many venues, just 1 to 2 extra weddings can cover the system for the entire year.\n\nThat is why the first goal is simple: Help you make your investment back as quickly as possible.",
   },
 ] as const;
 
