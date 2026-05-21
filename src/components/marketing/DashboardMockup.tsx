@@ -66,14 +66,14 @@ export default function DashboardMockup() {
         </div>
       </div>
 
-      {/* Floating stat badges */}
+      {/* Floating stat badges — hidden on mobile to keep the mockup intact */}
       {BADGES.map((badge, i) => {
         const Icon = badge.icon;
         const positions = ["absolute -top-4 -right-5", "absolute top-1/2 -right-7 -translate-y-1/2", "absolute -bottom-4 -right-5"];
         return (
           <div
             key={badge.label}
-            className={`${positions[i]} bg-white rounded-2xl border border-stone-200 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)] px-3 py-2 flex items-center gap-2 min-w-[136px]`}
+            className={`${positions[i]} hidden sm:flex bg-white rounded-2xl border border-stone-200 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)] px-3 py-2 items-center gap-2 min-w-[136px]`}
             style={{
               opacity: active ? 1 : 0,
               transform: active ? "translateX(0) scale(1)" : "translateX(16px) scale(0.9)",

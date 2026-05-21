@@ -33,6 +33,7 @@ import DashboardMockup from "@/components/marketing/DashboardMockup";
 import ProcessTimeline from "@/components/marketing/ProcessTimeline";
 import PhonePreview from "@/components/marketing/PhonePreview";
 import ExitIntentModal from "@/components/marketing/ExitIntentModal";
+import ScrollToTop from "@/components/marketing/ScrollToTop";
 
 export const dynamic = "force-static";
 
@@ -601,10 +602,8 @@ export default function BookMoreWeddingsPage() {
               </div>
             </div>
 
-            {/* Right — dashboard mockup; overflow-hidden clips the floating */}
-            {/* stat badges so they never push the layout wider than the     */}
-            {/* viewport on mobile.                                          */}
-            <div className="overflow-hidden lg:overflow-visible lg:pr-4">
+            {/* Right — dashboard mockup (floating badges hidden on mobile via component) */}
+            <div className="lg:pr-4">
               <DashboardMockup />
             </div>
 
@@ -1206,6 +1205,9 @@ export default function BookMoreWeddingsPage() {
 
       {/* Exit-intent demo booking modal */}
       <ExitIntentModal />
+
+      {/* Scroll-to-top FAB (all devices) */}
+      <ScrollToTop />
     </>
   );
 }
