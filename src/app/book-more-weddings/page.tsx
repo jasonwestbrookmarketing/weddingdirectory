@@ -1122,8 +1122,8 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 10. FINAL CTA                                                   */}
       {/* ============================================================== */}
-      <section className="relative bg-stone-900 text-white overflow-hidden">
-        {/* Background image — rendered raw, no opacity, no gradient on top */}
+      <section className="relative text-white overflow-hidden">
+        {/* Background image */}
         <Image
           src="/your-next-step-bg.jpg"
           alt=""
@@ -1133,6 +1133,12 @@ export default function BookMoreWeddingsPage() {
           placeholder="empty"
           className="absolute inset-0 object-cover object-top"
           sizes="100vw"
+        />
+
+        {/* Gradient only at the bottom — keeps couple's faces bright, darkens text area */}
+        <div
+          className="absolute inset-0 z-[1] pointer-events-none"
+          style={{ background: "linear-gradient(to bottom, transparent 0%, transparent 40%, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.80) 100%)" }}
         />
 
         {/* Content layer above the image */}
