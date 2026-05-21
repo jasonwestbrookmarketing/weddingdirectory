@@ -1064,7 +1064,7 @@ export default function BookMoreWeddingsPage() {
             {/* Free */}
             <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col my-4">
               <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Free</h3>
-              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>List your venue. Send proposals. 0% processing fees.</p>
+              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>List your venue. Send proposals.<br />0% processing fees.</p>
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$0</span>
                 <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
