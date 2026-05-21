@@ -330,7 +330,7 @@ export default function BookMoreWeddingsPage() {
             placeholder="empty"
             className="object-cover"
             sizes="100vw"
-            style={{ transform: "scaleX(-1)", objectPosition: "center 35%" }}
+            style={{ transform: "scaleX(-1)", objectPosition: "center 44%" }}
           />
           {/* Top fade — 20% so heads are clear of nav, not washed out */}
           <div
