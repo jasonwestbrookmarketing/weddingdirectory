@@ -319,7 +319,7 @@ export default function BookMoreWeddingsPage() {
         {/* ── MOBILE / TABLET: hero image block ─────────────────────────── */}
         {/* Shows the couple above the copy. Fades to white at the bottom   */}
         {/* so the headline feels anchored to the image.                    */}
-        <div className="lg:hidden relative overflow-hidden" style={{ height: "min(76vw, 420px)", minHeight: 240 }}>
+        <div className="lg:hidden relative overflow-hidden" style={{ height: "min(90vw, 500px)", minHeight: 280 }}>
           <Image
             src="/hero-wedding-couple.jpg"
             alt=""
@@ -328,9 +328,9 @@ export default function BookMoreWeddingsPage() {
             priority
             unoptimized
             placeholder="empty"
-            className="object-cover object-center"
+            className="object-cover"
             sizes="100vw"
-            style={{ transform: "scaleX(-1)" }}
+            style={{ transform: "scaleX(-1)", objectPosition: "center 15%" }}
           />
           {/* Top fade — keeps navbar readable */}
           <div
