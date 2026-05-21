@@ -954,7 +954,7 @@ export default function BookMoreWeddingsPage() {
               StoryVenue Plans
             </h2>
             <p className="mt-3 text-[14px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>
-              14-day free trial. No down payment. No contracts. No cancellation fees.
+              14-day free trial. No Contracts. No Cancellation Fees. 30-day results guarantee — or you don't pay.
             </p>
           </div>
 
@@ -969,7 +969,7 @@ export default function BookMoreWeddingsPage() {
                 </span>
               </div>
               <h3 className="text-xl font-bold text-stone-900 mt-2" style={{ fontFamily: "var(--font-open-sans)" }}>All-Inclusive</h3>
-              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>We fill your calendar. You host.</p>
+              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>We find the couples and do the follow-up. You host.</p>
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$1,499</span>
                 <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
@@ -1001,7 +1001,7 @@ export default function BookMoreWeddingsPage() {
             {/* Booking System */}
             <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col my-4">
               <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Booking System</h3>
-              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>We bring the brides. You close them.</p>
+              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>We find the couples. You do the follow-up.</p>
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$999</span>
                 <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
@@ -1032,7 +1032,7 @@ export default function BookMoreWeddingsPage() {
             {/* Venue Pro */}
             <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col my-4">
               <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Venue Pro</h3>
-              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>Run your venue like a business.</p>
+              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>Every tool to manage leads, tours, and bookings yourself.</p>
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$299</span>
                 <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
@@ -1064,7 +1064,7 @@ export default function BookMoreWeddingsPage() {
             {/* Free */}
             <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col my-4">
               <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Free</h3>
-              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>Get listed. Get paid.</p>
+              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>List your venue. Send proposals. 0% processing fees.</p>
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$0</span>
                 <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
