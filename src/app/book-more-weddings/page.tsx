@@ -293,16 +293,16 @@ export default function BookMoreWeddingsPage() {
           </div>
         </div>
 
-        {/* NAV */}
+        {/* NAV — smaller on mobile to free up vertical real estate */}
         <header className="bg-white/75 backdrop-blur-md border-b border-white/20">
-          <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-10 py-4">
+          <nav className="max-w-7xl mx-auto flex items-center justify-between px-5 md:px-10 py-2.5 lg:py-4">
             <Link href="/" aria-label="StoryVenue home" className="shrink-0">
               <Image
                 src="/storyvenue-dark-logo.png"
                 alt="StoryVenue"
                 width={185}
                 height={44}
-                className="h-11 w-auto object-contain"
+                className="h-8 lg:h-11 w-auto object-contain"
                 priority
               />
             </Link>
@@ -312,15 +312,17 @@ export default function BookMoreWeddingsPage() {
       </div>
 
       {/* ============================================================== */}
-      {/* 1. HERO                                                         */}
+      {/* 1. HERO  (+ logo strip on mobile = 1 viewport tall)             */}
       {/* ============================================================== */}
-      <section className="relative bg-white pt-8 lg:pt-0 lg:-mt-[92px] lg:flex lg:items-center lg:overflow-hidden lg:min-h-[520px]">
+      {/* On mobile, the hero section AND the logo strip share a flex     */}
+      {/* column that's exactly the viewport height minus the sticky nav  */}
+      {/* (announcement ticker ~28px + nav ~52px ≈ 80px). The section     */}
+      {/* uses flex-1 to fill, pushing the logo strip to the bottom.      */}
+      <div className="flex flex-col lg:contents" style={{ minHeight: "calc(100svh - 80px)" }}>
+      <section className="relative bg-white pt-3 lg:pt-0 flex flex-col lg:block lg:-mt-[92px] lg:items-center lg:overflow-hidden lg:min-h-[520px] flex-1 lg:flex-none">
 
-        {/* ── MOBILE / TABLET: hero image block ─────────────────────────── */}
-        {/* Compact height + objectPosition 65% keeps clear barn-ceiling     */}
-        {/* space above the couple's heads while everything below fits in   */}
-        {/* one viewport (incl. scrolling logos).                            */}
-        <div className="lg:hidden relative overflow-hidden" style={{ height: "min(56vw, 230px)", minHeight: 180 }}>
+        {/* ── MOBILE / TABLET: clean hero image block, no overlap, no fade ── */}
+        <div className="lg:hidden relative overflow-hidden shrink-0" style={{ height: "min(48vw, 200px)", minHeight: 160 }}>
           <Image
             src="/hero-wedding-couple.jpg"
             alt=""
@@ -331,12 +333,7 @@ export default function BookMoreWeddingsPage() {
             placeholder="empty"
             className="object-cover"
             sizes="100vw"
-            style={{ transform: "scaleX(-1)", objectPosition: "center 65%" }}
-          />
-          {/* Bottom fade — softer so smaller image stays clean */}
-          <div
-            className="absolute inset-x-0 bottom-0 pointer-events-none"
-            style={{ height: "45%", background: "linear-gradient(to top, white 0%, white 25%, rgba(255,255,255,0.8) 60%, transparent 100%)" }}
+            style={{ transform: "scaleX(-1)", objectPosition: "center 60%" }}
           />
         </div>
 
@@ -368,13 +365,13 @@ export default function BookMoreWeddingsPage() {
         />
 
         {/* ── Content ─────────────────────────────────────────────────────── */}
-        {/* Mobile: gentle -mt-10 overlap onto image bottom-fade.            */}
-        {/* All sizes tightened so image + h1 + p + CTA + guarantee + social */}
-        {/* proof + logo strip all fit within one mobile viewport.           */}
+        {/* Mobile: clean positive gap (pt-5) below image — no overlap, no   */}
+        {/* gradient — eliminates the sub-pixel line that appeared before.   */}
+        {/* flex-1 lets the content centre vertically in remaining space.    */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10
-                        -mt-10 pb-4
-                        lg:mt-0 lg:pt-36 lg:pb-16
-                        grid lg:grid-cols-12 lg:gap-8 lg:items-center">
+                        pt-5 pb-3 flex-1 flex flex-col justify-center
+                        lg:flex-none lg:mt-0 lg:pt-36 lg:pb-16
+                        lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center">
           {/* Left — copy */}
           <div className="lg:col-span-7 text-center lg:text-left">
             <h1
@@ -386,14 +383,14 @@ export default function BookMoreWeddingsPage() {
             </h1>
 
             <p
-              className="mt-2 sm:mt-4 text-[13.5px] sm:text-[17px] text-stone-700 leading-snug sm:leading-relaxed max-w-md mx-auto lg:mx-0"
+              className="mt-3 sm:mt-4 text-[13.5px] sm:text-[17px] text-stone-700 leading-snug sm:leading-relaxed max-w-md mx-auto lg:mx-0"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               StoryVenue combines a wedding venue directory, booking system, CRM, payments, proposals, Meta ads, concierge follow-up, and AI into one simple platform to help venues find more couples and book more weddings.
             </p>
 
             {/* Pill-style CTA */}
-            <div className="mt-4 sm:mt-7 max-w-md mx-auto lg:mx-0">
+            <div className="mt-5 sm:mt-7 max-w-md mx-auto lg:mx-0">
               <a
                 href={TRIAL_HREF}
                 className="group flex items-center justify-between rounded-full bg-white border border-stone-200 pl-4 pr-1.5 py-1.5 sm:pl-5 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.18)] hover:shadow-[0_14px_36px_-12px_rgba(0,0,0,0.22)] transition-shadow"
@@ -412,12 +409,12 @@ export default function BookMoreWeddingsPage() {
                 </span>
               </a>
 
-              <p className="mt-2 sm:mt-3 text-[11px] sm:text-[12px] text-stone-500 text-center" style={{ fontFamily: "var(--font-open-sans)" }}>
+              <p className="mt-3 sm:mt-3 text-[11px] sm:text-[12px] text-stone-500 text-center" style={{ fontFamily: "var(--font-open-sans)" }}>
                 30-day results guarantee — or you don't pay.
               </p>
 
               {/* Google Reviews social proof */}
-              <div className="mt-3 sm:mt-4 flex items-center justify-center gap-3">
+              <div className="mt-4 sm:mt-4 flex items-center justify-center gap-3">
                 <div className="flex -space-x-2.5 shrink-0">
                   {["/avatars/av1.jpg", "/avatars/av2.jpg", "/avatars/av3.jpg", "/avatars/av4.jpg", "/avatars/av5.jpg"].map((src, i) => (
                     <div key={i} className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 border-white overflow-hidden" style={{ zIndex: 5 - i }}>
@@ -507,6 +504,7 @@ export default function BookMoreWeddingsPage() {
           </div>
         </div>
       </div>
+      </div>{/* /flex-col wrapper that pins logos to bottom of mobile viewport */}
 
       {/* ============================================================== */}
       {/* 2. PAIN SECTION                                                 */}
