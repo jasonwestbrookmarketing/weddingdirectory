@@ -318,11 +318,23 @@ export default function BookMoreWeddingsPage() {
       {/* column that's exactly the viewport height minus the sticky nav  */}
       {/* (announcement ticker ~28px + nav ~52px ≈ 80px). The section     */}
       {/* uses flex-1 to fill, pushing the logo strip to the bottom.      */}
-      <div className="flex flex-col lg:contents" style={{ minHeight: "calc(100svh - 80px)" }}>
+      <div className="flex flex-col lg:contents" style={{ minHeight: "calc(100svh - 110px)" }}>
       <section className="relative bg-white pt-3 lg:pt-0 flex flex-col lg:block lg:-mt-[92px] lg:items-center lg:overflow-hidden lg:min-h-[520px] flex-1 lg:flex-none">
 
-        {/* ── MOBILE / TABLET: clean hero image block, no overlap, no fade ── */}
-        <div className="lg:hidden relative overflow-hidden shrink-0" style={{ height: "min(48vw, 200px)", minHeight: 160 }}>
+        {/* ── MOBILE / TABLET: image with mask-image fade to transparent ─── */}
+        {/* The image itself fades to transparent at the bottom (no overlay  */}
+        {/* div, no hard edge, no sub-pixel seam). Headline below overlaps   */}
+        {/* the faded zone via negative margin for the integrated layered    */}
+        {/* look while the section's white bg shows through naturally.       */}
+        <div
+          className="lg:hidden relative shrink-0"
+          style={{
+            height: "min(54vw, 220px)",
+            minHeight: 170,
+            maskImage: "linear-gradient(to bottom, black 0%, black 55%, rgba(0,0,0,0.6) 80%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 55%, rgba(0,0,0,0.6) 80%, transparent 100%)",
+          }}
+        >
           <Image
             src="/hero-wedding-couple.jpg"
             alt=""
@@ -365,11 +377,11 @@ export default function BookMoreWeddingsPage() {
         />
 
         {/* ── Content ─────────────────────────────────────────────────────── */}
-        {/* Mobile: clean positive gap (pt-5) below image — no overlap, no   */}
-        {/* gradient — eliminates the sub-pixel line that appeared before.   */}
-        {/* flex-1 lets the content centre vertically in remaining space.    */}
+        {/* Mobile: negative -mt overlap onto the image's faded-to-transparent */}
+        {/* zone for the layered look (no seam because the image is already   */}
+        {/* transparent there via mask-image). flex-1 centers vertically.    */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10
-                        pt-5 pb-3 flex-1 flex flex-col justify-center
+                        -mt-8 pb-2 flex-1 flex flex-col justify-center
                         lg:flex-none lg:mt-0 lg:pt-36 lg:pb-16
                         lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center">
           {/* Left — copy */}
