@@ -32,6 +32,7 @@ import LossStack from "@/components/marketing/LossStack";
 import DashboardMockup from "@/components/marketing/DashboardMockup";
 import ProcessTimeline from "@/components/marketing/ProcessTimeline";
 import PhonePreview from "@/components/marketing/PhonePreview";
+import ExitIntentModal from "@/components/marketing/ExitIntentModal";
 
 export const dynamic = "force-static";
 
@@ -1201,6 +1202,9 @@ export default function BookMoreWeddingsPage() {
       </section>
 
       <SiteFooter />
+
+      {/* Exit-intent demo booking modal */}
+      <ExitIntentModal />
     </>
   );
 }
