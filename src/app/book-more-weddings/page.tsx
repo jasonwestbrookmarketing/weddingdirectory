@@ -455,65 +455,38 @@ export default function BookMoreWeddingsPage() {
 
 
       {/* ============================================================== */}
-      {/* 1b. LOGO STRIP — social proof (same white as hero)              */}
+      {/* 1b. LOGO STRIP — auto-scrolling ticker on every device          */}
       {/* ============================================================== */}
       <div className="bg-white py-3 lg:py-6 overflow-hidden">
-        {/* Mobile / tablet: auto-scrolling ticker */}
-        <div className="lg:hidden">
-          <div className="flex animate-[ticker_18s_linear_infinite] whitespace-nowrap gap-10 items-center">
-            {[
-              { src: "/logos/arbor.png",       alt: "Arbor at the Port",          h: 36 },
-              { src: "/logos/vista.png",       alt: "Vista on the Docks",         h: 34 },
-              { src: "/logos/bogart.png",      alt: "Bogart House",               h: 52 },
-              { src: "/logos/pinetree.png",    alt: "The Pinetree",               h: 44 },
-              { src: "/logos/rachel.png",      alt: "Rachel Marie Events & Co.",  h: 44 },
-              { src: "/logos/waterloo.png",    alt: "Waterloo Farms",             h: 48 },
-              { src: "/logos/white-pine.png",  alt: "White Pine Manor",           h: 48 },
-              { src: "/logos/willowcreek.png", alt: "Willow Creek",               h: 40 },
-              { src: "/logos/atlantic.png",    alt: "Atlantic Stables",           h: 44 },
-              { src: "/logos/arbor.png",       alt: "",                           h: 36 },
-              { src: "/logos/vista.png",       alt: "",                           h: 34 },
-              { src: "/logos/bogart.png",      alt: "",                           h: 52 },
-              { src: "/logos/pinetree.png",    alt: "",                           h: 44 },
-              { src: "/logos/rachel.png",      alt: "",                           h: 44 },
-              { src: "/logos/waterloo.png",    alt: "",                           h: 48 },
-              { src: "/logos/white-pine.png",  alt: "",                           h: 48 },
-              { src: "/logos/willowcreek.png", alt: "",                           h: 40 },
-              { src: "/logos/atlantic.png",    alt: "",                           h: 44 },
-            ].map(({ src, alt, h }, i) => (
-              <div key={i} className="shrink-0 flex items-center justify-center">
-                <Image
-                  src={src} alt={alt} width={160} height={h} unoptimized placeholder="empty"
-                  className="w-auto object-contain"
-                  style={{ height: Math.round(h * 0.78), maxWidth: 120, filter: "brightness(0) invert(0) sepia(0) saturate(0) hue-rotate(0deg) brightness(0.11)", mixBlendMode: "multiply" }}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Desktop: static evenly-spaced row */}
-        <div className="hidden lg:block max-w-[1600px] mx-auto px-6 md:px-10">
-          <div className="flex items-center justify-between gap-6">
-            {[
-              { src: "/logos/arbor.png",       alt: "Arbor at the Port",          h: 36 },
-              { src: "/logos/vista.png",       alt: "Vista on the Docks",         h: 34 },
-              { src: "/logos/bogart.png",      alt: "Bogart House",               h: 52 },
-              { src: "/logos/pinetree.png",    alt: "The Pinetree",               h: 44 },
-              { src: "/logos/rachel.png",      alt: "Rachel Marie Events & Co.",  h: 44 },
-              { src: "/logos/waterloo.png",    alt: "Waterloo Farms",             h: 48 },
-              { src: "/logos/white-pine.png",  alt: "White Pine Manor",           h: 48 },
-              { src: "/logos/willowcreek.png", alt: "Willow Creek",               h: 40 },
-              { src: "/logos/atlantic.png",    alt: "Atlantic Stables",           h: 44 },
-            ].map(({ src, alt, h }) => (
-              <div key={src} className="shrink-0 flex items-center justify-center">
-                <Image
-                  src={src} alt={alt} width={160} height={h} unoptimized placeholder="empty"
-                  className="w-auto object-contain"
-                  style={{ height: h, maxWidth: 140, filter: "brightness(0) invert(0) sepia(0) saturate(0) hue-rotate(0deg) brightness(0.11)", mixBlendMode: "multiply" }}
-                />
-              </div>
-            ))}
-          </div>
+        <div className="flex animate-[ticker_28s_linear_infinite] lg:animate-[ticker_60s_linear_infinite] whitespace-nowrap gap-10 lg:gap-16 items-center">
+          {[
+            { src: "/logos/arbor.png",       alt: "Arbor at the Port",          h: 36 },
+            { src: "/logos/vista.png",       alt: "Vista on the Docks",         h: 34 },
+            { src: "/logos/bogart.png",      alt: "Bogart House",               h: 52 },
+            { src: "/logos/pinetree.png",    alt: "The Pinetree",               h: 44 },
+            { src: "/logos/rachel.png",      alt: "Rachel Marie Events & Co.",  h: 44 },
+            { src: "/logos/waterloo.png",    alt: "Waterloo Farms",             h: 48 },
+            { src: "/logos/white-pine.png",  alt: "White Pine Manor",           h: 48 },
+            { src: "/logos/willowcreek.png", alt: "Willow Creek",               h: 40 },
+            { src: "/logos/atlantic.png",    alt: "Atlantic Stables",           h: 44 },
+            { src: "/logos/arbor.png",       alt: "",                           h: 36 },
+            { src: "/logos/vista.png",       alt: "",                           h: 34 },
+            { src: "/logos/bogart.png",      alt: "",                           h: 52 },
+            { src: "/logos/pinetree.png",    alt: "",                           h: 44 },
+            { src: "/logos/rachel.png",      alt: "",                           h: 44 },
+            { src: "/logos/waterloo.png",    alt: "",                           h: 48 },
+            { src: "/logos/white-pine.png",  alt: "",                           h: 48 },
+            { src: "/logos/willowcreek.png", alt: "",                           h: 40 },
+            { src: "/logos/atlantic.png",    alt: "",                           h: 44 },
+          ].map(({ src, alt, h }, i) => (
+            <div key={i} className="shrink-0 flex items-center justify-center">
+              <Image
+                src={src} alt={alt} width={160} height={h} unoptimized placeholder="empty"
+                className="w-auto object-contain"
+                style={{ height: h, maxWidth: 140, filter: "brightness(0) invert(0) sepia(0) saturate(0) hue-rotate(0deg) brightness(0.11)", mixBlendMode: "multiply" }}
+              />
+            </div>
+          ))}
         </div>
       </div>
       </div>{/* /flex-col wrapper that pins logos to bottom of mobile viewport */}
@@ -695,7 +668,7 @@ export default function BookMoreWeddingsPage() {
               className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              Everything Your Venue Needs In One Place.
+              Everything Your Venue Needs<br className="sm:hidden" /> In One Place.
             </h2>
           </div>
         </div>
@@ -709,7 +682,7 @@ export default function BookMoreWeddingsPage() {
                 className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                Get Found by Couples Searching for Venues
+                Get Found by Couples<br className="sm:hidden" /> Searching for Venues
               </h3>
               <p className="mt-5 text-base sm:text-lg text-stone-600 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
                 Get your venue in front of couples actively searching for their perfect wedding venue. Your StoryVenue Directory listing helps brides discover your space, view your photos, see your reviews, check your details, and inquire directly.
@@ -748,7 +721,7 @@ export default function BookMoreWeddingsPage() {
                 className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                Send Proposals and Get Paid Online
+                Send Proposals and<br className="sm:hidden" /> Get Paid Online
               </h3>
               <p className="mt-5 text-base sm:text-lg text-stone-600 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
                 Send branded proposals couples can review, sign, and pay from any device. Collect deposits, invoices, balances, and payment plans online while keeping the booking process simple, professional, and easy to complete.
@@ -772,7 +745,7 @@ export default function BookMoreWeddingsPage() {
                 className="mt-4 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                Turn More Inquiries Into Booked Tours
+                Turn More Inquiries Into<br className="sm:hidden" /> Booked Tours
               </h3>
               <p className="mt-5 text-base sm:text-lg text-stone-600 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
                 Every inquiry goes into a clear booking process with follow-up, pipeline tracking, SMS, email, AI Concierge, and organized conversations so more brides move from interested to tour booked.
