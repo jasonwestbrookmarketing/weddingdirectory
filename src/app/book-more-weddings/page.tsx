@@ -660,8 +660,26 @@ export default function BookMoreWeddingsPage() {
 
           <ProcessTimeline />
 
-          <div className="mt-14 flex justify-center">
+          <div className="mt-14 flex flex-col items-center gap-5">
             <PrimaryCTA />
+            {/* Google Reviews social proof */}
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-2.5 shrink-0">
+                {["/avatars/av1.jpg", "/avatars/av2.jpg", "/avatars/av3.jpg", "/avatars/av4.jpg", "/avatars/av5.jpg"].map((src, i) => (
+                  <div key={i} className="relative w-9 h-9 rounded-full border-2 border-white overflow-hidden" style={{ zIndex: 5 - i }}>
+                    <Image src={src} alt="" fill unoptimized placeholder="empty" className="object-cover object-center" sizes="36px" />
+                  </div>
+                ))}
+              </div>
+              <div>
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-4 h-4" viewBox="0 0 24 24" fill="#1c1917"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  ))}
+                </div>
+                <p className="text-[11px] text-stone-500 mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>Google Reviews</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
