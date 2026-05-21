@@ -314,12 +314,13 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1. HERO                                                         */}
       {/* ============================================================== */}
-      <section className="relative bg-white pt-6 lg:pt-0 lg:-mt-[92px] lg:flex lg:items-center lg:overflow-hidden" style={{ minHeight: 520 }}>
+      <section className="relative bg-white pt-8 lg:pt-0 lg:-mt-[92px] lg:flex lg:items-center lg:overflow-hidden lg:min-h-[520px]">
 
         {/* ── MOBILE / TABLET: hero image block ─────────────────────────── */}
-        {/* Shows the couple above the copy. Fades to white at the bottom   */}
-        {/* so the headline feels anchored to the image.                    */}
-        <div className="lg:hidden relative overflow-hidden" style={{ height: "min(100vw, 560px)", minHeight: 320 }}>
+        {/* Compact height + objectPosition 65% keeps clear barn-ceiling     */}
+        {/* space above the couple's heads while everything below fits in   */}
+        {/* one viewport (incl. scrolling logos).                            */}
+        <div className="lg:hidden relative overflow-hidden" style={{ height: "min(56vw, 230px)", minHeight: 180 }}>
           <Image
             src="/hero-wedding-couple.jpg"
             alt=""
@@ -330,13 +331,12 @@ export default function BookMoreWeddingsPage() {
             placeholder="empty"
             className="object-cover"
             sizes="100vw"
-            style={{ transform: "scaleX(-1)", objectPosition: "center 54%" }}
+            style={{ transform: "scaleX(-1)", objectPosition: "center 65%" }}
           />
-          {/* Top fade removed on mobile — image now sits below nav with white gap */}
-          {/* Bottom fade — starts at 38% so headline sits comfortably on leg area */}
+          {/* Bottom fade — softer so smaller image stays clean */}
           <div
             className="absolute inset-x-0 bottom-0 pointer-events-none"
-            style={{ height: "62%", background: "linear-gradient(to top, white 0%, white 18%, rgba(255,255,255,0.88) 48%, transparent 100%)" }}
+            style={{ height: "45%", background: "linear-gradient(to top, white 0%, white 25%, rgba(255,255,255,0.8) 60%, transparent 100%)" }}
           />
         </div>
 
@@ -368,16 +368,17 @@ export default function BookMoreWeddingsPage() {
         />
 
         {/* ── Content ─────────────────────────────────────────────────────── */}
-        {/* Mobile: -mt-14 pulls the text up so the h1 overlaps the image   */}
-        {/* bottom-fade, giving the visual effect of text "on" the image.   */}
+        {/* Mobile: gentle -mt-10 overlap onto image bottom-fade.            */}
+        {/* All sizes tightened so image + h1 + p + CTA + guarantee + social */}
+        {/* proof + logo strip all fit within one mobile viewport.           */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10
-                        -mt-28 pb-12
+                        -mt-10 pb-4
                         lg:mt-0 lg:pt-36 lg:pb-16
                         grid lg:grid-cols-12 lg:gap-8 lg:items-center">
           {/* Left — copy */}
           <div className="lg:col-span-7 text-center lg:text-left">
             <h1
-              className="text-[30px] sm:text-[38px] md:text-[44px] lg:text-[50px] leading-[1.1] text-stone-900 lg:whitespace-nowrap"
+              className="text-[26px] sm:text-[38px] md:text-[44px] lg:text-[50px] leading-[1.1] text-stone-900 lg:whitespace-nowrap"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
               <span className="block">Fully Book Your Wedding Venue</span>
@@ -385,41 +386,41 @@ export default function BookMoreWeddingsPage() {
             </h1>
 
             <p
-              className="mt-4 text-base sm:text-[17px] text-stone-700 leading-relaxed max-w-md mx-auto lg:mx-0"
+              className="mt-2 sm:mt-4 text-[13.5px] sm:text-[17px] text-stone-700 leading-snug sm:leading-relaxed max-w-md mx-auto lg:mx-0"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               StoryVenue combines a wedding venue directory, booking system, CRM, payments, proposals, Meta ads, concierge follow-up, and AI into one simple platform to help venues find more couples and book more weddings.
             </p>
 
             {/* Pill-style CTA */}
-            <div className="mt-7 max-w-md mx-auto lg:mx-0">
+            <div className="mt-4 sm:mt-7 max-w-md mx-auto lg:mx-0">
               <a
                 href={TRIAL_HREF}
-                className="group flex items-center justify-between rounded-full bg-white border border-stone-200 pl-5 pr-1.5 py-1.5 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.18)] hover:shadow-[0_14px_36px_-12px_rgba(0,0,0,0.22)] transition-shadow"
+                className="group flex items-center justify-between rounded-full bg-white border border-stone-200 pl-4 pr-1.5 py-1.5 sm:pl-5 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.18)] hover:shadow-[0_14px_36px_-12px_rgba(0,0,0,0.22)] transition-shadow"
               >
                 <span
-                  className="text-sm text-stone-500"
+                  className="text-[13px] sm:text-sm text-stone-500"
                   style={{ fontFamily: "var(--font-open-sans)" }}
                 >
                   Start your 14-day free trial
                 </span>
                 <span
-                  className="inline-flex items-center gap-1.5 rounded-full bg-stone-900 text-white text-sm font-semibold px-5 py-2.5 group-hover:bg-stone-800 transition-colors"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-stone-900 text-white text-[13px] sm:text-sm font-semibold px-4 sm:px-5 py-2 sm:py-2.5 group-hover:bg-stone-800 transition-colors"
                   style={{ fontFamily: "var(--font-open-sans)" }}
                 >
                   Get Started <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </a>
 
-              <p className="mt-3 text-[12px] text-stone-500 text-center" style={{ fontFamily: "var(--font-open-sans)" }}>
+              <p className="mt-2 sm:mt-3 text-[11px] sm:text-[12px] text-stone-500 text-center" style={{ fontFamily: "var(--font-open-sans)" }}>
                 30-day results guarantee — or you don't pay.
               </p>
 
               {/* Google Reviews social proof */}
-              <div className="mt-4 flex items-center justify-center gap-3">
+              <div className="mt-3 sm:mt-4 flex items-center justify-center gap-3">
                 <div className="flex -space-x-2.5 shrink-0">
                   {["/avatars/av1.jpg", "/avatars/av2.jpg", "/avatars/av3.jpg", "/avatars/av4.jpg", "/avatars/av5.jpg"].map((src, i) => (
-                    <div key={i} className="relative w-9 h-9 rounded-full border-2 border-white overflow-hidden" style={{ zIndex: 5 - i }}>
+                    <div key={i} className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 border-white overflow-hidden" style={{ zIndex: 5 - i }}>
                       <Image src={src} alt="" fill unoptimized placeholder="empty" className="object-cover object-center" sizes="36px" />
                     </div>
                   ))}
@@ -427,10 +428,10 @@ export default function BookMoreWeddingsPage() {
                 <div>
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="w-4 h-4" viewBox="0 0 24 24" fill="#1c1917"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                      <svg key={i} className="w-3.5 h-3.5 sm:w-4 sm:h-4" viewBox="0 0 24 24" fill="#1c1917"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                     ))}
                   </div>
-                  <p className="text-[11px] text-stone-500 mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>Google Reviews</p>
+                  <p className="text-[10px] sm:text-[11px] text-stone-500 mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>Google Reviews</p>
                 </div>
               </div>
             </div>
@@ -447,7 +448,7 @@ export default function BookMoreWeddingsPage() {
       {/* ============================================================== */}
       {/* 1b. LOGO STRIP — social proof                                  */}
       {/* ============================================================== */}
-      <div className="bg-stone-50/70 py-6 overflow-hidden">
+      <div className="bg-stone-50/70 py-3 lg:py-6 overflow-hidden">
         {/* Mobile / tablet: auto-scrolling ticker */}
         <div className="lg:hidden">
           <div className="flex animate-[ticker_18s_linear_infinite] whitespace-nowrap gap-10 items-center">
@@ -475,7 +476,7 @@ export default function BookMoreWeddingsPage() {
                 <Image
                   src={src} alt={alt} width={160} height={h} unoptimized placeholder="empty"
                   className="w-auto object-contain"
-                  style={{ height: h, maxWidth: 140, filter: "brightness(0) invert(0) sepia(0) saturate(0) hue-rotate(0deg) brightness(0.11)", mixBlendMode: "multiply" }}
+                  style={{ height: Math.round(h * 0.78), maxWidth: 120, filter: "brightness(0) invert(0) sepia(0) saturate(0) hue-rotate(0deg) brightness(0.11)", mixBlendMode: "multiply" }}
                 />
               </div>
             ))}
