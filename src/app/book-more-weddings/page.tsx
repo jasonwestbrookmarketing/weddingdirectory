@@ -456,8 +456,12 @@ export default function BookMoreWeddingsPage() {
                 </span>
               </a>
 
+              <p className="mt-3 text-[12px] text-stone-500 text-center" style={{ fontFamily: "var(--font-open-sans)" }}>
+                30-day results guarantee — or you don't pay.
+              </p>
+
               {/* Google Reviews social proof */}
-              <div className="mt-5 flex items-center justify-center gap-3">
+              <div className="mt-4 flex items-center justify-center gap-3">
                 <div className="flex -space-x-2.5 shrink-0">
                   {["/avatars/av1.jpg", "/avatars/av2.jpg", "/avatars/av3.jpg", "/avatars/av4.jpg", "/avatars/av5.jpg"].map((src, i) => (
                     <div key={i} className="relative w-9 h-9 rounded-full border-2 border-white overflow-hidden" style={{ zIndex: 5 - i }}>
