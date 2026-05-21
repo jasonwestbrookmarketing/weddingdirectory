@@ -464,7 +464,7 @@ export default function BookMoreWeddingsPage() {
       {/* Mobile: extra bottom pad so next section color never peeks into  */}
       {/* the viewport. Desktop: equal top/bottom for visual balance.      */}
       {/* ============================================================== */}
-      <div className="bg-white pt-3 pb-24 lg:pt-6 lg:pb-6 overflow-hidden">
+      <div className="bg-white pt-16 pb-24 lg:pt-6 lg:pb-6 overflow-hidden">
         <div className="flex animate-[ticker_28s_linear_infinite] lg:animate-[ticker_60s_linear_infinite] whitespace-nowrap gap-10 lg:gap-16 items-center">
           {[
             { src: "/logos/arbor.png",       alt: "Arbor at the Port",          h: 36 },
