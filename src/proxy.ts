@@ -14,6 +14,12 @@ const MAINTENANCE_EXEMPT = [
   "/_next",
   "/favicon.ico",
   "/api",
+  // Auth/admin URLs are redirected to app.storyvenue.com via next.config.ts.
+  // Skip the maintenance check so they always pass through — locking out
+  // super admins during maintenance would make recovery impossible.
+  "/admin",
+  "/login",
+  "/signup",
 ];
 
 export async function proxy(request: NextRequest) {
