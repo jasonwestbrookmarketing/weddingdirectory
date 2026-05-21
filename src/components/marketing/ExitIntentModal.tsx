@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
-// ── Swap this URL for your GoHighLevel calendar embed link ──────────────────
-const CALENDAR_URL = "PASTE_GHL_CALENDAR_URL_HERE";
-// ───────────────────────────────────────────────────────────────────────────
+const CALENDAR_URL = "https://api.leadconnectorhq.com/widget/booking/YeI4ZUC2SwV8MXDRKfzr";
+const CALENDAR_ID  = "YeI4ZUC2SwV8MXDRKfzr_1779370346164";
+const GHL_SCRIPT   = "https://link.msgsndr.com/js/form_embed.js";
 
 export default function ExitIntentModal() {
   const [open, setOpen] = useState(false);
@@ -43,6 +43,17 @@ export default function ExitIntentModal() {
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
+  // Load GHL embed script once the modal opens
+  useEffect(() => {
+    if (!open) return;
+    if (document.querySelector(`script[src="${GHL_SCRIPT}"]`)) return;
+    const script = document.createElement("script");
+    script.src = GHL_SCRIPT;
+    script.type = "text/javascript";
+    script.async = true;
+    document.body.appendChild(script);
   }, [open]);
 
   if (!open) return null;
@@ -94,10 +105,11 @@ export default function ExitIntentModal() {
         <div className="bg-stone-50 px-2 py-2">
           <iframe
             src={CALENDAR_URL}
+            id={CALENDAR_ID}
             className="w-full rounded-2xl bg-white"
-            style={{ height: 520, border: "none" }}
+            style={{ height: 600, border: "none", overflow: "hidden" }}
+            scrolling="no"
             title="Book a free demo"
-            loading="lazy"
           />
         </div>
 
