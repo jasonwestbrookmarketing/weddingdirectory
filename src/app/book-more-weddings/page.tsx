@@ -455,9 +455,9 @@ export default function BookMoreWeddingsPage() {
 
 
       {/* ============================================================== */}
-      {/* 1b. LOGO STRIP — social proof                                  */}
+      {/* 1b. LOGO STRIP — social proof (same white as hero)              */}
       {/* ============================================================== */}
-      <div className="bg-stone-50/70 py-3 lg:py-6 overflow-hidden">
+      <div className="bg-white py-3 lg:py-6 overflow-hidden">
         {/* Mobile / tablet: auto-scrolling ticker */}
         <div className="lg:hidden">
           <div className="flex animate-[ticker_18s_linear_infinite] whitespace-nowrap gap-10 items-center">
