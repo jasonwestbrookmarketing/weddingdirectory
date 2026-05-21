@@ -83,7 +83,7 @@ export default function ExitIntentModal() {
         </div>
 
         {/* Header */}
-        <div className="px-8 pt-2 pb-5 text-center border-b border-stone-100">
+        <div className="px-8 pt-2 pb-5 text-center">
           <p
             className="text-[10px] font-semibold tracking-[0.22em] uppercase text-stone-400"
             style={{ fontFamily: "var(--font-open-sans)" }}
@@ -104,14 +104,15 @@ export default function ExitIntentModal() {
           </p>
         </div>
 
-        {/* Calendar embed */}
-        <div className="bg-white px-0 py-0">
+        {/* Calendar embed — no border, no outline, no divider on any device */}
+        <div className="bg-white">
           <iframe
             src={CALENDAR_URL}
             id={CALENDAR_ID}
-            className="w-full bg-white"
-            style={{ height: 600, border: "none", overflow: "hidden" }}
+            className="w-full bg-white block"
+            style={{ height: 600, border: 0, outline: "none", boxShadow: "none", overflow: "hidden" }}
             scrolling="no"
+            frameBorder={0}
             title="Book a free demo"
           />
         </div>
