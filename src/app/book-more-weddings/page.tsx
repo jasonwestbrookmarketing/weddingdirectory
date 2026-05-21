@@ -319,7 +319,7 @@ export default function BookMoreWeddingsPage() {
         {/* ── MOBILE / TABLET: hero image block ─────────────────────────── */}
         {/* Shows the couple above the copy. Fades to white at the bottom   */}
         {/* so the headline feels anchored to the image.                    */}
-        <div className="lg:hidden relative overflow-hidden" style={{ height: "min(90vw, 500px)", minHeight: 280 }}>
+        <div className="lg:hidden relative overflow-hidden" style={{ height: "min(100vw, 560px)", minHeight: 320 }}>
           <Image
             src="/hero-wedding-couple.jpg"
             alt=""
@@ -330,17 +330,17 @@ export default function BookMoreWeddingsPage() {
             placeholder="empty"
             className="object-cover"
             sizes="100vw"
-            style={{ transform: "scaleX(-1)", objectPosition: "center 15%" }}
+            style={{ transform: "scaleX(-1)", objectPosition: "center 22%" }}
           />
-          {/* Top fade — keeps navbar readable */}
+          {/* Top fade — 20% so heads are clear of nav, not washed out */}
           <div
             className="absolute inset-x-0 top-0 pointer-events-none"
-            style={{ height: "35%", background: "linear-gradient(to bottom, rgba(255,255,255,0.88) 0%, transparent 100%)" }}
+            style={{ height: "20%", background: "linear-gradient(to bottom, rgba(255,255,255,0.72) 0%, transparent 100%)" }}
           />
-          {/* Bottom fade — transitions into headline below */}
+          {/* Bottom fade — starts at 38% so headline sits comfortably on leg area */}
           <div
             className="absolute inset-x-0 bottom-0 pointer-events-none"
-            style={{ height: "50%", background: "linear-gradient(to top, white 0%, rgba(255,255,255,0.85) 40%, transparent 100%)" }}
+            style={{ height: "62%", background: "linear-gradient(to top, white 0%, white 18%, rgba(255,255,255,0.88) 48%, transparent 100%)" }}
           />
         </div>
 
@@ -375,7 +375,7 @@ export default function BookMoreWeddingsPage() {
         {/* Mobile: -mt-14 pulls the text up so the h1 overlaps the image   */}
         {/* bottom-fade, giving the visual effect of text "on" the image.   */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10
-                        -mt-14 pb-12
+                        -mt-28 pb-12
                         lg:mt-0 lg:pt-36 lg:pb-16
                         grid lg:grid-cols-12 lg:gap-8 lg:items-center">
           {/* Left — copy */}
