@@ -527,10 +527,11 @@ export default function BookMoreWeddingsPage() {
             — The real problem
           </p>
           <h2
-            className="mt-4 text-[22px] sm:text-4xl md:text-5xl text-stone-900 leading-[1.12]"
+            className="mt-4 text-[26px] sm:text-4xl md:text-5xl text-stone-900 leading-[1.15]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Most Wedding Venues Do Not Have A Lead Problem. They Have A{" "}
+            Most Wedding Venues Do Not Have A Lead Problem.
+            They Have A{" "}
             <HighlighterText>Booking System Problem.</HighlighterText>
           </h2>
           <div
