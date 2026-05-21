@@ -456,10 +456,10 @@ export default function BookMoreWeddingsPage() {
 
       {/* ============================================================== */}
       {/* 1b. LOGO STRIP — auto-scrolling ticker on every device          */}
-      {/* pt = same as before; pb = +25px extra for breathing room before  */}
-      {/* the next section starts.                                         */}
+      {/* Mobile: extra bottom pad so next section color never peeks into  */}
+      {/* the viewport. Desktop: equal top/bottom for visual balance.      */}
       {/* ============================================================== */}
-      <div className="bg-white pt-3 lg:pt-6 pb-9 lg:pb-12 overflow-hidden">
+      <div className="bg-white pt-3 pb-16 lg:pt-6 lg:pb-6 overflow-hidden">
         <div className="flex animate-[ticker_28s_linear_infinite] lg:animate-[ticker_60s_linear_infinite] whitespace-nowrap gap-10 lg:gap-16 items-center">
           {[
             { src: "/logos/arbor.png",       alt: "Arbor at the Port",          h: 36 },
