@@ -454,7 +454,7 @@ export default function BookMoreWeddingsPage() {
       <div className="bg-stone-50/70 py-6 overflow-hidden">
         {/* Mobile / tablet: auto-scrolling ticker */}
         <div className="lg:hidden">
-          <div className="flex animate-[ticker_32s_linear_infinite] whitespace-nowrap gap-10 items-center">
+          <div className="flex animate-[ticker_18s_linear_infinite] whitespace-nowrap gap-10 items-center">
             {[
               { src: "/logos/arbor.png",       alt: "Arbor at the Port",          h: 36 },
               { src: "/logos/vista.png",       alt: "Vista on the Docks",         h: 34 },
