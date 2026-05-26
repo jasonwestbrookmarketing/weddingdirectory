@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 
 export default function StrategyNav() {
@@ -21,7 +20,7 @@ export default function StrategyNav() {
       }`}
     >
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-5 md:px-10 py-3 lg:py-4">
-        <Link href="/" aria-label="StoryVenue home" className="shrink-0 flex items-center">
+        <span className="shrink-0 flex items-center">
           <Image
             src="/storyvenue-dark-logo.png"
             alt="StoryVenue"
@@ -30,7 +29,7 @@ export default function StrategyNav() {
             className="h-9 lg:h-10 w-auto object-contain"
             priority
           />
-        </Link>
+        </span>
 
         <button
           type="button"

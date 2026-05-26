@@ -272,7 +272,7 @@ export default function BookMoreWeddingsPage() {
         {/* NAV — logo & button vertically centered with equal padding above/below */}
         <header className="bg-white/75 backdrop-blur-md border-b border-white/20">
           <nav className="max-w-7xl mx-auto flex items-center justify-between px-5 md:px-10 py-3 lg:py-4">
-            <Link href="/" aria-label="StoryVenue home" className="shrink-0 flex items-center">
+            <span className="shrink-0 flex items-center">
               <Image
                 src="/storyvenue-dark-logo.png"
                 alt="StoryVenue"
@@ -281,7 +281,7 @@ export default function BookMoreWeddingsPage() {
                 className="h-9 lg:h-11 w-auto object-contain"
                 priority
               />
-            </Link>
+            </span>
             <PrimaryCTA size="md" />
           </nav>
         </header>
