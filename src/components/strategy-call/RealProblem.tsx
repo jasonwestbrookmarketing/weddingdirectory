@@ -38,7 +38,8 @@ export default function RealProblem() {
                 weren&apos;t built to help your venue.
               </strong>{" "}
               They were built to help the bride by sending her to ten venues at once. You&apos;re not their customer.
-              You&apos;re inventory.
+              You&apos;re inventory. You&apos;re paying The Knot and WeddingWire to help your{" "}
+              <em style={{ color: "#8a7448", fontStyle: "italic" }}>competitors.</em>
             </p>
             <p>
               That&apos;s why throwing more money at them never works. You&apos;re not solving the
