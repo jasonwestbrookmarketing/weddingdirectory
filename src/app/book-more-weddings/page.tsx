@@ -24,13 +24,11 @@ import {
   MessageSquare,
   Shield,
   ChevronDown,
-  Check,
 } from "lucide-react";
 import SiteFooter from "@/components/SiteFooter";
 import HighlighterText from "@/components/marketing/HighlighterText";
 import LossStack from "@/components/marketing/LossStack";
 import DashboardMockup from "@/components/marketing/DashboardMockup";
-import ProcessTimeline from "@/components/marketing/ProcessTimeline";
 import PhonePreview from "@/components/marketing/PhonePreview";
 import ExitIntentModal from "@/components/marketing/ExitIntentModal";
 import ScrollToTop from "@/components/marketing/ScrollToTop";
@@ -40,7 +38,10 @@ export const dynamic = "force-static";
 const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
 
-const TRIAL_HREF = `${STORYPAY_URL}/signup?as=venue&plan=trial&utm_source=meta&utm_medium=paid&utm_campaign=book-more-weddings`;
+// Free-plan signup. The dashboard app handles account creation, auto-login,
+// and the success-page redirect (where the Meta pixel fires). We never touch
+// LunarPay / subscription wiring from the directory site.
+const FREE_SIGNUP_HREF = `${STORYPAY_URL}/signup?as=venue&plan=free&utm_source=meta&utm_medium=paid&utm_campaign=book-more-weddings`;
 
 // Cache-busting query string forces iMessage / Facebook / LinkedIn / X to
 // re-scrape the OG image instead of serving the old (calendar modal) preview.
@@ -51,12 +52,12 @@ export const metadata: Metadata = {
   title:
     "Book More Weddings — The All-In-One Directory, Booking System & Marketing Platform | StoryVenue",
   description:
-    "StoryVenue combines a wedding venue directory, booking system, CRM, payments, proposals, Meta ads, concierge follow-up, and AI intelligence into one simple platform. Start your 14-day free trial.",
+    "StoryVenue combines a wedding venue directory, booking system, CRM, payments, proposals, Meta ads, concierge follow-up, and AI intelligence into one simple platform. List your venue free.",
   alternates: { canonical: "/book-more-weddings" },
   openGraph: {
     title: "Fully Book Your Wedding Venue Without Empty Weekends",
     description:
-      "The first and only all-in-one directory, booking system, and marketing platform for wedding venues. 14-day free trial. No contract.",
+      "The first and only all-in-one directory, booking system, and marketing platform for wedding venues. List your venue free. No contract.",
     url: "/book-more-weddings",
     siteName: "StoryVenue",
     images: [
@@ -73,7 +74,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Fully Book Your Wedding Venue Without Empty Weekends | StoryVenue",
     description:
-      "Directory + booking system + CRM + Meta ads + concierge follow-up in one platform. 14-day free trial.",
+      "Directory + booking system + CRM + Meta ads + concierge follow-up in one platform. List your venue free.",
     images: [OG_IMAGE],
   },
 };
@@ -81,44 +82,6 @@ export const metadata: Metadata = {
 /* -------------------------------------------------------------------- */
 /*  Data                                                                  */
 /* -------------------------------------------------------------------- */
-
-const HOW_IT_WORKS_STEPS = [
-  {
-    step: "01",
-    title: "Brides Find You First",
-    body: "Your venue is promoted through targeted Meta ads and your StoryVenue directory presence, so you show up while brides are actively dreaming, searching, and comparing options.",
-  },
-  {
-    step: "02",
-    title: "Clicks Turn Into Qualified Inquiries",
-    body: "Instead of sending traffic to a confusing homepage, brides land on a focused page built to capture their interest and learn what matters most to them. They can request your Pricing and Availability Guide, share their wedding date, and answer simple qualifying questions that reveal how serious they are.",
-  },
-  {
-    step: "03",
-    title: "Pricing And Availability Are Delivered Instantly",
-    body: "The moment she inquires, your venue details, pricing, photos, and next steps are sent by email and SMS. She does not have to wait. She does not have to guess. She gets clarity immediately.",
-  },
-  {
-    step: "04",
-    title: "Your Team Is Notified Immediately",
-    body: "You and the StoryVenue Concierge team receive her details within seconds, including her name, number, wedding date, what matters most, and where she is in the search process. Now you know who she is, what she cares about, and how ready she is.",
-  },
-  {
-    step: "05",
-    title: "StoryVenue Concierge Follows Up Personally",
-    body: "Our Concierge team begins personal SMS follow-up right away. They answer questions, build trust, and work to book the bride into a 5-minute chat or tour.",
-  },
-  {
-    step: "06",
-    title: "AI Concierge Keeps Silent Leads Alive",
-    body: "If a lead goes quiet, the AI Concierge can continue reaching out every 1 to 3 days with personalized messages designed to get couples to reply. The moment they respond, the AI turns off and the venue concierge and venue teams take over.",
-  },
-  {
-    step: "07",
-    title: "You Host The Tour",
-    body: "By the time she books a tour, she already knows your pricing, understands your venue, and feels more confident about choosing you. You are not chasing. You are not convincing. You are welcoming a bride who is already interested.",
-  },
-] as const;
 
 const FEATURE_GROUPS: Array<{
   category: string;
@@ -229,12 +192,12 @@ const FAQ_ITEMS = [
     a: "No long-term contract. No cancellation fees. StoryVenue is designed to earn your business through results, not lock you into something you do not want.",
   },
   {
-    q: "Is there a free trial?",
-    a: "Yes. StoryVenue offers a 14-day free trial.",
+    q: "Is there a free plan?",
+    a: "Yes. You can list your venue, send proposals with e-signatures, and accept payments for free. No credit card required. Upgrade anytime you want managed Meta ads, our Concierge follow-up team, or the full booking system.",
   },
   {
     q: "What if it does not work for my venue?",
-    a: "StoryVenue includes a 14-day results guarantee after going live.\n\nIf we do not deliver the results we agreed to, you do not pay.",
+    a: "Our paid plans include a 30-day results guarantee after going live.\n\nIf we do not deliver the results we agreed to, you do not pay.",
   },
 ] as const;
 
@@ -243,7 +206,7 @@ const FAQ_ITEMS = [
 /* -------------------------------------------------------------------- */
 
 function PrimaryCTA({
-  label = "Start My 14-Day Free Trial",
+  label = "List Your Venue Free",
   size = "lg",
   className = "",
 }: {
@@ -255,7 +218,7 @@ function PrimaryCTA({
     size === "lg" ? "px-6 py-3.5 text-[15px]" : "px-5 py-2.5 text-sm";
   return (
     <a
-      href={TRIAL_HREF}
+      href={FREE_SIGNUP_HREF}
       className={`group inline-flex items-center justify-center gap-2 rounded-full bg-stone-900 text-white font-semibold hover:bg-stone-800 active:scale-[0.98] transition-all shadow-[0_8px_24px_-10px_rgba(0,0,0,0.4)] ${sizing} ${className}`}
       style={{ fontFamily: "var(--font-open-sans)" }}
     >
@@ -319,7 +282,7 @@ export default function BookMoreWeddingsPage() {
                 priority
               />
             </Link>
-            <PrimaryCTA size="md" label="Start Free Trial" />
+            <PrimaryCTA size="md" />
           </nav>
         </header>
       </div>
@@ -419,28 +382,14 @@ export default function BookMoreWeddingsPage() {
               StoryVenue combines a wedding venue directory, booking system, CRM, payments, proposals, Meta ads, concierge follow-up, and AI into one simple platform to help venues find more couples and book more weddings.
             </p>
 
-            {/* Pill-style CTA */}
+            {/* CTA */}
             <div className="mt-5 sm:mt-7 max-w-md mx-auto lg:mx-0">
-              <a
-                href={TRIAL_HREF}
-                className="group flex items-center justify-between rounded-full bg-white border border-stone-200 pl-4 pr-1.5 py-1.5 sm:pl-5 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.18)] hover:shadow-[0_14px_36px_-12px_rgba(0,0,0,0.22)] transition-shadow"
-              >
-                <span
-                  className="text-[13px] sm:text-sm text-stone-500"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  Start your 14-day free trial
-                </span>
-                <span
-                  className="inline-flex items-center gap-1.5 rounded-full bg-stone-900 text-white text-[13px] sm:text-sm font-semibold px-4 sm:px-5 py-2 sm:py-2.5 group-hover:bg-stone-800 transition-colors"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  Get Started <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-              </a>
+              <div className="flex justify-center lg:justify-start">
+                <PrimaryCTA />
+              </div>
 
               <p className="mt-3 sm:mt-3 text-[11px] sm:text-[12px] text-stone-500 text-center" style={{ fontFamily: "var(--font-open-sans)" }}>
-                30-day results guarantee — or you don't pay.
+                No credit card. List free. Upgrade anytime.
               </p>
 
               {/* Google Reviews social proof */}
@@ -629,56 +578,7 @@ export default function BookMoreWeddingsPage() {
       </section>
 
       {/* ============================================================== */}
-      {/* 5. HOW IT WORKS — horizontal snake timeline                   */}
-      {/* ============================================================== */}
-      <section id="how-it-works" className="bg-white py-20 sm:py-28">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="max-w-3xl mb-14">
-            <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
-              — Process
-            </p>
-            <h2
-              className="mt-4 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
-              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-            >
-              How StoryVenue Turns Brides Into Booked Weddings.
-            </h2>
-            <p
-              className="mt-5 text-base text-stone-500 leading-relaxed"
-              style={{ fontFamily: "var(--font-open-sans)" }}
-            >
-              Seven steps. One connected system. From first click to signed contract.
-            </p>
-          </div>
-
-          <ProcessTimeline />
-
-          <div className="mt-14 flex flex-col items-center gap-5">
-            <PrimaryCTA />
-            {/* Google Reviews social proof */}
-            <div className="flex items-center gap-3">
-              <div className="flex -space-x-2.5 shrink-0">
-                {["/avatars/av1.jpg", "/avatars/av2.jpg", "/avatars/av3.jpg", "/avatars/av4.jpg", "/avatars/av5.jpg"].map((src, i) => (
-                  <div key={i} className="relative w-9 h-9 rounded-full border-2 border-white overflow-hidden" style={{ zIndex: 5 - i }}>
-                    <Image src={src} alt="" fill unoptimized placeholder="empty" className="object-cover object-center" sizes="36px" />
-                  </div>
-                ))}
-              </div>
-              <div>
-                <div className="flex gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-4 h-4" viewBox="0 0 24 24" fill="#1c1917"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                  ))}
-                </div>
-                <p className="text-[11px] text-stone-500 mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>Google Reviews</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================== */}
-      {/* 6. FEATURE SPOTLIGHTS — alternating layout                     */}
+      {/* 5. FEATURE SPOTLIGHTS — alternating layout                     */}
       {/* ============================================================== */}
       <div id="features">
         {/* Section heading */}
@@ -714,7 +614,7 @@ export default function BookMoreWeddingsPage() {
                 More visibility. More inquiries. More chances to book the wedding.
               </p>
               <div className="mt-7">
-                <PrimaryCTA label="Start Free Trial" size="md" />
+                <PrimaryCTA size="md" />
               </div>
             </div>
             <div className="flex justify-center lg:justify-end">
@@ -753,7 +653,7 @@ export default function BookMoreWeddingsPage() {
                 Faster signatures. Faster deposits. Less chasing payments.
               </p>
               <div className="mt-7">
-                <PrimaryCTA label="Start Free Trial" size="md" />
+                <PrimaryCTA size="md" />
               </div>
             </div>
           </div>
@@ -777,7 +677,7 @@ export default function BookMoreWeddingsPage() {
                 Fewer missed leads. More conversations. More tours on your calendar.
               </p>
               <div className="mt-7">
-                <PrimaryCTA label="Start Free Trial" size="md" />
+                <PrimaryCTA size="md" />
               </div>
             </div>
             <div className="flex justify-center lg:justify-end">
@@ -815,7 +715,7 @@ export default function BookMoreWeddingsPage() {
                 Less chaos. More control. One system for your entire booking process.
               </p>
               <div className="mt-7">
-                <PrimaryCTA label="Start Free Trial" size="md" />
+                <PrimaryCTA size="md" />
               </div>
             </div>
           </div>
@@ -930,11 +830,11 @@ export default function BookMoreWeddingsPage() {
           {/* CTA */}
           <div className="mt-9">
             <a
-              href={TRIAL_HREF}
+              href={FREE_SIGNUP_HREF}
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-white text-stone-900 font-semibold px-7 py-3.5 text-[15px] hover:bg-stone-100 active:scale-[0.98] transition-all shadow-[0_12px_40px_-10px_rgba(0,0,0,0.6)]"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Start My 14-Day Free Trial
+              List Your Venue Free
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </a>
           </div>
@@ -962,162 +862,7 @@ export default function BookMoreWeddingsPage() {
       </section>
 
       {/* ============================================================== */}
-      {/* 8. PRICING PLANS                                               */}
-      {/* ============================================================== */}
-      <section id="pricing" className="bg-white py-20 sm:py-28">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-
-          {/* Heading */}
-          <div className="text-center mb-12">
-            <h2
-              className="text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
-              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-            >
-              StoryVenue Plans
-            </h2>
-            <p className="mt-3 text-[14px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>
-              14-day free trial. No Contracts. No Cancellation Fees. 30-day results guarantee — or you don't pay.
-            </p>
-          </div>
-
-          {/* Plan cards */}
-          <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-5 items-stretch">
-
-            {/* All-Inclusive — MOST POPULAR */}
-            <div className="relative rounded-2xl border-2 border-stone-900 bg-white p-7 flex flex-col shadow-[0_20px_60px_-12px_rgba(0,0,0,0.25),0_8px_24px_-8px_rgba(0,0,0,0.15)] -translate-y-1">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                <span className="inline-flex items-center rounded-full bg-stone-900 text-white text-[10px] font-bold tracking-[0.16em] uppercase px-3 py-1" style={{ fontFamily: "var(--font-open-sans)" }}>
-                  Most Popular
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-stone-900 mt-2" style={{ fontFamily: "var(--font-open-sans)" }}>All-Inclusive</h3>
-              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>We find the couples and do the follow-up. You host.</p>
-              <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$1,499</span>
-                <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
-              </div>
-              <ul className="mt-5 space-y-2.5 flex-1" style={{ fontFamily: "var(--font-open-sans)" }}>
-                {[
-                  { text: "Everything in Booking System, plus:", bold: true },
-                  { text: "Venue Concierge: our team personally works your leads" },
-                  { text: "Every bride followed up without you lifting a finger" },
-                  { text: "Leads re-engaged for months automatically" },
-                  { text: "Nothing falls through the cracks. Ever." },
-                  { text: "Verified and Sponsored badges included" },
-                ].map(({ text, bold }, i) => (
-                  <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${bold ? "font-semibold text-stone-900" : "text-stone-600"}`}>
-                    {!bold && <Check className="mt-[1px] shrink-0 w-3.5 h-3.5" style={{ color: "#10b981" }} strokeWidth={2.5} />}
-                    {text}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href={TRIAL_HREF}
-                className="mt-7 w-full inline-flex items-center justify-center rounded-xl bg-stone-900 text-white text-[14px] font-semibold px-5 py-3 hover:bg-stone-800 transition-colors"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                Start 14-day trial
-              </a>
-            </div>
-
-            {/* Booking System */}
-            <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col my-4">
-              <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Booking System</h3>
-              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>We find the couples. You do the follow-up.</p>
-              <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$999</span>
-                <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
-              </div>
-              <ul className="mt-5 space-y-2.5 flex-1" style={{ fontFamily: "var(--font-open-sans)" }}>
-                {[
-                  { text: "Everything in Venue Pro, plus:", bold: true },
-                  { text: "Managed Meta ads so brides come to you" },
-                  { text: "Tour-ready leads in your pipeline daily" },
-                  { text: "Verified badge included" },
-                  { text: "You handle the follow-up" },
-                ].map(({ text, bold }, i) => (
-                  <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${bold ? "font-semibold text-stone-900" : "text-stone-600"}`}>
-                    {!bold && <Check className="mt-[1px] shrink-0 w-3.5 h-3.5" style={{ color: "#10b981" }} strokeWidth={2.5} />}
-                    {text}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href={TRIAL_HREF}
-                className="mt-7 w-full inline-flex items-center justify-center rounded-xl border border-stone-300 text-stone-900 text-[14px] font-semibold px-5 py-3 hover:bg-stone-50 transition-colors"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                Start 14-day trial
-              </a>
-            </div>
-
-            {/* Venue Pro */}
-            <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col my-4">
-              <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Venue Pro</h3>
-              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>Every tool to manage leads, tours, and bookings yourself.</p>
-              <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$299</span>
-                <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
-              </div>
-              <ul className="mt-5 space-y-2.5 flex-1" style={{ fontFamily: "var(--font-open-sans)" }}>
-                {[
-                  { text: "Everything in Free, plus:", bold: true },
-                  { text: "Full lead pipeline so no inquiry gets lost" },
-                  { text: "Marketing Automations so follow-up runs without you" },
-                  { text: "Every message in one inbox" },
-                  { text: "Calendar with conflict detection so you never double-book" },
-                  { text: "Revenue reports so you know where you stand" },
-                ].map(({ text, bold }, i) => (
-                  <li key={i} className={`flex items-start gap-2 text-[13px] leading-snug ${bold ? "font-semibold text-stone-900" : "text-stone-600"}`}>
-                    {!bold && <Check className="mt-[1px] shrink-0 w-3.5 h-3.5" style={{ color: "#10b981" }} strokeWidth={2.5} />}
-                    {text}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href={TRIAL_HREF}
-                className="mt-7 w-full inline-flex items-center justify-center rounded-xl border border-stone-300 text-stone-900 text-[14px] font-semibold px-5 py-3 hover:bg-stone-50 transition-colors"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                Start 14-day trial
-              </a>
-            </div>
-
-            {/* Free */}
-            <div className="rounded-2xl border border-stone-200 bg-white px-7 py-5 flex flex-col my-4">
-              <h3 className="text-xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>Free</h3>
-              <p className="text-[13px] text-stone-500 mt-0.5 italic" style={{ fontFamily: "var(--font-open-sans)" }}>List your venue. Send proposals.<br />0% processing fees.</p>
-              <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>$0</span>
-                <span className="text-[13px] text-stone-500" style={{ fontFamily: "var(--font-open-sans)" }}>/mo</span>
-              </div>
-              <ul className="mt-5 space-y-2.5 flex-1" style={{ fontFamily: "var(--font-open-sans)" }}>
-                {[
-                  "Directory listing couples actually find",
-                  "Proposals with e-signatures built in",
-                  "Built-in payments. 0% processing fees. You keep 100%.",
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-[13px] text-stone-600 leading-snug">
-                    <Check className="mt-[1px] shrink-0 w-3.5 h-3.5" style={{ color: "#10b981" }} strokeWidth={2.5} />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href={TRIAL_HREF}
-                className="mt-7 w-full inline-flex items-center justify-center rounded-xl border border-stone-300 text-stone-900 text-[14px] font-semibold px-5 py-3 hover:bg-stone-50 transition-colors"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                Start for free
-              </a>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================== */}
-      {/* 9. FAQ SECTION                                                  */}
+      {/* 8. FAQ SECTION                                                  */}
       {/* ============================================================== */}
       <section id="faq" className="bg-stone-50/70 py-20 sm:py-28 border-y border-stone-200/60">
         <div className="max-w-3xl mx-auto px-6 md:px-10">
@@ -1193,7 +938,7 @@ export default function BookMoreWeddingsPage() {
             className="mt-5 text-lg sm:text-xl font-semibold text-white"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Try StoryVenue Free for 14 Days
+            List Your Venue Free in Minutes
           </p>
           <p
             className="mt-5 text-base sm:text-lg text-white/75 leading-relaxed max-w-4xl mx-auto"
@@ -1204,16 +949,16 @@ export default function BookMoreWeddingsPage() {
 
           <div className="mt-10 flex justify-center">
             <a
-              href={TRIAL_HREF}
+              href={FREE_SIGNUP_HREF}
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-white text-stone-900 font-semibold px-7 py-4 text-base shadow-[0_18px_45px_-12px_rgba(0,0,0,0.6)] hover:bg-stone-100 active:scale-[0.98] transition-all"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Start My 14-Day Free Trial
+              List Your Venue Free
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </a>
           </div>
           <p className="mt-5 text-[12px] text-white/50">
-            No contracts. No down payments. No cancellation fees.
+            No credit card. No contracts. Upgrade anytime.
           </p>
         </div>
       </section>
