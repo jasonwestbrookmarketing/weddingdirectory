@@ -295,7 +295,7 @@ export default function BookMoreWeddingsPage() {
       {/* (announcement ticker ~28px + nav ~52px ≈ 80px). The section     */}
       {/* uses flex-1 to fill, pushing the logo strip to the bottom.      */}
       <div className="flex flex-col lg:contents" style={{ minHeight: "calc(100svh - 110px)" }}>
-      <section className="relative bg-white pt-3 lg:pt-0 flex flex-col lg:block lg:-mt-[92px] lg:items-center lg:overflow-hidden lg:min-h-[calc(100svh+92px)] flex-1 lg:flex-none">
+      <section className="relative bg-white pt-3 lg:pt-0 flex flex-col lg:block lg:-mt-[92px] lg:items-center lg:overflow-hidden lg:min-h-screen flex-1 lg:flex-none">
 
         {/* ── MOBILE / TABLET: image with mask-image fade to transparent ─── */}
         {/* The image itself fades to transparent at the bottom (no overlay  */}
