@@ -41,7 +41,7 @@ export default function VideoPlayer() {
               />
               <span className="relative z-10 flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/92 backdrop-blur-sm group-hover:bg-white group-hover:scale-105 active:scale-95 transition-all shadow-[0_8px_32px_-8px_rgba(0,0,0,0.5)]">
                 <svg
-                  className="w-6 h-6 sm:w-7 sm:h-7 text-[#1a1a1a] ml-0.5"
+                  className="w-6 h-6 sm:w-7 sm:h-7 text-[#1b1b1b] ml-0.5"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   aria-hidden="true"

@@ -83,7 +83,7 @@ export default function Differentiation() {
 
           {/* Positive row */}
           <Reveal delay={0.28}>
-            <div className="grid grid-cols-2 gap-4 items-center bg-[#1a1a1a] rounded-xl px-5 sm:px-6 py-5 sm:py-6 border border-transparent">
+            <div className="grid grid-cols-2 gap-4 items-center bg-[#1b1b1b] rounded-xl px-5 sm:px-6 py-5 sm:py-6 border border-transparent">
               <div className="flex items-center gap-3 min-w-0">
                 <span
                   className="shrink-0 w-2 h-2 rounded-full bg-[#8a7448]"

@@ -1,9 +1,24 @@
+import Image from "next/image";
 import { Reveal } from "./Reveal";
 
 export default function MathSection() {
   return (
-    <section className="bg-[#1a1a1a] text-white py-[clamp(80px,10vw,140px)] border-b border-white/10">
-      <div className="max-w-4xl mx-auto px-6 md:px-10 text-center">
+    <section className="relative overflow-hidden text-white">
+      {/* Background photo — same technique as /book-more-weddings "not just software" */}
+      <Image
+        src="/not-just-software-bg.jpg"
+        alt=""
+        aria-hidden
+        fill
+        unoptimized
+        placeholder="empty"
+        className="absolute inset-0 object-cover object-center"
+        sizes="100vw"
+      />
+      {/* Dark overlay so text stays legible */}
+      <div className="absolute inset-0 bg-[#1b1b1b]/82" />
+
+      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-10 text-center py-[clamp(80px,10vw,140px)]">
         <Reveal>
           <p
             className="text-[11px] font-semibold tracking-[0.22em] uppercase text-white/40"

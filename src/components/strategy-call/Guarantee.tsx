@@ -21,7 +21,7 @@ export default function Guarantee() {
               <div className="absolute rounded-full border border-brand-ink/12" style={{ inset: 12 }} />
               {/* Inner filled circle */}
               <div
-                className="absolute rounded-full bg-[#1a1a1a] flex flex-col items-center justify-center text-white"
+                className="absolute rounded-full bg-[#1b1b1b] flex flex-col items-center justify-center text-white"
                 style={{ inset: 22 }}
               >
                 <span

@@ -43,7 +43,7 @@ function ProofCard({
     <Reveal delay={delay}>
       <motion.div
         className="group relative bg-white border border-brand-line rounded-xl p-7 sm:p-8 cursor-default overflow-hidden h-full flex flex-col justify-between"
-        whileHover={reduce ? {} : { backgroundColor: "#1a1a1a" }}
+        whileHover={reduce ? {} : { backgroundColor: "#1b1b1b" }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
         {/* Venue name */}
@@ -64,7 +64,7 @@ function ProofCard({
           style={{
             fontFamily: "EditorsNote, serif",
             fontWeight: 300,
-            color: "#1a1a1a",
+            color: "#1b1b1b",
           }}
           whileHover={reduce ? {} : { color: "#ffffff" }}
           transition={{ duration: 0.4 }}

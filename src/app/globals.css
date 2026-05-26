@@ -35,12 +35,12 @@ html, body {
   --font-playfair: var(--font-playfair);
   --font-editors-note: "EditorsNote", serif;
 
-  /* Strategy-call brand tokens */
-  --color-brand-bg: #fafaf7;
-  --color-brand-warm: #f5f3ec;
-  --color-brand-ink: #1a1a1a;
-  --color-brand-muted: #6b6b6b;
-  --color-brand-line: #e8e6df;
+  /* Strategy-call brand tokens — aligned with /book-more-weddings palette */
+  --color-brand-bg: #ffffff;
+  --color-brand-warm: #f5f5f4;
+  --color-brand-ink: #1b1b1b;
+  --color-brand-muted: #78716c;
+  --color-brand-line: #e7e5e4;
   --color-brand-gold: #8a7448;
   --color-brand-cream: #d4c4ad;
   --color-stone-50: #fafaf9;
