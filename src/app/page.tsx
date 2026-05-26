@@ -50,24 +50,40 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* Navigation — absolute over video */}
-      <nav className="absolute top-10 left-0 right-0 z-20 flex items-center justify-between px-6 md:px-12 py-6 gap-4">
-        <Link href="/" aria-label="StoryVenue home" className="shrink-0">
-          <Image
-            src="/storyvenue-light-logo.png"
-            alt="StoryVenue"
-            width={160}
-            height={40}
-            className="h-9 w-auto object-contain"
-            priority
-          />
-        </Link>
+      {/* Navigation — absolute over video. Three-column flex so the center
+          link sits dead-center regardless of left/right widths. */}
+      <nav className="absolute top-10 left-0 right-0 z-20 flex items-center px-6 md:px-12 py-6 gap-4">
+        {/* Left — logo */}
+        <div className="flex-1 flex items-center">
+          <Link href="/" aria-label="StoryVenue home" className="shrink-0">
+            <Image
+              src="/storyvenue-light-logo.png"
+              alt="StoryVenue"
+              width={160}
+              height={40}
+              className="h-9 w-auto object-contain"
+              priority
+            />
+          </Link>
+        </div>
 
-        {/* Two unified auth buttons — the dashboard's /login and /signup
+        {/* Center — primary nav. Hidden on mobile to keep the overlay clean;
+            the same destination is reachable from the footer + ticker bar. */}
+        <div className="hidden md:flex flex-1 justify-center">
+          <Link
+            href="/book-more-weddings"
+            className="text-white text-sm font-semibold tracking-wide hover:text-white/75 transition-colors"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
+            Book More Weddings
+          </Link>
+        </div>
+
+        {/* Right — unified auth buttons. The dashboard's /login and /signup
             both have a Venue ↔ Couple toggle now, so one pair covers both
             audiences. We default to ?as=couple because this is the
             bride-facing directory. */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex-1 flex items-center justify-end gap-2 shrink-0">
           <a
             href={`${STORYPAY_URL}/login?as=couple`}
             className="rounded-full bg-white/10 border border-white/20 text-white px-4 py-2.5 text-sm font-medium hover:bg-white/20 active:scale-[0.98] transition-all backdrop-blur-sm"
