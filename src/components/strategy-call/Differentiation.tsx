@@ -19,7 +19,7 @@ const COMPETITORS = [
 
 export default function Differentiation() {
   return (
-    <section className="bg-brand-warm py-20 sm:py-28">
+    <section className="bg-white py-20 sm:py-28 border-t border-brand-line border-b border-brand-line">
       <div className="max-w-[1040px] mx-auto px-6 md:px-10">
 
         {/* ── Header ── */}

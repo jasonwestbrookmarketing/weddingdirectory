@@ -27,7 +27,7 @@ const PROMISES = [
 function CheckIcon() {
   return (
     <div
-      className="shrink-0 w-7 h-7 rounded-full bg-[#8a7448] flex items-center justify-center"
+      className="shrink-0 w-7 h-7 rounded-full bg-[#1b1b1b] flex items-center justify-center"
       aria-hidden="true"
     >
       <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
@@ -44,21 +44,16 @@ function Medallion() {
       style={{ width: 240, height: 240 }}
       aria-label="30 Day Guarantee"
     >
-      {/* Outer faint gold halo */}
+      {/* Outermost dashed ring */}
+      <div className="absolute inset-0 rounded-full border border-dashed border-[#1b1b1b]/20" />
+      {/* Second ring */}
       <div
-        className="absolute inset-0 rounded-full"
-        style={{ background: "radial-gradient(circle, rgba(138,116,72,0.10) 0%, rgba(138,116,72,0) 70%)" }}
-      />
-      {/* Outermost dashed gold ring */}
-      <div className="absolute inset-0 rounded-full border border-dashed border-[#8a7448]/40" />
-      {/* Second gold ring */}
-      <div
-        className="absolute rounded-full border border-[#8a7448]/50"
+        className="absolute rounded-full border border-[#1b1b1b]/15"
         style={{ inset: 14 }}
       />
-      {/* Gold trim ring */}
+      {/* Trim ring */}
       <div
-        className="absolute rounded-full border-2 border-[#8a7448]"
+        className="absolute rounded-full border-2 border-[#1b1b1b]/70"
         style={{ inset: 26 }}
       />
       {/* Inner filled medallion */}
@@ -67,7 +62,7 @@ function Medallion() {
         style={{ inset: 32 }}
       >
         <span
-          className="text-[10px] font-semibold tracking-[0.32em] uppercase text-[#8a7448]"
+          className="text-[10px] font-semibold tracking-[0.32em] uppercase text-white/50"
           style={{ fontFamily: "var(--font-open-sans)" }}
         >
           The
@@ -91,18 +86,9 @@ function Medallion() {
 
 export default function Guarantee() {
   return (
-    <section className="relative bg-brand-warm py-20 sm:py-28 border-b border-brand-line overflow-hidden">
-      {/* Soft decorative gold gradient backdrop */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-60"
-        style={{
-          background:
-            "radial-gradient(circle at 20% 30%, rgba(138,116,72,0.06) 0%, rgba(138,116,72,0) 50%), radial-gradient(circle at 80% 70%, rgba(138,116,72,0.05) 0%, rgba(138,116,72,0) 55%)",
-        }}
-        aria-hidden
-      />
+    <section className="relative bg-white py-20 sm:py-28 border-t border-brand-line border-b border-brand-line overflow-hidden">
 
-      <div className="relative max-w-[1100px] mx-auto px-6 md:px-10">
+      <div className="max-w-[1100px] mx-auto px-6 md:px-10">
         {/* Eyebrow */}
         <Reveal>
           <p
@@ -120,8 +106,8 @@ export default function Guarantee() {
               <Medallion />
 
               {/* Signature-style caption */}
-              <div className="mt-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-brand-line">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#8a7448]" aria-hidden="true" />
+              <div className="mt-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-warm border border-brand-line">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#1b1b1b]" aria-hidden="true" />
                 <p
                   className="text-[10px] font-semibold tracking-[0.22em] uppercase text-brand-ink"
                   style={{ fontFamily: "var(--font-open-sans)" }}
@@ -140,7 +126,7 @@ export default function Guarantee() {
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
                 If it doesn&apos;t work,{" "}
-                <span style={{ color: "#8a7448" }}>you don&apos;t pay.</span>
+                <span className="text-brand-ink">you don&apos;t pay.</span>
               </h2>
             </Reveal>
 
@@ -208,7 +194,7 @@ export default function Guarantee() {
                   <div className="flex items-center gap-1.5">
                     <div className="flex gap-0.5" role="img" aria-label="5 stars">
                       {[...Array(5)].map((_, i) => (
-                        <svg key={i} className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="#8a7448" aria-hidden="true">
+                        <svg key={i} className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="#1b1b1b" aria-hidden="true">
                           <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                         </svg>
                       ))}
