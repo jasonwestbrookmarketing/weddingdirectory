@@ -113,11 +113,10 @@ export default function StrategyCallModal() {
             Book Your Free Strategy Call.
           </h2>
           <p
-            className="mt-2 text-sm text-stone-500 max-w-sm mx-auto"
+            className="mt-2 text-sm text-stone-500 max-w-[30ch] mx-auto"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            30 minutes. No pitch. No pressure. We&rsquo;ll look at your venue&rsquo;s actual numbers
-            and show you exactly what&rsquo;s leaking.
+            30 minutes. No pitch. No pressure. We&rsquo;ll show you exactly what&rsquo;s leaking.
           </p>
         </div>
 
