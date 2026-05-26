@@ -49,8 +49,8 @@ function AccordionItem({
         aria-expanded={isOpen}
       >
         <span
-          className="text-[16px] sm:text-[18px] text-brand-ink leading-snug"
-          style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+          className="text-[15px] sm:text-[16px] font-bold text-brand-ink leading-snug"
+          style={{ fontFamily: "var(--font-open-sans)" }}
         >
           {q}
         </span>
