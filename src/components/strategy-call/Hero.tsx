@@ -3,7 +3,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import VideoPlayer from "./VideoPlayer";
-import { BOOKING_URL } from "./constants";
 
 const AVATARS = [
   "/avatars/av1.jpg",
@@ -74,9 +73,10 @@ export default function Hero() {
 
           {/* CTA */}
           <motion.div variants={item} className="pt-1 space-y-3">
-            <a
-              href={BOOKING_URL}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1a1a1a] text-white font-semibold px-7 py-3.5 text-[15px] hover:-translate-y-px hover:shadow-[0_12px_32px_-10px_rgba(0,0,0,0.4)] active:scale-[0.98] transition-all shadow-[0_6px_20px_-8px_rgba(0,0,0,0.3)]"
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("open-strategy-modal"))}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1a1a1a] text-white font-bold tracking-[0.1em] uppercase px-7 py-3.5 text-[13px] sm:text-[14px] hover:-translate-y-px hover:shadow-[0_12px_32px_-10px_rgba(0,0,0,0.4)] active:scale-[0.98] transition-all shadow-[0_6px_20px_-8px_rgba(0,0,0,0.3)]"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               Book Your Free Strategy Call
@@ -90,7 +90,7 @@ export default function Hero() {
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </a>
+            </button>
             <p
               className="text-[12px] text-brand-muted tracking-wide"
               style={{ fontFamily: "var(--font-open-sans)" }}

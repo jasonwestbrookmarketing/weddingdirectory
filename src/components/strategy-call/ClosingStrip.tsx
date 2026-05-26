@@ -1,4 +1,5 @@
-import { BOOKING_URL } from "./constants";
+
+"use client";
 
 export default function ClosingStrip() {
   return (
@@ -12,9 +13,10 @@ export default function ClosingStrip() {
         </p>
 
         <div className="mt-8 sm:mt-10">
-          <a
-            href={BOOKING_URL}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-[#1a1a1a] font-semibold px-7 py-3.5 text-[15px] hover:-translate-y-px hover:shadow-[0_12px_32px_-8px_rgba(255,255,255,0.2)] active:scale-[0.98] transition-all"
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("open-strategy-modal"))}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-[#1a1a1a] font-bold tracking-[0.1em] uppercase px-7 py-3.5 text-[13px] sm:text-[14px] hover:-translate-y-px hover:shadow-[0_12px_32px_-8px_rgba(255,255,255,0.2)] active:scale-[0.98] transition-all"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             Book Your Free Strategy Call
@@ -28,7 +30,7 @@ export default function ClosingStrip() {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </a>
+          </button>
         </div>
       </div>
     </section>

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { BOOKING_URL } from "./constants";
 
 export default function StrategyNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -33,13 +32,14 @@ export default function StrategyNav() {
           />
         </Link>
 
-        <a
-          href={BOOKING_URL}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1a1a1a] text-white text-[13px] sm:text-sm font-semibold px-4 sm:px-5 py-2 sm:py-2.5 hover:-translate-y-px hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.35)] active:scale-[0.98] transition-all"
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new Event("open-strategy-modal"))}
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1a1a1a] text-white text-[11px] sm:text-[12px] font-bold tracking-[0.1em] uppercase px-4 sm:px-5 py-2 sm:py-2.5 hover:-translate-y-px hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.35)] active:scale-[0.98] transition-all"
           style={{ fontFamily: "var(--font-open-sans)" }}
         >
           Book Strategy Call
-        </a>
+        </button>
       </nav>
     </header>
   );

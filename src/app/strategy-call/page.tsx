@@ -12,6 +12,7 @@ import FinalCTA from "@/components/strategy-call/FinalCTA";
 import FAQAccordion from "@/components/strategy-call/FAQAccordion";
 import ClosingStrip from "@/components/strategy-call/ClosingStrip";
 import PageFooter from "@/components/strategy-call/PageFooter";
+import StrategyCallModal from "@/components/strategy-call/StrategyCallModal";
 
 export const dynamic = "force-static";
 
@@ -39,6 +40,9 @@ export default function StrategyCallPage() {
       </main>
 
       <PageFooter />
+
+      {/* Always-mounted modal — pre-loads calendar iframe silently */}
+      <StrategyCallModal />
     </div>
   );
 }
