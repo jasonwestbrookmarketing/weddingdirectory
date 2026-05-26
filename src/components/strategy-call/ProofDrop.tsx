@@ -4,10 +4,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "./Reveal";
 
 const PROOF_CARDS = [
-  { venue: "Manor",           stat: "90d",  detail: "Entire 2026 calendar booked"   },
-  { venue: "Waterloo Farms",  stat: "2",    detail: "Weddings booked in 7 days"     },
-  { venue: "Atlantic Stables",stat: "$15k", detail: "Booked weddings in 30 days"    },
-  { venue: "Red Barn Acres",  stat: "9",    detail: "Weddings in 4 months"          },
+  { venue: "Atlantic Stables",         stat: "$15k", detail: "Booked weddings in 30 days"  },
+  { venue: "Waterloo Farms",           stat: "2",    detail: "Weddings booked in 7 days"   },
+  { venue: "Red Barn Acres",           stat: "9",    detail: "Weddings in 4 months"        },
+  { venue: "Retreat at Evans Farms",   stat: "258",  detail: "Leads in 60 days"            },
 ];
 
 function ProofCard({
