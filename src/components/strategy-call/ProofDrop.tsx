@@ -1,76 +1,101 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import { Reveal } from "./Reveal";
 import { SketchUnderline } from "./SketchUnderline";
 
 const PROOF_CARDS = [
-  { venue: "Atlantic Stables",         stat: "$15k", detail: "Booked weddings in 30 days"  },
-  { venue: "Waterloo Farms",           stat: "2",    detail: "Weddings booked in 7 days"   },
-  { venue: "Red Barn Acres",           stat: "9",    detail: "Weddings in 4 months"        },
-  { venue: "Retreat at Evans Farms",   stat: "258",  detail: "Leads in 60 days"            },
+  {
+    venue: "Atlantic Stables",
+    stat: "$15k",
+    detail: "In booked weddings the first 30 days",
+    logo: "/logos/atlantic.png",
+  },
+  {
+    venue: "Waterloo Farms",
+    stat: "$8,000",
+    detail: "In booked weddings the first 7 days",
+    logo: "/logos/waterloo.png",
+  },
+  {
+    venue: "Red Barn Acres",
+    stat: "9",
+    detail: "Weddings booked in the first 4 months",
+    logo: null,
+  },
+  {
+    venue: "Retreat at Evans Farms",
+    stat: "258",
+    detail: "Leads in 60 days",
+    logo: null,
+  },
 ];
 
 function ProofCard({
   venue,
   stat,
   detail,
+  logo,
   delay,
 }: {
   venue: string;
   stat: string;
   detail: string;
+  logo: string | null;
   delay: number;
 }) {
-  const reduce = useReducedMotion();
-
   return (
     <Reveal delay={delay}>
-      <motion.div
-        className="group relative bg-white border border-brand-line rounded-xl overflow-hidden h-full flex flex-col cursor-default"
-        whileHover={reduce ? {} : { backgroundColor: "#1b1b1b", borderColor: "#1b1b1b" }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-      >
+      <div className="relative bg-white border border-brand-line rounded-xl overflow-hidden h-full flex flex-col">
         {/* Gold accent bar */}
         <div className="h-[3px] w-full bg-[#8a7448] shrink-0" />
 
         <div className="px-6 pt-5 pb-6 sm:px-7 sm:pt-6 sm:pb-7 flex flex-col flex-1">
+          {/* Logo (where available) */}
+          {logo && (
+            <div className="mb-3 h-7 flex items-center">
+              <Image
+                src={logo}
+                alt={venue}
+                width={120}
+                height={28}
+                unoptimized
+                placeholder="empty"
+                className="max-h-7 w-auto object-contain opacity-60 grayscale"
+              />
+            </div>
+          )}
+
           {/* Venue name */}
-          <motion.p
+          <p
             className="text-[10px] font-semibold tracking-[0.26em] uppercase"
             style={{ fontFamily: "var(--font-open-sans)", color: "#a8a29e" }}
-            whileHover={reduce ? {} : { color: "rgba(255,255,255,0.4)" }}
-            transition={{ duration: 0.35 }}
           >
             {venue}
-          </motion.p>
+          </p>
 
-          {/* Big stat — the hero of the card */}
-          <motion.p
+          {/* Big stat */}
+          <p
             className="mt-3 leading-none"
             style={{
               fontFamily: "EditorsNote, serif",
               fontWeight: 300,
-              fontSize: "clamp(72px, 8vw, 96px)",
+              fontSize: "clamp(60px, 7vw, 88px)",
               color: "#1b1b1b",
             }}
-            whileHover={reduce ? {} : { color: "#ffffff" }}
-            transition={{ duration: 0.35 }}
           >
             {stat}
-          </motion.p>
+          </p>
 
-          {/* Detail — larger and bolder for instant clarity */}
-          <motion.p
+          {/* Detail */}
+          <p
             className="mt-4 text-[14px] sm:text-[15px] font-semibold leading-snug"
             style={{ fontFamily: "var(--font-open-sans)", color: "#57534e" }}
-            whileHover={reduce ? {} : { color: "rgba(255,255,255,0.75)" }}
-            transition={{ duration: 0.35 }}
           >
             {detail}
-          </motion.p>
+          </p>
         </div>
-      </motion.div>
+      </div>
     </Reveal>
   );
 }

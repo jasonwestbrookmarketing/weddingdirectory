@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function ClosingStrip() {
   return (
     <section className="relative overflow-hidden">
-      {/* Bride & groom venue photo */}
+      {/* Bride & groom venue photo — positioned to keep faces visible */}
       <Image
         src="/hero-wedding-couple.jpg"
         alt=""
@@ -13,19 +13,18 @@ export default function ClosingStrip() {
         fill
         unoptimized
         placeholder="empty"
-        className="absolute inset-0 object-cover object-center"
+        className="absolute inset-0 object-cover object-[center_15%]"
         sizes="100vw"
-        style={{ transform: "scaleX(-1)" }}
       />
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-[#1b1b1b]/75" />
+      <div className="absolute inset-0 bg-[#1b1b1b]/72" />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-10 text-center py-24 sm:py-32">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10 text-center py-24 sm:py-32">
         <p
-          className="text-white leading-[1.12] text-[28px] sm:text-[38px] md:text-[46px]"
+          className="text-white leading-[1.1] text-[22px] sm:text-[32px] md:text-[38px] lg:text-[44px] lg:whitespace-nowrap"
           style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
         >
-          Every month you wait is a month you can&apos;t get back.
+          Every Month You Wait Is A Month You Can&apos;t Get Back.
         </p>
 
         <div className="mt-10 sm:mt-12">

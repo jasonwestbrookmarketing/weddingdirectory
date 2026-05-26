@@ -52,9 +52,9 @@ export default function Hero() {
             className="text-[36px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.08] text-brand-ink"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Fully book your wedding venue without paying{" "}
-            <span style={{ color: "#8a7448" }}>The Knot</span> or{" "}
-            <span style={{ color: "#8a7448" }}>WeddingWire</span> another cent.
+            Fully Book Your Wedding Venue Without Paying{" "}
+            <span style={{ color: "#8a7448" }}>The Knot</span> Or{" "}
+            <span style={{ color: "#8a7448" }}>WeddingWire</span> Another Cent.
           </motion.h1>
 
           {/* Subhead — single horizontal line */}

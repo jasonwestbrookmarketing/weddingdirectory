@@ -5,7 +5,7 @@ const STEPS = [
   { label: "Missed Tour",     desc: "She booked with a competitor",    final: false },
   { label: "Missed Proposal", desc: "$12,000 never sent",              final: false },
   { label: "Missed Deposit",  desc: "Weekend still open",              final: false },
-  { label: "Empty Weekend",   desc: "Revenue gone for good",           final: true  },
+  { label: "Empty Weekend",   desc: "Revenue Gone Forever",            final: true  },
 ];
 
 function XIcon({ large }: { large?: boolean }) {
