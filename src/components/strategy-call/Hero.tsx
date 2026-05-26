@@ -63,7 +63,7 @@ export default function Hero() {
             className="text-[15px] sm:text-[17px] text-brand-muted tracking-wide"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            We bring the brides.&nbsp;&nbsp;·&nbsp;&nbsp;Our team works the leads.&nbsp;&nbsp;·&nbsp;&nbsp;You show up for the tour.
+            We bring the brides.&nbsp;&nbsp;&nbsp;Our team works the leads.&nbsp;&nbsp;&nbsp;You show up for the tour.
           </motion.p>
 
           {/* Video player */}

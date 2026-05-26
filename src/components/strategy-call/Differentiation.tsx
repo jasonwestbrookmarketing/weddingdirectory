@@ -20,7 +20,7 @@ const COMPETITORS = [
 export default function Differentiation() {
   return (
     <section className="bg-brand-warm py-20 sm:py-28">
-      <div className="max-w-[860px] mx-auto px-6 md:px-10">
+      <div className="max-w-[1040px] mx-auto px-6 md:px-10">
 
         {/* ── Header ── */}
         <Reveal>
@@ -125,9 +125,7 @@ export default function Differentiation() {
                   className="text-brand-ink text-[15px] sm:text-[16px] leading-relaxed font-medium"
                   style={{ fontFamily: "var(--font-open-sans)" }}
                 >
-                  A complete booking system, with a real team behind it,{" "}
-                  <br className="hidden sm:block" />
-                  built by people who&apos;ve been in this industry for over 14 years.
+                  A complete booking system, with a real team behind it, built by people who&apos;ve been in this industry for over 14 years.
                 </p>
                 <p
                   className="mt-2 text-brand-muted text-[13px] leading-relaxed"

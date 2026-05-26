@@ -4,7 +4,7 @@ import { SketchUnderline } from "./SketchUnderline";
 export default function RealProblem() {
   return (
     <section className="bg-brand-bg py-20 sm:py-28 border-b border-brand-line">
-      {/* Wide container for the headline so it fills 2 lines naturally */}
+      {/* Single container — headline & body share the same left edge */}
       <div className="max-w-6xl mx-auto px-6 md:px-10">
         <Reveal>
           <p
@@ -27,13 +27,10 @@ export default function RealProblem() {
             not yours.
           </h2>
         </Reveal>
-      </div>
 
-      {/* Body text constrained to comfortable reading width */}
-      <div className="max-w-[880px] mx-auto px-6 md:px-10">
         <Reveal delay={0.16}>
           <div
-            className="mt-8 sm:mt-10 space-y-5 text-brand-muted text-base sm:text-lg leading-relaxed"
+            className="mt-8 sm:mt-10 space-y-5 text-brand-muted text-base sm:text-lg leading-relaxed max-w-[760px]"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             <p>
@@ -57,7 +54,7 @@ export default function RealProblem() {
 
         {/* Pull-quote */}
         <Reveal delay={0.24}>
-          <blockquote className="mt-10 sm:mt-12 pl-5 border-l-2 border-brand-ink">
+          <blockquote className="mt-10 sm:mt-12 pl-5 border-l-2 border-brand-ink max-w-[760px]">
             <p
               className="text-brand-ink font-bold leading-snug text-[17px] sm:text-[19px]"
               style={{ fontFamily: "var(--font-open-sans)" }}

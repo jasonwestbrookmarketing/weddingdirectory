@@ -52,7 +52,7 @@ export default function FinalCTA() {
             className="mt-7 sm:mt-8 space-y-1 text-brand-muted text-[16px] sm:text-[17px]"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            <p>This isn&apos;t a sales call. It&apos;s a fit call.</p>
+            <p className="font-bold text-brand-ink">This isn&apos;t a sales call. It&apos;s a fit call.</p>
             <p>We don&apos;t pitch. We don&apos;t pressure. We don&apos;t read from a script.</p>
           </div>
         </Reveal>
