@@ -123,11 +123,11 @@ export default function ProofDrop() {
             className="mt-4 text-[26px] sm:text-4xl md:text-[42px] text-brand-ink leading-[1.12] max-w-2xl"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Not because they got more leads. Because they finally had a{" "}
+            Not because they get more leads. Because they finally have a{" "}
             <SketchUnderline>
               <span style={{ color: "#8a7448" }}>booking system</span>
             </SketchUnderline>{" "}
-            that worked for them.
+            that works for them.
           </h2>
         </Reveal>
 
