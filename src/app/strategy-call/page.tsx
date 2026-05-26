@@ -8,7 +8,6 @@ import ProofDrop from "@/components/strategy-call/ProofDrop";
 import MathSection from "@/components/strategy-call/MathSection";
 import Differentiation from "@/components/strategy-call/Differentiation";
 import Guarantee from "@/components/strategy-call/Guarantee";
-import FinalCTA from "@/components/strategy-call/FinalCTA";
 import ClosingStrip from "@/components/strategy-call/ClosingStrip";
 import PageFooter from "@/components/strategy-call/PageFooter";
 import StrategyCallModal from "@/components/strategy-call/StrategyCallModal";
@@ -33,7 +32,6 @@ export default function StrategyCallPage() {
         <MathSection />
         <Differentiation />
         <Guarantee />
-        <FinalCTA />
         <ClosingStrip />
       </main>
 

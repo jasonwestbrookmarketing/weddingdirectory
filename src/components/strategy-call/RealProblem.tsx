@@ -1,4 +1,5 @@
 import { Reveal } from "./Reveal";
+import { SketchUnderline } from "./SketchUnderline";
 
 export default function RealProblem() {
   return (
@@ -19,7 +20,9 @@ export default function RealProblem() {
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             You&apos;re paying The Knot and WeddingWire to help your{" "}
-            <em style={{ color: "#8a7448", fontStyle: "italic" }}>competitors.</em>
+            <SketchUnderline>
+              <span style={{ color: "#8a7448" }}>competitors.</span>
+            </SketchUnderline>
           </h2>
         </Reveal>
 
