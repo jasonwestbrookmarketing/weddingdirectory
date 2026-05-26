@@ -4,7 +4,6 @@ import { Reveal } from "./Reveal";
 export default function MathSection() {
   return (
     <section className="relative overflow-hidden text-white">
-      {/* Background photo — same technique as /book-more-weddings "not just software" */}
       <Image
         src="/not-just-software-bg.jpg"
         alt=""
@@ -15,13 +14,29 @@ export default function MathSection() {
         className="absolute inset-0 object-cover object-center"
         sizes="100vw"
       />
-      {/* Dark overlay so text stays legible */}
-      <div className="absolute inset-0 bg-[#1b1b1b]/82" />
+      {/* Heavier base overlay so photo recedes to atmospheric texture */}
+      <div className="absolute inset-0 bg-[#1b1b1b]/90" />
+      {/* Right-side darken to neutralize the bright couple in the photo */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(27,27,27,0) 35%, rgba(27,27,27,0.55) 75%, rgba(27,27,27,0.85) 100%)",
+        }}
+      />
+      {/* Soft vignette to ground the composition */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(27,27,27,0) 40%, rgba(27,27,27,0.55) 100%)",
+        }}
+      />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-10 text-center py-[clamp(80px,10vw,140px)]">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-10 text-center py-[clamp(96px,11vw,160px)]">
         <Reveal>
           <p
-            className="text-[11px] font-semibold tracking-[0.22em] uppercase text-white/40"
+            className="text-[11px] font-semibold tracking-[0.28em] uppercase text-white/55"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             The Math
@@ -30,17 +45,18 @@ export default function MathSection() {
 
         <Reveal delay={0.08}>
           <p
-            className="mt-6 text-white/75 leading-relaxed max-w-xl mx-auto text-base sm:text-lg font-medium"
+            className="mt-6 text-white/90 leading-[1.35] mx-auto text-lg sm:text-xl"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Whether your average wedding sells for $5,000 or $50,000, the math is the same:
+            <span className="block">$5,000 wedding or $50,000 wedding.</span>
+            <span className="block text-white/70 mt-1">The math doesn&rsquo;t change.</span>
           </p>
         </Reveal>
 
         {/* Hero number */}
         <Reveal delay={0.16}>
           <div
-            className="mt-8 sm:mt-10 leading-none tracking-tight"
+            className="mt-10 sm:mt-12 leading-none tracking-tight"
             style={{
               fontFamily: "EditorsNote, serif",
               fontWeight: 300,
@@ -55,22 +71,29 @@ export default function MathSection() {
 
         <Reveal delay={0.22}>
           <p
-            className="mt-3 text-[10px] sm:text-[11px] font-semibold tracking-[0.28em] uppercase text-white/40"
+            className="mt-4 text-[11px] sm:text-[12px] font-semibold tracking-[0.32em] uppercase text-white/55"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Extra Weddings · Per Year
+            Extra Weddings Per Year
           </p>
         </Reveal>
 
-        {/* Coda */}
+        {/* Payoff — two-beat hierarchy */}
         <Reveal delay={0.3}>
-          <p
-            className="mt-10 sm:mt-12 pt-8 border-t border-white/15 text-white/65 max-w-xl mx-auto leading-relaxed text-sm sm:text-base font-semibold"
-            style={{ fontFamily: "var(--font-open-sans)" }}
-          >
-            That&apos;s all it takes to make StoryVenue pay for itself for the entire year. Most of
-            our private clients book that in their first 30 days.
-          </p>
+          <div className="mt-12 sm:mt-14 pt-10 border-t border-white/15 max-w-2xl mx-auto">
+            <p
+              className="text-white text-xl sm:text-2xl font-semibold leading-[1.3]"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              That pays for StoryVenue for the entire year.
+            </p>
+            <p
+              className="mt-3 text-white/65 text-sm sm:text-base leading-relaxed"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              Most of our private clients book that in their first 30 days.
+            </p>
+          </div>
         </Reveal>
       </div>
     </section>
