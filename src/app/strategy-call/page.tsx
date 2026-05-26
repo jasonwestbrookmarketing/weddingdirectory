@@ -11,6 +11,7 @@ import Guarantee from "@/components/strategy-call/Guarantee";
 import FinalCTA from "@/components/strategy-call/FinalCTA";
 import PageFooter from "@/components/strategy-call/PageFooter";
 import StrategyCallModal from "@/components/strategy-call/StrategyCallModal";
+import ScrollToTop from "@/components/marketing/ScrollToTop";
 
 export const dynamic = "force-static";
 
@@ -39,6 +40,7 @@ export default function StrategyCallPage() {
 
       {/* Always-mounted modal — pre-loads calendar iframe silently */}
       <StrategyCallModal />
+      <ScrollToTop />
     </div>
   );
 }
