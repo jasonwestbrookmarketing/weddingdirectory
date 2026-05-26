@@ -34,7 +34,7 @@ function XIcon({ large }: { large?: boolean }) {
 
 export default function Cascade() {
   return (
-    <section className="bg-brand-warm py-20 sm:py-28 border-b border-brand-line">
+    <section className="bg-white py-20 sm:py-28 border-b border-brand-line">
       <div className="max-w-6xl mx-auto px-6 md:px-10">
         <Reveal>
           <p

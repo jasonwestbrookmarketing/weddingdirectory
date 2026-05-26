@@ -86,7 +86,7 @@ function Medallion() {
 
 export default function Guarantee() {
   return (
-    <section className="relative bg-white py-20 sm:py-28 border-t border-brand-line border-b border-brand-line overflow-hidden">
+    <section className="relative bg-white py-20 sm:py-28 border-b border-brand-line overflow-hidden">
 
       <div className="max-w-[1100px] mx-auto px-6 md:px-10">
         {/* Eyebrow */}
