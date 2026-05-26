@@ -41,17 +41,24 @@ function Medallion() {
   return (
     <div
       className="relative flex items-center justify-center mx-auto"
-      style={{ width: 240, height: 240 }}
+      style={{
+        width: 240,
+        height: 240,
+        animation: "medallion-breathe 6s ease-in-out infinite",
+      }}
       aria-label="30 Day Guarantee"
     >
-      {/* Outermost dashed ring */}
-      <div className="absolute inset-0 rounded-full border border-dashed border-[#1b1b1b]/20" />
-      {/* Second ring */}
+      {/* Outermost dashed ring — slow rotation */}
+      <div
+        className="absolute inset-0 rounded-full border border-dashed border-[#1b1b1b]/20"
+        style={{ animation: "medallion-spin 60s linear infinite" }}
+      />
+      {/* Second ring — counter-rotation, slower */}
       <div
         className="absolute rounded-full border border-[#1b1b1b]/15"
-        style={{ inset: 14 }}
+        style={{ inset: 14, animation: "medallion-spin 90s linear infinite reverse" }}
       />
-      {/* Trim ring */}
+      {/* Trim ring — static */}
       <div
         className="absolute rounded-full border-2 border-[#1b1b1b]/70"
         style={{ inset: 26 }}
