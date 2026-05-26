@@ -68,8 +68,8 @@ export default function Differentiation() {
 
                 {/* Right: failure */}
                 <p
-                  className="text-[15px] sm:text-[16px] text-brand-muted leading-snug pl-9 sm:pl-0"
-                  style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+                  className="text-[14px] sm:text-[15px] text-brand-muted leading-snug pl-9 sm:pl-0"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
                 >
                   {c.failure}
                 </p>
@@ -94,43 +94,46 @@ export default function Differentiation() {
 
         {/* ── StoryVenue resolution ── */}
         <Reveal delay={0.32}>
-          <div className="relative bg-[#1b1b1b] rounded-xl overflow-hidden">
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#8a7448]" />
+          <div className="relative bg-white border border-[#8a7448]/30 rounded-xl overflow-hidden shadow-[0_4px_32px_-8px_rgba(138,116,72,0.15)]">
+            {/* Gold top bar */}
+            <div className="h-[3px] w-full bg-gradient-to-r from-[#8a7448] via-[#b09a6a] to-[#8a7448]" />
 
-            <div className="px-8 sm:px-10 py-8 sm:py-10 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-10">
-              {/* Brand name */}
-              <div className="flex items-center gap-3 shrink-0">
-                <span className="w-2 h-2 rounded-full bg-[#8a7448]" aria-hidden="true" />
+            <div className="px-8 sm:px-10 py-8 sm:py-10 flex flex-col sm:flex-row sm:items-start gap-6 sm:gap-10">
+              {/* Brand name + tagline */}
+              <div className="shrink-0">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="w-2 h-2 rounded-full bg-[#8a7448]" aria-hidden="true" />
+                  <p
+                    className="text-brand-ink text-[20px] sm:text-[24px] leading-none"
+                    style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+                  >
+                    StoryVenue
+                  </p>
+                </div>
                 <p
-                  className="text-white text-[20px] sm:text-[24px] leading-none"
-                  style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+                  className="text-[10px] font-semibold tracking-[0.18em] uppercase text-[#8a7448] pl-4"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
                 >
-                  StoryVenue
+                  The complete system
                 </p>
               </div>
 
-              <div className="hidden sm:block w-px self-stretch bg-white/10 shrink-0" />
+              <div className="hidden sm:block w-px self-stretch bg-brand-line shrink-0" />
 
               {/* Description */}
-              <p
-                className="text-white/70 text-[14px] sm:text-[15px] leading-relaxed"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                A complete system — with a real team behind it — built by people who&apos;ve been
-                in this industry for over 14 years.
-              </p>
-
-              {/* Badge */}
-              <div className="shrink-0">
-                <div className="inline-flex items-center gap-1.5 border border-[#8a7448]/50 rounded-full px-3 py-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#8a7448]" aria-hidden="true" />
-                  <p
-                    className="text-[10px] font-semibold tracking-[0.18em] uppercase text-[#8a7448]"
-                    style={{ fontFamily: "var(--font-open-sans)" }}
-                  >
-                    14 Years In
-                  </p>
-                </div>
+              <div className="flex-1">
+                <p
+                  className="text-brand-ink text-[15px] sm:text-[16px] leading-relaxed font-medium"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
+                  A complete booking system — with a real team behind it — built by people who&apos;ve been in this industry for over 14 years.
+                </p>
+                <p
+                  className="mt-2 text-brand-muted text-[13px] leading-relaxed"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
+                  We bring the brides. Our team works the leads. You show up for the tour.
+                </p>
               </div>
             </div>
           </div>
