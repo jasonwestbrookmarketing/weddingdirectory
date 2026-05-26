@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import SearchBar from "@/components/search/SearchBar";
 import VenueCard from "@/components/search/VenueCard";
 import SiteFooter from "@/components/SiteFooter";
+import NavLink from "@/components/marketing/NavLink";
 
 export const revalidate = 120;
 
@@ -68,15 +69,17 @@ export default async function HomePage() {
         </div>
 
         {/* Center — primary nav. Hidden on mobile to keep the overlay clean;
-            the same destination is reachable from the footer + ticker bar. */}
+            the same destination is reachable from the footer + ticker bar.
+            NavLink (client) forces window.scrollTo(0,0) so browser scroll-
+            restoration can't land the visitor mid-page. */}
         <div className="hidden md:flex flex-1 justify-center">
-          <Link
+          <NavLink
             href="/book-more-weddings"
             className="text-white text-sm font-semibold tracking-wide hover:text-white/75 transition-colors"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             Book More Weddings
-          </Link>
+          </NavLink>
         </div>
 
         {/* Right — unified auth buttons. The dashboard's /login and /signup

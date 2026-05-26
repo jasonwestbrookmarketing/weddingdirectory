@@ -18,9 +18,10 @@ html, body {
 /* the sticky nav via -mt-[92px], so its min-height must be 100svh + 92px to */
 /* fully fill the visible viewport — otherwise the Real Problem section is   */
 /* immediately visible at the bottom of the fold when the page loads.        */
+/* !important defeats any utility-class specificity wars on the same prop.   */
 @media (min-width: 1024px) {
-  .bmw-hero {
-    min-height: calc(100svh + 92px);
+  section.bmw-hero {
+    min-height: calc(100svh + 92px) !important;
   }
 }
 
