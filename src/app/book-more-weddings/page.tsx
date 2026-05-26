@@ -382,14 +382,28 @@ export default function BookMoreWeddingsPage() {
               StoryVenue combines a wedding venue directory, booking system, CRM, payments, proposals, Meta ads, concierge follow-up, and AI into one simple platform to help venues find more couples and book more weddings.
             </p>
 
-            {/* CTA */}
+            {/* Pill-style CTA */}
             <div className="mt-5 sm:mt-7 max-w-md mx-auto lg:mx-0">
-              <div className="flex justify-center lg:justify-start">
-                <PrimaryCTA />
-              </div>
+              <a
+                href={FREE_SIGNUP_HREF}
+                className="group flex items-center justify-between rounded-full bg-white border border-stone-200 pl-4 pr-1.5 py-1.5 sm:pl-5 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.18)] hover:shadow-[0_14px_36px_-12px_rgba(0,0,0,0.22)] transition-shadow"
+              >
+                <span
+                  className="text-[13px] sm:text-sm text-stone-500"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
+                  List your venue free
+                </span>
+                <span
+                  className="inline-flex items-center gap-1.5 rounded-full bg-stone-900 text-white text-[13px] sm:text-sm font-semibold px-4 sm:px-5 py-2 sm:py-2.5 group-hover:bg-stone-800 transition-colors"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
+                  Get Started <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </a>
 
               <p className="mt-3 sm:mt-3 text-[11px] sm:text-[12px] text-stone-500 text-center" style={{ fontFamily: "var(--font-open-sans)" }}>
-                No credit card. List free. Upgrade anytime.
+                No credit card. Upgrade anytime.
               </p>
 
               {/* Google Reviews social proof */}
