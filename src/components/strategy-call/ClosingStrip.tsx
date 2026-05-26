@@ -1,22 +1,38 @@
-
 "use client";
+
+import Image from "next/image";
 
 export default function ClosingStrip() {
   return (
-    <section className="bg-stone-900 py-20 sm:py-24">
-      <div className="max-w-4xl mx-auto px-6 md:px-10 text-center">
+    <section className="relative overflow-hidden">
+      {/* Bride & groom venue photo */}
+      <Image
+        src="/hero-wedding-couple.jpg"
+        alt=""
+        aria-hidden
+        fill
+        unoptimized
+        placeholder="empty"
+        className="absolute inset-0 object-cover object-center"
+        sizes="100vw"
+        style={{ transform: "scaleX(-1)" }}
+      />
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-[#1b1b1b]/75" />
+
+      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-10 text-center py-24 sm:py-32">
         <p
-          className="text-white font-bold leading-snug text-[20px] sm:text-[26px] md:text-[32px]"
-          style={{ fontFamily: "var(--font-open-sans)" }}
+          className="text-white leading-[1.12] text-[28px] sm:text-[38px] md:text-[46px]"
+          style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
         >
           Every month you wait is a month you can&apos;t get back.
         </p>
 
-        <div className="mt-8 sm:mt-10">
+        <div className="mt-10 sm:mt-12">
           <button
             type="button"
             onClick={() => window.dispatchEvent(new Event("open-strategy-modal"))}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-[#1b1b1b] font-bold tracking-[0.1em] uppercase px-7 py-3.5 text-[13px] sm:text-[14px] hover:-translate-y-px hover:shadow-[0_12px_32px_-8px_rgba(255,255,255,0.2)] active:scale-[0.98] transition-all"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-[#1b1b1b] font-bold tracking-[0.1em] uppercase px-7 py-3.5 text-[13px] sm:text-[14px] hover:-translate-y-px hover:shadow-[0_12px_32px_-8px_rgba(255,255,255,0.25)] active:scale-[0.98] transition-all"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             Book Your Free Strategy Call

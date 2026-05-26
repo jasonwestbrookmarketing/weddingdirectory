@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "./Reveal";
+import { SketchUnderline } from "./SketchUnderline";
 
 const PROOF_CARDS = [
   { venue: "Atlantic Stables",         stat: "$15k", detail: "Booked weddings in 30 days"  },
@@ -93,7 +94,9 @@ export default function ProofDrop() {
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Not because they got more leads. Because they finally had a{" "}
-            <span style={{ color: "#8a7448" }}>system</span>{" "}
+            <SketchUnderline>
+              <span style={{ color: "#8a7448" }}>booking system</span>
+            </SketchUnderline>{" "}
             that worked them.
           </h2>
         </Reveal>

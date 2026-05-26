@@ -1,4 +1,5 @@
 import { Reveal } from "./Reveal";
+import { SketchUnderline } from "./SketchUnderline";
 
 const NEGATIVE_ROWS = [
   {
@@ -34,7 +35,9 @@ export default function Differentiation() {
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Not software. Not an agency.{" "}
-            <span style={{ color: "#8a7448" }}>A system.</span>
+            <SketchUnderline>
+              <span style={{ color: "#8a7448" }}>A booking system.</span>
+            </SketchUnderline>
           </h2>
         </Reveal>
 
