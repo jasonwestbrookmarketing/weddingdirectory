@@ -52,26 +52,16 @@ export default function Guarantee() {
             className="text-[26px] sm:text-4xl md:text-[42px] text-brand-ink leading-[1.1]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            <em
-              style={{
-                fontFamily: "var(--font-playfair), Georgia, serif",
-                fontStyle: "italic",
-                color: "#8a7448",
-              }}
-            >
+            <span style={{ color: "#8a7448" }}>
               If it doesn&apos;t work, you don&apos;t pay.
-            </em>
+            </span>
           </h2>
         </Reveal>
 
         <Reveal delay={0.14}>
           <p
-            className="mt-5 sm:mt-6 text-brand-muted leading-relaxed max-w-lg mx-auto"
-            style={{
-              fontFamily: "var(--font-playfair), Georgia, serif",
-              fontStyle: "italic",
-              fontSize: "clamp(17px, 1.8vw, 22px)",
-            }}
+            className="mt-5 sm:mt-6 text-brand-muted leading-relaxed max-w-lg mx-auto text-base sm:text-lg font-semibold"
+            style={{ fontFamily: "var(--font-open-sans)" }}
           >
             If you don&apos;t see results in your first 30 days after going live, you don&apos;t
             pay. No contracts. No cancellation fees.

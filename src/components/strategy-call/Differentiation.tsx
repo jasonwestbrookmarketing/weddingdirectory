@@ -34,15 +34,7 @@ export default function Differentiation() {
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Not software. Not an agency.{" "}
-            <em
-              style={{
-                fontFamily: "var(--font-playfair), Georgia, serif",
-                fontStyle: "italic",
-                color: "#8a7448",
-              }}
-            >
-              A system.
-            </em>
+            <span style={{ color: "#8a7448" }}>A system.</span>
           </h2>
         </Reveal>
 

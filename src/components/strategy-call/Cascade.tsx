@@ -2,36 +2,54 @@ import { Reveal } from "./Reveal";
 
 const STEPS = [
   {
-    num: "01",
     label: "Missed Inquiry",
     desc: "She never got a reply",
-    red: false,
+    final: false,
   },
   {
-    num: "02",
     label: "Missed Tour",
     desc: "She booked with a competitor",
-    red: false,
+    final: false,
   },
   {
-    num: "03",
     label: "Missed Proposal",
     desc: "$12,000 never sent",
-    red: false,
+    final: false,
   },
   {
-    num: "04",
     label: "Missed Deposit",
     desc: "Weekend still open",
-    red: false,
+    final: false,
   },
   {
-    num: "05",
     label: "Empty Weekend",
     desc: "Revenue gone for good",
-    red: true,
+    final: true,
   },
 ];
+
+function XIcon({ large }: { large?: boolean }) {
+  return (
+    <div
+      className={`flex items-center justify-center rounded-full border-2 ${
+        large
+          ? "w-12 h-12 bg-red-600 border-red-600"
+          : "w-10 h-10 bg-red-50 border-red-200"
+      }`}
+      aria-hidden="true"
+    >
+      <svg
+        className={`${large ? "w-6 h-6 text-white" : "w-5 h-5 text-red-600"}`}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2.5}
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </div>
+  );
+}
 
 export default function Cascade() {
   return (
@@ -57,30 +75,34 @@ export default function Cascade() {
 
         <div className="mt-12 sm:mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
           {STEPS.map((step, i) => (
-            <Reveal key={step.num} delay={0.06 * i}>
-              <div className="bg-white rounded-xl p-6 sm:p-7 border border-brand-line h-full flex flex-col">
-                <p
-                  className="text-[32px] sm:text-[36px] leading-none mb-3"
-                  style={{
-                    fontFamily: "var(--font-playfair), Georgia, serif",
-                    fontStyle: "italic",
-                    color: step.red ? "#dc2626" : "#8a7448",
-                  }}
-                >
-                  {step.num}
-                </p>
-                <p
-                  className="text-[13px] font-semibold tracking-wide text-brand-ink uppercase mb-1.5"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  {step.label}
-                </p>
-                <p
-                  className="text-[13px] sm:text-sm text-brand-muted leading-relaxed mt-auto"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  {step.desc}
-                </p>
+            <Reveal key={step.label} delay={0.06 * i}>
+              <div
+                className={`rounded-xl p-6 sm:p-7 border h-full flex flex-col gap-3 ${
+                  step.final
+                    ? "bg-red-600 border-red-600"
+                    : "bg-white border-brand-line"
+                }`}
+              >
+                <XIcon large={step.final} />
+
+                <div>
+                  <p
+                    className={`text-[12px] font-bold tracking-[0.14em] uppercase mb-1 ${
+                      step.final ? "text-white" : "text-brand-ink"
+                    }`}
+                    style={{ fontFamily: "var(--font-open-sans)" }}
+                  >
+                    {step.label}
+                  </p>
+                  <p
+                    className={`text-[13px] sm:text-sm leading-relaxed ${
+                      step.final ? "text-white/80" : "text-brand-muted"
+                    }`}
+                    style={{ fontFamily: "var(--font-open-sans)" }}
+                  >
+                    {step.desc}
+                  </p>
+                </div>
               </div>
             </Reveal>
           ))}

@@ -19,15 +19,7 @@ export default function RealProblem() {
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             You don&apos;t just need more leads. You need a{" "}
-            <em
-              style={{
-                fontFamily: "var(--font-playfair), Georgia, serif",
-                fontStyle: "italic",
-                color: "#8a7448",
-              }}
-            >
-              booking system
-            </em>{" "}
+            <span style={{ color: "#8a7448" }}>booking system</span>{" "}
             built for venues — not brides.
           </h2>
         </Reveal>
@@ -38,8 +30,8 @@ export default function RealProblem() {
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             <p>
-              The Knot and WeddingWire weren&apos;t built to help your venue. They were built to help
-              the bride — by sending her to ten venues at once. You&apos;re not their customer.
+              The Knot and WeddingWire weren&apos;t built to help your venue. They were built to
+              help the bride — by sending her to ten venues at once. You&apos;re not their customer.
               You&apos;re inventory.
             </p>
             <p>
@@ -53,17 +45,13 @@ export default function RealProblem() {
           </div>
         </Reveal>
 
-        {/* Pull-quote */}
+        {/* Pull-quote — Open Sans bold, left border */}
         <Reveal delay={0.24}>
-          <blockquote
-            className="mt-10 sm:mt-12 pl-5 border-l-2 border-brand-ink"
-            style={{
-              fontFamily: "var(--font-playfair), Georgia, serif",
-              fontStyle: "italic",
-              fontSize: "clamp(18px, 2.2vw, 22px)",
-            }}
-          >
-            <p className="text-brand-ink leading-snug">
+          <blockquote className="mt-10 sm:mt-12 pl-5 border-l-2 border-brand-ink">
+            <p
+              className="text-brand-ink font-bold leading-snug text-[17px] sm:text-[19px]"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
               That&apos;s not a system. That&apos;s why your weekends are empty.
             </p>
           </blockquote>

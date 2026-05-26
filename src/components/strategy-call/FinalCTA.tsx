@@ -20,15 +20,7 @@ export default function FinalCTA() {
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Ready to see how many weddings you&apos;re{" "}
-            <em
-              style={{
-                fontFamily: "var(--font-playfair), Georgia, serif",
-                fontStyle: "italic",
-                color: "#8a7448",
-              }}
-            >
-              losing?
-            </em>
+            <span style={{ color: "#8a7448" }}>losing?</span>
           </h2>
         </Reveal>
 
@@ -46,12 +38,8 @@ export default function FinalCTA() {
 
         <Reveal delay={0.2}>
           <div
-            className="mt-7 sm:mt-8 space-y-1.5 text-brand-muted"
-            style={{
-              fontFamily: "var(--font-playfair), Georgia, serif",
-              fontStyle: "italic",
-              fontSize: "clamp(17px, 1.8vw, 22px)",
-            }}
+            className="mt-7 sm:mt-8 space-y-1.5 text-brand-muted text-base sm:text-lg font-bold"
+            style={{ fontFamily: "var(--font-open-sans)" }}
           >
             <p>This isn&apos;t a sales call. It&apos;s a fit call.</p>
             <p>We don&apos;t pitch. We don&apos;t pressure. We don&apos;t read from a script.</p>

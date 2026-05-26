@@ -75,11 +75,7 @@ function ProofCard({
         {/* Detail */}
         <motion.p
           className="text-[13px] sm:text-sm leading-relaxed"
-          style={{
-            fontFamily: "var(--font-playfair), Georgia, serif",
-            fontStyle: "italic",
-            color: "#6b6b6b",
-          }}
+          style={{ fontFamily: "var(--font-open-sans)", color: "#6b6b6b" }}
           whileHover={reduce ? {} : { color: "rgba(255,255,255,0.65)" }}
           transition={{ duration: 0.4 }}
         >
@@ -109,15 +105,7 @@ export default function ProofDrop() {
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Not because they got more leads. Because they finally had a{" "}
-            <em
-              style={{
-                fontFamily: "var(--font-playfair), Georgia, serif",
-                fontStyle: "italic",
-                color: "#8a7448",
-              }}
-            >
-              system
-            </em>{" "}
+            <span style={{ color: "#8a7448" }}>system</span>{" "}
             that worked them.
           </h2>
         </Reveal>

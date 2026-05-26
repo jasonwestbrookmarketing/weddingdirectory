@@ -5,13 +5,8 @@ export default function ClosingStrip() {
     <section className="bg-[#1a1a1a] py-20 sm:py-24">
       <div className="max-w-4xl mx-auto px-6 md:px-10 text-center">
         <p
-          className="text-white leading-snug"
-          style={{
-            fontFamily: "EditorsNote, serif",
-            fontWeight: 300,
-            fontStyle: "italic",
-            fontSize: "clamp(24px, 4vw, 42px)",
-          }}
+          className="text-white font-bold leading-snug text-[20px] sm:text-[26px] md:text-[32px]"
+          style={{ fontFamily: "var(--font-open-sans)" }}
         >
           Every month you wait is a month you can&apos;t get back.
         </p>

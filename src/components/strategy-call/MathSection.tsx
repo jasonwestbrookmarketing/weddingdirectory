@@ -15,12 +15,8 @@ export default function MathSection() {
 
         <Reveal delay={0.08}>
           <p
-            className="mt-6 text-white/75 leading-relaxed max-w-xl mx-auto"
-            style={{
-              fontFamily: "var(--font-playfair), Georgia, serif",
-              fontStyle: "italic",
-              fontSize: "clamp(20px, 2.5vw, 30px)",
-            }}
+            className="mt-6 text-white/75 leading-relaxed max-w-xl mx-auto text-base sm:text-lg font-medium"
+            style={{ fontFamily: "var(--font-open-sans)" }}
           >
             Whether your average wedding sells for $5,000 or $50,000, the math is the same:
           </p>
@@ -38,15 +34,7 @@ export default function MathSection() {
             aria-label="1 to 2"
           >
             <span className="text-white">1 to </span>
-            <em
-              className="not-italic"
-              style={{
-                fontStyle: "italic",
-                color: "#d4c4ad",
-              }}
-            >
-              2
-            </em>
+            <span style={{ color: "#d4c4ad" }}>2</span>
           </div>
         </Reveal>
 
@@ -62,12 +50,8 @@ export default function MathSection() {
         {/* Coda */}
         <Reveal delay={0.3}>
           <p
-            className="mt-10 sm:mt-12 pt-8 border-t border-white/15 text-white/65 max-w-xl mx-auto leading-relaxed"
-            style={{
-              fontFamily: "var(--font-playfair), Georgia, serif",
-              fontStyle: "italic",
-              fontSize: "clamp(16px, 1.8vw, 22px)",
-            }}
+            className="mt-10 sm:mt-12 pt-8 border-t border-white/15 text-white/65 max-w-xl mx-auto leading-relaxed text-sm sm:text-base font-semibold"
+            style={{ fontFamily: "var(--font-open-sans)" }}
           >
             That&apos;s all it takes to make StoryVenue pay for itself for the entire year. Most of
             our private clients book that in their first 30 days.

@@ -1,37 +1,21 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import VideoPlayer from "./VideoPlayer";
 import { BOOKING_URL } from "./constants";
 
-const AVATAR_GRADIENTS = [
-  "from-rose-200 to-pink-400",
-  "from-amber-200 to-amber-400",
-  "from-stone-200 to-stone-500",
-  "from-emerald-200 to-teal-400",
-  "from-violet-200 to-purple-400",
+const AVATARS = [
+  "/avatars/av1.jpg",
+  "/avatars/av2.jpg",
+  "/avatars/av3.jpg",
+  "/avatars/av4.jpg",
+  "/avatars/av5.jpg",
 ];
-
-function GoldItalic({ children }: { children: React.ReactNode }) {
-  return (
-    <em
-      className="not-italic"
-      style={{
-        fontFamily: "var(--font-playfair), Georgia, serif",
-        fontStyle: "italic",
-        color: "#8a7448",
-      }}
-    >
-      {children}
-    </em>
-  );
-}
 
 const containerVariants = {
   hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
+  visible: { transition: { staggerChildren: 0.1 } },
 };
 
 const itemVariants = {
@@ -41,14 +25,13 @@ const itemVariants = {
 
 export default function Hero() {
   const reduce = useReducedMotion();
-
   const container = reduce ? {} : containerVariants;
   const item = reduce ? {} : itemVariants;
   const initial = reduce ? "visible" : "hidden";
 
   return (
     <section className="bg-brand-bg py-16 sm:py-20 lg:py-28 border-b border-brand-line">
-      <div className="max-w-5xl mx-auto px-6 md:px-10 text-center">
+      <div className="max-w-4xl mx-auto px-6 md:px-10 text-center">
         <motion.div
           variants={container}
           initial={initial}
@@ -64,30 +47,25 @@ export default function Hero() {
             — For Wedding Venue Owners
           </motion.p>
 
-          {/* H1 */}
+          {/* H1 — big enough to fill 3 lines; gold words stay gold, no italic */}
           <motion.h1
             variants={item}
-            className="text-[28px] sm:text-[40px] md:text-[48px] lg:text-[52px] leading-[1.08] text-brand-ink max-w-4xl mx-auto"
+            className="text-[36px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.08] text-brand-ink"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Fully book your wedding venue without paying{" "}
-            <GoldItalic>The Knot</GoldItalic> or{" "}
-            <GoldItalic>WeddingWire</GoldItalic> another cent.
+            <span style={{ color: "#8a7448" }}>The Knot</span> or{" "}
+            <span style={{ color: "#8a7448" }}>WeddingWire</span> another cent.
           </motion.h1>
 
-          {/* Subhead — 3 stacked italic serif lines */}
-          <motion.div
+          {/* Subhead — single horizontal line */}
+          <motion.p
             variants={item}
-            className="space-y-0.5 text-[18px] sm:text-[20px] md:text-[22px] text-brand-muted leading-relaxed"
-            style={{
-              fontFamily: "var(--font-playfair), Georgia, serif",
-              fontStyle: "italic",
-            }}
+            className="text-[15px] sm:text-[17px] text-brand-muted tracking-wide"
+            style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            <p>We bring the brides.</p>
-            <p>Our team works the leads.</p>
-            <p>You show up for the tour.</p>
-          </motion.div>
+            We bring the brides.&nbsp;&nbsp;·&nbsp;&nbsp;Our team works the leads.&nbsp;&nbsp;·&nbsp;&nbsp;You show up for the tour.
+          </motion.p>
 
           {/* Video player */}
           <motion.div variants={item} className="pt-2 sm:pt-4">
@@ -103,7 +81,7 @@ export default function Hero() {
             >
               Book Your Free Strategy Call
               <svg
-                className="w-4 h-4 transition-transform group-hover:translate-x-0.5"
+                className="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth={2}
@@ -113,7 +91,6 @@ export default function Hero() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
-
             <p
               className="text-[12px] text-brand-muted tracking-wide"
               style={{ fontFamily: "var(--font-open-sans)" }}
@@ -122,23 +99,31 @@ export default function Hero() {
             </p>
           </motion.div>
 
-          {/* Micro proof */}
+          {/* Micro proof — same pattern as /book-more-weddings */}
           <motion.div
             variants={item}
             className="flex items-center justify-center gap-3 pt-1"
           >
-            {/* Avatars */}
-            <div className="flex -space-x-2.5 shrink-0" aria-hidden="true">
-              {AVATAR_GRADIENTS.map((gradient, i) => (
+            <div className="flex -space-x-2.5 shrink-0">
+              {AVATARS.map((src, i) => (
                 <div
                   key={i}
-                  className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 border-white bg-gradient-to-br ${gradient}`}
+                  className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 border-white overflow-hidden"
                   style={{ zIndex: 5 - i }}
-                />
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    fill
+                    unoptimized
+                    placeholder="empty"
+                    className="object-cover object-center"
+                    sizes="36px"
+                  />
+                </div>
               ))}
             </div>
 
-            {/* Stars + rating */}
             <div className="text-left">
               <div className="flex gap-0.5" role="img" aria-label="5 stars">
                 {[...Array(5)].map((_, i) => (
@@ -146,7 +131,7 @@ export default function Hero() {
                     key={i}
                     className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                     viewBox="0 0 24 24"
-                    fill="#8a7448"
+                    fill="#1c1917"
                     aria-hidden="true"
                   >
                     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
@@ -157,7 +142,7 @@ export default function Hero() {
                 className="text-[10px] sm:text-[11px] text-brand-muted mt-0.5"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                4.9 / 5 from 100+ wedding venues
+                Google Reviews
               </p>
             </div>
           </motion.div>
