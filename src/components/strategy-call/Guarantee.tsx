@@ -106,15 +106,6 @@ export default function Guarantee() {
               <Medallion />
 
               {/* Signature-style caption */}
-              <div className="mt-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-warm border border-brand-line">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#1b1b1b]" aria-hidden="true" />
-                <p
-                  className="text-[10px] font-semibold tracking-[0.22em] uppercase text-brand-ink"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  Backed In Writing
-                </p>
-              </div>
             </div>
           </Reveal>
 
@@ -167,13 +158,13 @@ export default function Guarantee() {
 
             {/* Social proof bar */}
             <Reveal delay={0.46}>
-              <div className="mt-10 pt-6 border-t border-brand-line flex flex-wrap items-center gap-5">
-                {/* Avatars */}
-                <div className="flex -space-x-2.5 shrink-0">
+              <div className="mt-10 pt-6 border-t border-brand-line flex items-center gap-5">
+                {/* Avatars — slightly spaced like the reference */}
+                <div className="flex -space-x-2 shrink-0">
                   {AVATARS.map((src, i) => (
                     <div
                       key={i}
-                      className="relative w-9 h-9 rounded-full border-2 border-brand-warm overflow-hidden"
+                      className="relative w-10 h-10 rounded-full border-2 border-white overflow-hidden"
                       style={{ zIndex: 5 - i }}
                     >
                       <Image
@@ -183,34 +174,26 @@ export default function Guarantee() {
                         unoptimized
                         placeholder="empty"
                         className="object-cover object-center"
-                        sizes="36px"
+                        sizes="40px"
                       />
                     </div>
                   ))}
                 </div>
 
-                {/* Stars + line */}
+                {/* Stars + label */}
                 <div>
-                  <div className="flex items-center gap-1.5">
-                    <div className="flex gap-0.5" role="img" aria-label="5 stars">
-                      {[...Array(5)].map((_, i) => (
-                        <svg key={i} className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="#1b1b1b" aria-hidden="true">
-                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                        </svg>
-                      ))}
-                    </div>
-                    <span
-                      className="text-[12px] font-bold text-brand-ink ml-1"
-                      style={{ fontFamily: "var(--font-open-sans)" }}
-                    >
-                      4.9 / 5
-                    </span>
+                  <div className="flex gap-1" role="img" aria-label="5 stars">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-4 h-4" viewBox="0 0 24 24" fill="#1b1b1b" aria-hidden="true">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                      </svg>
+                    ))}
                   </div>
                   <p
-                    className="mt-0.5 text-[11px] text-brand-muted"
+                    className="mt-1 text-[12px] text-brand-muted"
                     style={{ fontFamily: "var(--font-open-sans)" }}
                   >
-                    From 100+ wedding venues across the country
+                    From wedding venues across the U.S.A.
                   </p>
                 </div>
               </div>
