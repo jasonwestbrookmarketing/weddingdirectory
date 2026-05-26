@@ -18,21 +18,21 @@ const COMPETITORS = [
 
 export default function Differentiation() {
   return (
-    <section className="bg-[#111111] py-20 sm:py-28">
+    <section className="bg-brand-bg py-20 sm:py-28 border-b border-brand-line">
       {/* ── Header ────────────────────────────────────────────── */}
       <div className="max-w-3xl mx-auto px-6 md:px-10 text-center">
         <Reveal>
           <p
-            className="text-[11px] font-semibold tracking-[0.22em] uppercase text-white/40"
+            className="text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            What Makes This Different
+            What Makes StoryVenue Different
           </p>
         </Reveal>
 
         <Reveal delay={0.08}>
           <h2
-            className="mt-4 text-[26px] sm:text-4xl md:text-[42px] text-white leading-[1.1]"
+            className="mt-4 text-[26px] sm:text-4xl md:text-[42px] text-brand-ink leading-[1.1]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Not software. Not an agency.{" "}
@@ -48,17 +48,17 @@ export default function Differentiation() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
           {COMPETITORS.map((c, i) => (
             <Reveal key={c.name} delay={0.07 * i}>
-              <div className="relative flex flex-col h-full bg-white/[0.04] border border-white/10 rounded-xl px-6 py-7 overflow-hidden">
+              <div className="relative flex flex-col h-full bg-brand-warm border border-brand-line rounded-xl px-6 py-7 overflow-hidden">
                 {/* Red left accent */}
-                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-red-500/70 rounded-l-xl" />
+                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-red-400 rounded-l-xl" />
 
                 {/* X icon */}
                 <div
-                  className="w-8 h-8 rounded-full bg-red-500/15 border border-red-500/30 flex items-center justify-center mb-5"
+                  className="w-8 h-8 rounded-full bg-red-50 border border-red-200 flex items-center justify-center mb-5"
                   aria-hidden="true"
                 >
                   <svg
-                    className="w-3.5 h-3.5 text-red-400"
+                    className="w-3.5 h-3.5 text-red-500"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth={2.5}
@@ -70,7 +70,7 @@ export default function Differentiation() {
 
                 {/* The failure IS the headline */}
                 <p
-                  className="text-white/90 text-[16px] sm:text-[17px] leading-snug flex-1"
+                  className="text-brand-ink text-[16px] sm:text-[17px] leading-snug flex-1"
                   style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
                 >
                   {c.failure}
@@ -78,7 +78,7 @@ export default function Differentiation() {
 
                 {/* Competitor name as the footnote */}
                 <p
-                  className="mt-5 pt-4 border-t border-white/10 text-[10px] font-semibold tracking-[0.2em] uppercase text-white/30"
+                  className="mt-5 pt-4 border-t border-brand-line text-[10px] font-semibold tracking-[0.2em] uppercase text-brand-muted"
                   style={{ fontFamily: "var(--font-open-sans)" }}
                 >
                   {c.name}
@@ -91,20 +91,20 @@ export default function Differentiation() {
         {/* ── VS divider ────────────────────────────────────────── */}
         <Reveal delay={0.25}>
           <div className="flex items-center gap-4 my-8 sm:my-10">
-            <div className="h-px flex-1 bg-white/10" />
+            <div className="h-px flex-1 bg-brand-line" />
             <p
-              className="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/30"
+              className="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand-muted"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               vs
             </p>
-            <div className="h-px flex-1 bg-white/10" />
+            <div className="h-px flex-1 bg-brand-line" />
           </div>
         </Reveal>
 
         {/* ── StoryVenue resolution card ────────────────────────── */}
         <Reveal delay={0.32}>
-          <div className="relative bg-white/[0.04] border border-[#8a7448]/35 rounded-xl overflow-hidden">
+          <div className="relative bg-[#1b1b1b] border border-transparent rounded-xl overflow-hidden">
             {/* Gold left bar */}
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#8a7448]" />
 
@@ -121,7 +121,7 @@ export default function Differentiation() {
               </div>
 
               {/* Divider (desktop only) */}
-              <div className="hidden sm:block w-px self-stretch bg-white/10 shrink-0" />
+              <div className="hidden sm:block w-px self-stretch bg-white/15 shrink-0" />
 
               {/* Description */}
               <p
@@ -134,7 +134,7 @@ export default function Differentiation() {
 
               {/* Badge */}
               <div className="shrink-0">
-                <div className="inline-flex items-center gap-1.5 border border-[#8a7448]/40 rounded-full px-3 py-1.5">
+                <div className="inline-flex items-center gap-1.5 border border-[#8a7448]/50 rounded-full px-3 py-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#8a7448]" aria-hidden="true" />
                   <p
                     className="text-[10px] font-semibold tracking-[0.18em] uppercase text-[#8a7448]"

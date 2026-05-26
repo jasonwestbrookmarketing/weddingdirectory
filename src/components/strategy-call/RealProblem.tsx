@@ -37,9 +37,7 @@ export default function RealProblem() {
               <strong className="text-brand-ink font-bold">
                 weren&apos;t built to help your venue.
               </strong>{" "}
-              They were built to{" "}
-              <strong className="text-brand-ink font-bold">help the bride</strong>{" "}
-              by sending her to ten venues at once. You&apos;re not their customer.
+              They were built to help the bride by sending her to ten venues at once. You&apos;re not their customer.
               You&apos;re inventory.
             </p>
             <p>

@@ -127,7 +127,7 @@ export default function ProofDrop() {
             <SketchUnderline>
               <span style={{ color: "#8a7448" }}>booking system</span>
             </SketchUnderline>{" "}
-            that worked them.
+            that worked for them.
           </h2>
         </Reveal>
 
