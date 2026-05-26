@@ -4,7 +4,8 @@ import { SketchUnderline } from "./SketchUnderline";
 export default function RealProblem() {
   return (
     <section className="bg-brand-bg py-20 sm:py-28 border-b border-brand-line">
-      <div className="max-w-[880px] mx-auto px-6 md:px-10">
+      {/* Wide container for the headline so it fills 2 lines naturally */}
+      <div className="max-w-6xl mx-auto px-6 md:px-10">
         <Reveal>
           <p
             className="text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
@@ -19,16 +20,17 @@ export default function RealProblem() {
             className="mt-4 text-[26px] sm:text-4xl md:text-5xl text-brand-ink leading-[1.12]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            You&apos;re paying The Knot and WeddingWire to book weddings
-            <br className="hidden sm:block" />
-            {" "}at{" "}
+            You&apos;re paying The Knot and WeddingWire to book weddings at{" "}
             <SketchUnderline>
               <span style={{ color: "#8a7448" }}>your competitors&apos; venue,</span>
             </SketchUnderline>{" "}
             not yours.
           </h2>
         </Reveal>
+      </div>
 
+      {/* Body text constrained to comfortable reading width */}
+      <div className="max-w-[880px] mx-auto px-6 md:px-10">
         <Reveal delay={0.16}>
           <div
             className="mt-8 sm:mt-10 space-y-5 text-brand-muted text-base sm:text-lg leading-relaxed"
