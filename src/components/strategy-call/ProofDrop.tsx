@@ -10,24 +10,28 @@ const PROOF_CARDS = [
     stat: "$15k",
     detail: "In booked weddings the first 30 days",
     logo: "/logos/atlantic.png",
+    logoDims: { w: 120, h: 28 },
   },
   {
     venue: "Waterloo Farms",
     stat: "$8,000",
     detail: "In booked weddings the first 7 days",
     logo: "/logos/waterloo.png",
+    logoDims: { w: 120, h: 28 },
   },
   {
     venue: "Red Barn Acres",
     stat: "9",
     detail: "Weddings booked in the first 4 months",
-    logo: null,
+    logo: "/logos/red-barn.png",
+    logoDims: { w: 72, h: 58 },
   },
   {
     venue: "Retreat at Evans Farms",
     stat: "258",
     detail: "Leads in 60 days",
-    logo: null,
+    logo: "/logos/retreat.png",
+    logoDims: { w: 140, h: 40 },
   },
 ];
 
@@ -36,12 +40,14 @@ function ProofCard({
   stat,
   detail,
   logo,
+  logoDims,
   delay,
 }: {
   venue: string;
   stat: string;
   detail: string;
   logo: string | null;
+  logoDims: { w: number; h: number };
   delay: number;
 }) {
   return (
@@ -51,36 +57,35 @@ function ProofCard({
         <div className="h-[3px] w-full bg-[#8a7448] shrink-0" />
 
         <div className="px-6 pt-5 pb-6 sm:px-7 sm:pt-6 sm:pb-7 flex flex-col flex-1">
-          {/* Logo (where available) */}
-          {logo && (
-            <div className="mb-3 h-7 flex items-center">
+          {/* Logo — shown instead of text name when available */}
+          {logo ? (
+            <div className="mb-4 flex items-start">
               <Image
                 src={logo}
                 alt={venue}
-                width={120}
-                height={28}
+                width={logoDims.w}
+                height={logoDims.h}
                 unoptimized
                 placeholder="empty"
-                className="max-h-7 w-auto object-contain opacity-60 grayscale"
+                className="max-h-10 w-auto object-contain opacity-55 grayscale"
               />
             </div>
+          ) : (
+            <p
+              className="mb-4 text-[10px] font-semibold tracking-[0.26em] uppercase"
+              style={{ fontFamily: "var(--font-open-sans)", color: "#a8a29e" }}
+            >
+              {venue}
+            </p>
           )}
 
-          {/* Venue name */}
+          {/* Big stat — size tuned so even '$8,000' fits comfortably */}
           <p
-            className="text-[10px] font-semibold tracking-[0.26em] uppercase"
-            style={{ fontFamily: "var(--font-open-sans)", color: "#a8a29e" }}
-          >
-            {venue}
-          </p>
-
-          {/* Big stat */}
-          <p
-            className="mt-3 leading-none"
+            className="leading-none"
             style={{
               fontFamily: "EditorsNote, serif",
               fontWeight: 300,
-              fontSize: "clamp(60px, 7vw, 88px)",
+              fontSize: "clamp(48px, 5.5vw, 72px)",
               color: "#1b1b1b",
             }}
           >
