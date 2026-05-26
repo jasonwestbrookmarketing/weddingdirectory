@@ -6,7 +6,7 @@ import { Reveal } from "./Reveal";
 const FAQ_ITEMS = [
   {
     q: "What is this strategy call?",
-    a: "A 30-minute video call where we look at your venue's actual numbers — inquiries, tour conversion rate, response time — and tell you exactly how many weddings you're losing each month and what it would take to fix it. If we're a fit, we'll show you how StoryVenue works. If we're not, we'll tell you that too.",
+    a: "A 30-minute video call where we look at your venue's actual numbers: inquiries, tour conversion rate, and response time. We tell you exactly how many weddings you're losing each month and what it would take to fix it. If we're a fit, we'll show you how StoryVenue works. If we're not, we'll tell you that too.",
   },
   {
     q: "Will I be pitched on the call?",
@@ -18,15 +18,15 @@ const FAQ_ITEMS = [
   },
   {
     q: "How does StoryVenue actually work?",
-    a: "StoryVenue combines a venue-focused directory, managed Meta ads, landing pages, a concierge follow-up team, AI re-engagement, CRM, proposals, payments, and calendar into one connected system. Brides see your venue, inquire, get followed up with by our team, and book tours — while you focus on hosting. We cover all of this in detail on the call.",
+    a: "StoryVenue combines a venue-focused directory, managed Meta ads, landing pages, a concierge follow-up team, AI re-engagement, CRM, proposals, payments, and calendar into one connected system. Brides see your venue, inquire, get followed up with by our team, and book tours while you focus on hosting. We cover all of this in detail on the call.",
   },
   {
     q: "Is there a contract?",
-    a: "No long-term contracts. No cancellation fees. StoryVenue is designed to earn your business through results — not lock you into something you don't want. We back it with a 30-day, 100% results guarantee.",
+    a: "No long-term contracts. No cancellation fees. StoryVenue is designed to earn your business through results, not lock you into something you don't want. We back it with a 30-day, 100% results guarantee.",
   },
   {
     q: "How quickly can we get started?",
-    a: "From signup to your first leads in 2 to 3 weeks. We handle the heavy lifting — your account setup, ad creative, landing pages, concierge onboarding — so you can focus on giving tours and booking weddings. We'll walk through the exact timeline on your call.",
+    a: "From signup to your first leads in 2 to 3 weeks. We handle the heavy lifting: account setup, ad creative, landing pages, and concierge onboarding, so you can focus on giving tours and booking weddings. We'll walk through the exact timeline on your call.",
   },
 ];
 
@@ -97,7 +97,7 @@ export default function FAQAccordion() {
             className="text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            — Frequently Asked
+            Frequently Asked
           </p>
         </Reveal>
 

@@ -14,19 +14,17 @@ const AVATARS = [
 export default function FinalCTA() {
   return (
     <section id="cta" className="bg-brand-bg py-20 sm:py-28 border-b border-brand-line">
-      {/* Wider container so the heading fits on one line at desktop */}
       <div className="max-w-5xl mx-auto px-6 md:px-10 text-center">
         <Reveal>
           <p
             className="text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            — Your Next Step
+            Your Next Step
           </p>
         </Reveal>
 
         <Reveal delay={0.08}>
-          {/* lg:whitespace-nowrap forces one line on desktop */}
           <h2
             className="mt-4 text-[26px] sm:text-[36px] md:text-[42px] text-brand-ink leading-[1.1] lg:whitespace-nowrap"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
@@ -42,16 +40,21 @@ export default function FinalCTA() {
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             On your free 30-minute strategy call, we&apos;ll look at your venue&apos;s actual
-            numbers — your inquiries, your tour conversion, your response time — and tell you
+            numbers: your inquiries, your tour conversion, your response time. We&apos;ll tell you
             exactly how many weddings you&apos;re losing every month and what it would take to fix
             it.
           </p>
         </Reveal>
 
+        {/* Closing reframe — EditorsNote for weight and elegance */}
         <Reveal delay={0.2}>
           <div
-            className="mt-7 sm:mt-8 space-y-1.5 text-brand-muted text-base sm:text-lg font-bold"
-            style={{ fontFamily: "var(--font-open-sans)" }}
+            className="mt-7 sm:mt-8 space-y-1 text-brand-muted"
+            style={{
+              fontFamily: "EditorsNote, serif",
+              fontWeight: 300,
+              fontSize: "clamp(18px, 2vw, 22px)",
+            }}
           >
             <p>This isn&apos;t a sales call. It&apos;s a fit call.</p>
             <p>We don&apos;t pitch. We don&apos;t pressure. We don&apos;t read from a script.</p>
@@ -60,7 +63,6 @@ export default function FinalCTA() {
 
         <Reveal delay={0.26}>
           <div className="mt-10 sm:mt-12 flex flex-col items-center gap-4">
-            {/* CTA button */}
             <button
               type="button"
               onClick={() => window.dispatchEvent(new Event("open-strategy-modal"))}
@@ -87,7 +89,7 @@ export default function FinalCTA() {
               No commitment · No obligation · Just clarity
             </p>
 
-            {/* Social proof — same cluster as Hero */}
+            {/* Social proof */}
             <div className="flex items-center justify-center gap-3 pt-1">
               <div className="flex -space-x-2.5 shrink-0">
                 {AVATARS.map((src, i) => (
@@ -111,21 +113,12 @@ export default function FinalCTA() {
               <div className="text-left">
                 <div className="flex gap-0.5" role="img" aria-label="5 stars">
                   {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-3.5 h-3.5 sm:w-4 sm:h-4"
-                      viewBox="0 0 24 24"
-                      fill="#1c1917"
-                      aria-hidden="true"
-                    >
+                    <svg key={i} className="w-3.5 h-3.5 sm:w-4 sm:h-4" viewBox="0 0 24 24" fill="#1c1917" aria-hidden="true">
                       <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                     </svg>
                   ))}
                 </div>
-                <p
-                  className="text-[10px] sm:text-[11px] text-brand-muted mt-0.5"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
+                <p className="text-[10px] sm:text-[11px] text-brand-muted mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>
                   Google Reviews
                 </p>
               </div>

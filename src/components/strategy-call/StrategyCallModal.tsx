@@ -104,7 +104,7 @@ export default function StrategyCallModal() {
             className="text-[10px] font-semibold tracking-[0.22em] uppercase text-stone-400"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            — Before You Go
+            Before You Go
           </p>
           <h2
             className="mt-2 text-[26px] sm:text-[34px] leading-[1.1] text-stone-900"

@@ -24,7 +24,7 @@ export default function MathSection() {
             className="text-[11px] font-semibold tracking-[0.22em] uppercase text-white/40"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            — The Math
+            The Math
           </p>
         </Reveal>
 

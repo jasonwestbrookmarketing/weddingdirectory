@@ -43,7 +43,7 @@ export default function Hero() {
             className="text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            — For Wedding Venue Owners
+            For Wedding Venue Owners
           </motion.p>
 
           {/* H1 — big enough to fill 3 lines; gold words stay gold, no italic */}

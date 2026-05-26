@@ -24,7 +24,7 @@ export default function Differentiation() {
             className="text-center text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            — What Makes This Different
+            What Makes This Different
           </p>
         </Reveal>
 
@@ -75,7 +75,7 @@ export default function Differentiation() {
                 className="mx-4 text-[11px] font-semibold tracking-[0.2em] uppercase text-brand-muted"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                — vs —
+                vs
               </p>
               <div className="h-px flex-1 bg-brand-line" />
             </div>
@@ -100,7 +100,7 @@ export default function Differentiation() {
                 className="text-right text-[12px] sm:text-[13px] text-white/65 leading-snug"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                A complete system — with a real team behind it — built by people who&apos;ve been in
+                A complete system with a real team behind it, built by people who&apos;ve been in
                 this industry for over 14 years.
               </p>
             </div>

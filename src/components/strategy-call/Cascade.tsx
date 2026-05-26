@@ -1,45 +1,26 @@
 import { Reveal } from "./Reveal";
 
 const STEPS = [
-  {
-    label: "Missed Inquiry",
-    desc: "She never got a reply",
-    final: false,
-  },
-  {
-    label: "Missed Tour",
-    desc: "She booked with a competitor",
-    final: false,
-  },
-  {
-    label: "Missed Proposal",
-    desc: "$12,000 never sent",
-    final: false,
-  },
-  {
-    label: "Missed Deposit",
-    desc: "Weekend still open",
-    final: false,
-  },
-  {
-    label: "Empty Weekend",
-    desc: "Revenue gone for good",
-    final: true,
-  },
+  { label: "Missed Inquiry",  desc: "She never got a reply",           final: false },
+  { label: "Missed Tour",     desc: "She booked with a competitor",    final: false },
+  { label: "Missed Proposal", desc: "$12,000 never sent",              final: false },
+  { label: "Missed Deposit",  desc: "Weekend still open",              final: false },
+  { label: "Empty Weekend",   desc: "Revenue gone for good",           final: true  },
 ];
 
 function XIcon({ large }: { large?: boolean }) {
   return (
+    /* Final card: white circle so X stands out against the red background */
     <div
-      className={`flex items-center justify-center rounded-full border-2 ${
+      className={`flex items-center justify-center rounded-full ${
         large
-          ? "w-12 h-12 bg-red-600 border-red-600"
-          : "w-10 h-10 bg-red-50 border-red-200"
+          ? "w-12 h-12 bg-white"
+          : "w-10 h-10 bg-red-50 border border-red-200"
       }`}
       aria-hidden="true"
     >
       <svg
-        className={`${large ? "w-6 h-6 text-white" : "w-5 h-5 text-red-600"}`}
+        className={`${large ? "w-5 h-5 text-red-600" : "w-5 h-5 text-red-500"}`}
         fill="none"
         stroke="currentColor"
         strokeWidth={2.5}
@@ -60,7 +41,7 @@ export default function Cascade() {
             className="text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            — The Cost of Doing Nothing
+            The Cost of Doing Nothing
           </p>
         </Reveal>
 

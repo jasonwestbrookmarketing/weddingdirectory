@@ -23,7 +23,7 @@ export default function LogoWall() {
           className="pt-8 text-center text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
           style={{ fontFamily: "var(--font-open-sans)" }}
         >
-          — Trusted By
+          Trusted By
         </p>
       </Reveal>
 

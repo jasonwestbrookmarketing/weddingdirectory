@@ -4,26 +4,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "./Reveal";
 
 const PROOF_CARDS = [
-  {
-    venue: "Manor",
-    stat: "90d",
-    detail: "Entire 2026 calendar booked",
-  },
-  {
-    venue: "Waterloo Farms",
-    stat: "2",
-    detail: "Weddings booked in 7 days",
-  },
-  {
-    venue: "Atlantic Stables",
-    stat: "$15k",
-    detail: "Booked weddings in 30 days",
-  },
-  {
-    venue: "Red Barn Acres",
-    stat: "9",
-    detail: "Weddings in 4 months",
-  },
+  { venue: "Manor",           stat: "90d",  detail: "Entire 2026 calendar booked"   },
+  { venue: "Waterloo Farms",  stat: "2",    detail: "Weddings booked in 7 days"     },
+  { venue: "Atlantic Stables",stat: "$15k", detail: "Booked weddings in 30 days"    },
+  { venue: "Red Barn Acres",  stat: "9",    detail: "Weddings in 4 months"          },
 ];
 
 function ProofCard({
@@ -42,45 +26,49 @@ function ProofCard({
   return (
     <Reveal delay={delay}>
       <motion.div
-        className="group relative bg-white border border-brand-line rounded-xl p-7 sm:p-8 cursor-default overflow-hidden h-full flex flex-col justify-between"
-        whileHover={reduce ? {} : { backgroundColor: "#1b1b1b" }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="group relative bg-white border border-brand-line rounded-xl overflow-hidden h-full flex flex-col cursor-default"
+        whileHover={reduce ? {} : { backgroundColor: "#1b1b1b", borderColor: "#1b1b1b" }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Venue name */}
-        <motion.p
-          className="text-[10px] font-semibold tracking-[0.24em] uppercase"
-          style={{ fontFamily: "var(--font-open-sans)" }}
-          animate={{}}
-          whileHover={reduce ? {} : { color: "rgba(255,255,255,0.5)" }}
-          transition={{ duration: 0.4 }}
-          initial={{ color: "#6b6b6b" }}
-        >
-          {venue}
-        </motion.p>
+        {/* Gold accent bar */}
+        <div className="h-[3px] w-full bg-[#8a7448] shrink-0" />
 
-        {/* Big number */}
-        <motion.p
-          className="text-[52px] sm:text-[60px] leading-none my-4"
-          style={{
-            fontFamily: "EditorsNote, serif",
-            fontWeight: 300,
-            color: "#1b1b1b",
-          }}
-          whileHover={reduce ? {} : { color: "#ffffff" }}
-          transition={{ duration: 0.4 }}
-        >
-          {stat}
-        </motion.p>
+        <div className="px-6 pt-5 pb-6 sm:px-7 sm:pt-6 sm:pb-7 flex flex-col flex-1">
+          {/* Venue name */}
+          <motion.p
+            className="text-[10px] font-semibold tracking-[0.26em] uppercase"
+            style={{ fontFamily: "var(--font-open-sans)", color: "#a8a29e" }}
+            whileHover={reduce ? {} : { color: "rgba(255,255,255,0.4)" }}
+            transition={{ duration: 0.35 }}
+          >
+            {venue}
+          </motion.p>
 
-        {/* Detail */}
-        <motion.p
-          className="text-[13px] sm:text-sm leading-relaxed"
-          style={{ fontFamily: "var(--font-open-sans)", color: "#6b6b6b" }}
-          whileHover={reduce ? {} : { color: "rgba(255,255,255,0.65)" }}
-          transition={{ duration: 0.4 }}
-        >
-          {detail}
-        </motion.p>
+          {/* Big stat — the hero of the card */}
+          <motion.p
+            className="mt-3 leading-none"
+            style={{
+              fontFamily: "EditorsNote, serif",
+              fontWeight: 300,
+              fontSize: "clamp(72px, 8vw, 96px)",
+              color: "#1b1b1b",
+            }}
+            whileHover={reduce ? {} : { color: "#ffffff" }}
+            transition={{ duration: 0.35 }}
+          >
+            {stat}
+          </motion.p>
+
+          {/* Detail — larger and bolder for instant clarity */}
+          <motion.p
+            className="mt-4 text-[14px] sm:text-[15px] font-semibold leading-snug"
+            style={{ fontFamily: "var(--font-open-sans)", color: "#57534e" }}
+            whileHover={reduce ? {} : { color: "rgba(255,255,255,0.75)" }}
+            transition={{ duration: 0.35 }}
+          >
+            {detail}
+          </motion.p>
+        </div>
       </motion.div>
     </Reveal>
   );
@@ -95,7 +83,7 @@ export default function ProofDrop() {
             className="text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            — Real Venues. Real Numbers.
+            Real Venues. Real Numbers.
           </p>
         </Reveal>
 

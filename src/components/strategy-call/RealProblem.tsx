@@ -9,7 +9,7 @@ export default function RealProblem() {
             className="text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            — The Real Problem
+            The Real Problem
           </p>
         </Reveal>
 
@@ -20,7 +20,7 @@ export default function RealProblem() {
           >
             You don&apos;t just need more leads. You need a{" "}
             <span style={{ color: "#8a7448" }}>booking system</span>{" "}
-            built for venues — not brides.
+            built for venues, not brides.
           </h2>
         </Reveal>
 
@@ -30,8 +30,13 @@ export default function RealProblem() {
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             <p>
-              The Knot and WeddingWire weren&apos;t built to help your venue. They were built to
-              help the bride — by sending her to ten venues at once. You&apos;re not their customer.
+              The Knot and WeddingWire{" "}
+              <strong className="text-brand-ink font-bold">
+                weren&apos;t built to help your venue.
+              </strong>{" "}
+              They were built to{" "}
+              <strong className="text-brand-ink font-bold">help the bride</strong>{" "}
+              by sending her to ten venues at once. You&apos;re not their customer.
               You&apos;re inventory.
             </p>
             <p>
@@ -45,7 +50,7 @@ export default function RealProblem() {
           </div>
         </Reveal>
 
-        {/* Pull-quote — Open Sans bold, left border */}
+        {/* Pull-quote */}
         <Reveal delay={0.24}>
           <blockquote className="mt-10 sm:mt-12 pl-5 border-l-2 border-brand-ink">
             <p
