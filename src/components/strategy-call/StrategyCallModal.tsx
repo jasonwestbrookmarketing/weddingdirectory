@@ -121,8 +121,8 @@ export default function StrategyCallModal() {
           </p>
         </div>
 
-        {/* Calendar embed — oversized + offset to crop the GHL 1-2px border */}
-        <div className="bg-white overflow-hidden">
+        {/* Calendar embed — padded container so calendar doesn't touch modal edges */}
+        <div className="bg-white overflow-hidden px-6 sm:px-8">
           <iframe
             src={CALENDAR_URL}
             id={CALENDAR_ID}
