@@ -121,16 +121,16 @@ export default function StrategyCallModal() {
           </p>
         </div>
 
-        {/* Calendar embed — padded container so calendar doesn't touch modal edges */}
-        <div className="bg-white overflow-hidden px-6 sm:px-8">
+        {/* Calendar embed — overflow-hidden clips the GHL widget's side borders */}
+        <div className="bg-white overflow-hidden">
           <iframe
             src={CALENDAR_URL}
             id={CALENDAR_ID}
             className="bg-white block"
             style={{
-              width: "calc(100% + 8px)",
+              width: "calc(100% + 48px)",
               height: 610,
-              marginLeft: -4,
+              marginLeft: -24,
               marginTop: -4,
               marginBottom: -4,
               border: 0,
