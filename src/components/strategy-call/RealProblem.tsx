@@ -1,5 +1,4 @@
 import { Reveal } from "./Reveal";
-import { SketchUnderline } from "./SketchUnderline";
 
 export default function RealProblem() {
   return (
@@ -19,11 +18,8 @@ export default function RealProblem() {
             className="mt-4 text-[26px] sm:text-4xl md:text-5xl text-brand-ink leading-[1.12]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            You don&apos;t just need more leads. You need a{" "}
-            <SketchUnderline>
-              <span style={{ color: "#8a7448" }}>booking system</span>
-            </SketchUnderline>{" "}
-            built for venues, not brides.
+            You&apos;re paying The Knot and WeddingWire to help your{" "}
+            <em style={{ color: "#8a7448", fontStyle: "italic" }}>competitors.</em>
           </h2>
         </Reveal>
 
@@ -38,8 +34,7 @@ export default function RealProblem() {
                 weren&apos;t built to help your venue.
               </strong>{" "}
               They were built to help the bride by sending her to ten venues at once. You&apos;re not their customer.
-              You&apos;re inventory. You&apos;re paying The Knot and WeddingWire to help your{" "}
-              <em style={{ color: "#8a7448", fontStyle: "italic" }}>competitors.</em>
+              You&apos;re inventory.
             </p>
             <p>
               That&apos;s why throwing more money at them never works. You&apos;re not solving the
