@@ -19,7 +19,9 @@ export default function RealProblem() {
             className="mt-4 text-[26px] sm:text-4xl md:text-5xl text-brand-ink leading-[1.12]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            You&apos;re paying The Knot and WeddingWire to book weddings at{" "}
+            You&apos;re paying The Knot and WeddingWire
+            <br className="hidden sm:block" />
+            {" "}to book weddings at{" "}
             <SketchUnderline>
               <span style={{ color: "#8a7448" }}>your competitors&apos; venue,</span>
             </SketchUnderline>{" "}
