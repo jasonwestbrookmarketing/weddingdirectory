@@ -1,4 +1,5 @@
 import { Reveal } from "./Reveal";
+import { SketchUnderline } from "./SketchUnderline";
 
 export default function RealProblem() {
   return (
@@ -19,7 +20,9 @@ export default function RealProblem() {
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             You don&apos;t just need more leads. You need a{" "}
-            <span style={{ color: "#8a7448" }}>booking system</span>{" "}
+            <SketchUnderline>
+              <span style={{ color: "#8a7448" }}>booking system</span>
+            </SketchUnderline>{" "}
             built for venues, not brides.
           </h2>
         </Reveal>
