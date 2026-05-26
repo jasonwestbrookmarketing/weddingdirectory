@@ -43,10 +43,10 @@ export default function SiteFooter() {
             Terms of Use
           </a>
           <a
-            href={`${STORYPAY_URL}/signup?as=venue`}
+            href={`${STORYPAY_URL}/signup?as=venue&plan=free&utm_source=storyvenue&utm_medium=site&utm_campaign=footer-list-venue`}
             className="hover:text-stone-900 transition-colors"
           >
-            List Your Venue
+            List Your Venue Free
           </a>
         </div>
       </div>
