@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Reveal } from "./Reveal";
 import { SketchUnderline } from "./SketchUnderline";
 
@@ -18,7 +19,7 @@ const COMPETITORS = [
 
 export default function Differentiation() {
   return (
-    <section className="bg-brand-warm py-20 sm:py-28 border-b border-brand-line">
+    <section className="bg-brand-warm py-20 sm:py-28">
       <div className="max-w-[860px] mx-auto px-6 md:px-10">
 
         {/* ── Header ── */}
@@ -80,15 +81,13 @@ export default function Differentiation() {
 
         {/* ── VS divider ── */}
         <Reveal delay={0.26}>
-          <div className="flex items-center gap-4 my-8 sm:my-10">
-            <div className="h-px flex-1 bg-brand-line" />
+          <div className="flex items-center justify-center my-8 sm:my-10">
             <p
               className="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand-muted"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               vs
             </p>
-            <div className="h-px flex-1 bg-brand-line" />
           </div>
         </Reveal>
 
@@ -98,20 +97,20 @@ export default function Differentiation() {
             {/* Gold top bar */}
             <div className="h-[3px] w-full bg-gradient-to-r from-[#8a7448] via-[#b09a6a] to-[#8a7448]" />
 
-            <div className="px-8 sm:px-10 py-8 sm:py-10 flex flex-col sm:flex-row sm:items-start gap-6 sm:gap-10">
-              {/* Brand name + tagline */}
-              <div className="shrink-0">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="w-2 h-2 rounded-full bg-[#8a7448]" aria-hidden="true" />
-                  <p
-                    className="text-brand-ink text-[20px] sm:text-[24px] leading-none"
-                    style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-                  >
-                    StoryVenue
-                  </p>
-                </div>
+            <div className="px-8 sm:px-10 py-8 sm:py-10 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10">
+              {/* Logo + tagline — vertically centered */}
+              <div className="shrink-0 flex flex-col items-start gap-2 sm:w-[180px]">
+                <Image
+                  src="/storyvenue-dark-logo.png"
+                  alt="StoryVenue™"
+                  width={160}
+                  height={36}
+                  unoptimized
+                  placeholder="empty"
+                  className="h-8 w-auto object-contain"
+                />
                 <p
-                  className="text-[10px] font-semibold tracking-[0.18em] uppercase text-[#8a7448] pl-4"
+                  className="text-[10px] font-semibold tracking-[0.18em] uppercase text-[#8a7448]"
                   style={{ fontFamily: "var(--font-open-sans)" }}
                 >
                   The complete system
@@ -120,13 +119,13 @@ export default function Differentiation() {
 
               <div className="hidden sm:block w-px self-stretch bg-brand-line shrink-0" />
 
-              {/* Description */}
+              {/* Description — 2 clean lines, no orphan */}
               <div className="flex-1">
                 <p
-                  className="text-brand-ink text-[15px] sm:text-[16px] leading-relaxed font-medium"
+                  className="text-brand-ink text-[15px] sm:text-[16px] leading-relaxed font-medium max-w-[460px]"
                   style={{ fontFamily: "var(--font-open-sans)" }}
                 >
-                  A complete booking system — with a real team behind it — built by people who&apos;ve been in this industry for over 14 years.
+                  A complete booking system, with a real team behind it, built by people who&apos;ve been in this industry for over 14 years.
                 </p>
                 <p
                   className="mt-2 text-brand-muted text-[13px] leading-relaxed"

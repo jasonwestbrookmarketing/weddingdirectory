@@ -49,12 +49,8 @@ export default function FinalCTA() {
         {/* Closing reframe — EditorsNote for weight and elegance */}
         <Reveal delay={0.2}>
           <div
-            className="mt-7 sm:mt-8 space-y-1 text-brand-muted"
-            style={{
-              fontFamily: "EditorsNote, serif",
-              fontWeight: 300,
-              fontSize: "clamp(18px, 2vw, 22px)",
-            }}
+            className="mt-7 sm:mt-8 space-y-1 text-brand-muted text-[16px] sm:text-[17px]"
+            style={{ fontFamily: "var(--font-open-sans)" }}
           >
             <p>This isn&apos;t a sales call. It&apos;s a fit call.</p>
             <p>We don&apos;t pitch. We don&apos;t pressure. We don&apos;t read from a script.</p>
