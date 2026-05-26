@@ -14,6 +14,16 @@ html, body {
   overflow-x: clip;
 }
 
+/* /book-more-weddings hero: on desktop the section is pulled up 92px behind */
+/* the sticky nav via -mt-[92px], so its min-height must be 100svh + 92px to */
+/* fully fill the visible viewport — otherwise the Real Problem section is   */
+/* immediately visible at the bottom of the fold when the page loads.        */
+@media (min-width: 1024px) {
+  .bmw-hero {
+    min-height: calc(100svh + 92px);
+  }
+}
+
 @font-face {
   font-family: "EditorsNote";
   src: url("/fonts/EditorNote-Light.ttf") format("truetype");
