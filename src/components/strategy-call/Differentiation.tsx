@@ -45,37 +45,40 @@ export default function Differentiation() {
         </Reveal>
 
         {/* ── Competitor rows ── */}
-        <div className="mt-12 sm:mt-14">
+        {/* Border lives outside Reveal so every line is identical full width */}
+        <div className="mt-12 sm:mt-14 border-t border-brand-line">
           {COMPETITORS.map((c, i) => (
-            <Reveal key={c.name} delay={0.07 * i}>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8 py-5 border-b border-brand-line first:border-t first:border-brand-line">
-                {/* Left: icon + name */}
-                <div className="flex items-center gap-3 sm:w-[280px] shrink-0">
-                  <div
-                    className="w-6 h-6 rounded-full bg-red-50 border border-red-200 flex items-center justify-center shrink-0"
-                    aria-hidden="true"
-                  >
-                    <svg className="w-3 h-3 text-red-500" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+            <div key={c.name} className="border-b border-brand-line">
+              <Reveal delay={0.07 * i}>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8 py-5">
+                  {/* Left: icon + name */}
+                  <div className="flex items-center gap-3 sm:w-[280px] shrink-0">
+                    <div
+                      className="w-6 h-6 rounded-full bg-red-50 border border-red-200 flex items-center justify-center shrink-0"
+                      aria-hidden="true"
+                    >
+                      <svg className="w-3 h-3 text-red-500" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </div>
+                    <p
+                      className="text-[14px] font-semibold text-brand-ink"
+                      style={{ fontFamily: "var(--font-open-sans)" }}
+                    >
+                      {c.name}
+                    </p>
                   </div>
+
+                  {/* Right: failure — dark so it reads as a real problem statement */}
                   <p
-                    className="text-[14px] font-semibold text-brand-ink"
+                    className="text-[15px] sm:text-[16px] text-brand-ink leading-snug pl-9 sm:pl-0 font-medium"
                     style={{ fontFamily: "var(--font-open-sans)" }}
                   >
-                    {c.name}
+                    {c.failure}
                   </p>
                 </div>
-
-                {/* Right: failure */}
-                <p
-                  className="text-[14px] sm:text-[15px] text-brand-muted leading-snug pl-9 sm:pl-0"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  {c.failure}
-                </p>
-              </div>
-            </Reveal>
+              </Reveal>
+            </div>
           ))}
         </div>
 
