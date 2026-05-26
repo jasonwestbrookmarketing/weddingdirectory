@@ -20,18 +20,18 @@ const PROOF_CARDS = [
     logoDims: { w: 120, h: 28 },
   },
   {
-    venue: "Red Barn Acres",
-    stat: "9",
-    detail: "Weddings booked in the first 4 months",
-    logo: "/logos/red-barn.png",
-    logoDims: { w: 72, h: 58 },
-  },
-  {
     venue: "Retreat at Evans Farms",
     stat: "258",
     detail: "Leads in 60 days",
     logo: "/logos/retreat.png",
     logoDims: { w: 140, h: 40 },
+  },
+  {
+    venue: "Red Barn Acres",
+    stat: "9",
+    detail: "Weddings booked in the first 4 months",
+    logo: "/logos/red-barn.png",
+    logoDims: { w: 72, h: 58 },
   },
 ];
 
