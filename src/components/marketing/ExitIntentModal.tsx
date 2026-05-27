@@ -105,7 +105,7 @@ export default function ExitIntentModal() {
 
         {/* Card */}
         <div
-          className="relative z-10 w-full max-w-lg bg-white rounded-3xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] flex flex-col"
+          className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] flex flex-col"
           style={{ maxHeight: "calc(100svh - 32px)", overflowY: "auto" }}
         >
           {/* Sticky close */}
@@ -141,8 +141,10 @@ export default function ExitIntentModal() {
             </p>
           </div>
 
-          {/* Calendar iframe — GHL auto-resize embed pattern */}
-          <div className="bg-white">
+          {/* Calendar iframe — GHL auto-resize embed pattern.
+              px-10 creates breathing room on both sides so the calendar
+              looks naturally proportioned inside the wider card. */}
+          <div className="bg-white px-10">
             <iframe
               src={CALENDAR_URL}
               id={`${CALENDAR_ID}_desktop`}
