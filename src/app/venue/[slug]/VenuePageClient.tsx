@@ -83,9 +83,13 @@ function PhotoMosaic({
   // can jump straight to whichever tile the user clicked.
   onViewAll: (index?: number) => void;
 }) {
+  // Deduplicate: cover comes first, then gallery photos that aren't the same
+  // URL. The dashboard sometimes stores the cover in both cover_image_url AND
+  // gallery_images (e.g. when the user stars a gallery photo as the cover),
+  // which causes the same image to appear twice in the mosaic.
   const allPhotos = [
     ...(coverImage ? [coverImage] : []),
-    ...galleryImages,
+    ...galleryImages.filter((url) => url !== coverImage),
   ];
 
   const placeholderClass = "bg-gradient-to-br from-stone-200 to-stone-300";
@@ -433,7 +437,7 @@ export default function VenuePageClient({
   })).filter((g) => g.labels.length > 0);
   const allPhotos = [
     ...(venue.cover_image_url ? [venue.cover_image_url] : []),
-    ...galleryImages,
+    ...galleryImages.filter((url) => url !== venue.cover_image_url),
   ];
 
   const descriptionText = venue.description || "";
