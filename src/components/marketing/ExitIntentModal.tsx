@@ -105,7 +105,7 @@ export default function ExitIntentModal() {
 
         {/* Card */}
         <div
-          className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] flex flex-col"
+          className="relative z-10 w-full max-w-lg bg-white rounded-3xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] flex flex-col"
           style={{ maxHeight: "calc(100svh - 32px)", overflowY: "auto" }}
         >
           {/* Sticky close */}
