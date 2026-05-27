@@ -82,10 +82,14 @@ export default function StrategyCallModal() {
         onClick={() => setOpen(false)}
       />
 
-      {/* Modal card */}
+      {/* Modal card — overflowY + webkit scroll for iOS momentum scrolling */}
       <div
         className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] flex flex-col"
-        style={{ maxHeight: "calc(100svh - 16px)", overflowY: "auto" }}
+        style={{
+          maxHeight: "calc(100svh - 16px)",
+          overflowY: "auto",
+          WebkitOverflowScrolling: "touch",
+        }}
       >
         {/* Sticky close */}
         <div className="sticky top-0 z-20 flex justify-end px-4 pt-4 bg-white rounded-t-3xl">
@@ -120,7 +124,11 @@ export default function StrategyCallModal() {
           </p>
         </div>
 
-        {/* Calendar embed — overflow-hidden clips the GHL widget's 1px side borders */}
+        {/* Calendar embed.
+            Height 900px gives the GHL form room for every step (calendar,
+            time-slot, and the Enter Details form) without cutting content off
+            on mobile. scrolling="auto" lets the iframe scroll internally if
+            the content somehow still overflows on small devices. */}
         <div className="bg-white overflow-hidden">
           <iframe
             src={CALENDAR_URL}
@@ -128,16 +136,15 @@ export default function StrategyCallModal() {
             className="bg-white block"
             style={{
               width: "calc(100% + 4px)",
-              height: 610,
+              height: 900,
               marginLeft: -2,
               marginTop: -2,
               marginBottom: -2,
               border: 0,
               outline: "none",
               boxShadow: "none",
-              overflow: "hidden",
             }}
-            scrolling="no"
+            scrolling="auto"
             title="Book your free strategy call"
           />
         </div>
