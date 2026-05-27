@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Reveal } from "./Reveal";
 
 const LOGOS = [
   { src: "/logos/arbor.png",       alt: "Arbor at the Port",         h: 36 },
@@ -18,17 +17,8 @@ const DOUBLED = [...LOGOS, ...LOGOS.map((l) => ({ ...l, alt: "" }))];
 export default function LogoWall() {
   return (
     <section className="bg-white border-b border-brand-line">
-      <Reveal>
-        <p
-          className="pt-8 text-center text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
-          style={{ fontFamily: "var(--font-open-sans)" }}
-        >
-          Trusted By
-        </p>
-      </Reveal>
-
       {/* Scrolling logo ticker — identical rhythm to /book-more-weddings */}
-      <div className="pt-6 pb-8 overflow-hidden">
+      <div className="py-8 overflow-hidden">
         <div
           className="flex whitespace-nowrap gap-10 lg:gap-16 items-center"
           style={{ animation: "ticker 40s linear infinite" }}
