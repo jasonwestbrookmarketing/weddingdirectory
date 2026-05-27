@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   ArrowRight,
   Search,
@@ -46,6 +46,16 @@ const FREE_SIGNUP_HREF = `${STORYPAY_URL}/signup?as=venue&plan=free&utm_source=m
 // Cache-busting query string forces iMessage / Facebook / LinkedIn / X to
 // re-scrape the OG image instead of serving the old (calendar modal) preview.
 const OG_IMAGE = "/og-book-more-weddings.jpg?v=2";
+
+// Prevent iOS from auto-zooming when the user taps into the GHL calendar's
+// input fields (which have font-size < 16px). Cross-origin iframes can't be
+// restyled from the parent, so we stop the page from scaling instead.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://storyvenue.com"),
