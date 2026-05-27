@@ -69,7 +69,7 @@ export default function StrategyCallModal() {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-start sm:items-center justify-center p-2 sm:p-4"
+      className="fixed inset-0 z-[9999] flex items-stretch sm:items-center justify-center sm:p-4"
       style={{ display: open ? "flex" : "none" }}
       role="dialog"
       aria-modal="true"
@@ -82,17 +82,19 @@ export default function StrategyCallModal() {
         onClick={() => setOpen(false)}
       />
 
-      {/* Modal card — overflowY + webkit scroll for iOS momentum scrolling */}
+      {/* Modal card.
+          Mobile: full-screen (h-full, no rounded corners, no padding) so the
+          iframe fills the visible area and GHL handles its own scrolling.
+          Touching inside a cross-origin iframe sends events to GHL, not to
+          our scroll container — making the card fill the whole screen and
+          letting the iframe scroll internally is the only reliable mobile fix.
+          Desktop: centred card with max-width, rounded corners, shadow. */}
       <div
-        className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] flex flex-col"
-        style={{
-          maxHeight: "calc(100svh - 16px)",
-          overflowY: "auto",
-          WebkitOverflowScrolling: "touch",
-        }}
+        className="relative z-10 w-full sm:max-w-2xl bg-white sm:rounded-3xl sm:shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] flex flex-col h-full sm:h-auto"
+        style={{ maxHeight: "100svh" }}
       >
-        {/* Sticky close */}
-        <div className="sticky top-0 z-20 flex justify-end px-4 pt-4 bg-white rounded-t-3xl">
+        {/* Close row — always visible at top */}
+        <div className="shrink-0 flex justify-end px-4 pt-4 bg-white sm:rounded-t-3xl">
           <button
             onClick={() => setOpen(false)}
             className="flex items-center justify-center w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-800 transition-colors"
@@ -102,8 +104,8 @@ export default function StrategyCallModal() {
           </button>
         </div>
 
-        {/* Header */}
-        <div className="px-8 pt-2 pb-5 text-center">
+        {/* Header — compact on mobile to maximise iframe space */}
+        <div className="shrink-0 px-6 sm:px-8 pt-1 sm:pt-2 pb-3 sm:pb-5 text-center">
           <p
             className="text-[10px] font-semibold tracking-[0.22em] uppercase text-stone-400"
             style={{ fontFamily: "var(--font-open-sans)" }}
@@ -111,13 +113,13 @@ export default function StrategyCallModal() {
             Before You Go
           </p>
           <h2
-            className="mt-2 text-[26px] sm:text-[34px] leading-[1.1] text-stone-900"
+            className="mt-1 sm:mt-2 text-[22px] sm:text-[34px] leading-[1.1] text-stone-900"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Book Your Free Strategy Call.
           </h2>
           <p
-            className="mt-2 text-sm text-stone-500 max-w-[30ch] mx-auto"
+            className="hidden sm:block mt-2 text-sm text-stone-500 max-w-[30ch] mx-auto"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             30 minutes. No pitch. No pressure. We&rsquo;ll show you exactly what&rsquo;s leaking.
@@ -125,21 +127,19 @@ export default function StrategyCallModal() {
         </div>
 
         {/* Calendar embed.
-            Height 900px gives the GHL form room for every step (calendar,
-            time-slot, and the Enter Details form) without cutting content off
-            on mobile. scrolling="auto" lets the iframe scroll internally if
-            the content somehow still overflows on small devices. */}
-        <div className="bg-white overflow-hidden">
+            flex-1 + min-h-0 makes the wrapper fill all remaining card height
+            on mobile (full-screen card, so GHL gets the full space it needs
+            and scrolls internally). On desktop, sm:min-h-[640px] gives the
+            calendar enough room for every step without the card needing to
+            scroll. The 2px margin trick clips GHL's 1px widget border. */}
+        <div className="flex-1 min-h-0 sm:min-h-[640px] bg-white overflow-hidden">
           <iframe
             src={CALENDAR_URL}
             id={CALENDAR_ID}
-            className="bg-white block"
+            className="bg-white block w-full h-full"
             style={{
-              width: "calc(100% + 4px)",
-              height: 900,
               marginLeft: -2,
-              marginTop: -2,
-              marginBottom: -2,
+              width: "calc(100% + 4px)",
               border: 0,
               outline: "none",
               boxShadow: "none",
@@ -150,7 +150,7 @@ export default function StrategyCallModal() {
         </div>
 
         {/* Dismiss */}
-        <div className="py-4 text-center bg-white rounded-b-3xl">
+        <div className="shrink-0 py-3 sm:py-4 text-center bg-white sm:rounded-b-3xl">
           <button
             onClick={() => setOpen(false)}
             className="text-[12px] text-stone-400 hover:text-stone-600 transition-colors underline underline-offset-2"
