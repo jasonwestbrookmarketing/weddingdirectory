@@ -69,7 +69,7 @@ export default function StrategyCallModal() {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-stretch sm:items-center justify-center sm:p-4"
+      className="fixed inset-0 z-[9999] flex items-start sm:items-center justify-center sm:p-4"
       style={{ display: open ? "flex" : "none" }}
       role="dialog"
       aria-modal="true"
@@ -83,33 +83,35 @@ export default function StrategyCallModal() {
       />
 
       {/* Modal card.
-          Mobile: 100svh full-screen. Header + dismiss row are hidden so the
-          GHL iframe gets the entire viewport height. GHL's calendar is a
-          single-page app that scrolls its own form steps internally — giving
-          it the full screen is the only reliable way to fit the multi-step
-          Enter Details form on iOS Safari (cross-origin iframes don't bubble
-          touch events to parent scroll containers, so we can't scroll the
-          card from inside the iframe).
-          Desktop: centred card with max-width, rounded corners, shadow,
-          header + dismiss visible. */}
+          Mobile: 100svh full-screen, the WHOLE card scrolls (overflow-y:auto
+          + -webkit-overflow-scrolling:touch). The iframe inside is set to a
+          tall fixed height (1600px) with scrolling="no" so it acts like a
+          regular block element — no internal scroll target means touch events
+          on iOS Safari bubble up to the card and the user can scroll the
+          card naturally to reach every field + submit. This is the same
+          pattern used on /book-more-weddings.
+          Desktop: centred card, no card-scroll needed (iframe height fits). */}
       <div
-        className="relative z-10 w-full sm:max-w-2xl bg-white sm:rounded-3xl sm:shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] flex flex-col h-full sm:h-auto"
-        style={{ maxHeight: "100svh" }}
+        className="relative z-10 w-full sm:max-w-2xl bg-white sm:rounded-3xl sm:shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] flex flex-col"
+        style={{
+          maxHeight: "100svh",
+          overflowY: "auto",
+          WebkitOverflowScrolling: "touch",
+        }}
       >
-        {/* Floating close button — overlays the iframe on mobile, sits in the
-            header row on desktop. Absolute positioning on mobile saves the
-            ~50px of vertical space a full close-row would consume. */}
-        <button
-          onClick={() => setOpen(false)}
-          className="absolute top-3 right-3 z-30 flex items-center justify-center w-9 h-9 rounded-full bg-white/95 shadow-md text-stone-600 hover:text-stone-900 hover:bg-white transition-colors sm:static sm:bg-stone-100 sm:shadow-none sm:hover:bg-stone-200 sm:self-end sm:mr-4 sm:mt-4"
-          aria-label="Close"
-        >
-          <X className="w-4 h-4" />
-        </button>
+        {/* Sticky close button — always reachable while scrolling */}
+        <div className="sticky top-0 z-20 flex justify-end px-4 pt-4 bg-white sm:rounded-t-3xl">
+          <button
+            onClick={() => setOpen(false)}
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-white/95 shadow-md sm:shadow-none sm:bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-900 transition-colors"
+            aria-label="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
 
-        {/* Header — hidden on mobile, visible on desktop only.
-            Mobile needs every pixel for the iframe; the floating X is enough
-            context to dismiss. Desktop keeps the editorial framing. */}
+        {/* Header — hidden on mobile (saves space, floating X handles dismiss),
+            visible on desktop for editorial framing. */}
         <div className="hidden sm:block shrink-0 px-8 pt-2 pb-5 text-center">
           <p
             className="text-[10px] font-semibold tracking-[0.22em] uppercase text-stone-400"
@@ -132,24 +134,28 @@ export default function StrategyCallModal() {
         </div>
 
         {/* Calendar embed.
-            flex-1 + min-h-0 fills all remaining vertical space. On mobile that
-            is the whole 100svh viewport (no header, no dismiss), so GHL's
-            multi-step form has full height to render its longest step (Enter
-            Details). On desktop sm:min-h-[640px] guarantees the card is tall
-            enough. The 2px margin trick clips GHL's 1px widget border. */}
-        <div className="flex-1 min-h-0 sm:min-h-[640px] bg-white relative">
+            height={1600} is sized to fit GHL's tallest step (Enter Details,
+            ~10 fields + privacy links + submit). scrolling="no" disables the
+            iframe's internal scroll so touch events on iOS pass through to
+            the card's overflow-y scroll. The 4px width + 2px margin trick
+            clips GHL's 1px widget border on all sides. */}
+        <div className="bg-white overflow-hidden">
           <iframe
             src={CALENDAR_URL}
             id={CALENDAR_ID}
-            className="bg-white block w-full h-full"
+            className="bg-white block"
             style={{
-              marginLeft: -2,
               width: "calc(100% + 4px)",
+              height: 1600,
+              marginLeft: -2,
+              marginTop: -2,
+              marginBottom: -2,
               border: 0,
               outline: "none",
               boxShadow: "none",
             }}
-            scrolling="auto"
+            scrolling="no"
+            frameBorder={0}
             title="Book your free strategy call"
           />
         </div>
