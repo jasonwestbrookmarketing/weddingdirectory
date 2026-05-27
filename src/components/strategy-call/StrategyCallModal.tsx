@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
 const CALENDAR_URL = "https://api.leadconnectorhq.com/widget/booking/YeI4ZUC2SwV8MXDRKfzr";
-const CALENDAR_ID  = "YeI4ZUC2SwV8MXDRKfzr_1779370346164";
+const CALENDAR_ID  = "YeI4ZUC2SwV8MXDRKfzr_1779890654536";
 const GHL_SCRIPT   = "https://link.msgsndr.com/js/form_embed.js";
 
 /**
@@ -69,41 +69,42 @@ export default function StrategyCallModal() {
 
   return (
     <>
-      {/* MOBILE: full-bleed iframe takes the entire viewport.
-          No card, no backdrop, no header. The iframe IS the popup.
-          scrolling="auto" + the iframe being the full 100svh means iOS Safari
-          treats it like a regular page — GHL's own internal scroll handles
-          every form step natively. A single floating X close button overlays
-          the top-right corner to dismiss.
-          Hidden on sm: and up (desktop uses the card below). */}
+      {/* MOBILE: full-screen scroll container around GHL's auto-resizing iframe.
+          form_embed.js listens for postMessage from the iframe and grows its
+          height to fit content. With width:100%, scrolling="no", and no fixed
+          height, the iframe behaves like a regular block element — the
+          surrounding div scrolls naturally on iOS Safari, exposing the entire
+          form including the submit button.
+          A floating X close button overlays the top-right corner. */}
       <div
-        className={`sm:hidden fixed inset-0 z-[9999] bg-white ${open ? "" : "!hidden"}`}
+        className={`sm:hidden fixed inset-0 z-[9999] bg-white overflow-y-auto ${open ? "" : "!hidden"}`}
         role="dialog"
         aria-modal="true"
         aria-label="Book your free strategy call"
         aria-hidden={!open}
+        style={{ WebkitOverflowScrolling: "touch" }}
       >
         <button
           onClick={() => setOpen(false)}
-          className="absolute top-3 right-3 z-[10000] flex items-center justify-center w-10 h-10 rounded-full bg-white/95 shadow-lg text-stone-700 hover:text-stone-900 transition-colors"
+          className="fixed top-3 right-3 z-[10000] flex items-center justify-center w-10 h-10 rounded-full bg-white/95 shadow-lg text-stone-700 hover:text-stone-900 transition-colors"
           aria-label="Close"
           style={{ touchAction: "manipulation" }}
         >
           <X className="w-5 h-5" />
         </button>
 
+        {/* GHL standard embed — iframe auto-resizes to content height via
+            form_embed.js postMessage. Parent div handles all scrolling. */}
         <iframe
           src={CALENDAR_URL}
           id={CALENDAR_ID}
           title="Book your free strategy call"
-          scrolling="auto"
-          frameBorder={0}
+          scrolling="no"
           style={{
-            width: "100vw",
-            height: "100svh",
-            border: 0,
+            width: "100%",
+            border: "none",
+            overflow: "hidden",
             display: "block",
-            background: "white",
           }}
         />
       </div>
@@ -161,24 +162,20 @@ export default function StrategyCallModal() {
             </p>
           </div>
 
-          {/* Calendar iframe — desktop sizing, 2px clip for GHL border */}
-          <div className="bg-white overflow-hidden">
+          {/* Calendar iframe — GHL auto-resize embed pattern.
+              form_embed.js grows the iframe height to fit content; the modal
+              card's overflow-y:auto handles any overall card scrolling. */}
+          <div className="bg-white">
             <iframe
               src={CALENDAR_URL}
               id={`${CALENDAR_ID}_desktop`}
               className="bg-white block"
               style={{
-                width: "calc(100% + 4px)",
-                height: 720,
-                marginLeft: -2,
-                marginTop: -2,
-                marginBottom: -2,
-                border: 0,
-                outline: "none",
-                boxShadow: "none",
+                width: "100%",
+                border: "none",
+                overflow: "hidden",
               }}
-              scrolling="auto"
-              frameBorder={0}
+              scrolling="no"
               title="Book your free strategy call"
             />
           </div>
