@@ -101,7 +101,7 @@ function ProofCard({
 export default function ProofDrop() {
   return (
     <section className="bg-brand-bg py-20 sm:py-28 border-b border-brand-line">
-      <div className="max-w-6xl mx-auto px-6 md:px-10">
+      <div className="max-w-6xl mx-auto px-6 md:px-10 text-center">
         <Reveal>
           <p
             className="text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
@@ -113,7 +113,7 @@ export default function ProofDrop() {
 
         <Reveal delay={0.08}>
           <h2
-            className="mt-4 text-[26px] sm:text-4xl md:text-[42px] text-brand-ink leading-[1.12] max-w-2xl"
+            className="mt-4 text-[26px] sm:text-4xl md:text-[42px] text-brand-ink leading-[1.12] max-w-2xl mx-auto"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Not because they get more leads. Because they finally have a{" "}
