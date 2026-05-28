@@ -46,15 +46,14 @@ export default function Hero() {
             For Wedding Venue Owners
           </motion.p>
 
-          {/* H1 — big enough to fill 3 lines; gold words stay gold, no italic */}
+          {/* H1 */}
           <motion.h1
             variants={item}
             className="text-[36px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.08] text-brand-ink"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Fully Book Your Wedding Venue Without Paying{" "}
-            <span style={{ color: "#8a7448" }}>The Knot</span> Or{" "}
-            <span style={{ color: "#8a7448" }}>WeddingWire</span> Another Cent.
+            Fully Book Your Wedding Venue{" "}
+            <span style={{ color: "#8a7448" }}>Without Empty Weekends.</span>
           </motion.h1>
 
           {/* Subhead — single horizontal line */}

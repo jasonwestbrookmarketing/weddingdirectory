@@ -1,10 +1,8 @@
 import { Reveal } from "./Reveal";
-import { SketchUnderline } from "./SketchUnderline";
 
 export default function RealProblem() {
   return (
     <section className="bg-brand-bg py-20 sm:py-28 border-b border-brand-line">
-      {/* Single container — headline & body share the same left edge */}
       <div className="max-w-6xl mx-auto px-6 md:px-10">
         <Reveal>
           <p
@@ -20,11 +18,7 @@ export default function RealProblem() {
             className="mt-4 text-[26px] sm:text-4xl md:text-5xl text-brand-ink leading-[1.12]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            You&apos;re paying The Knot and WeddingWire to book weddings at{" "}
-            <SketchUnderline>
-              <span style={{ color: "#8a7448" }}>your competitors&apos; venue,</span>
-            </SketchUnderline>{" "}
-            not yours.
+            Why are your weekends still empty?
           </h2>
         </Reveal>
 
@@ -34,34 +28,24 @@ export default function RealProblem() {
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             <p>
-              The Knot and WeddingWire{" "}
-              <strong className="text-brand-ink font-bold">
-                weren&apos;t built to help your venue.
-              </strong>{" "}
-              They were built to help the bride by sending her to ten venues at once. You&apos;re not their customer.
-              You&apos;re inventory.
+              How many open weekends are on your calendar right now?
             </p>
             <p>
-              That&apos;s why throwing more money at them never works. You&apos;re not solving the
-              real problem. You&apos;re funding a system that was never built for you.
+              Count them. Every open weekend is a wedding that&apos;s going to happen — just not at your venue.
+              Some brides never find you. The ones who do reach out, ask about a date... and disappear.
+              Not because your venue wasn&apos;t right. Because by the time you followed up, someone else
+              already answered, already booked the tour, already took the deposit.
             </p>
             <p>
-              The real problem is that you don&apos;t have a booking system. You have a directory
-              listing, an inbox, a Google Calendar, and a hope that brides reply.
+              So you do what every venue owner does. You throw more money at The Knot, WeddingWire, and the directories.
             </p>
-          </div>
-        </Reveal>
-
-        {/* Pull-quote */}
-        <Reveal delay={0.24}>
-          <blockquote className="mt-10 sm:mt-12 pl-5 border-l-2 border-brand-ink max-w-[760px]">
             <p
-              className="text-brand-ink font-bold leading-snug text-[17px] sm:text-[19px]"
+              className="font-bold text-brand-ink"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              That&apos;s not a system. That&apos;s why your weekends are empty.
+              And yet here you are. Same empty weekends. Smaller bank account. Watching other venues fill the dates that should&apos;ve been yours.
             </p>
-          </blockquote>
+          </div>
         </Reveal>
       </div>
     </section>

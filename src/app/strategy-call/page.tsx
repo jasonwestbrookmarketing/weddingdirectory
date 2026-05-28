@@ -3,6 +3,7 @@ import StrategyNav from "@/components/strategy-call/StrategyNav";
 import Hero from "@/components/strategy-call/Hero";
 import LogoWall from "@/components/strategy-call/LogoWall";
 import RealProblem from "@/components/strategy-call/RealProblem";
+import Agitate from "@/components/strategy-call/Agitate";
 import Cascade from "@/components/strategy-call/Cascade";
 import ProofDrop from "@/components/strategy-call/ProofDrop";
 import MathSection from "@/components/strategy-call/MathSection";
@@ -28,6 +29,7 @@ export default function StrategyCallPage() {
         <Hero />
         <LogoWall />
         <RealProblem />
+        <Agitate />
         <Cascade />
         <ProofDrop />
         <MathSection />
