@@ -43,7 +43,7 @@ export default function RealProblem() {
               className="font-bold text-brand-ink"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              And yet here you are. Same empty weekends. Smaller bank account. Watching other venues fill the dates that should&apos;ve been yours.
+              And yet here you are. Same empty weekends. Watching other venues fill the dates that should&apos;ve been yours.
             </p>
           </div>
         </Reveal>
