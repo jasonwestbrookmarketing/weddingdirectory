@@ -26,13 +26,6 @@ const PROOF_CARDS = [
     logo: "/logos/retreat.png",
     logoDims: { w: 140, h: 40 },
   },
-  {
-    venue: "Red Barn Acres",
-    stat: "9",
-    detail: "Weddings booked in the first 4 months",
-    logo: "/logos/red-barn.png",
-    logoDims: { w: 72, h: 58 },
-  },
 ];
 
 function ProofCard({
