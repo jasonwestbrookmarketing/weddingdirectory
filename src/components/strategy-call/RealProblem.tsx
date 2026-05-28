@@ -1,4 +1,5 @@
 import { Reveal } from "./Reveal";
+import HighlighterText from "@/components/marketing/HighlighterText";
 
 export default function RealProblem() {
   return (
@@ -31,7 +32,8 @@ export default function RealProblem() {
               How many open weekends are on your calendar right now?
             </p>
             <p>
-              Count them. <span style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>Every open weekend is a wedding that&apos;s going to happen. Just not at your venue.</span>
+              Count them.{" "}
+              <HighlighterText className="whitespace-normal">Every open weekend is a wedding that&apos;s going to happen. Just not at your venue.</HighlighterText>
               Some brides never find you. The ones who do reach out, ask about a date... and disappear.
               Not because your venue wasn&apos;t right. Because by the time you followed up, someone else
               already answered, already booked the tour, already took the deposit.
