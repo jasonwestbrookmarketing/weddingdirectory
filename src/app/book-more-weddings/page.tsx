@@ -384,7 +384,7 @@ export default function BookMoreWeddingsPage() {
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
               <span className="block">Fully Book Your Wedding Venue</span>
-              <span className="block">Without Empty Weekends</span>
+              <span className="block" style={{ color: "var(--color-brand-gold)" }}>Without Empty Weekends.</span>
             </h1>
 
             <p
@@ -498,6 +498,40 @@ export default function BookMoreWeddingsPage() {
             className="mt-4 text-[26px] sm:text-4xl md:text-5xl text-stone-900 leading-[1.15]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
+            Why are your weekends still empty?
+          </h2>
+          <div
+            className="mt-8 space-y-4 text-stone-600 text-base sm:text-lg leading-relaxed"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
+            <p>
+              How many open weekends are on your calendar right now?
+            </p>
+            <p>
+              Count them. Every open weekend is a wedding that&apos;s going to happen — just not at your venue. Some brides never find you. The ones who do reach out, ask about a date... and disappear. Not because your venue wasn&apos;t right. Because by the time you followed up, someone else already answered, already booked the tour, already took the deposit.
+            </p>
+            <p>
+              So you do what every venue owner does. You throw more money at The Knot, WeddingWire, and the directories.
+            </p>
+            <p className="font-medium text-stone-900">
+              And yet here you are. Same empty weekends. Smaller bank account. Watching other venues fill the dates that should&apos;ve been yours.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* 3. AGITATE SECTION                                              */}
+      {/* ============================================================== */}
+      <section className="bg-white py-20 sm:py-28 border-b border-stone-200/60">
+        <div className="max-w-5xl mx-auto px-6 md:px-10">
+          <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-500">
+            — Why it keeps happening
+          </p>
+          <h2
+            className="mt-4 text-[26px] sm:text-4xl md:text-5xl text-stone-900 leading-[1.15]"
+            style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+          >
             Brides Are Looking For A Venue Like Yours. So Why Are They{" "}
             <HighlighterText>Booking Somewhere Else?</HighlighterText>
           </h2>
@@ -516,7 +550,7 @@ export default function BookMoreWeddingsPage() {
       </section>
 
       {/* ============================================================== */}
-      {/* 3. AGITATE SECTION                                              */}
+      {/* 4. AGITATE SECTION (cost of inaction)                          */}
       {/* ============================================================== */}
       <section className="bg-white py-20 sm:py-28">
         <div className="max-w-5xl mx-auto px-6 md:px-10 grid lg:grid-cols-12 gap-10 items-center">
