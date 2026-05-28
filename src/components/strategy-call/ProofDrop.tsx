@@ -45,7 +45,7 @@ function ProofCard({
 }) {
   return (
     <Reveal delay={delay}>
-      <div className="relative bg-white border border-brand-line rounded-xl overflow-hidden h-full flex flex-col">
+      <div className="relative bg-white border border-brand-line rounded-xl overflow-hidden h-full flex flex-col w-full sm:w-[280px]">
         {/* Gold accent bar */}
         <div className="h-[3px] w-full bg-[#8a7448] shrink-0" />
 
@@ -124,7 +124,7 @@ export default function ProofDrop() {
           </h2>
         </Reveal>
 
-        <div className="mt-12 sm:mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="mt-12 sm:mt-14 flex flex-wrap justify-center gap-4 sm:gap-5">
           {PROOF_CARDS.map((card, i) => (
             <ProofCard key={card.venue} {...card} delay={0.07 * i} />
           ))}
