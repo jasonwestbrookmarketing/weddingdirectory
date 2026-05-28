@@ -164,8 +164,9 @@ export default function StrategyCallModal() {
 
           {/* Calendar iframe — GHL auto-resize embed pattern.
               form_embed.js grows the iframe height to fit content; the modal
-              card's overflow-y:auto handles any overall card scrolling. */}
-          <div className="bg-white">
+              card's overflow-y:auto handles any overall card scrolling.
+              px-10 matches the breathing room used in ExitIntentModal. */}
+          <div className="bg-white px-10">
             <iframe
               src={CALENDAR_URL}
               id={`${CALENDAR_ID}_desktop`}
