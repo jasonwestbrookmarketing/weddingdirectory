@@ -25,16 +25,15 @@ export default function RealProblem() {
 
         <Reveal delay={0.16}>
           <div
-            className="mt-8 sm:mt-10 space-y-5 text-brand-muted text-base sm:text-lg leading-relaxed max-w-[760px]"
+            className="mt-8 sm:mt-10 space-y-5 text-brand-muted text-base sm:text-lg leading-relaxed max-w-[900px]"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             <p>
               How many open weekends are on your calendar right now?
             </p>
             <p>
-              Count them.{" "}
-              <HighlighterText className="whitespace-normal">Every open weekend is a wedding that&apos;s going to happen. Just not at your venue.</HighlighterText>
-              Some brides never find you. The ones who do reach out, ask about a date... and disappear.
+              <HighlighterText className="whitespace-normal lg:whitespace-nowrap">Count them. Every open weekend is a wedding that&apos;s going to happen. Just not at your venue.</HighlighterText>
+              {" "}Some brides never find you. The ones who do reach out, ask about a date... and disappear.
               Not because your venue wasn&apos;t right. Because by the time you followed up, someone else
               already answered, already booked the tour, already took the deposit.
             </p>
