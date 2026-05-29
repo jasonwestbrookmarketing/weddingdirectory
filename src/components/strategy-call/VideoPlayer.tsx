@@ -5,7 +5,11 @@ import Image from "next/image";
 import { VSL_VIDEO_URL } from "./constants";
 
 interface VideoPlayerProps {
-  /** Embed URL loaded when the play button is pressed. */
+  /**
+   * Video URL. Accepts a Loom share link (loom.com/share/ID), a Loom embed
+   * link (loom.com/embed/ID), a Vimeo/YouTube embed URL, or any iframe-able
+   * URL. Loom share links are auto-converted to embeds.
+   */
   videoUrl?: string;
   /** Poster image shown before play. */
   poster?: string;
@@ -13,6 +17,35 @@ interface VideoPlayerProps {
   durationLabel?: string;
   /** Accessible label for the play button. */
   ariaLabel?: string;
+}
+
+/**
+ * Normalize a video URL into an autoplaying embed URL. Handles Loom share
+ * links (which aren't iframe-able directly) by rewriting them to /embed/, and
+ * appends an autoplay flag so the video starts as soon as the iframe mounts
+ * (it only mounts after the user taps the poster play button).
+ */
+function toEmbedUrl(url: string): string {
+  try {
+    const u = new URL(url);
+
+    // Loom: share → embed
+    if (u.hostname.includes("loom.com")) {
+      const id = u.pathname.split("/").filter(Boolean).pop();
+      if (id) {
+        return `https://www.loom.com/embed/${id}?autoplay=1`;
+      }
+    }
+
+    // Vimeo / YouTube / other embeds: append autoplay if not already present
+    if (!/autoplay=/.test(u.search)) {
+      u.searchParams.set("autoplay", "1");
+    }
+    return u.toString();
+  } catch {
+    // Not a parseable URL (e.g. an unresolved placeholder) — return as-is.
+    return url;
+  }
 }
 
 export default function VideoPlayer({
@@ -76,7 +109,7 @@ export default function VideoPlayer({
         </>
       ) : (
         <iframe
-          src={videoUrl}
+          src={toEmbedUrl(videoUrl)}
           className="absolute inset-0 w-full h-full"
           allow="autoplay; fullscreen; picture-in-picture"
           allowFullScreen
