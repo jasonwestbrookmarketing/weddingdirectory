@@ -29,11 +29,20 @@ function toEmbedUrl(url: string): string {
   try {
     const u = new URL(url);
 
-    // Loom: share → embed
+    // Loom: share → embed.
+    // hideEmbedTopBar + hide_owner/title/share strip Loom's chrome (the
+    // title, view count, and link/popout buttons) for a clean player.
     if (u.hostname.includes("loom.com")) {
       const id = u.pathname.split("/").filter(Boolean).pop();
       if (id) {
-        return `https://www.loom.com/embed/${id}?autoplay=1`;
+        const params = new URLSearchParams({
+          autoplay: "1",
+          hideEmbedTopBar: "true",
+          hide_owner: "true",
+          hide_title: "true",
+          hide_share: "true",
+        });
+        return `https://www.loom.com/embed/${id}?${params.toString()}`;
       }
     }
 
