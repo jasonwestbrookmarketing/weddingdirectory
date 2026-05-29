@@ -118,9 +118,12 @@ export default function VideoPlayer({
             </button>
           </div>
 
-          {/* Duration pill — bottom center */}
-          <div className="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-black/55 backdrop-blur-sm text-white text-[11px] sm:text-xs px-3 py-1.5 rounded-full tracking-wide pointer-events-none">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-white/70" />
+          {/* Duration pill — bottom center. Red pulsing dot = "live / watch now". */}
+          <div className="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/55 backdrop-blur-sm text-white text-[11px] sm:text-xs px-3 py-1.5 rounded-full tracking-wide pointer-events-none">
+            <span className="relative inline-flex w-2 h-2">
+              <span className="absolute inline-flex w-full h-full rounded-full bg-red-500 opacity-75 animate-ping" />
+              <span className="relative inline-flex w-2 h-2 rounded-full bg-red-500" />
+            </span>
             <span style={{ fontFamily: "var(--font-open-sans)" }}>{durationLabel}</span>
           </div>
         </>

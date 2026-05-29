@@ -68,7 +68,7 @@ export default function Hero() {
           {/* Video player — fillScale crops the Loom recording's black bars
               so it fills the 16:9 frame. Tune the value if the crop is off. */}
           <motion.div variants={item} className="pt-2 sm:pt-4">
-            <VideoPlayer fillScale={1.12} />
+            <VideoPlayer fillScale={1.12} durationLabel="Watch Now" />
           </motion.div>
 
           {/* CTA */}
