@@ -97,8 +97,8 @@ export default function StrategyCallConfirmedPage() {
               <div className="pt-8 sm:pt-10">
                 <VideoPlayer
                   videoUrl={CONFIRMATION_VIDEO_URL}
-                  durationLabel="Watch · 2 min"
-                  ariaLabel="Play video — what to expect on your strategy call"
+                  showPoster={false}
+                  ariaLabel="What to expect on your strategy call"
                 />
               </div>
             </Reveal>

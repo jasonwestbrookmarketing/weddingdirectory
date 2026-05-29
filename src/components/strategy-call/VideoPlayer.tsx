@@ -24,6 +24,12 @@ interface VideoPlayerProps {
    * wrapper hides the overflow so scaled edges are clipped, not visible.
    */
   fillScale?: number;
+  /**
+   * When false, skip the custom poster + play button and embed the player
+   * directly (Loom shows its own thumbnail and play control). Useful on the
+   * confirmation page where we just want the video front and center.
+   */
+  showPoster?: boolean;
 }
 
 /**
@@ -32,7 +38,7 @@ interface VideoPlayerProps {
  * appends an autoplay flag so the video starts as soon as the iframe mounts
  * (it only mounts after the user taps the poster play button).
  */
-function toEmbedUrl(url: string): string {
+function toEmbedUrl(url: string, autoplay: boolean): string {
   try {
     const u = new URL(url);
 
@@ -43,18 +49,18 @@ function toEmbedUrl(url: string): string {
       const id = u.pathname.split("/").filter(Boolean).pop();
       if (id) {
         const params = new URLSearchParams({
-          autoplay: "1",
           hideEmbedTopBar: "true",
           hide_owner: "true",
           hide_title: "true",
           hide_share: "true",
         });
+        if (autoplay) params.set("autoplay", "1");
         return `https://www.loom.com/embed/${id}?${params.toString()}`;
       }
     }
 
-    // Vimeo / YouTube / other embeds: append autoplay if not already present
-    if (!/autoplay=/.test(u.search)) {
+    // Vimeo / YouTube / other embeds: append autoplay if requested
+    if (autoplay && !/autoplay=/.test(u.search)) {
       u.searchParams.set("autoplay", "1");
     }
     return u.toString();
@@ -70,8 +76,11 @@ export default function VideoPlayer({
   durationLabel = "Watch · 4 min 40 sec",
   ariaLabel = "Play video — Watch · 4 minutes 40 seconds",
   fillScale = 1,
+  showPoster = true,
 }: VideoPlayerProps) {
-  const [playing, setPlaying] = useState(false);
+  // When there's no poster, embed the player immediately (no autoplay so the
+  // browser doesn't block it — Loom shows its own thumbnail + play control).
+  const [playing, setPlaying] = useState(!showPoster);
 
   return (
     <div
@@ -129,7 +138,7 @@ export default function VideoPlayer({
         </>
       ) : (
         <iframe
-          src={toEmbedUrl(videoUrl)}
+          src={toEmbedUrl(videoUrl, showPoster)}
           className="absolute inset-0 w-full h-full"
           style={
             fillScale !== 1
