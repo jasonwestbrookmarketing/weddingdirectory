@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CalendarCheck, Video, ListChecks, MessageSquare } from "lucide-react";
+import { CalendarCheck, Video, ListChecks, MessageSquare, CheckCircle2 } from "lucide-react";
 import Marquee from "@/components/strategy-call/Marquee";
 import StrategyNav from "@/components/strategy-call/StrategyNav";
 import VideoPlayer from "@/components/strategy-call/VideoPlayer";
@@ -52,10 +52,10 @@ export default function StrategyCallConfirmedPage() {
           <div className="max-w-4xl mx-auto px-6 md:px-10 text-center">
             <Reveal>
               <span
-                className="inline-flex items-center gap-2 rounded-full bg-brand-warm border border-brand-line px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted"
+                className="inline-flex items-center gap-2 rounded-full bg-green-50 border border-green-200 px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] uppercase text-green-700"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                <CalendarCheck className="w-3.5 h-3.5 text-brand-gold" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
                 Your Call Is Confirmed
               </span>
             </Reveal>
