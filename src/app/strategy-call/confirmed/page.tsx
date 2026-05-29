@@ -78,7 +78,8 @@ export default function StrategyCallConfirmedPage() {
                 className="mt-5 text-[15px] sm:text-[17px] text-brand-muted leading-relaxed max-w-2xl mx-auto"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                Watch this quick video before your call so you know exactly what to expect. It&apos;ll make our 30 minutes together count.
+                <span className="block">Watch this quick video before your call so you know exactly what to expect.</span>
+                <span className="block">It&apos;ll make our 30 minutes together count.</span>
               </p>
             </Reveal>
 
