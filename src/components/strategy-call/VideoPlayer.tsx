@@ -17,6 +17,13 @@ interface VideoPlayerProps {
   durationLabel?: string;
   /** Accessible label for the play button. */
   ariaLabel?: string;
+  /**
+   * Scale applied to the playing iframe to crop letterbox/pillarbox bars so
+   * the video fills the 16:9 frame. 1 = no scaling (may show black bars if
+   * the source isn't 16:9). ~1.12 crops a 16:10 recording to fill. The
+   * wrapper hides the overflow so scaled edges are clipped, not visible.
+   */
+  fillScale?: number;
 }
 
 /**
@@ -62,6 +69,7 @@ export default function VideoPlayer({
   poster = "/hero-wedding.jpg",
   durationLabel = "Watch · 4 min 40 sec",
   ariaLabel = "Play video — Watch · 4 minutes 40 seconds",
+  fillScale = 1,
 }: VideoPlayerProps) {
   const [playing, setPlaying] = useState(false);
 
@@ -120,6 +128,11 @@ export default function VideoPlayer({
         <iframe
           src={toEmbedUrl(videoUrl)}
           className="absolute inset-0 w-full h-full"
+          style={
+            fillScale !== 1
+              ? { transform: `scale(${fillScale})`, transformOrigin: "center" }
+              : undefined
+          }
           allow="autoplay; fullscreen; picture-in-picture"
           allowFullScreen
           title="StoryVenue — Book Your Free Strategy Call"
