@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-export default function StrategyNav() {
+export default function StrategyNav({ showCta = true }: { showCta?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -31,14 +31,16 @@ export default function StrategyNav() {
           />
         </span>
 
-        <button
-          type="button"
-          onClick={() => window.dispatchEvent(new Event("open-strategy-modal"))}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1b1b1b] text-white text-[11px] sm:text-[12px] font-bold tracking-[0.1em] uppercase px-4 sm:px-5 py-2 sm:py-2.5 hover:-translate-y-px hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.35)] active:scale-[0.98] transition-all"
-          style={{ fontFamily: "var(--font-open-sans)" }}
-        >
-          Book Strategy Call
-        </button>
+        {showCta && (
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("open-strategy-modal"))}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1b1b1b] text-white text-[11px] sm:text-[12px] font-bold tracking-[0.1em] uppercase px-4 sm:px-5 py-2 sm:py-2.5 hover:-translate-y-px hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.35)] active:scale-[0.98] transition-all"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
+            Book Strategy Call
+          </button>
+        )}
       </nav>
     </header>
   );

@@ -43,7 +43,7 @@ export default function StrategyCallConfirmedPage() {
       {/* Sticky shell — marquee + nav scroll together (matches /strategy-call) */}
       <div className="sticky top-0 z-40">
         <Marquee />
-        <StrategyNav />
+        <StrategyNav showCta={false} />
       </div>
 
       <main className="flex-1">
@@ -65,8 +65,11 @@ export default function StrategyCallConfirmedPage() {
                 className="mt-6 text-[34px] sm:text-[48px] md:text-[56px] lg:text-[60px] leading-[1.08] text-brand-ink"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                You&apos;re Booked. Here&apos;s What Happens{" "}
-                <span style={{ color: "#8a7448" }}>Next.</span>
+                <span className="block">You&apos;re Booked.</span>
+                <span className="block">
+                  Here&apos;s What Happens{" "}
+                  <span style={{ color: "#8a7448" }}>Next.</span>
+                </span>
               </h1>
             </Reveal>
 
@@ -105,7 +108,7 @@ export default function StrategyCallConfirmedPage() {
 
             <Reveal delay={0.08}>
               <h2
-                className="mt-4 text-[26px] sm:text-4xl md:text-[42px] text-brand-ink leading-[1.12] max-w-2xl mx-auto"
+                className="mt-4 text-[22px] sm:text-3xl md:text-[38px] text-brand-ink leading-[1.12] md:whitespace-nowrap"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
                 A 30-minute fit call. No pitch. No pressure.
