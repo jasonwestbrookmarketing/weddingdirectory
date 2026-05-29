@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CalendarCheck, Video, ListChecks } from "lucide-react";
+import { CalendarCheck, Video, ListChecks, MessageSquare } from "lucide-react";
 import Marquee from "@/components/strategy-call/Marquee";
 import StrategyNav from "@/components/strategy-call/StrategyNav";
 import VideoPlayer from "@/components/strategy-call/VideoPlayer";
@@ -80,6 +80,16 @@ export default function StrategyCallConfirmedPage() {
               >
                 <span className="block">Watch this quick video before your call so you know exactly what to expect.</span>
                 <span className="block">It&apos;ll make our 30 minutes together count.</span>
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.2}>
+              <p
+                className="mt-4 inline-flex items-center gap-2 text-[13px] sm:text-[14px] text-brand-muted"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                <MessageSquare className="w-4 h-4 text-brand-gold" />
+                We&apos;ll text and email you reminders before we talk.
               </p>
             </Reveal>
 
