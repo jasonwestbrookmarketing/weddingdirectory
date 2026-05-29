@@ -65,10 +65,10 @@ export default function Hero() {
             We bring the brides.&nbsp;&nbsp;&nbsp;Our team works the leads.&nbsp;&nbsp;&nbsp;You show up for the tour.
           </motion.p>
 
-          {/* Video player — fillScale crops the Loom recording's black bars
-              so it fills the 16:9 frame. Tune the value if the crop is off. */}
+          {/* Video player — no fillScale so Loom's controls stay fully visible
+              (scaling cropped them). Black bars may show if the source isn't 16:9. */}
           <motion.div variants={item} className="pt-2 sm:pt-4">
-            <VideoPlayer fillScale={1.12} durationLabel="Watch Now" />
+            <VideoPlayer durationLabel="Watch Now" />
           </motion.div>
 
           {/* CTA */}
