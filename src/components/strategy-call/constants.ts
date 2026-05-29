@@ -6,4 +6,4 @@ export const VSL_VIDEO_URL = "https://www.loom.com/share/1c0988a4fba6440b88649ea
 // link here — either the share link (https://www.loom.com/share/<id>) or the
 // embed link (https://www.loom.com/embed/<id>). VideoPlayer auto-converts and
 // enables autoplay. Works with Vimeo/YouTube embed URLs too.
-export const CONFIRMATION_VIDEO_URL = "CONFIRMATION_VIDEO_URL";
+export const CONFIRMATION_VIDEO_URL = "https://www.loom.com/share/3a208147969749fc8c767cfa62b7164c";
