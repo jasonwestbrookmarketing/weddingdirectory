@@ -4,7 +4,23 @@ import { useState } from "react";
 import Image from "next/image";
 import { VSL_VIDEO_URL } from "./constants";
 
-export default function VideoPlayer() {
+interface VideoPlayerProps {
+  /** Embed URL loaded when the play button is pressed. */
+  videoUrl?: string;
+  /** Poster image shown before play. */
+  poster?: string;
+  /** Small duration pill label, e.g. "Watch · 4 min 40 sec". */
+  durationLabel?: string;
+  /** Accessible label for the play button. */
+  ariaLabel?: string;
+}
+
+export default function VideoPlayer({
+  videoUrl = VSL_VIDEO_URL,
+  poster = "/hero-wedding.jpg",
+  durationLabel = "Watch · 4 min 40 sec",
+  ariaLabel = "Play video — Watch · 4 minutes 40 seconds",
+}: VideoPlayerProps) {
   const [playing, setPlaying] = useState(false);
 
   return (
@@ -17,7 +33,7 @@ export default function VideoPlayer() {
           {/* Poster */}
           <div className="absolute inset-0">
             <Image
-              src="/hero-wedding.jpg"
+              src={poster}
               alt=""
               fill
               className="object-cover object-center"
@@ -33,7 +49,7 @@ export default function VideoPlayer() {
             <button
               onClick={() => setPlaying(true)}
               className="relative group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/50 rounded-full"
-              aria-label="Play video — Watch · 4 minutes 40 seconds"
+              aria-label={ariaLabel}
             >
               <span
                 className="absolute inset-0 rounded-full bg-white/30"
@@ -55,12 +71,12 @@ export default function VideoPlayer() {
           {/* Duration pill — bottom center */}
           <div className="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-black/55 backdrop-blur-sm text-white text-[11px] sm:text-xs px-3 py-1.5 rounded-full tracking-wide pointer-events-none">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-white/70" />
-            <span style={{ fontFamily: "var(--font-open-sans)" }}>Watch · 4 min 40 sec</span>
+            <span style={{ fontFamily: "var(--font-open-sans)" }}>{durationLabel}</span>
           </div>
         </>
       ) : (
         <iframe
-          src={VSL_VIDEO_URL}
+          src={videoUrl}
           className="absolute inset-0 w-full h-full"
           allow="autoplay; fullscreen; picture-in-picture"
           allowFullScreen
