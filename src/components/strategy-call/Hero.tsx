@@ -65,10 +65,10 @@ export default function Hero() {
             We bring the brides.&nbsp;&nbsp;&nbsp;Our team works the leads.&nbsp;&nbsp;&nbsp;You show up for the tour.
           </motion.p>
 
-          {/* Video player — no fillScale so Loom's controls stay fully visible
-              (scaling cropped them). Black bars may show if the source isn't 16:9. */}
+          {/* Video player — embed shown directly (no cover photo), matching the
+              confirmation page. No fillScale so Loom's controls stay visible. */}
           <motion.div variants={item} className="pt-2 sm:pt-4">
-            <VideoPlayer durationLabel="Watch Now" />
+            <VideoPlayer showPoster={false} />
           </motion.div>
 
           {/* CTA */}
