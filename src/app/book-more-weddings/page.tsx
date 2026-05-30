@@ -30,7 +30,6 @@ import HighlighterText from "@/components/marketing/HighlighterText";
 import LossStack from "@/components/marketing/LossStack";
 import DashboardMockup from "@/components/marketing/DashboardMockup";
 import PhonePreview from "@/components/marketing/PhonePreview";
-import ExitIntentModal from "@/components/marketing/ExitIntentModal";
 import ScrollToTop from "@/components/marketing/ScrollToTop";
 
 export const dynamic = "force-static";
@@ -989,9 +988,6 @@ export default function BookMoreWeddingsPage() {
       </section>
 
       <SiteFooter />
-
-      {/* Exit-intent demo booking modal */}
-      <ExitIntentModal />
 
       {/* Scroll-to-top FAB (all devices) */}
       <ScrollToTop />
