@@ -216,7 +216,7 @@ const FAQ_ITEMS = [
 /* -------------------------------------------------------------------- */
 
 function PrimaryCTA({
-  label = "List Your Venue Free",
+  label = "Start Free",
   size = "lg",
   className = "",
 }: {
@@ -859,7 +859,7 @@ export default function BookMoreWeddingsPage() {
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-white text-stone-900 font-semibold px-7 py-3.5 text-[15px] hover:bg-stone-100 active:scale-[0.98] transition-all shadow-[0_12px_40px_-10px_rgba(0,0,0,0.6)]"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              List Your Venue Free
+              Start Free
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </a>
           </div>
@@ -978,7 +978,7 @@ export default function BookMoreWeddingsPage() {
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-white text-stone-900 font-semibold px-7 py-4 text-base shadow-[0_18px_45px_-12px_rgba(0,0,0,0.6)] hover:bg-stone-100 active:scale-[0.98] transition-all"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              List Your Venue Free
+              Start Free
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </a>
           </div>

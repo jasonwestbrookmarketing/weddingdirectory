@@ -46,7 +46,7 @@ export default function SiteFooter() {
             href={`${STORYPAY_URL}/signup?as=venue&plan=free&utm_source=storyvenue&utm_medium=site&utm_campaign=footer-list-venue`}
             className="hover:text-stone-900 transition-colors"
           >
-            List Your Venue Free
+            Start Free
           </a>
         </div>
       </div>
