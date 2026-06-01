@@ -30,7 +30,7 @@ export default function Hero() {
 
   return (
     <section className="bg-brand-bg pt-8 sm:pt-10 lg:pt-12 pb-16 sm:pb-20 lg:pb-24 border-b border-brand-line">
-      <div className="max-w-4xl mx-auto px-6 md:px-10 text-center">
+      <div className="max-w-5xl mx-auto px-6 md:px-10 text-center">
         <motion.div
           variants={container}
           initial={initial}
@@ -49,7 +49,7 @@ export default function Hero() {
           {/* H1 */}
           <motion.h1
             variants={item}
-            className="text-[36px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.08] text-brand-ink"
+            className="text-[36px] sm:text-[46px] md:text-[52px] lg:text-[58px] leading-[1.08] text-brand-ink"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             <span style={{ color: "#8a7448" }}>Fully Book Your Wedding Venue</span>{" "}
