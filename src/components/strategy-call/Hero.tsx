@@ -52,7 +52,7 @@ export default function Hero() {
             className="text-[36px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.08] text-brand-ink"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Fully Book Your Wedding Venue Without Paying The Knot Or Wedding Wire{" "}
+            Fully Book Your Wedding Venue Without Paying The Knot Or WeddingWire{" "}
             <span style={{ color: "#8a7448" }}>Another Cent.</span>
           </motion.h1>
 
