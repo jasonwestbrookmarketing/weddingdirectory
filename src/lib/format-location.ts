@@ -22,8 +22,19 @@ function abbr(state: string): string {
   return STATE_ABBR[key] ?? state.trim();
 }
 
+/** Tokens that are pure noise in a geocoder-returned address. */
+function isNoise(part: string): boolean {
+  const lower = part.toLowerCase();
+  if (lower === "united states" || lower === "us" || lower === "usa") return true;
+  if (/\bcounty\b/.test(lower)) return true;
+  if (/\btownship\b/.test(lower)) return true;
+  if (/\bborough\b/.test(lower)) return true;
+  if (/\bparish\b/.test(lower)) return true;
+  return false;
+}
+
 /**
- * Returns a clean "City, ST" label from structured or raw location fields.
+ * Returns a clean "City, ST" short label — used on cards and map pins.
  *
  * Priority:
  *   1. location_city + location_state  → "Woodstock, PA"
@@ -44,15 +55,11 @@ export function formatLocation(
   if (c) return c;
   if (s) return abbr(s);
 
-  // Parse location_full as last resort
   if (!full) return "";
   const parts = full.split(",").map((p) => p.trim()).filter(Boolean);
-  // Drop street number at start and known noise at end
-  const noise = new Set(["united states", "us", "usa"]);
-  const cleaned = parts.filter((p) => !noise.has(p.toLowerCase()));
+  const cleaned = parts.filter((p) => !isNoise(p));
   if (cleaned.length === 0) return full.trim();
 
-  // Try to find a state-like token and the token before it as city
   for (let i = cleaned.length - 1; i >= 0; i--) {
     const maybeState = cleaned[i].replace(/\s*\d{5}(-\d{4})?$/, "").trim();
     if (!maybeState) continue;
@@ -64,6 +71,69 @@ export function formatLocation(
     }
   }
 
-  // Last resort: first meaningful part
   return cleaned[0];
+}
+
+/**
+ * Returns a clean full address string for venue detail pages.
+ * Strips county/township/country noise but keeps street, city, state, zip.
+ *
+ * e.g. "1090, Ragged Edge Road, Woodstock, Greene Township, Franklin County,
+ *       Pennsylvania, 17202, United States"
+ *   →  "1090 Ragged Edge Road, Woodstock, PA 17202"
+ */
+export function formatLocationFull(
+  full: string | null | undefined,
+  city?: string | null,
+  state?: string | null,
+): string {
+  if (!full) return "";
+
+  const parts = full.split(",").map((p) => p.trim()).filter(Boolean);
+  const cleaned = parts.filter((p) => !isNoise(p));
+  if (cleaned.length === 0) return full.trim();
+
+  // Identify the zip (5-digit token) and state token
+  let zipPart = "";
+  let statePart = "";
+  const remaining: string[] = [];
+
+  for (const part of cleaned) {
+    if (/^\d{5}(-\d{4})?$/.test(part)) {
+      zipPart = part.replace(/-\d{4}$/, ""); // drop +4
+    } else {
+      const stateAbbr = abbr(part);
+      if (stateAbbr !== part || /^[A-Z]{2}$/.test(part)) {
+        statePart = stateAbbr;
+      } else {
+        remaining.push(part);
+      }
+    }
+  }
+
+  // Prefer DB city/state fields if provided
+  const resolvedState = (state?.trim() ? abbr(state.trim()) : statePart) || "";
+  const resolvedCity = city?.trim() || "";
+
+  // remaining parts that aren't the city
+  const streetParts = resolvedCity
+    ? remaining.filter((p) => p.toLowerCase() !== resolvedCity.toLowerCase())
+    : remaining.slice(0, -1); // treat last non-state as city
+
+  const inferredCity = resolvedCity || remaining[remaining.length - 1] || "";
+  const streetAddress = streetParts.join(" ").replace(/,\s*/g, " ").trim();
+
+  const parts2: string[] = [];
+  if (streetAddress) parts2.push(streetAddress);
+  if (inferredCity) {
+    const cityState = resolvedState
+      ? `${inferredCity}, ${resolvedState}`
+      : inferredCity;
+    const cityStateParts2 = zipPart ? `${cityState} ${zipPart}` : cityState;
+    parts2.push(cityStateParts2);
+  } else if (resolvedState || zipPart) {
+    parts2.push([resolvedState, zipPart].filter(Boolean).join(" "));
+  }
+
+  return parts2.join(", ");
 }

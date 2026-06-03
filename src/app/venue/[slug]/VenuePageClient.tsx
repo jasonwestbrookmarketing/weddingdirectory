@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { formatLocation } from "@/lib/format-location";
+import { formatLocation, formatLocationFull } from "@/lib/format-location";
 import Image from "next/image";
 import {
   MapPin,
@@ -487,7 +487,7 @@ export default function VenuePageClient({
                       className="inline-flex items-center gap-1.5 hover:underline"
                     >
                       <MapPin className="h-4 w-4 flex-shrink-0" />
-                      {formatLocation(venue.location_city, venue.location_state, venue.location_full)}
+                      {formatLocationFull(venue.location_full, venue.location_city, venue.location_state)}
                     </a>
                   )}
                 </div>
@@ -745,7 +745,7 @@ export default function VenuePageClient({
                       className="mt-3 inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-900 hover:underline transition-colors"
                     >
                       <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
-                      {formatLocation(venue.location_city, venue.location_state, venue.location_full)}
+                      {formatLocationFull(venue.location_full, venue.location_city, venue.location_state)}
                     </a>
                   )}
                 </section>
