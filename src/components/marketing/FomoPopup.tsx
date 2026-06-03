@@ -31,10 +31,15 @@ const INITIAL_DELAY_MS = 1000;
 const GAP_MS = 500;
 
 interface Props {
-  signupHref: string;
+  /** Link href — used on /book-more-weddings */
+  signupHref?: string;
+  /** Fire a custom window event instead of navigating — used on /strategy-call */
+  modalEvent?: string;
+  /** CTA label */
+  ctaLabel?: string;
 }
 
-export default function FomoPopup({ signupHref }: Props) {
+export default function FomoPopup({ signupHref, modalEvent, ctaLabel }: Props) {
   const [venueIndex, setVenueIndex] = useState(0);
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
@@ -161,21 +166,43 @@ export default function FomoPopup({ signupHref }: Props) {
             </p>
 
             {/* Text link CTA */}
-            <Link
-              href={signupHref}
-              style={{
-                display: "inline-block",
-                marginTop: 6,
-                fontSize: 11,
-                color: "#1b1b1b",
-                fontFamily: "var(--font-open-sans, sans-serif)",
-                fontWeight: 600,
-                textDecoration: "underline",
-                textUnderlineOffset: 2,
-              }}
-            >
-              List your venue free →
-            </Link>
+            {modalEvent ? (
+              <button
+                onClick={() => window.dispatchEvent(new Event(modalEvent))}
+                style={{
+                  display: "inline",
+                  marginTop: 6,
+                  fontSize: 11,
+                  color: "#1b1b1b",
+                  fontFamily: "var(--font-open-sans, sans-serif)",
+                  fontWeight: 600,
+                  textDecoration: "underline",
+                  textUnderlineOffset: 2,
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              >
+                {ctaLabel ?? "Book a free strategy call →"}
+              </button>
+            ) : (
+              <Link
+                href={signupHref ?? "#"}
+                style={{
+                  display: "inline-block",
+                  marginTop: 6,
+                  fontSize: 11,
+                  color: "#1b1b1b",
+                  fontFamily: "var(--font-open-sans, sans-serif)",
+                  fontWeight: 600,
+                  textDecoration: "underline",
+                  textUnderlineOffset: 2,
+                }}
+              >
+                {ctaLabel ?? "List your venue free →"}
+              </Link>
+            )}
           </div>
 
           {/* Dismiss */}

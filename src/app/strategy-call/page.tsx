@@ -13,6 +13,7 @@ import FinalCTA from "@/components/strategy-call/FinalCTA";
 import PageFooter from "@/components/strategy-call/PageFooter";
 import StrategyCallModal from "@/components/strategy-call/StrategyCallModal";
 import ScrollToTop from "@/components/marketing/ScrollToTop";
+import FomoPopup from "@/components/marketing/FomoPopup";
 
 export const dynamic = "force-static";
 
@@ -43,6 +44,7 @@ export default function StrategyCallPage() {
       {/* Always-mounted modal — pre-loads calendar iframe silently */}
       <StrategyCallModal />
       <ScrollToTop />
+      <FomoPopup modalEvent="open-strategy-modal" ctaLabel="Book a free strategy call →" />
     </div>
   );
 }
