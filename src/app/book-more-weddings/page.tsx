@@ -31,6 +31,7 @@ import LossStack from "@/components/marketing/LossStack";
 import DashboardMockup from "@/components/marketing/DashboardMockup";
 import PhonePreview from "@/components/marketing/PhonePreview";
 import ScrollToTop from "@/components/marketing/ScrollToTop";
+import FomoPopup from "@/components/marketing/FomoPopup";
 
 export const dynamic = "force-static";
 
@@ -991,6 +992,9 @@ export default function BookMoreWeddingsPage() {
 
       {/* Scroll-to-top FAB (all devices) */}
       <ScrollToTop />
+
+      {/* FOMO social-proof popup */}
+      <FomoPopup signupHref={FREE_SIGNUP_HREF} />
     </>
   );
 }
