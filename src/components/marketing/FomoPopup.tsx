@@ -108,8 +108,10 @@ export default function FomoPopup({ signupHref }: Props) {
       <div
         style={{
           width: 280,
-          background: "#ffffff",
-          border: "1px solid #e2e2e2",
+          background: "rgba(255, 255, 255, 0.75)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          border: "1px solid rgba(255, 255, 255, 0.6)",
           borderRadius: 12,
           padding: "14px 16px",
           display: "flex",
