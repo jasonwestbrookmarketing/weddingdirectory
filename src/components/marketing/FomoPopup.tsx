@@ -28,7 +28,7 @@ const DISPLAY_MS = 4000;
 // Delay before the first card appears (ms)
 const INITIAL_DELAY_MS = 1000;
 // Gap between cards — exit animation (350ms) + this pause before next
-const GAP_MS = 1000;
+const GAP_MS = 2500;
 
 interface Props {
   /** Link href — used on /book-more-weddings */
