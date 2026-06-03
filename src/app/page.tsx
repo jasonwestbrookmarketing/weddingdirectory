@@ -16,7 +16,7 @@ export default async function HomePage() {
   const { data: rawVenues } = await supabase
     .from("venues")
     .select(
-      "id, name, slug, location_full, cover_image_url, capacity_min, capacity_max, price_min, venue_type, directory_verified_status, directory_sponsored_status"
+      "id, name, slug, location_full, location_city, location_state, cover_image_url, capacity_min, capacity_max, price_min, venue_type, directory_verified_status, directory_sponsored_status"
     )
     .eq("is_published", true)
     .neq("is_demo", true)

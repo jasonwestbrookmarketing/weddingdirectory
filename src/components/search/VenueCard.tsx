@@ -7,6 +7,7 @@ import { trackEvent } from "@/lib/analytics";
 import { getPriceScale, PRICE_SCALE_LABELS } from "@/lib/constants";
 import { resolveBadges } from "@/lib/directory-badges";
 import { DirectoryListingBadges } from "@/components/venue/DirectoryListingBadges";
+import { formatLocation } from "@/lib/format-location";
 import type { Venue } from "@/types/database";
 
 type VenueCardData = Pick<
@@ -15,6 +16,8 @@ type VenueCardData = Pick<
   | "name"
   | "slug"
   | "location_full"
+  | "location_city"
+  | "location_state"
   | "cover_image_url"
   | "capacity_min"
   | "capacity_max"
@@ -83,7 +86,7 @@ export default function VenueCard({ venue }: VenueCardProps) {
         {venue.location_full && (
           <p className="text-stone-500 text-sm flex items-center gap-1">
             <MapPin className="h-3.5 w-3.5 shrink-0 text-stone-400" />
-            {venue.location_full}
+            {formatLocation(venue.location_city, venue.location_state, venue.location_full)}
           </p>
         )}
 

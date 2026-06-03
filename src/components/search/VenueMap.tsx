@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { MapPin, X, Users, ExternalLink, AlertCircle, Plus, Minus, Navigation } from "lucide-react";
 import type { Venue } from "@/types/database";
+import { formatLocation } from "@/lib/format-location";
 
 const BRAND = "#1b1b1b";
 
@@ -315,7 +316,7 @@ export default function VenueMap({ venues }: Props) {
             {quickCard.venue.location_full && (
               <p className="text-xs text-stone-500 flex items-center gap-1">
                 <MapPin className="h-3 w-3 shrink-0" />
-                {quickCard.venue.location_full}
+                {formatLocation(quickCard.venue.location_city, quickCard.venue.location_state, quickCard.venue.location_full)}
               </p>
             )}
             {(quickCard.venue.capacity_min != null || quickCard.venue.capacity_max != null) && (
