@@ -126,8 +126,8 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel }: Props) {
       >
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
           <div style={{ flex: 1 }}>
-            {/* Green pulse dot */}
-            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
+            {/* Dot + venue name on one line */}
+            <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
               <span style={{ position: "relative", width: 8, height: 8, display: "inline-flex", flexShrink: 0 }}>
                 <span style={{
                   position: "absolute", inset: 0,
@@ -140,19 +140,17 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel }: Props) {
                   borderRadius: "50%", background: "#22c55e",
                 }} />
               </span>
+              <p style={{
+                margin: 0,
+                fontSize: 14,
+                fontWeight: 700,
+                color: "#1b1b1b",
+                fontFamily: "var(--font-open-sans, sans-serif)",
+                lineHeight: "1.3",
+              }}>
+                {VENUES[venueIndex]}
+              </p>
             </div>
-
-            {/* Venue name */}
-            <p style={{
-              margin: 0,
-              fontSize: 14,
-              fontWeight: 700,
-              color: "#1b1b1b",
-              fontFamily: "var(--font-open-sans, sans-serif)",
-              lineHeight: "1.3",
-            }}>
-              {VENUES[venueIndex]}
-            </p>
 
             {/* Subheadline */}
             <p style={{
