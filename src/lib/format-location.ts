@@ -22,15 +22,25 @@ function abbr(state: string): string {
   return STATE_ABBR[key] ?? state.trim();
 }
 
-/** Tokens that are pure noise in a geocoder-returned address. */
+/** Returns true for any geocoder noise that is never part of a mailing address. */
 function isNoise(part: string): boolean {
   const lower = part.toLowerCase();
   if (lower === "united states" || lower === "us" || lower === "usa") return true;
-  if (/\bcounty\b/.test(lower)) return true;
-  if (/\btownship\b/.test(lower)) return true;
-  if (/\bborough\b/.test(lower)) return true;
-  if (/\bparish\b/.test(lower)) return true;
+  if (/\b(county|township|borough|parish|district|municipality)\b/.test(lower)) return true;
   return false;
+}
+
+/** Returns true if the part looks like a US state full name or abbreviation. */
+function isState(part: string): boolean {
+  const lower = part.trim().toLowerCase();
+  if (STATE_ABBR[lower]) return true;
+  if (/^[a-z]{2}$/i.test(lower)) return Object.values(STATE_ABBR).includes(lower.toUpperCase());
+  return false;
+}
+
+/** Returns true if part is a 5-digit zip (optionally +4). */
+function isZip(part: string): boolean {
+  return /^\d{5}(-\d{4})?$/.test(part.trim());
 }
 
 /**
@@ -75,12 +85,18 @@ export function formatLocation(
 }
 
 /**
- * Returns a clean full address string for venue detail pages.
- * Strips county/township/country noise but keeps street, city, state, zip.
+ * Returns a clean full address for venue detail pages:
+ *   "1090 Ragged Edge Road, Chambersburg, PA 17202"
  *
- * e.g. "1090, Ragged Edge Road, Woodstock, Greene Township, Franklin County,
- *       Pennsylvania, 17202, United States"
- *   →  "1090 Ragged Edge Road, Woodstock, PA 17202"
+ * Strategy:
+ *   1. Parse location_full into comma-separated parts.
+ *   2. Strip noise: country, county, township, borough, state names, zip codes,
+ *      and any part that matches the known city name.
+ *   3. What remains are street components (house number + road ± unit).
+ *      Nominatim always puts street parts first, so take at most 2 remaining
+ *      parts (house_number, road) joined with a space.
+ *   4. Reassemble using the DB city/state fields for accuracy, plus the zip
+ *      extracted from location_full.
  */
 export function formatLocationFull(
   full: string | null | undefined,
@@ -90,50 +106,36 @@ export function formatLocationFull(
   if (!full) return "";
 
   const parts = full.split(",").map((p) => p.trim()).filter(Boolean);
-  const cleaned = parts.filter((p) => !isNoise(p));
-  if (cleaned.length === 0) return full.trim();
 
-  // Identify the zip (5-digit token) and state token
-  let zipPart = "";
-  let statePart = "";
-  const remaining: string[] = [];
+  // Extract zip anywhere in the string
+  const zipRaw = parts.find((p) => isZip(p));
+  const zip = zipRaw ? zipRaw.replace(/-\d{4}$/, "") : "";
 
-  for (const part of cleaned) {
-    if (/^\d{5}(-\d{4})?$/.test(part)) {
-      zipPart = part.replace(/-\d{4}$/, ""); // drop +4
-    } else {
-      const stateAbbr = abbr(part);
-      if (stateAbbr !== part || /^[A-Z]{2}$/.test(part)) {
-        statePart = stateAbbr;
-      } else {
-        remaining.push(part);
-      }
-    }
-  }
+  // Resolve state abbreviation — prefer DB field
+  const resolvedState = state?.trim() ? abbr(state.trim()) : "";
 
-  // Prefer DB city/state fields if provided
-  const resolvedState = (state?.trim() ? abbr(state.trim()) : statePart) || "";
+  // Resolve city — prefer DB field
   const resolvedCity = city?.trim() || "";
 
-  // remaining parts that aren't the city
-  const streetParts = resolvedCity
-    ? remaining.filter((p) => p.toLowerCase() !== resolvedCity.toLowerCase())
-    : remaining.slice(0, -1); // treat last non-state as city
+  // Keep only street-level parts: drop noise, zips, state names, and the city itself
+  const streetParts = parts.filter((p) => {
+    if (isNoise(p)) return false;
+    if (isZip(p)) return false;
+    if (isState(p)) return false;
+    if (resolvedCity && p.toLowerCase() === resolvedCity.toLowerCase()) return false;
+    return true;
+  });
 
-  const inferredCity = resolvedCity || remaining[remaining.length - 1] || "";
-  const streetAddress = streetParts.join(" ").replace(/,\s*/g, " ").trim();
+  // Nominatim format: house_number, road, [sub-locality…], [city…]
+  // The first 2 street parts are house number + road name; anything beyond
+  // that is sub-locality noise (village, hamlet, etc.) — drop it.
+  const streetAddress = streetParts.slice(0, 2).join(" ").trim();
 
-  const parts2: string[] = [];
-  if (streetAddress) parts2.push(streetAddress);
-  if (inferredCity) {
-    const cityState = resolvedState
-      ? `${inferredCity}, ${resolvedState}`
-      : inferredCity;
-    const cityStateParts2 = zipPart ? `${cityState} ${zipPart}` : cityState;
-    parts2.push(cityStateParts2);
-  } else if (resolvedState || zipPart) {
-    parts2.push([resolvedState, zipPart].filter(Boolean).join(" "));
-  }
+  // Build city/state/zip segment
+  const stateZip = [resolvedState, zip].filter(Boolean).join(" ");
+  const cityLine = resolvedCity
+    ? stateZip ? `${resolvedCity}, ${stateZip}` : resolvedCity
+    : stateZip;
 
-  return parts2.join(", ");
+  return [streetAddress, cityLine].filter(Boolean).join(", ");
 }
