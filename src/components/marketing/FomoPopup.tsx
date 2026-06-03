@@ -24,11 +24,11 @@ const VENUES = [
 ];
 
 // How long each card is visible (ms)
-const DISPLAY_MS = 5000;
+const DISPLAY_MS = 4000;
 // Delay before the first card appears (ms)
 const INITIAL_DELAY_MS = 1000;
-// Gap between cards (ms)
-const GAP_MS = 8000;
+// Gap between cards — exit animation (350ms) + this pause before next
+const GAP_MS = 500;
 
 interface Props {
   signupHref: string;
@@ -111,7 +111,7 @@ export default function FomoPopup({ signupHref }: Props) {
           background: "rgba(255, 255, 255, 0.75)",
           backdropFilter: "blur(12px)",
           WebkitBackdropFilter: "blur(12px)",
-          border: "1px solid rgba(255, 255, 255, 0.6)",
+          border: "1px solid rgba(0, 0, 0, 0.12)",
           borderRadius: 12,
           padding: "14px 16px",
           display: "flex",
