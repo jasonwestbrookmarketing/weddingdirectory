@@ -26,9 +26,9 @@ const VENUES = [
 // How long each card is visible (ms)
 const DISPLAY_MS = 5000;
 // Delay before the first card appears (ms)
-const INITIAL_DELAY_MS = 10000;
+const INITIAL_DELAY_MS = 1000;
 // Gap between cards (ms)
-const GAP_MS = 12000;
+const GAP_MS = 8000;
 
 interface Props {
   signupHref: string;
@@ -84,6 +84,13 @@ export default function FomoPopup({ signupHref }: Props) {
   if (dismissed || !visible) return null;
 
   return (
+    <>
+      <style>{`
+        @keyframes fomo-pulse {
+          0%, 100% { transform: scale(1); opacity: 0.5; }
+          50% { transform: scale(2.2); opacity: 0; }
+        }
+      `}</style>
     <div
       aria-live="polite"
       aria-atomic="true"
@@ -110,27 +117,21 @@ export default function FomoPopup({ signupHref }: Props) {
           gap: 8,
         }}
       >
-        {/* Header row */}
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
           <div style={{ flex: 1 }}>
-            {/* Green dot + "Just now" */}
-            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-              <span style={{
-                width: 7,
-                height: 7,
-                borderRadius: "50%",
-                background: "#22c55e",
-                display: "inline-block",
-                flexShrink: 0,
-              }} />
-              <span style={{
-                fontSize: 10,
-                color: "#888",
-                fontFamily: "var(--font-open-sans, sans-serif)",
-                letterSpacing: "0.04em",
-                textTransform: "uppercase",
-              }}>
-                Just now
+            {/* Green pulse dot */}
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
+              <span style={{ position: "relative", width: 8, height: 8, display: "inline-flex", flexShrink: 0 }}>
+                <span style={{
+                  position: "absolute", inset: 0,
+                  borderRadius: "50%", background: "#22c55e",
+                  animation: "fomo-pulse 2s ease-in-out infinite",
+                  opacity: 0.5,
+                }} />
+                <span style={{
+                  position: "relative", width: 8, height: 8,
+                  borderRadius: "50%", background: "#22c55e",
+                }} />
               </span>
             </div>
 
@@ -148,7 +149,7 @@ export default function FomoPopup({ signupHref }: Props) {
 
             {/* Subheadline */}
             <p style={{
-              margin: "3px 0 0",
+              margin: "2px 0 0",
               fontSize: 13,
               color: "#555",
               fontFamily: "var(--font-open-sans, sans-serif)",
@@ -156,6 +157,23 @@ export default function FomoPopup({ signupHref }: Props) {
             }}>
               Signed Up
             </p>
+
+            {/* Text link CTA */}
+            <Link
+              href={signupHref}
+              style={{
+                display: "inline-block",
+                marginTop: 6,
+                fontSize: 11,
+                color: "#1b1b1b",
+                fontFamily: "var(--font-open-sans, sans-serif)",
+                fontWeight: 600,
+                textDecoration: "underline",
+                textUnderlineOffset: 2,
+              }}
+            >
+              List your venue free →
+            </Link>
           </div>
 
           {/* Dismiss */}
@@ -175,35 +193,8 @@ export default function FomoPopup({ signupHref }: Props) {
             <X size={13} />
           </button>
         </div>
-
-        {/* CTA */}
-        <Link
-          href={signupHref}
-          style={{
-            display: "block",
-            textAlign: "center",
-            fontSize: 12,
-            fontWeight: 600,
-            color: "#1b1b1b",
-            fontFamily: "var(--font-open-sans, sans-serif)",
-            border: "1px solid #1b1b1b",
-            borderRadius: 6,
-            padding: "6px 12px",
-            textDecoration: "none",
-            transition: "background 200ms, color 200ms",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.background = "#1b1b1b";
-            (e.currentTarget as HTMLAnchorElement).style.color = "#fff";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
-            (e.currentTarget as HTMLAnchorElement).style.color = "#1b1b1b";
-          }}
-        >
-          List Your Venue Free →
-        </Link>
       </div>
     </div>
+    </>
   );
 }
