@@ -77,14 +77,14 @@ export default async function HomePage() {
         <div className="flex-1 flex items-center justify-end gap-2 shrink-0">
           <a
             href={`${STORYPAY_URL}/login?as=couple`}
-            className="rounded-full bg-white/10 border border-white/20 text-white px-4 py-2.5 text-sm font-medium hover:bg-white/20 active:scale-[0.98] transition-all backdrop-blur-sm"
+            className="whitespace-nowrap rounded-full bg-white/10 border border-white/20 text-white px-4 py-2 text-sm font-medium hover:bg-white/20 active:scale-[0.98] transition-all backdrop-blur-sm"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             Log in
           </a>
           <a
             href={`${STORYPAY_URL}/signup?as=couple`}
-            className="rounded-full bg-white text-stone-900 px-4 sm:px-5 py-2.5 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-sm"
+            className="whitespace-nowrap rounded-full bg-white text-stone-900 px-4 py-2 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-sm"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             Sign up
