@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import SearchBar from "@/components/search/SearchBar";
 import VenueCard from "@/components/search/VenueCard";
 import SiteFooter from "@/components/SiteFooter";
+import FomoPopup from "@/components/marketing/FomoPopup";
 
 export const revalidate = 120;
 
@@ -232,6 +233,7 @@ export default async function HomePage() {
       )}
 
       <SiteFooter />
+      <FomoPopup signupHref={`${STORYPAY_URL}/signup?as=venue&plan=free&utm_source=organic&utm_medium=homepage`} />
     </>
   );
 }
