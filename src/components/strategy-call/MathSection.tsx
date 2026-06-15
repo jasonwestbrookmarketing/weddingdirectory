@@ -14,14 +14,14 @@ export default function MathSection() {
         className="absolute inset-0 object-cover object-center"
         sizes="100vw"
       />
-      {/* Heavier base overlay so photo recedes to atmospheric texture */}
-      <div className="absolute inset-0 bg-[#1b1b1b]/90" />
+      {/* Base overlay — lightened so the background photo shows through */}
+      <div className="absolute inset-0 bg-[#1b1b1b]/60" />
       {/* Right-side darken to neutralize the bright couple in the photo */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, rgba(27,27,27,0) 35%, rgba(27,27,27,0.55) 75%, rgba(27,27,27,0.85) 100%)",
+            "linear-gradient(90deg, rgba(27,27,27,0) 35%, rgba(27,27,27,0.35) 75%, rgba(27,27,27,0.6) 100%)",
         }}
       />
       {/* Soft vignette to ground the composition */}
@@ -29,7 +29,7 @@ export default function MathSection() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(27,27,27,0) 40%, rgba(27,27,27,0.55) 100%)",
+            "radial-gradient(ellipse at center, rgba(27,27,27,0) 40%, rgba(27,27,27,0.35) 100%)",
         }}
       />
 
