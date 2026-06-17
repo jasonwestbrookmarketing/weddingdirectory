@@ -107,6 +107,66 @@ export default function StrategyCallModal() {
           <X className="w-5 h-5" />
         </button>
 
+        {/* Header + social proof (mirrors desktop) */}
+        <div className="px-6 pt-12 pb-4 text-center">
+          <h2
+            className="text-[28px] leading-[1.1] text-stone-900"
+            style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+          >
+            Book Free Strategy Call
+          </h2>
+          <div className="mt-3 flex flex-col items-center gap-2.5">
+            <p
+              className="text-[12px] text-stone-400 tracking-wide"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              30-minute fit call · No pitch · No pressure
+            </p>
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-2.5 shrink-0">
+                {AVATARS.map((src, i) => (
+                  <div
+                    key={i}
+                    className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden"
+                    style={{ zIndex: 5 - i }}
+                  >
+                    <Image
+                      src={src}
+                      alt=""
+                      fill
+                      unoptimized
+                      placeholder="empty"
+                      className="object-cover object-center"
+                      sizes="32px"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="text-left">
+                <div className="flex gap-0.5" role="img" aria-label="5 stars">
+                  {[...Array(5)].map((_, i) => (
+                    <svg
+                      key={i}
+                      className="w-3.5 h-3.5"
+                      viewBox="0 0 24 24"
+                      fill="#1c1917"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                    </svg>
+                  ))}
+                </div>
+                <p
+                  className="text-[10px] text-stone-400 mt-0.5"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
+                  Google Reviews
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* GHL standard embed — iframe auto-resizes to content height via
             form_embed.js postMessage. Parent div handles all scrolling. */}
         <iframe
