@@ -8,8 +8,8 @@ import { Reveal } from "@/components/strategy-call/Reveal";
 
 export const dynamic = "force-static";
 
-const FORM_ID = "FleeMY5JXKKZkmufZZv6";
-const FORM_SRC = `https://api.leadconnectorhq.com/widget/form/${FORM_ID}`;
+const BOOKING_ID = "YeI4ZUC2SwV8MXDRKfzr";
+const BOOKING_SRC = `https://api.leadconnectorhq.com/widget/booking/${BOOKING_ID}`;
 
 // Distinct, no-index URL so the Meta pixel can fire a qualified-lead conversion
 // scoped to /strategy-call/book (the survey redirects qualified leads here).
@@ -74,21 +74,11 @@ export default function StrategyCallBookPage() {
           <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-10">
             <div className="bg-white rounded-2xl overflow-hidden">
               <iframe
-                src={FORM_SRC}
-                style={{ width: "100%", height: "100%", minHeight: 720, border: "none", borderRadius: 0 }}
-                id={`inline-${FORM_ID}`}
-                data-layout="{'id':'INLINE'}"
-                data-trigger-type="alwaysShow"
-                data-trigger-value=""
-                data-activation-type="alwaysActivated"
-                data-activation-value=""
-                data-deactivation-type="neverDeactivate"
-                data-deactivation-value=""
-                data-form-name="Strategy Call Confirmed"
-                data-height="574"
-                data-layout-iframe-id={`inline-${FORM_ID}`}
-                data-form-id={FORM_ID}
-                title="Strategy Call Confirmed"
+                src={BOOKING_SRC}
+                id={`${BOOKING_ID}_1781719379172`}
+                style={{ width: "100%", border: "none", overflow: "hidden" }}
+                scrolling="no"
+                title="Book Your Strategy Call"
               />
             </div>
           </div>
