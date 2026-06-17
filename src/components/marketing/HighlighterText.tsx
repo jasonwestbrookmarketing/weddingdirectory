@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 
 interface HighlighterTextProps {
   children: ReactNode;
@@ -16,11 +16,24 @@ interface HighlighterTextProps {
   nowrap?: boolean;
 }
 
+/** Convert a hex color to an rgba() string so we can bake in translucency. */
+function toRgba(color: string, alpha: number) {
+  if (color.startsWith("#")) {
+    let h = color.slice(1);
+    if (h.length === 3) h = h.split("").map((c) => c + c).join("");
+    const n = parseInt(h, 16);
+    return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
+  }
+  return color;
+}
+
 /**
- * Inline span that paints a hand-drawn yellow highlighter behind its
- * children. The SVG path animates in via stroke-dashoffset when the
- * element scrolls into view, using mix-blend-mode: multiply so the
- * ink tints whatever is behind it like a real marker.
+ * Inline highlighter behind its children.
+ *
+ * Single-line (`nowrap`) usages get the hand-drawn SVG swipe. Wrapping usages
+ * use a real inline marker background with box-decoration-break: clone, so the
+ * highlight ends exactly where each line's text ends instead of stretching to
+ * the widest line's bounding box.
  */
 export default function HighlighterText({
   children,
@@ -30,7 +43,7 @@ export default function HighlighterText({
   className = "",
   nowrap = true,
 }: HighlighterTextProps) {
-  const ref = useRef<HTMLSpanElement>(null);
+  const ref = useRef<HTMLElement>(null);
   const [active, setActive] = useState(false);
 
   useEffect(() => {
@@ -59,9 +72,34 @@ export default function HighlighterText({
     return () => observer.disconnect();
   }, []);
 
+  // Wrapping text: per-line marker background that hugs the text on each line.
+  if (!nowrap) {
+    return (
+      <mark
+        ref={ref}
+        className={className}
+        style={{
+          color: "inherit",
+          backgroundColor: "transparent",
+          backgroundImage: `linear-gradient(${toRgba(color, opacity)} 0 100%)`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "left center",
+          backgroundSize: active ? "100% 1.1em" : "0% 1.1em",
+          WebkitBoxDecorationBreak: "clone",
+          boxDecorationBreak: "clone",
+          padding: "0.04em 0.08em",
+          margin: "0 -0.08em",
+          transition: `background-size ${duration}ms cubic-bezier(0.45, 0.05, 0.35, 1)`,
+        }}
+      >
+        {children}
+      </mark>
+    );
+  }
+
   return (
     <span
-      ref={ref}
+      ref={ref as RefObject<HTMLSpanElement>}
       className={`relative inline-block ${nowrap ? "whitespace-nowrap" : ""} ${className}`}
     >
       <span className="relative z-10">{children}</span>
