@@ -154,7 +154,7 @@ export default function StrategyCallModal() {
             </button>
           </div>
 
-          {/* Header */}
+          {/* Header + social proof */}
           <div className="px-8 pt-2 pb-5 text-center">
             <h2
               className="mt-2 text-[34px] leading-[1.1] text-stone-900"
@@ -162,12 +162,61 @@ export default function StrategyCallModal() {
             >
               Book Free Strategy Call
             </h2>
+
+            {/* Social proof under headline */}
+            <div className="mt-4 flex flex-col items-center gap-2.5">
+              <p
+                className="text-[12px] text-stone-400 tracking-wide"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                30-minute fit call · No pitch · No pressure
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2.5 shrink-0">
+                  {AVATARS.map((src, i) => (
+                    <div
+                      key={i}
+                      className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden"
+                      style={{ zIndex: 5 - i }}
+                    >
+                      <Image
+                        src={src}
+                        alt=""
+                        fill
+                        unoptimized
+                        placeholder="empty"
+                        className="object-cover object-center"
+                        sizes="32px"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="text-left">
+                  <div className="flex gap-0.5" role="img" aria-label="5 stars">
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        className="w-3.5 h-3.5"
+                        viewBox="0 0 24 24"
+                        fill="#1c1917"
+                        aria-hidden="true"
+                      >
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p
+                    className="text-[10px] text-stone-400 mt-0.5"
+                    style={{ fontFamily: "var(--font-open-sans)" }}
+                  >
+                    Google Reviews
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Survey iframe — GHL auto-resize embed pattern.
-              form_embed.js grows the iframe height to fit content; the modal
-              card's overflow-y:auto handles any overall card scrolling.
-              px-10 matches the breathing room used in ExitIntentModal. */}
+          {/* Survey iframe */}
           <div className="bg-white px-10">
             <iframe
               src={SURVEY_URL}
@@ -181,58 +230,6 @@ export default function StrategyCallModal() {
               scrolling="no"
               title="Book your free strategy call"
             />
-          </div>
-
-          {/* Social proof strip */}
-          <div className="bg-white rounded-b-3xl px-8 pb-6 pt-3 flex flex-col items-center gap-3 border-t border-stone-100">
-            <p
-              className="text-[12px] text-stone-400 tracking-wide"
-              style={{ fontFamily: "var(--font-open-sans)" }}
-            >
-              30-minute fit call · No pitch · No pressure
-            </p>
-            <div className="flex items-center gap-3">
-              <div className="flex -space-x-2.5 shrink-0">
-                {AVATARS.map((src, i) => (
-                  <div
-                    key={i}
-                    className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden"
-                    style={{ zIndex: 5 - i }}
-                  >
-                    <Image
-                      src={src}
-                      alt=""
-                      fill
-                      unoptimized
-                      placeholder="empty"
-                      className="object-cover object-center"
-                      sizes="32px"
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="text-left">
-                <div className="flex gap-0.5" role="img" aria-label="5 stars">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-3.5 h-3.5"
-                      viewBox="0 0 24 24"
-                      fill="#1c1917"
-                      aria-hidden="true"
-                    >
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                    </svg>
-                  ))}
-                </div>
-                <p
-                  className="text-[10px] text-stone-400 mt-0.5"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  Google Reviews
-                </p>
-              </div>
-            </div>
           </div>
 
           {/* Dismiss */}
