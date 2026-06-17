@@ -33,37 +33,34 @@ export default function StrategyCallBookPage() {
       </div>
 
       <main className="flex-1">
-        <section className="bg-brand-bg pt-10 sm:pt-14 lg:pt-16 pb-10 sm:pb-12">
+        <section className="bg-brand-bg pt-8 sm:pt-10 pb-6 sm:pb-8">
           <div className="max-w-3xl mx-auto px-6 md:px-10 text-center">
             <Reveal>
               <span
-                className="inline-flex items-center gap-2 rounded-full bg-green-50 border border-green-200 px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] uppercase text-green-700"
+                className="inline-flex items-center gap-2 rounded-full bg-green-50 border border-green-200 px-3 py-1 text-[10px] font-semibold tracking-[0.22em] uppercase text-green-700"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                <CheckCircle2 className="w-3 h-3 text-green-600" />
                 You&apos;re A Great Fit
               </span>
             </Reveal>
 
             <Reveal delay={0.08}>
               <h1
-                className="mt-6 text-[34px] sm:text-[48px] md:text-[56px] leading-[1.08] text-brand-ink"
+                className="mt-4 text-[28px] sm:text-[36px] md:text-[42px] leading-[1.1] text-brand-ink"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                <span className="block">Pick A Time For Your</span>
-                <span className="block">
-                  Free Strategy <span style={{ color: "#8a7448" }}>Call.</span>
-                </span>
+                Pick A Time For Your Free Strategy{" "}
+                <span style={{ color: "#8a7448" }}>Call.</span>
               </h1>
             </Reveal>
 
-            <Reveal delay={0.16}>
+            <Reveal delay={0.12}>
               <p
-                className="mt-5 text-[15px] sm:text-[17px] text-brand-muted leading-relaxed max-w-xl mx-auto"
+                className="mt-3 text-[14px] sm:text-[15px] text-brand-muted max-w-md mx-auto"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                Choose the time that works best below. You&apos;ll get a confirmation
-                with everything you need to join — we&apos;ll text and email reminders too.
+                Choose the time that works best below.
               </p>
             </Reveal>
           </div>
