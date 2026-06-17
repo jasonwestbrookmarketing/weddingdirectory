@@ -8,7 +8,7 @@ import { ArrowUp } from "lucide-react";
  * Appears after the user scrolls past one viewport. Clicking smoothly
  * scrolls to the top of the page. Works on every device.
  */
-export default function ScrollToTop() {
+export default function ScrollToTop({ mobileLift = false }: { mobileLift?: boolean }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -23,7 +23,9 @@ export default function ScrollToTop() {
       type="button"
       aria-label="Scroll to top"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className={`fixed bottom-5 right-5 z-[80] flex h-11 w-11 items-center justify-center rounded-full bg-stone-900 text-white shadow-[0_12px_32px_-8px_rgba(0,0,0,0.45)] transition-all duration-300 hover:bg-stone-800 active:scale-95 ${
+      className={`fixed right-5 z-[80] flex h-11 w-11 items-center justify-center rounded-full bg-stone-900 text-white shadow-[0_12px_32px_-8px_rgba(0,0,0,0.45)] transition-all duration-300 hover:bg-stone-800 active:scale-95 ${
+        mobileLift ? "bottom-[92px] sm:bottom-5" : "bottom-5"
+      } ${
         visible
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 translate-y-3 pointer-events-none"

@@ -37,9 +37,11 @@ interface Props {
   modalEvent?: string;
   /** CTA label */
   ctaLabel?: string;
+  /** Lift the card above a mobile sticky CTA bar (mobile only). */
+  mobileLift?: boolean;
 }
 
-export default function FomoPopup({ signupHref, modalEvent, ctaLabel }: Props) {
+export default function FomoPopup({ signupHref, modalEvent, ctaLabel, mobileLift }: Props) {
   const [venueIndex, setVenueIndex] = useState(0);
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
@@ -99,10 +101,9 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel }: Props) {
     <div
       aria-live="polite"
       aria-atomic="true"
+      className={`left-4 sm:left-6 ${mobileLift ? "bottom-[92px] sm:bottom-6" : "bottom-6"}`}
       style={{
         position: "fixed",
-        bottom: 24,
-        left: 24,
         zIndex: 9999,
         transform: animIn ? "translateY(0)" : "translateY(16px)",
         opacity: animIn ? 1 : 0,
