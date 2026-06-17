@@ -33,7 +33,7 @@ export default function StrategyCallBookPage() {
       </div>
 
       <main className="flex-1">
-        <section className="bg-brand-bg pt-10 sm:pt-14 lg:pt-16 pb-14 sm:pb-20 border-b border-brand-line">
+        <section className="bg-brand-bg pt-10 sm:pt-14 lg:pt-16 pb-10 sm:pb-12">
           <div className="max-w-3xl mx-auto px-6 md:px-10 text-center">
             <Reveal>
               <span
@@ -70,9 +70,9 @@ export default function StrategyCallBookPage() {
         </section>
 
         {/* Calendar / booking form embed */}
-        <section className="bg-brand-bg py-10 sm:py-14">
+        <section className="bg-brand-bg pb-10 sm:pb-14">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-10">
-            <div className="bg-white border border-brand-line rounded-2xl overflow-hidden">
+            <div className="bg-white rounded-2xl overflow-hidden">
               <iframe
                 src={FORM_SRC}
                 style={{ width: "100%", height: "100%", minHeight: 720, border: "none", borderRadius: 0 }}
