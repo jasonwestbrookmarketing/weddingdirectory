@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, Rocket, Globe, TrendingUp, ArrowRight } from "lucide-react";
+import { CheckCircle2, Rocket, Globe, TrendingUp, ArrowRight } from "lucide-react";
 import PageFooter from "@/components/strategy-call/PageFooter";
 import { Reveal } from "@/components/strategy-call/Reveal";
 import FomoPopup from "@/components/marketing/FomoPopup";
@@ -130,7 +130,7 @@ export default function StartFreePage() {
               className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] uppercase text-white/90"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              <Sparkles className="w-3.5 h-3.5" />
+              <CheckCircle2 className="w-3.5 h-3.5" />
               Your Best First Step
             </span>
           </Reveal>
