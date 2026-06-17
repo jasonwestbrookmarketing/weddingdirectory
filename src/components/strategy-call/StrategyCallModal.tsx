@@ -175,15 +175,6 @@ export default function StrategyCallModal() {
           </div>
 
           {/* Dismiss */}
-          <div className="py-4 text-center bg-white rounded-b-3xl">
-            <button
-              onClick={() => setOpen(false)}
-              className="text-[12px] text-stone-400 hover:text-stone-600 transition-colors underline underline-offset-2"
-              style={{ fontFamily: "var(--font-open-sans)" }}
-            >
-              No thanks, I&apos;ll figure it out on my own
-            </button>
-          </div>
         </div>
       </div>
     </>
