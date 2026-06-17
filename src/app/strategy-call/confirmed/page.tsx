@@ -182,7 +182,7 @@ export default function StrategyCallConfirmedPage() {
                     className="mt-3 text-[12px] text-brand-muted"
                     style={{ fontFamily: "var(--font-open-sans)" }}
                   >
-                    No credit card · No contract
+                    Forever Free · No credit card required
                   </p>
                 </div>
               </div>
