@@ -154,11 +154,11 @@ export default function StartFreePage() {
 
           <Reveal delay={0.16}>
             <p
-              className="text-sm sm:text-lg md:text-xl text-white/75 leading-relaxed font-light text-center max-w-xl px-2"
+              className="text-sm sm:text-lg md:text-xl text-white/90 leading-relaxed font-medium text-center max-w-2xl px-2"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Our 1-on-1 program isn&apos;t the right fit just yet — and that&apos;s good news.
-              The smartest move now is to get listed and in front of couples for free.
+              Our 1-on-1 program isn&apos;t the right fit just yet, and that&apos;s good news.
+              The smartest move now is to get listed in front of couples for free.
             </p>
           </Reveal>
 
