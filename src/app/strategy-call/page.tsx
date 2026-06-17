@@ -14,6 +14,7 @@ import PageFooter from "@/components/strategy-call/PageFooter";
 import StrategyCallModal from "@/components/strategy-call/StrategyCallModal";
 import ScrollToTop from "@/components/marketing/ScrollToTop";
 import FomoPopup from "@/components/marketing/FomoPopup";
+import ExitIntent from "@/components/strategy-call/ExitIntent";
 
 export const dynamic = "force-static";
 
@@ -45,6 +46,7 @@ export default function StrategyCallPage() {
       <StrategyCallModal />
       <ScrollToTop />
       <FomoPopup modalEvent="open-strategy-modal" ctaLabel="Book a free strategy call →" />
+      <ExitIntent />
     </div>
   );
 }
