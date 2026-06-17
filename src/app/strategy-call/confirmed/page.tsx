@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { CalendarCheck, Video, ListChecks, MessageSquare, CheckCircle2 } from "lucide-react";
-import Marquee from "@/components/strategy-call/Marquee";
+import { CalendarCheck, Video, ListChecks, CheckCircle2, CalendarPlus } from "lucide-react";
 import StrategyNav from "@/components/strategy-call/StrategyNav";
 import VideoPlayer from "@/components/strategy-call/VideoPlayer";
 import PageFooter from "@/components/strategy-call/PageFooter";
@@ -38,65 +37,87 @@ const WHAT_TO_EXPECT = [
   },
 ];
 
+// Google Calendar deeplink — opens a pre-filled "StoryVenue Strategy Call"
+// event so they can add it in one click. Date/time intentionally left blank
+// (GHL sends a proper invite; this just reinforces the habit of adding it).
+const GCAL_URL =
+  "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+  "&text=StoryVenue+Strategy+Call" +
+  "&details=Your+free+30-minute+strategy+call+with+StoryVenue.+Check+your+email+for+the+exact+time+and+join+link.";
+
 export default function StrategyCallConfirmedPage() {
   return (
     <div className="min-h-screen flex flex-col bg-brand-bg">
       <FireLeadEvent />
-      {/* Sticky shell — marquee + nav scroll together (matches /strategy-call) */}
+
+      {/* Nav only — no marquee on a post-conversion page */}
       <div className="sticky top-0 z-40">
-        <Marquee />
         <StrategyNav showCta={false} />
       </div>
 
       <main className="flex-1">
-        {/* Hero / confirmation */}
-        <section className="bg-brand-bg pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 border-b border-brand-line">
+        {/* Hero / confirmation — compact so video is near fold */}
+        <section className="bg-brand-bg pt-8 sm:pt-12 pb-10 sm:pb-14 border-b border-brand-line">
           <div className="max-w-4xl mx-auto px-6 md:px-10 text-center">
+
+            {/* Confirmed pill + add-to-calendar */}
             <Reveal>
-              <span
-                className="inline-flex items-center gap-2 rounded-full bg-green-50 border border-green-200 px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] uppercase text-green-700"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                Your Call Is Confirmed
-              </span>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <span
+                  className="inline-flex items-center gap-2 rounded-full bg-green-50 border border-green-200 px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] uppercase text-green-700"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                  Your Call Is Confirmed
+                </span>
+                <a
+                  href={GCAL_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-brand-line bg-white px-4 py-1.5 text-[11px] font-semibold tracking-[0.18em] uppercase text-brand-muted hover:border-brand-ink hover:text-brand-ink transition-colors"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
+                  <CalendarPlus className="w-3.5 h-3.5" />
+                  Add to Calendar
+                </a>
+              </div>
             </Reveal>
 
+            {/* Headline — smaller than before so video comes up faster */}
             <Reveal delay={0.08}>
               <h1
-                className="mt-6 text-[34px] sm:text-[48px] md:text-[56px] lg:text-[60px] leading-[1.08] text-brand-ink"
+                className="mt-5 text-[30px] sm:text-[40px] md:text-[48px] leading-[1.1] text-brand-ink"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                <span className="block">You&apos;re Booked.</span>
-                <span className="block">
-                  Here&apos;s What Happens{" "}
-                  <span style={{ color: "#8a7448" }}>Next.</span>
-                </span>
+                You&apos;re Booked. Here&apos;s What Happens{" "}
+                <span style={{ color: "#8a7448" }}>Next.</span>
               </h1>
             </Reveal>
 
-            <Reveal delay={0.16}>
+            {/* Single-line sub — no clutter before the video */}
+            <Reveal delay={0.14}>
               <p
-                className="mt-5 text-[15px] sm:text-[17px] text-brand-muted leading-relaxed max-w-2xl mx-auto"
+                className="mt-3 text-[15px] sm:text-[16px] text-brand-muted"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                <span className="block">Watch this quick video before your call so you know exactly what to expect.</span>
-                <span className="block">It&apos;ll make our 30 minutes together count.</span>
+                Watch this quick video before your call — it&apos;ll make our 30 minutes count.
               </p>
             </Reveal>
 
-            <Reveal delay={0.2}>
+            {/* Reschedule nudge — near the top, not buried */}
+            <Reveal delay={0.18}>
               <p
-                className="mt-4 inline-flex items-center gap-2 text-[13px] sm:text-[14px] text-brand-muted"
+                className="mt-2 text-[13px] text-brand-muted"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                <MessageSquare className="w-4 h-4 text-brand-gold" />
-                We&apos;ll text and email you reminders before we talk.
+                Can&apos;t make it?{" "}
+                <span className="text-brand-ink font-semibold">Check your email for the reschedule link.</span>
               </p>
             </Reveal>
 
-            <Reveal delay={0.24}>
-              <div className="pt-8 sm:pt-10">
+            {/* Video — tighter top padding so it's near the fold */}
+            <Reveal delay={0.22}>
+              <div className="pt-6 sm:pt-8">
                 <VideoPlayer
                   videoUrl={CONFIRMATION_VIDEO_URL}
                   showPoster={false}
@@ -107,8 +128,8 @@ export default function StrategyCallConfirmedPage() {
           </div>
         </section>
 
-        {/* What to expect on the call */}
-        <section className="bg-brand-bg py-20 sm:py-28">
+        {/* What to expect on the call — tighter padding */}
+        <section className="bg-brand-bg py-14 sm:py-20">
           <div className="max-w-5xl mx-auto px-6 md:px-10 text-center">
             <Reveal>
               <p
@@ -128,7 +149,7 @@ export default function StrategyCallConfirmedPage() {
               </h2>
             </Reveal>
 
-            <div className="mt-12 sm:mt-14 grid gap-4 sm:gap-5 sm:grid-cols-3 text-left">
+            <div className="mt-10 sm:mt-12 grid gap-4 sm:gap-5 sm:grid-cols-3 text-left">
               {WHAT_TO_EXPECT.map(({ icon: Icon, title, body }, i) => (
                 <Reveal key={title} delay={0.08 * i}>
                   <div className="h-full bg-white border border-brand-line rounded-xl p-6 sm:p-7">
@@ -151,18 +172,6 @@ export default function StrategyCallConfirmedPage() {
                 </Reveal>
               ))}
             </div>
-
-            <Reveal delay={0.3}>
-              <p
-                className="mt-12 text-[15px] sm:text-[16px] text-brand-muted"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                Can&apos;t make it?{" "}
-                <span className="text-brand-ink font-semibold">
-                  Check your email for the reschedule link.
-                </span>
-              </p>
-            </Reveal>
           </div>
         </section>
       </main>
