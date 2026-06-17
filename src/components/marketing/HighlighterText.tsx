@@ -73,9 +73,10 @@ export default function HighlighterText({
         style={{ mixBlendMode: "multiply" }}
       >
         {/* Mostly-straight highlighter swipe — only a hair of waver so it
-            still feels human, but covers caps to descenders edge-to-edge. */}
+            still feels human. Endpoints sit just inside the box so the streak
+            hugs the text instead of bleeding to the screen edge on mobile. */}
         <path
-          d="M -22 41 C 120 39, 240 43, 350 40 S 500 42, 622 39"
+          d="M 24 41 C 130 39, 240 43, 350 40 S 500 42, 576 39"
           fill="none"
           stroke={color}
           strokeWidth="66"
