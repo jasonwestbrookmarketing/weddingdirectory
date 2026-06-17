@@ -63,11 +63,20 @@ export default function StrategyCallBookPage() {
                 Choose the time that works best below.
               </p>
             </Reveal>
+
+            <Reveal delay={0.16}>
+              <p
+                className="mt-3 text-[12px] sm:text-[13px] font-semibold tracking-[0.12em] uppercase text-brand-muted"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                30 Minutes · No Pitch · No Pressure · 100% Free
+              </p>
+            </Reveal>
           </div>
         </section>
 
         {/* Calendar / booking form embed */}
-        <section className="bg-brand-bg pb-10 sm:pb-14">
+        <section className="bg-brand-bg pb-10 sm:pb-12">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-10">
             <div className="bg-white rounded-2xl overflow-hidden">
               <iframe
@@ -77,6 +86,40 @@ export default function StrategyCallBookPage() {
                 scrolling="no"
                 title="Book Your Strategy Call"
               />
+            </div>
+          </div>
+        </section>
+
+        {/* Social proof — reassurance under the calendar to reduce no-shows */}
+        <section className="bg-white border-t border-brand-line py-8 sm:py-10">
+          <div className="max-w-4xl mx-auto px-6 md:px-10">
+            <p
+              className="text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-muted text-center mb-6"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              What Venues See After Working With Us
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12">
+              {[
+                { venue: "Atlantic Stables", stat: "$15k in weddings", period: "first 30 days" },
+                { venue: "Red Barn Acres", stat: "9 weddings booked", period: "first 4 months" },
+                { venue: "Retreat at Evans Farms", stat: "258 leads", period: "60 days" },
+              ].map(({ venue, stat, period }) => (
+                <div key={venue} className="text-center">
+                  <p
+                    className="text-[22px] sm:text-[26px] font-bold text-brand-ink leading-none"
+                    style={{ fontFamily: "var(--font-open-sans)" }}
+                  >
+                    {stat}
+                  </p>
+                  <p
+                    className="mt-1 text-[12px] text-brand-muted"
+                    style={{ fontFamily: "var(--font-open-sans)" }}
+                  >
+                    {venue} · {period}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
