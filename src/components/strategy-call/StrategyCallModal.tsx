@@ -3,9 +3,12 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
-const CALENDAR_URL = "https://api.leadconnectorhq.com/widget/booking/YeI4ZUC2SwV8MXDRKfzr";
-const CALENDAR_ID  = "YeI4ZUC2SwV8MXDRKfzr_1779890654536";
-const GHL_SCRIPT   = "https://link.msgsndr.com/js/form_embed.js";
+// Prequalifier survey. It redirects qualified leads to /strategy-call/book
+// (the calendar page) and disqualified leads to /book-more-weddings — those
+// redirects are configured inside the GHL survey itself.
+const SURVEY_URL = "https://api.leadconnectorhq.com/widget/survey/foNEAvcN1Ecj7zm8gcoP";
+const SURVEY_ID  = "foNEAvcN1Ecj7zm8gcoP";
+const GHL_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
 
 /**
  * Drop-in modal for the /strategy-call page.
@@ -15,7 +18,9 @@ const GHL_SCRIPT   = "https://link.msgsndr.com/js/form_embed.js";
  *   2. Exit-intent (cursor exits the top of the viewport)
  *
  * Mobile fallback: opens after 45 s of dwell time (same as /book-more-weddings).
- * The GHL calendar iframe pre-loads silently so there's no delay when it appears.
+ * The GHL survey iframe pre-loads silently so there's no delay when it appears.
+ * The survey prequalifies the lead, then GHL redirects them to the booking
+ * calendar (/strategy-call/book) or the SaaS page (/book-more-weddings).
  */
 export default function StrategyCallModal() {
   const [open, setOpen] = useState(false);
@@ -96,8 +101,8 @@ export default function StrategyCallModal() {
         {/* GHL standard embed — iframe auto-resizes to content height via
             form_embed.js postMessage. Parent div handles all scrolling. */}
         <iframe
-          src={CALENDAR_URL}
-          id={CALENDAR_ID}
+          src={SURVEY_URL}
+          id={SURVEY_ID}
           title="Book your free strategy call"
           scrolling="no"
           style={{
@@ -162,14 +167,14 @@ export default function StrategyCallModal() {
             </p>
           </div>
 
-          {/* Calendar iframe — GHL auto-resize embed pattern.
+          {/* Survey iframe — GHL auto-resize embed pattern.
               form_embed.js grows the iframe height to fit content; the modal
               card's overflow-y:auto handles any overall card scrolling.
               px-10 matches the breathing room used in ExitIntentModal. */}
           <div className="bg-white px-10">
             <iframe
-              src={CALENDAR_URL}
-              id={`${CALENDAR_ID}_desktop`}
+              src={SURVEY_URL}
+              id={`${SURVEY_ID}_desktop`}
               className="bg-white block"
               style={{
                 width: "100%",
