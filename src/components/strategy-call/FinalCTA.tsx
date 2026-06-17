@@ -65,7 +65,7 @@ export default function FinalCTA() {
               className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1b1b1b] text-white font-bold tracking-[0.1em] uppercase px-8 py-4 text-[13px] sm:text-[14px] hover:-translate-y-px hover:shadow-[0_14px_36px_-10px_rgba(0,0,0,0.4)] active:scale-[0.98] transition-all shadow-[0_6px_20px_-8px_rgba(0,0,0,0.3)]"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Book Your Free Strategy Call
+              Book Free Strategy Call
               <svg
                 className="w-4 h-4"
                 fill="none"

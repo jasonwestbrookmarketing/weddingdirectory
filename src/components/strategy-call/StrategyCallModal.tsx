@@ -147,24 +147,12 @@ export default function StrategyCallModal() {
 
           {/* Header */}
           <div className="px-8 pt-2 pb-5 text-center">
-            <p
-              className="text-[10px] font-semibold tracking-[0.22em] uppercase text-stone-400"
-              style={{ fontFamily: "var(--font-open-sans)" }}
-            >
-              Before You Go
-            </p>
             <h2
               className="mt-2 text-[34px] leading-[1.1] text-stone-900"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              Book Your Free Strategy Call.
+              Book Free Strategy Call
             </h2>
-            <p
-              className="mt-2 text-sm text-stone-500 max-w-[30ch] mx-auto"
-              style={{ fontFamily: "var(--font-open-sans)" }}
-            >
-              30 minutes. No pitch. No pressure. We&rsquo;ll show you exactly what&rsquo;s leaking.
-            </p>
           </div>
 
           {/* Survey iframe — GHL auto-resize embed pattern.
