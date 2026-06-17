@@ -32,7 +32,7 @@ export default function RealProblem() {
               How many open weekends are on your calendar right now?
             </p>
             <p>
-              <HighlighterText className="whitespace-normal lg:whitespace-nowrap">Count them. Every open weekend is a wedding that&apos;s going to happen. Just not at your venue.</HighlighterText>
+              <HighlighterText nowrap={false} className="lg:whitespace-nowrap">Count them. Every open weekend is a wedding that&apos;s going to happen. Just not at your venue.</HighlighterText>
               {" "}Some brides never find you. The ones who do reach out, ask about a date... and disappear.
               Not because your venue wasn&apos;t right. Because by the time you followed up, someone else
               already answered, already booked the tour, already took the deposit.

@@ -12,6 +12,8 @@ interface HighlighterTextProps {
   opacity?: number;
   /** extra classes on the outer span — use whitespace-normal for multi-line text */
   className?: string;
+  /** keep text on a single line (default). Set false to allow wrapping. */
+  nowrap?: boolean;
 }
 
 /**
@@ -26,6 +28,7 @@ export default function HighlighterText({
   color = "#fde047",
   opacity = 0.78,
   className = "",
+  nowrap = true,
 }: HighlighterTextProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const [active, setActive] = useState(false);
@@ -59,7 +62,7 @@ export default function HighlighterText({
   return (
     <span
       ref={ref}
-      className={`relative inline-block whitespace-nowrap ${className}`}
+      className={`relative inline-block ${nowrap ? "whitespace-nowrap" : ""} ${className}`}
     >
       <span className="relative z-10">{children}</span>
       <svg

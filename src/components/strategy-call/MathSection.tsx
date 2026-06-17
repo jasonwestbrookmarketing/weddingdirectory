@@ -82,10 +82,11 @@ export default function MathSection() {
         <Reveal delay={0.3}>
           <div className="mt-12 sm:mt-14 pt-10 border-t border-white/15 max-w-2xl mx-auto">
             <p
-              className="text-white text-xl sm:text-2xl font-semibold leading-[1.3]"
+              className="text-white text-xl sm:text-2xl font-semibold leading-[1.3] text-balance"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              That pays for StoryVenue for the entire year.
+              That pays for StoryVenue for the{" "}
+              <span className="whitespace-nowrap">entire year.</span>
             </p>
             <p
               className="mt-3 text-white/65 text-sm sm:text-base leading-relaxed"

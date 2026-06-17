@@ -44,7 +44,7 @@ function ProofCard({
   delay: number;
 }) {
   return (
-    <Reveal delay={delay}>
+    <Reveal delay={delay} className="w-full sm:w-auto">
       <div className="relative bg-white border border-brand-line rounded-xl overflow-hidden h-full flex flex-col w-full sm:w-[280px]">
         {/* Gold accent bar */}
         <div className="h-[3px] w-full bg-[#8a7448] shrink-0" />
@@ -85,9 +85,9 @@ function ProofCard({
             {stat}
           </p>
 
-          {/* Detail */}
+          {/* Detail — min-height keeps single-line cards level with two-line ones */}
           <p
-            className="mt-4 text-[14px] sm:text-[15px] font-semibold leading-snug"
+            className="mt-4 text-[14px] sm:text-[15px] font-semibold leading-snug min-h-[2.6em]"
             style={{ fontFamily: "var(--font-open-sans)", color: "#57534e" }}
           >
             {detail}
