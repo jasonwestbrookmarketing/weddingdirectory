@@ -92,7 +92,7 @@ export default function BookExitNudge() {
           className="mt-2 text-[26px] sm:text-[30px] leading-[1.12] text-stone-900"
           style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
         >
-          Wait — not ready to{" "}
+          Wait, not ready to{" "}
           <span style={{ color: "#8a7448" }}>pick a time?</span>
         </h2>
 
@@ -100,8 +100,9 @@ export default function BookExitNudge() {
           className="mt-4 text-[15px] text-stone-500 leading-relaxed"
           style={{ fontFamily: "var(--font-open-sans)" }}
         >
-          It&apos;s free, 30 minutes, and there&apos;s no obligation. Grab the time that
-          works best for you, and reschedule anytime if plans change.
+          It&apos;s free, 30 minutes, and there&apos;s no obligation.
+          <br />
+          Grab the time that works best for you, and reschedule anytime if plans change.
         </p>
 
         <div className="mt-7 flex flex-col items-center gap-3">
