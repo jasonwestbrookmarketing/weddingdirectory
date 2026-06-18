@@ -100,8 +100,8 @@ export default function BookExitNudge() {
           className="mt-4 text-[15px] text-stone-500 leading-relaxed"
           style={{ fontFamily: "var(--font-open-sans)" }}
         >
-          It&apos;s free, 30 minutes, and we&apos;ll tell you straight if it&apos;s not a fit.
-          No pitch, no pressure — just a clear look at your numbers.
+          It&apos;s free, 30 minutes, and there&apos;s no obligation. Grab the time that
+          works best for you, and reschedule anytime if plans change.
         </p>
 
         <div className="mt-7 flex flex-col items-center gap-3">
