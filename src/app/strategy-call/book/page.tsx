@@ -50,8 +50,10 @@ export default function StrategyCallBookPage() {
                 className="mt-4 text-[28px] sm:text-[36px] md:text-[42px] leading-[1.1] text-brand-ink"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                Pick A Time For Your Free Strategy{" "}
-                <span style={{ color: "#8a7448" }}>Call.</span>
+                Pick A Time For Your Free{" "}
+                <span className="whitespace-nowrap">
+                  Strategy <span style={{ color: "#8a7448" }}>Call.</span>
+                </span>
               </h1>
             </Reveal>
 

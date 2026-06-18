@@ -143,12 +143,12 @@ export default function StartFreePage() {
               <span className="text-2xl sm:text-3xl md:text-4xl font-normal leading-tight tracking-tight text-white/90">
                 Every Great Venue
               </span>
-              <em
+              <span
                 className="not-italic text-5xl sm:text-7xl md:text-8xl leading-[1.05] tracking-tight text-white"
-                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300, fontStyle: "italic" }}
+                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
                 Starts Here.
-              </em>
+              </span>
             </h1>
           </Reveal>
 
@@ -157,8 +157,8 @@ export default function StartFreePage() {
               className="text-sm sm:text-lg md:text-xl text-white/90 leading-relaxed font-medium text-center max-w-2xl px-2"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Our 1-on-1 program isn&apos;t the right fit just yet, and that&apos;s good news.
-              The smartest move now is to get listed in front of couples for free.
+              We don&apos;t think the 1-on-1 program is the right fit for your venue yet.
+              Start with a free listing that puts your venue in front of couples today.
             </p>
           </Reveal>
 
