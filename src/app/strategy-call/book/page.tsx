@@ -67,14 +67,6 @@ export default function StrategyCallBookPage() {
               </p>
             </Reveal>
 
-            <Reveal delay={0.16}>
-              <p
-                className="mt-3 text-[12px] sm:text-[13px] font-semibold tracking-[0.12em] uppercase text-brand-muted"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                Free · 30 minutes · We&apos;ll tell you if it&apos;s not a fit
-              </p>
-            </Reveal>
           </div>
         </section>
 
