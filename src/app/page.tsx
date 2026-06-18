@@ -39,7 +39,7 @@ export default async function HomePage() {
     <>
       {/* Announcement ticker — homepage only */}
       <div className="bg-black flex items-center h-10 overflow-hidden z-30 relative">
-        <div className="flex items-center animate-[announcement-ticker_90s_linear_infinite] whitespace-nowrap w-max">
+        <div className="flex items-center animate-[announcement-ticker_180s_linear_infinite] whitespace-nowrap w-max">
           {Array.from({ length: 8 }).map((_, i) => (
             <span key={i} className="flex items-center text-[13px] font-medium text-white tracking-wide">
               <span className="px-10">
