@@ -172,6 +172,8 @@ export default function StrategyCallConfirmedPage() {
                   </p>
                   <Link
                     href={FREE_SIGNUP_HREF}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="group inline-flex items-center gap-2 rounded-full bg-brand-ink text-white px-7 py-3 text-[14px] font-semibold hover:bg-black transition-colors"
                     style={{ fontFamily: "var(--font-open-sans)" }}
                   >
