@@ -157,7 +157,8 @@ export default function StartFreePage() {
               className="text-sm sm:text-lg md:text-xl text-white/90 leading-relaxed font-medium text-center max-w-4xl px-2"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              We don&apos;t think the 1-on-1 program is the right fit for your venue yet.
+              We don&apos;t think the 1-on-1 program is the right fit for your venue yet.{" "}
+              <br className="hidden sm:block" />
               Start with a free listing that puts your venue in front of couples today.
             </p>
           </Reveal>
