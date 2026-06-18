@@ -36,20 +36,24 @@ export default function BookExitNudge() {
       setOpen(true);
     };
 
-    const onMouseLeave = (e: MouseEvent) => {
+    // mouseout bubbles to document and fires when the pointer leaves the window
+    // entirely (relatedTarget is null). This is more reliable than a mouseleave
+    // bound to document, and still catches top exits above the calendar iframe.
+    const onMouseOut = (e: MouseEvent) => {
+      if (e.relatedTarget || (e as MouseEvent & { toElement?: unknown }).toElement) return;
       if (e.clientY > 20) return;
       if (Date.now() < readyAt) return;
       fire();
     };
 
-    document.addEventListener("mouseleave", onMouseLeave);
+    document.addEventListener("mouseout", onMouseOut);
 
     if (typeof window !== "undefined" && window.innerWidth < 1024) {
       mobileTimer = setTimeout(fire, MOBILE_DWELL_MS);
     }
 
     return () => {
-      document.removeEventListener("mouseleave", onMouseLeave);
+      document.removeEventListener("mouseout", onMouseOut);
       clearTimeout(mobileTimer);
     };
   }, []);
