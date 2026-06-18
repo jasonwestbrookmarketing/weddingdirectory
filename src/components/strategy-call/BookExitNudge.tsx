@@ -1,12 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 
-const SESSION_KEY = "sv_book_exit_nudge_shown";
-// Tiny buffer so the nudge can't fire from the cursor already sitting at the
-// top edge on load — short enough that it still triggers the moment they leave.
-const MIN_TIME_MS = 800;
 // Mobile fallback: fire after this much dwell time (ms)
 const MOBILE_DWELL_MS = 35000;
 // The booking calendar anchor on the page
@@ -17,35 +13,39 @@ const CALENDAR_ID = "book-calendar";
  *
  * The calendar is already the whole page, so instead of re-showing it we
  * reframe the hesitation ("free, 30 min, we'll tell you if it's not a fit")
- * and bounce the visitor back to the calendar. Fires at most once per session.
+ * and bounce the visitor back to the calendar. Fires the moment the cursor
+ * leaves through the top of the window (toward the URL/search bar).
  */
 export default function BookExitNudge() {
   const [open, setOpen] = useState(false);
+  const openRef = useRef(false);
+  const enteredRef = useRef(false);
+
+  useEffect(() => { openRef.current = open; }, [open]);
 
   useEffect(() => {
-    if (typeof sessionStorage !== "undefined" && sessionStorage.getItem(SESSION_KEY)) {
-      return;
-    }
-
-    const readyAt = Date.now() + MIN_TIME_MS;
     let mobileTimer: ReturnType<typeof setTimeout>;
 
     const fire = () => {
-      if (sessionStorage.getItem(SESSION_KEY)) return;
-      sessionStorage.setItem(SESSION_KEY, "1");
+      if (openRef.current) return;
       setOpen(true);
     };
 
-    // mouseout bubbles to document and fires when the pointer leaves the window
-    // entirely (relatedTarget is null). This is more reliable than a mouseleave
-    // bound to document, and still catches top exits above the calendar iframe.
+    // Mark that the pointer has actually been on the page, so we never fire
+    // from a cursor that merely started at the top edge on load.
+    const onPointerActive = () => { enteredRef.current = true; };
+
+    // mouseout bubbles to document; relatedTarget is null only when the pointer
+    // leaves the window entirely. clientY near 0 means it exited via the top
+    // (toward the browser chrome / search bar) — fire instantly.
     const onMouseOut = (e: MouseEvent) => {
+      if (!enteredRef.current) return;
       if (e.relatedTarget || (e as MouseEvent & { toElement?: unknown }).toElement) return;
-      if (e.clientY > 20) return;
-      if (Date.now() < readyAt) return;
+      if (e.clientY > 10) return;
       fire();
     };
 
+    document.addEventListener("mousemove", onPointerActive, { once: true });
     document.addEventListener("mouseout", onMouseOut);
 
     if (typeof window !== "undefined" && window.innerWidth < 1024) {
@@ -53,6 +53,7 @@ export default function BookExitNudge() {
     }
 
     return () => {
+      document.removeEventListener("mousemove", onPointerActive);
       document.removeEventListener("mouseout", onMouseOut);
       clearTimeout(mobileTimer);
     };
