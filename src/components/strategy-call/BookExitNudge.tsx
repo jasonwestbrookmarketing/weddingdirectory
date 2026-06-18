@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
 const SESSION_KEY = "sv_book_exit_nudge_shown";
-// Minimum dwell before the nudge can fire (ms)
-const MIN_TIME_MS = 6000;
+// Tiny buffer so the nudge can't fire from the cursor already sitting at the
+// top edge on load — short enough that it still triggers the moment they leave.
+const MIN_TIME_MS = 800;
 // Mobile fallback: fire after this much dwell time (ms)
 const MOBILE_DWELL_MS = 35000;
 // The booking calendar anchor on the page
