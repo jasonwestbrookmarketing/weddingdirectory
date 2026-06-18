@@ -4,6 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 import Marquee from "@/components/strategy-call/Marquee";
 import StrategyNav from "@/components/strategy-call/StrategyNav";
 import PageFooter from "@/components/strategy-call/PageFooter";
+import BookExitNudge from "@/components/strategy-call/BookExitNudge";
 import { Reveal } from "@/components/strategy-call/Reveal";
 
 export const dynamic = "force-static";
@@ -78,7 +79,7 @@ export default function StrategyCallBookPage() {
         </section>
 
         {/* Calendar / booking form embed */}
-        <section className="bg-brand-bg pb-10 sm:pb-12">
+        <section id="book-calendar" className="bg-brand-bg pb-10 sm:pb-12 scroll-mt-24">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-10">
             <div className="bg-white rounded-2xl overflow-hidden">
               <iframe
@@ -128,6 +129,8 @@ export default function StrategyCallBookPage() {
       </main>
 
       <PageFooter />
+
+      <BookExitNudge />
     </div>
   );
 }
