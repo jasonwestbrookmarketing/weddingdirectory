@@ -118,7 +118,7 @@ export default function StartFreePage() {
               className="whitespace-nowrap rounded-full bg-white text-stone-900 px-5 py-2 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-sm"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              List Your Venue Free
+              Claim Your Free Listing
             </Link>
           </div>
         </nav>
@@ -250,7 +250,7 @@ export default function StartFreePage() {
                 className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-ink text-white px-9 py-4 text-[15px] sm:text-[16px] font-semibold tracking-wide hover:bg-black transition-colors"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                Get Listed Free
+                Claim Your Free Listing
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
             </div>
