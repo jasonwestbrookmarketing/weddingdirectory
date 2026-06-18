@@ -95,7 +95,7 @@ export default function Hero() {
               className="text-[12px] text-brand-muted tracking-wide"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              30-minute fit call · No pitch · No pressure
+              Free · 30 minutes · We&apos;ll tell you if it&apos;s not a fit
             </p>
           </motion.div>
 

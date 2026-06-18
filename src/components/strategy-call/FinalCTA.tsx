@@ -82,7 +82,7 @@ export default function FinalCTA() {
               className="text-[12px] text-brand-muted/70 tracking-wide"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              No commitment · No obligation · Just clarity
+              Free · 30 minutes · We&apos;ll tell you if it&apos;s not a fit
             </p>
 
             {/* Social proof */}

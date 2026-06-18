@@ -38,7 +38,7 @@ export default function MidPageCTA() {
               className="text-[12px] text-brand-muted tracking-wide"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Free · 30 minutes · No pressure
+              Free · 30 minutes · We&apos;ll tell you if it&apos;s not a fit
             </p>
           </div>
         </Reveal>
