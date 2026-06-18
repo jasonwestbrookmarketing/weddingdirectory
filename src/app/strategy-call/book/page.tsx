@@ -71,7 +71,7 @@ export default function StrategyCallBookPage() {
                 className="mt-3 text-[12px] sm:text-[13px] font-semibold tracking-[0.12em] uppercase text-brand-muted"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                30 Minutes · No Pitch · No Pressure · 100% Free
+                Free · 30 minutes · We&apos;ll tell you if it&apos;s not a fit
               </p>
             </Reveal>
           </div>
