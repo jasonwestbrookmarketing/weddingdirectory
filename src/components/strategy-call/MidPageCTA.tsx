@@ -10,10 +10,10 @@ import { Reveal } from "./Reveal";
 export default function MidPageCTA() {
   return (
     <section className="bg-brand-bg py-14 sm:py-16 border-b border-brand-line">
-      <div className="max-w-3xl mx-auto px-6 md:px-10 text-center">
+      <div className="max-w-5xl mx-auto px-6 md:px-10 text-center">
         <Reveal>
           <h2
-            className="text-[22px] sm:text-[30px] md:text-[34px] text-brand-ink leading-[1.14]"
+            className="text-[22px] sm:text-[30px] md:text-[34px] text-brand-ink leading-[1.14] lg:whitespace-nowrap"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             See exactly how many weddings you&apos;re{" "}
