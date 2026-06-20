@@ -4,7 +4,11 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
 
-const VENUES = [
+const STORYPAY_URL =
+  process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
+
+// Fallback list used only if the live API call fails
+const FALLBACK_VENUES = [
   "The Inn at Ragged Edge",
   "Arête Event Center",
   "Arbor Venues",
@@ -42,10 +46,22 @@ interface Props {
 }
 
 export default function FomoPopup({ signupHref, modalEvent, ctaLabel, mobileLift }: Props) {
+  const [venues, setVenues] = useState<string[]>([]);
   const [venueIndex, setVenueIndex] = useState(0);
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [animIn, setAnimIn] = useState(false);
+
+  // Fetch live venue names once on mount; newest → oldest order is from the API
+  useEffect(() => {
+    fetch(`${STORYPAY_URL}/api/public/recent-signups`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: { names?: string[] } | null) => {
+        const names = d?.names ?? [];
+        setVenues(names.length >= 2 ? names : FALLBACK_VENUES);
+      })
+      .catch(() => setVenues(FALLBACK_VENUES));
+  }, []);
 
   const show = useCallback((idx: number) => {
     setVenueIndex(idx);
@@ -62,18 +78,16 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel, mobileLift
     setTimeout(() => setVisible(false), 350);
   }, []);
 
+  // Start cycling once venues are loaded. Always starts at index 0 (newest).
   useEffect(() => {
-    if (dismissed) return;
+    if (dismissed || venues.length === 0) return;
 
     let hideTimer: ReturnType<typeof setTimeout>;
     let nextTimer: ReturnType<typeof setTimeout>;
-
-    // Shuffle order so it feels organic
-    const order = [...VENUES.keys()].sort(() => Math.random() - 0.5);
-    let step = 0;
+    let step = 0; // always starts at 0 (newest) on every page load/refresh
 
     const cycle = () => {
-      show(order[step % order.length]);
+      show(step % venues.length);
       hideTimer = setTimeout(hide, DISPLAY_MS);
       step += 1;
       nextTimer = setTimeout(cycle, DISPLAY_MS + GAP_MS);
@@ -86,9 +100,9 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel, mobileLift
       clearTimeout(hideTimer);
       clearTimeout(nextTimer);
     };
-  }, [dismissed, show, hide]);
+  }, [dismissed, venues, show, hide]);
 
-  if (dismissed || !visible) return null;
+  if (dismissed || !visible || venues.length === 0) return null;
 
   return (
     <>
@@ -149,7 +163,7 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel, mobileLift
                 fontFamily: "var(--font-open-sans, sans-serif)",
                 lineHeight: "1.3",
               }}>
-                {VENUES[venueIndex]}
+                {venues[venueIndex]}
               </p>
             </div>
 
