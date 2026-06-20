@@ -6,6 +6,7 @@ import StrategyNav from "@/components/strategy-call/StrategyNav";
 import PageFooter from "@/components/strategy-call/PageFooter";
 import BookExitNudge from "@/components/strategy-call/BookExitNudge";
 import { Reveal } from "@/components/strategy-call/Reveal";
+import FireQualifiedEvent from "@/components/strategy-call/FireQualifiedEvent";
 
 export const dynamic = "force-static";
 
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
 export default function StrategyCallBookPage() {
   return (
     <div className="min-h-screen flex flex-col bg-brand-bg">
+      <FireQualifiedEvent />
       <Script src="https://link.msgsndr.com/js/form_embed.js" strategy="afterInteractive" />
 
       {/* Sticky shell — marquee + nav scroll together (matches /strategy-call) */}

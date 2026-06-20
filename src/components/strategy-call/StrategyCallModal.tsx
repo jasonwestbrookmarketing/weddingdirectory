@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
 
@@ -31,9 +31,104 @@ const GHL_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
  * The survey prequalifies the lead, then GHL redirects them to the booking
  * calendar (/strategy-call/book) or the SaaS page (/book-more-weddings).
  */
+/** Fire a Meta pixel custom event from the parent window. */
+function firePixel(eventName: string) {
+  try {
+    const w = window as unknown as { fbq?: (...a: unknown[]) => void };
+    w.fbq?.("trackCustom", eventName);
+  } catch { /* non-fatal */ }
+}
+
+/**
+ * GHL survey postMessage listener.
+ *
+ * GHL's survey widget sends a postMessage when the respondent completes a
+ * step or submits the survey. The message format is not officially documented
+ * but field-tested patterns include:
+ *
+ *   { event: "leadConnectorSurveySubmit", redirectURL: "https://..." }
+ *   { type: "redirect", url: "https://..." }
+ *   { action: "redirect", redirectUrl: "https://..." }
+ *
+ * We listen for ANY message from a leadconnectorhq / msgsndr origin and
+ * extract a redirect URL from it. If the URL matches our known destinations
+ * we fire the appropriate pixel event and navigate window.top. This is the
+ * reliable fix because GHL survey iframes typically redirect THEMSELVES, not
+ * the parent window — so without this listener the parent page never changes
+ * and the Meta pixel never fires on the downstream pages.
+ */
+function useSurveyCompletionListener() {
+  const navigated = useRef(false);
+
+  useEffect(() => {
+    function onMessage(e: MessageEvent) {
+      if (navigated.current) return;
+
+      try {
+        const fromGhl =
+          typeof e.origin === "string" &&
+          /leadconnectorhq\.com|msgsndr\.com|gohighlevel\.com/.test(e.origin);
+        if (!fromGhl) return;
+
+        const data =
+          typeof e.data === "string" ? JSON.parse(e.data) : (e.data ?? {});
+
+        // Extract redirect URL from any of GHL's known message shapes
+        const redirectUrl: string =
+          data?.redirectURL ||
+          data?.redirect_url ||
+          data?.redirectUrl ||
+          data?.url ||
+          data?.data?.redirectURL ||
+          "";
+
+        // Completion signal — a redirect URL, or explicit submit / complete event
+        const isSubmit =
+          redirectUrl.length > 0 ||
+          /submit|complete|success/i.test(String(data?.event ?? "")) ||
+          /submit|complete|success/i.test(String(data?.type ?? "")) ||
+          /submit|complete|success/i.test(String(data?.action ?? ""));
+
+        if (!isSubmit) return;
+
+        navigated.current = true;
+
+        // Qualified → booking calendar
+        if (!redirectUrl || redirectUrl.includes("/strategy-call/book")) {
+          firePixel("QualifiedStrategyCall");
+          window.location.href = "/strategy-call/book";
+          return;
+        }
+
+        // Disqualified → SaaS promo / free listing page
+        if (
+          redirectUrl.includes("/strategy-call/start-free") ||
+          redirectUrl.includes("/book-more-weddings")
+        ) {
+          firePixel("DisqualifiedStrategyCall");
+          window.location.href = redirectUrl.startsWith("http")
+            ? new URL(redirectUrl).pathname
+            : redirectUrl;
+          return;
+        }
+
+        // Unknown redirect — navigate parent to whatever GHL configured
+        if (redirectUrl.startsWith("http")) {
+          window.location.href = redirectUrl;
+        }
+      } catch { /* ignore parse errors */ }
+    }
+
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
+}
+
 export default function StrategyCallModal() {
   const [open, setOpen] = useState(false);
   const [shown, setShown] = useState(false);
+
+  useSurveyCompletionListener();
 
   // Pre-load GHL script so the calendar is ready before first open
   useEffect(() => {

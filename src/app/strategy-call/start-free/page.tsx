@@ -5,6 +5,7 @@ import { CheckCircle2, Rocket, Globe, TrendingUp, ArrowRight } from "lucide-reac
 import PageFooter from "@/components/strategy-call/PageFooter";
 import { Reveal } from "@/components/strategy-call/Reveal";
 import FomoPopup from "@/components/marketing/FomoPopup";
+import FireDisqualifiedEvent from "@/components/strategy-call/FireDisqualifiedEvent";
 
 export const dynamic = "force-static";
 
@@ -56,6 +57,7 @@ const STEPS = [
 export default function StartFreePage() {
   return (
     <div className="min-h-screen flex flex-col bg-brand-bg">
+      <FireDisqualifiedEvent />
       <FomoPopup signupHref={FREE_SIGNUP_HREF} />
 
       {/* Cinematic hero — mirrors the homepage */}
