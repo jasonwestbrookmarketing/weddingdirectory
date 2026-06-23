@@ -155,7 +155,7 @@ export default async function VenuePage({ params, searchParams }: Props) {
               Log in
             </a>
             <a
-              href={`${STORYPAY_URL}/signup?as=couple`}
+              href={`${STORYPAY_URL}/signup`}
               className="text-sm font-semibold text-stone-900 bg-stone-100 hover:bg-stone-200 px-3 sm:px-4 py-2 rounded-xl transition-colors"
             >
               Sign up

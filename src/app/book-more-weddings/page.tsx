@@ -41,7 +41,7 @@ const STORYPAY_URL =
 // Free-plan signup. The dashboard app handles account creation, auto-login,
 // and the success-page redirect (where the Meta pixel fires). We never touch
 // LunarPay / subscription wiring from the directory site.
-const FREE_SIGNUP_HREF = `${STORYPAY_URL}/signup?as=venue&plan=free&utm_source=meta&utm_medium=paid&utm_campaign=book-more-weddings`;
+const FREE_SIGNUP_HREF = `${STORYPAY_URL}/signup`;
 
 // Cache-busting query string forces iMessage / Facebook / LinkedIn / X to
 // re-scrape the OG image instead of serving the old (calendar modal) preview.

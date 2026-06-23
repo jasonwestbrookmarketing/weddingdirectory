@@ -84,7 +84,7 @@ export default async function HomePage() {
             Log in
           </a>
           <a
-            href={`${STORYPAY_URL}/signup?as=couple`}
+            href={`${STORYPAY_URL}/signup`}
             className="whitespace-nowrap rounded-full bg-white text-stone-900 px-4 py-2 text-sm font-semibold hover:bg-white/90 active:scale-[0.98] transition-all shadow-sm"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
@@ -233,7 +233,7 @@ export default async function HomePage() {
       )}
 
       <SiteFooter />
-      <FomoPopup signupHref={`${STORYPAY_URL}/signup?as=venue&plan=free&utm_source=organic&utm_medium=homepage`} />
+      <FomoPopup signupHref={`${STORYPAY_URL}/signup`} />
     </>
   );
 }

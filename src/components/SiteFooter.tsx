@@ -7,9 +7,11 @@ const STORYPAY_URL =
 export default function SiteFooter() {
   return (
     <footer className="bg-stone-100 py-10 px-6 md:px-12 mt-auto">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Logo */}
-        <Link href="/" aria-label="StoryVenue home">
+      {/* Grid gives the copyright a true center column independent of
+          the logo/links widths. On mobile it stacks vertically. */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+        {/* Logo — left */}
+        <Link href="/" aria-label="StoryVenue home" className="flex md:justify-start justify-center">
           <Image
             src="/storyvenue-dark-logo.png"
             alt="StoryVenue"
@@ -19,13 +21,13 @@ export default function SiteFooter() {
           />
         </Link>
 
-        {/* Copyright */}
-        <p className="text-sm text-stone-500">
+        {/* Copyright — always perfectly centered */}
+        <p className="text-sm text-stone-500 text-center">
           &copy; {new Date().getFullYear()} StoryVenue. All rights reserved.
         </p>
 
-        {/* Links */}
-        <div className="flex items-center gap-5 text-sm text-stone-500">
+        {/* Links — right */}
+        <div className="flex items-center justify-center md:justify-end gap-5 text-sm text-stone-500">
           <a
             href={`${STORYPAY_URL}/privacy`}
             target="_blank"
@@ -43,7 +45,7 @@ export default function SiteFooter() {
             Terms of Use
           </a>
           <a
-            href={`${STORYPAY_URL}/signup?as=venue&plan=free&utm_source=storyvenue&utm_medium=site&utm_campaign=footer-list-venue`}
+            href={`${STORYPAY_URL}/signup`}
             className="hover:text-stone-900 transition-colors"
           >
             Start Free

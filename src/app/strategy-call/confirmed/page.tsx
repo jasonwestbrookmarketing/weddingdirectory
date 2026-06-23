@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
 
-const FREE_SIGNUP_HREF = `${STORYPAY_URL}/signup?as=venue&plan=free&utm_source=strategy-call&utm_medium=confirmed`;
+const FREE_SIGNUP_HREF = `${STORYPAY_URL}/signup`;
 
 const RESULTS = [
   { venue: "Atlantic Stables", stat: "$15k in weddings", period: "first 30 days" },
