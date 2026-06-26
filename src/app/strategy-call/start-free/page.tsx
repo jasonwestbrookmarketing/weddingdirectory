@@ -14,7 +14,7 @@ const STORYPAY_URL =
 
 // Free-plan signup — same flow as the rest of the site. Tagged so this
 // entry point (post-survey, earlier-stage venues) is trackable on its own.
-const FREE_SIGNUP_HREF = `${STORYPAY_URL}/signup`;
+const FREE_SIGNUP_HREF = `${STORYPAY_URL}/signup?as=venue&plan=free&utm_source=strategy-call&utm_medium=survey&utm_campaign=start-free`;
 
 // Distinct, no-index URL so the survey can route earlier-stage venues here and
 // the Meta pixel can fire a "free signup intent" conversion scoped to this URL.
