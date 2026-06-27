@@ -246,10 +246,71 @@ export default function BrideBookingSystemPage() {
       </div>
 
       {/* ============================================================== */}
-      {/* 1. HERO                                                         */}
+      {/* 1. HERO  — couple image setting mirrors /book-more-weddings      */}
       {/* ============================================================== */}
-      <section className="bg-white pt-12 pb-16 sm:pt-16 sm:pb-24">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+      <section className="relative bg-white overflow-hidden lg:pt-16 lg:pb-24">
+        {/* ── MOBILE / TABLET: couple image fading into the white section ── */}
+        <div
+          className="lg:hidden relative"
+          style={{
+            height: "min(54vw, 220px)",
+            minHeight: 170,
+            maskImage:
+              "linear-gradient(to bottom, black 0%, black 55%, rgba(0,0,0,0.6) 80%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, black 0%, black 55%, rgba(0,0,0,0.6) 80%, transparent 100%)",
+          }}
+        >
+          <Image
+            src="/hero-wedding-couple.jpg"
+            alt=""
+            aria-hidden
+            fill
+            priority
+            unoptimized
+            placeholder="empty"
+            className="object-cover"
+            sizes="100vw"
+            style={{ transform: "scaleX(-1)", objectPosition: "center 60%" }}
+          />
+        </div>
+
+        {/* ── DESKTOP: couple image bleeding in from the right ── */}
+        <div
+          className="hidden lg:block absolute inset-0 pointer-events-none"
+          style={{ transform: "translateX(8%)" }}
+        >
+          <Image
+            src="/hero-wedding-couple.jpg"
+            alt=""
+            aria-hidden
+            fill
+            priority
+            unoptimized
+            placeholder="empty"
+            className="object-cover"
+            sizes="100vw"
+            style={{ transform: "scaleX(-1)", objectPosition: "center center" }}
+          />
+        </div>
+        {/* Left fade — desktop only */}
+        <div
+          className="hidden lg:block absolute inset-y-0 left-0 w-[50%] z-[1] pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to right, white 0%, white 25%, rgba(255,255,255,0.92) 50%, rgba(255,255,255,0.4) 75%, transparent 100%)",
+          }}
+        />
+        {/* Right fade — desktop only */}
+        <div
+          className="hidden lg:block absolute inset-y-0 right-0 w-[40%] z-[1] pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to left, white 0%, white 15%, rgba(255,255,255,0.85) 45%, rgba(255,255,255,0.3) 75%, transparent 100%)",
+          }}
+        />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 -mt-8 lg:mt-0 pb-12 lg:pb-0 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left — copy */}
           <div className="lg:col-span-7 text-center lg:text-left">
             <h1
@@ -301,8 +362,8 @@ export default function BrideBookingSystemPage() {
             </div>
           </div>
 
-          {/* Right — phone mockup */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+          {/* Right — phone mockup (desktop only; mobile uses the couple image) */}
+          <div className="hidden lg:flex lg:col-span-5 justify-center lg:justify-end">
             <PhonePreview />
           </div>
         </div>
@@ -562,8 +623,21 @@ export default function BrideBookingSystemPage() {
       {/* ============================================================== */}
       {/* 9. SOCIAL PROOF                                                 */}
       {/* ============================================================== */}
-      <section className="bg-stone-900 text-white py-20 sm:py-28">
-        <div className="max-w-5xl mx-auto px-6 md:px-10">
+      <section className="relative bg-stone-900 text-white py-20 sm:py-28 overflow-hidden">
+        {/* Shared background image (same as /book-more-weddings) */}
+        <Image
+          src="/not-just-software-bg.jpg"
+          alt=""
+          aria-hidden
+          fill
+          unoptimized
+          placeholder="empty"
+          className="absolute inset-0 object-cover object-center"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-stone-900/70" />
+
+        <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-10">
           <div className="grid sm:grid-cols-3 gap-10 sm:gap-8 text-center">
             {STATS.map(({ value, label }) => (
               <div key={label}>
