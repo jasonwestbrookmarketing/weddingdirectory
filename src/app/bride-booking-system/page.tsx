@@ -19,6 +19,7 @@ import LossStack from "@/components/marketing/LossStack";
 import PhonePreview from "@/components/marketing/PhonePreview";
 import ScrollToTop from "@/components/marketing/ScrollToTop";
 import FomoPopup from "@/components/marketing/FomoPopup";
+import FireBrideBookingLandingEvent from "@/components/marketing/FireBrideBookingLandingEvent";
 
 export const dynamic = "force-static";
 
@@ -43,6 +44,7 @@ export const metadata: Metadata = {
   description:
     "Capture every bride, follow up in seconds, and book more tours. The booking system built only for wedding venues. 14-day free trial.",
   alternates: { canonical: "/bride-booking-system" },
+  robots: { index: false, follow: false },
 };
 
 /* -------------------------------------------------------------------- */
@@ -882,6 +884,9 @@ export default function BrideBookingSystemPage() {
 
       {/* FOMO social-proof popup */}
       <FomoPopup signupHref={TRIAL_HREF} />
+
+      {/* Meta Pixel — ViewContent + BrideBookingSystemLanding custom event */}
+      <FireBrideBookingLandingEvent />
     </>
   );
 }
