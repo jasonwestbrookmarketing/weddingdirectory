@@ -373,7 +373,7 @@ export default function BrideBookingSystemPage() {
                     ))}
                   </div>
                   <p className="text-[10px] sm:text-[11px] text-stone-500 mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>
-                    Trusted by venues nationwide
+                    Over 500+ Venues Served
                   </p>
                 </div>
               </div>
@@ -413,7 +413,9 @@ export default function BrideBookingSystemPage() {
             className="text-[26px] sm:text-4xl md:text-5xl text-stone-900 leading-[1.15]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Brides Are Looking For a Venue Like Yours. So Why Are They{" "}
+            Brides Are Looking For a Venue Like Yours.
+            <br />
+            So Why Are They{" "}
             <HighlighterText>Booking Somewhere Else?</HighlighterText>
           </h2>
           <div
@@ -440,10 +442,12 @@ export default function BrideBookingSystemPage() {
         <div className="max-w-5xl mx-auto px-6 md:px-10 grid lg:grid-cols-12 gap-10 items-center">
           <div className="lg:col-span-7">
             <h2
-              className="text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl text-balance text-stone-900 leading-[1.08]"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              Every Bride Who Slips Away Is More Than a Missed Inquiry.
+              Every Bride Who Slips Away{" "}
+              <br className="hidden lg:block" />
+              Is More Than a Missed Inquiry.
             </h2>
             <div
               className="mt-8 space-y-4 text-stone-600 text-base sm:text-lg leading-relaxed"
@@ -477,10 +481,11 @@ export default function BrideBookingSystemPage() {
             {/* Left — copy */}
             <div className="min-w-0">
               <h2
-                className="text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl lg:whitespace-nowrap text-stone-900 leading-[1.08]"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                Meet the Bride Booking System.
+                Meet the Bride Booking System
+                <sup style={{ fontSize: "0.45em", verticalAlign: "super" }}>™</sup>.
               </h2>
 
               <div
@@ -514,7 +519,7 @@ export default function BrideBookingSystemPage() {
       <section className="bg-white py-20 sm:py-28">
         <div className="max-w-5xl mx-auto px-6 md:px-10 text-center">
           <span
-            className="inline-flex items-center gap-1.5 rounded-full bg-stone-100 border border-stone-200 px-3.5 py-1.5 text-[12px] font-semibold text-stone-600"
+            className="inline-flex items-center gap-1.5 rounded-full bg-green-50 border border-green-200 px-3.5 py-1.5 text-[12px] font-semibold text-green-700"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             <Clock className="w-3.5 h-3.5" />
@@ -530,7 +535,7 @@ export default function BrideBookingSystemPage() {
             className="mt-6 text-base sm:text-lg text-stone-600 leading-relaxed max-w-3xl mx-auto"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Set it up once during onboarding. Share your listing link on your site, your social, your ads, anywhere brides find you. From that moment on, every bride who clicks gets captured, followed up with, and guided toward a tour. Automatically.
+            Easy to setup with our 5 minute install. Share your listing link on your site, your social, your ads, anywhere brides find you. From that moment on, every bride who clicks gets captured, followed up with, and guided toward a tour. Automatically.
           </p>
 
           {/* 3-card row */}
