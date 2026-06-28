@@ -849,7 +849,8 @@ export default function BrideBookingSystemPage() {
             className="text-[28px] sm:text-4xl md:text-5xl leading-[1.1]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Start Booking More Brides in 5 Minutes.
+            Start Booking More Brides{" "}
+            <span className="whitespace-nowrap">in 5 Minutes.</span>
           </h2>
           <p
             className="mt-5 text-base sm:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto"
