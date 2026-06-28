@@ -546,7 +546,8 @@ export default function BrideBookingSystemPage() {
             className="mt-5 text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Live in 5 Minutes. Working for You 24/7.
+            Live in 5 Minutes.{" "}
+            <span className="whitespace-nowrap">Working for You 24/7.</span>
           </h2>
           <p
             className="mt-6 text-base sm:text-lg text-stone-600 leading-relaxed max-w-3xl mx-auto"
@@ -586,7 +587,8 @@ export default function BrideBookingSystemPage() {
             className="text-center text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Everything You Need to Capture and Book More Brides. In One System.
+            Everything You Need to Capture and Book More Brides.{" "}
+            <span className="whitespace-nowrap">In One System.</span>
           </h2>
 
           <div className="mt-16 sm:mt-24 space-y-20 sm:space-y-28">
@@ -598,9 +600,9 @@ export default function BrideBookingSystemPage() {
                     key={title}
                     className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center"
                   >
-                    {/* Phone */}
+                    {/* Phone — always below copy on mobile (order-2), alternates on desktop */}
                     <div
-                      className={`flex justify-center ${
+                      className={`flex justify-center order-2 ${
                         reverse
                           ? "lg:justify-end lg:order-2"
                           : "lg:justify-start lg:order-1"
@@ -613,8 +615,8 @@ export default function BrideBookingSystemPage() {
                       />
                     </div>
 
-                    {/* Copy */}
-                    <div className={reverse ? "lg:order-1" : "lg:order-2"}>
+                    {/* Copy — always above phone on mobile (order-1), alternates on desktop */}
+                    <div className={`order-1 ${reverse ? "lg:order-1" : "lg:order-2"}`}>
                       <span
                         className="flex h-12 w-12 items-center justify-center rounded-2xl text-white"
                         style={
@@ -671,7 +673,9 @@ export default function BrideBookingSystemPage() {
               className="text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              Send Branded Proposals & Online Payments. With 0% Processing Fees.
+              Send Branded Proposals & Online Payments.{" "}
+              <br className="sm:hidden" />
+              <span className="whitespace-nowrap">With 0% Processing Fees.</span>
             </h2>
             <div
               className="mt-8 space-y-4 text-stone-600 text-base sm:text-lg leading-relaxed"
