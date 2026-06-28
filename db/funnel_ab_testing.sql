@@ -12,8 +12,13 @@ create table if not exists public.funnel_pages (
   page_key        text primary key,
   auto_pause      boolean not null default false,
   min_impressions integer not null default 200,
+  created_at      timestamptz not null default now(),
   updated_at      timestamptz not null default now()
 );
+
+-- Backfill for projects created before created_at existed.
+alter table public.funnel_pages
+  add column if not exists created_at timestamptz not null default now();
 
 create table if not exists public.funnel_variants (
   id          uuid primary key default gen_random_uuid(),
