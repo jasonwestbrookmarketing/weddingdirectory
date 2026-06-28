@@ -16,7 +16,6 @@ import {
 import SiteFooter from "@/components/SiteFooter";
 import HighlighterText from "@/components/marketing/HighlighterText";
 import LossStack from "@/components/marketing/LossStack";
-import DashboardMockup from "@/components/marketing/DashboardMockup";
 import PhonePreview from "@/components/marketing/PhonePreview";
 import ScrollToTop from "@/components/marketing/ScrollToTop";
 import FomoPopup from "@/components/marketing/FomoPopup";
@@ -504,9 +503,28 @@ export default function BrideBookingSystemPage() {
               </div>
             </div>
 
-            {/* Right — dashboard mockup */}
+            {/* Right — dashboard screenshot */}
             <div className="min-w-0 max-w-full overflow-hidden lg:max-w-none lg:overflow-visible lg:pr-4">
-              <DashboardMockup />
+              <div className="relative rounded-2xl overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.28)] border border-stone-200/60">
+                {/* Fake browser chrome */}
+                <div className="flex items-center gap-1.5 bg-stone-100 border-b border-stone-200 px-4 py-2.5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
+                  <div className="ml-3 flex-1 rounded-md bg-white border border-stone-200 px-3 py-1 text-[10px] text-stone-400 font-mono">
+                    app.storyvenue.com/dashboard
+                  </div>
+                </div>
+                <Image
+                  src="/dashboard-mockup.png"
+                  alt="Bride Booking System dashboard"
+                  width={1024}
+                  height={545}
+                  unoptimized
+                  placeholder="empty"
+                  className="w-full h-auto object-cover object-top"
+                />
+              </div>
             </div>
           </div>
         </div>
