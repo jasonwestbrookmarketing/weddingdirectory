@@ -20,8 +20,15 @@ import PhonePreview from "@/components/marketing/PhonePreview";
 import ScrollToTop from "@/components/marketing/ScrollToTop";
 import FomoPopup from "@/components/marketing/FomoPopup";
 import FireBrideBookingLandingEvent from "@/components/marketing/FireBrideBookingLandingEvent";
+import ExperimentTracker from "@/components/marketing/ExperimentTracker";
+import HeroTrialCTA from "@/components/marketing/HeroTrialCTA";
+import { getHeroSelection } from "@/lib/experiments";
 
-export const dynamic = "force-static";
+const PAGE_KEY = "bride-booking-system";
+
+// Rendered per request so the A/B bandit can pick the hero variant. The page is
+// noindex (paid traffic only) so there's no SEO cost to dynamic rendering.
+export const dynamic = "force-dynamic";
 
 const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
@@ -209,7 +216,9 @@ function PrimaryCTA({
 /*  Page                                                                  */
 /* -------------------------------------------------------------------- */
 
-export default function BrideBookingSystemPage() {
+export default async function BrideBookingSystemPage() {
+  const hero = await getHeroSelection(PAGE_KEY);
+
   return (
     <>
       {/* ============================================================== */}
@@ -336,21 +345,28 @@ export default function BrideBookingSystemPage() {
               className="text-[32px] sm:text-[44px] md:text-[52px] lg:text-[58px] leading-[1.08] text-stone-900"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              <span className="block">Start Booking More Brides</span>
-              <span className="block" style={{ color: "var(--color-brand-gold)" }}>
-                in 5 Minutes.
-              </span>
+              <span className="block">{hero.headline.line1}</span>
+              {hero.headline.line2 && (
+                <span className="block" style={{ color: "var(--color-brand-gold)" }}>
+                  {hero.headline.line2}
+                </span>
+              )}
             </h1>
 
             <p
               className="mt-4 sm:mt-5 text-[16px] sm:text-[19px] text-stone-700 leading-relaxed max-w-md lg:max-w-xl mx-auto lg:mx-0"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Stop losing brides to the venue that replied first.
+              {hero.subheadline.content}
             </p>
 
             <div className="mt-7 sm:mt-8 flex flex-col items-center lg:items-start">
-              <PrimaryCTA />
+              <HeroTrialCTA
+                href={TRIAL_HREF}
+                label={hero.cta.content}
+                page={PAGE_KEY}
+                variantIds={hero.variantIds}
+              />
               <p
                 className="mt-3 text-[12px] sm:text-[13px] text-stone-500"
                 style={{ fontFamily: "var(--font-open-sans)" }}
@@ -887,6 +903,9 @@ export default function BrideBookingSystemPage() {
 
       {/* Meta Pixel — ViewContent + BrideBookingSystemLanding custom event */}
       <FireBrideBookingLandingEvent />
+
+      {/* A/B impression beacon for the hero variants shown this render */}
+      <ExperimentTracker page={PAGE_KEY} variantIds={hero.variantIds} />
     </>
   );
 }
