@@ -722,7 +722,7 @@ export default function BrideBookingSystemPage() {
                   {value}
                 </p>
                 <p
-                  className="mt-3 text-[13px] sm:text-sm text-white/60 leading-snug max-w-[200px] mx-auto"
+                  className="mt-3 text-[13px] sm:text-sm text-white/60 leading-snug whitespace-nowrap"
                   style={{ fontFamily: "var(--font-open-sans)" }}
                 >
                   {label}
