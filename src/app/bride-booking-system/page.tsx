@@ -71,10 +71,10 @@ const CORE_FEATURES: Array<{
   },
   {
     icon: BookOpen,
-    title: "Pricing & Planning Guide",
+    title: "Pricing & Availability Guide",
     description:
       "Give brides the pricing they want instantly, so they reach out ready to talk.",
-    screenshotSrc: "/phone-proposals.png",
+    screenshotSrc: "/phone-pricing-guide.png",
     badgeLabel: "Guide sent",
     badgeDetail: "Pricing delivered ✓",
   },
@@ -101,7 +101,7 @@ const CORE_FEATURES: Array<{
     title: "Venue Calendar",
     description:
       "Tours and dates booked in one calendar, no back and forth.",
-    screenshotSrc: "/phone-venue.png",
+    screenshotSrc: "/phone-calendar.png",
     badgeLabel: "Tour booked",
     badgeDetail: "Sat, Nov 8 · 2:00 PM",
   },
@@ -729,7 +729,7 @@ export default function BrideBookingSystemPage() {
       {/* 10. GUARANTEE                                                   */}
       {/* ============================================================== */}
       <section className="bg-white py-20 sm:py-28">
-        <div className="max-w-2xl mx-auto px-6 md:px-10">
+        <div className="max-w-3xl mx-auto px-6 md:px-10">
           <div className="rounded-3xl border border-stone-200 bg-stone-50/60 px-8 py-12 sm:px-12 sm:py-14 text-center shadow-[0_24px_60px_-30px_rgba(0,0,0,0.18)]">
             <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-stone-900 text-white">
               <Shield className="w-6 h-6" />
@@ -744,10 +744,10 @@ export default function BrideBookingSystemPage() {
               className="mt-6 space-y-4 text-stone-600 text-base sm:text-lg leading-relaxed"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              <p>
+              <p className="lg:whitespace-nowrap">
                 Start your 14-day free trial and use the entire Bride Booking System.
               </p>
-              <p>
+              <p className="lg:whitespace-nowrap">
                 Downgrade to the free plan anytime and keep your listing live.
               </p>
             </div>
