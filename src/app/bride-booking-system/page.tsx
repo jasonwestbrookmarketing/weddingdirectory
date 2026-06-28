@@ -132,10 +132,10 @@ const STEPS: Array<{
   },
 ];
 
-const STATS: Array<{ value: string; label: string }> = [
-  { value: "258", label: "Leads in 60 Days" },
-  { value: "$15,000", label: "in Booked Weddings in 30 Days" },
-  { value: "2", label: "Weddings Booked in 7 Days" },
+const STATS: Array<{ value: string; venue: string; label: string }> = [
+  { value: "$15k", venue: "Atlantic Stables", label: "In booked weddings the first 30 days" },
+  { value: "$8,000", venue: "Waterloo Farms", label: "In booked weddings the first 7 days" },
+  { value: "258", venue: "Retreat at Evans Farms", label: "Leads in 60 days" },
 ];
 
 const LOGOS = [
@@ -161,7 +161,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What happens after the 14-day free trial?",
-    a: "You continue on the Bride Booking System for $97/month, or downgrade to the free plan anytime and keep your listing live. You're never locked in.",
+    a: "You continue on the Bride Booking System™ for $97/month, or downgrade to the free plan anytime and keep your listing live. You're never locked in.",
   },
   {
     q: "Is there a contract?",
@@ -173,7 +173,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What makes this different from a directory or an agency?",
-    a: "Directories list you next to every competitor. Agencies just send traffic. The Bride Booking System captures every bride, follows up in seconds, and books tours for you. It's built to get you booked, not just seen.",
+    a: "Directories list you next to every competitor. Agencies just send traffic. The Bride Booking System™ captures every bride, follows up in seconds, and books tours for you. It's built to get you booked, not just seen.",
   },
 ] as const;
 
@@ -484,8 +484,7 @@ export default function BrideBookingSystemPage() {
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl lg:whitespace-nowrap text-stone-900 leading-[1.08]"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                Meet the Bride Booking System
-                <sup style={{ fontSize: "0.45em", verticalAlign: "super" }}>™</sup>.
+                Meet the Bride Booking System<sup style={{ fontSize: "0.45em", verticalAlign: "super", fontWeight: 500 }}>™</sup>.
               </h2>
 
               <div
@@ -493,7 +492,7 @@ export default function BrideBookingSystemPage() {
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
                 <p>
-                  The complete system that turns bride inquiries into booked tours, built only for wedding venues.
+                  The complete Bride Booking System™ that turns bride inquiries into booked tours, built only for wedding venues.
                 </p>
                 <p>
                   It captures every bride who finds you, follows up in seconds, and keeps the conversation moving until she books. So you&apos;re always the venue that replied first.
@@ -690,8 +689,14 @@ export default function BrideBookingSystemPage() {
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-10">
           <div className="grid sm:grid-cols-3 gap-10 sm:gap-8 text-center">
-            {STATS.map(({ value, label }) => (
+            {STATS.map(({ value, venue, label }) => (
               <div key={label}>
+                <p
+                  className="text-[11px] font-semibold tracking-[0.18em] uppercase text-white/40 mb-3"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
+                  {venue}
+                </p>
                 <p
                   className="text-5xl sm:text-6xl text-white leading-none"
                   style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
@@ -745,7 +750,7 @@ export default function BrideBookingSystemPage() {
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               <p className="lg:whitespace-nowrap">
-                Start your 14-day free trial and use the entire Bride Booking System.
+                Start your 14-day free trial and use the entire Bride Booking System™.
               </p>
               <p className="lg:whitespace-nowrap">
                 Downgrade to the free plan anytime and keep your listing live.
@@ -828,7 +833,7 @@ export default function BrideBookingSystemPage() {
             className="mt-5 text-base sm:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Set up your Bride Booking System, share your link, and start turning brides into booked tours. Free for 14 days. Downgrade anytime.
+            Set up your Bride Booking System™, share your link, and start turning brides into booked tours. Free for 14 days. Downgrade anytime.
           </p>
 
           <div className="mt-10 flex justify-center">
