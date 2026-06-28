@@ -412,10 +412,9 @@ export default function BrideBookingSystemPage() {
             className="text-[26px] sm:text-4xl md:text-5xl text-stone-900 leading-[1.15]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Brides Are Looking For a Venue{" "}
-            <span className="whitespace-nowrap">Like Yours.</span>
-            <br />
-            So Why Are They{" "}
+            Brides Are Looking For a Venue
+            <br className="sm:hidden" />
+            {" "}Like Yours. So Why Are They{" "}
             <HighlighterText>Booking Somewhere Else?</HighlighterText>
           </h2>
           <div
