@@ -55,24 +55,37 @@ const CORE_FEATURES: Array<{
   title: string;
   description: string;
   elevated?: boolean;
+  /** Mobile screenshot shown in the phone. Omit to use the live activity feed. */
+  screenshotSrc?: string;
+  badgeLabel: string;
+  badgeDetail: string;
 }> = [
   {
     icon: Store,
     title: "Venue Listing Page",
     description:
       "A page built to turn bride clicks into inquiries. No website needed.",
+    screenshotSrc: "/phone-directory-listing.png",
+    badgeLabel: "Listing live",
+    badgeDetail: "Red Barn Acres ✓",
   },
   {
     icon: BookOpen,
     title: "Pricing & Planning Guide",
     description:
       "Give brides the pricing they want instantly, so they reach out ready to talk.",
+    screenshotSrc: "/phone-proposals.png",
+    badgeLabel: "Guide sent",
+    badgeDetail: "Pricing delivered ✓",
   },
   {
     icon: Inbox,
     title: "Lead Inbox",
     description:
       "Every bride lands in one place. Nothing slips through the cracks.",
+    screenshotSrc: "/phone-leads.png",
+    badgeLabel: "New lead",
+    badgeDetail: "Jonathan B. · just now",
   },
   {
     icon: Zap,
@@ -80,12 +93,17 @@ const CORE_FEATURES: Array<{
     description:
       "Every new inquiry gets followed up in seconds, so you're always first.",
     elevated: true,
+    badgeLabel: "Auto follow-up",
+    badgeDetail: "Replied in 12s ✓",
   },
   {
     icon: CalendarDays,
     title: "Venue Calendar",
     description:
       "Tours and dates booked in one calendar, no back and forth.",
+    screenshotSrc: "/phone-venue.png",
+    badgeLabel: "Tour booked",
+    badgeDetail: "Sat, Nov 8 · 2:00 PM",
   },
 ];
 
@@ -355,7 +373,7 @@ export default function BrideBookingSystemPage() {
                     ))}
                   </div>
                   <p className="text-[10px] sm:text-[11px] text-stone-500 mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>
-                    Trusted by venues booking more weddings every week
+                    Trusted by venues nationwide
                   </p>
                 </div>
               </div>
@@ -372,7 +390,7 @@ export default function BrideBookingSystemPage() {
       {/* ============================================================== */}
       {/* 2. LOGO WALL                                                    */}
       {/* ============================================================== */}
-      <div className="bg-white pb-16 lg:pb-10 overflow-hidden">
+      <div className="bg-white py-12 lg:py-10 overflow-hidden">
         <div className="flex animate-[ticker_28s_linear_infinite] lg:animate-[ticker_60s_linear_infinite] whitespace-nowrap gap-10 lg:gap-16 items-center">
           {[...LOGOS, ...LOGOS].map(({ src, alt, h }, i) => (
             <div key={i} className="shrink-0 flex items-center justify-center">
@@ -389,7 +407,7 @@ export default function BrideBookingSystemPage() {
       {/* ============================================================== */}
       {/* 3. PAIN                                                         */}
       {/* ============================================================== */}
-      <section className="bg-stone-50/70 py-20 sm:py-28 border-y border-stone-200/60">
+      <section className="bg-stone-50/70 py-20 sm:py-28 border-b border-stone-200/60">
         <div className="max-w-5xl mx-auto px-6 md:px-10">
           <h2
             className="text-[26px] sm:text-4xl md:text-5xl text-stone-900 leading-[1.15]"
@@ -549,39 +567,67 @@ export default function BrideBookingSystemPage() {
             Everything You Need to Capture and Book More Brides. In One System.
           </h2>
 
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {CORE_FEATURES.map(({ icon: Icon, title, description, elevated }) => (
-              <div
-                key={title}
-                className={`relative rounded-2xl p-6 transition-all hover:-translate-y-0.5 ${
-                  elevated
-                    ? "bg-white border-2 shadow-[0_18px_40px_-18px_rgba(138,116,72,0.4)]"
-                    : "bg-white border border-stone-200/80 hover:shadow-[0_14px_32px_-15px_rgba(0,0,0,0.14)]"
-                }`}
-                style={elevated ? { borderColor: "var(--color-brand-gold)" } : undefined}
-              >
-                {elevated && (
-                  <span
-                    className="absolute top-5 right-5 inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"
-                    style={{ backgroundColor: "var(--color-brand-gold)", fontFamily: "var(--font-open-sans)" }}
+          <div className="mt-16 sm:mt-24 space-y-20 sm:space-y-28">
+            {CORE_FEATURES.map(
+              ({ icon: Icon, title, description, elevated, screenshotSrc, badgeLabel, badgeDetail }, i) => {
+                const reverse = i % 2 === 1;
+                return (
+                  <div
+                    key={title}
+                    className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center"
                   >
-                    Your edge
-                  </span>
-                )}
-                <span
-                  className="flex h-10 w-10 items-center justify-center rounded-xl text-white"
-                  style={elevated ? { backgroundColor: "var(--color-brand-gold)" } : { backgroundColor: "#1c1917" }}
-                >
-                  <Icon className="w-[17px] h-[17px]" />
-                </span>
-                <h3 className="mt-4 text-[16px] font-bold text-stone-900" style={{ fontFamily: "var(--font-open-sans)" }}>
-                  {title}
-                </h3>
-                <p className="mt-1.5 text-[13px] text-stone-500 leading-relaxed" style={{ fontFamily: "var(--font-open-sans)" }}>
-                  {description}
-                </p>
-              </div>
-            ))}
+                    {/* Phone */}
+                    <div
+                      className={`flex justify-center ${
+                        reverse
+                          ? "lg:justify-end lg:order-2"
+                          : "lg:justify-start lg:order-1"
+                      }`}
+                    >
+                      <PhonePreview
+                        screenshotSrc={screenshotSrc}
+                        badgeLabel={badgeLabel}
+                        badgeDetail={badgeDetail}
+                      />
+                    </div>
+
+                    {/* Copy */}
+                    <div className={reverse ? "lg:order-1" : "lg:order-2"}>
+                      <span
+                        className="flex h-12 w-12 items-center justify-center rounded-2xl text-white"
+                        style={
+                          elevated
+                            ? { backgroundColor: "var(--color-brand-gold)" }
+                            : { backgroundColor: "#1c1917" }
+                        }
+                      >
+                        <Icon className="w-5 h-5" />
+                      </span>
+                      {elevated && (
+                        <span
+                          className="mt-4 inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"
+                          style={{ backgroundColor: "var(--color-brand-gold)", fontFamily: "var(--font-open-sans)" }}
+                        >
+                          Your edge
+                        </span>
+                      )}
+                      <h3
+                        className="mt-4 text-2xl sm:text-3xl md:text-4xl text-stone-900 leading-[1.1]"
+                        style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+                      >
+                        {title}
+                      </h3>
+                      <p
+                        className="mt-4 text-base sm:text-lg text-stone-600 leading-relaxed max-w-md"
+                        style={{ fontFamily: "var(--font-open-sans)" }}
+                      >
+                        {description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              }
+            )}
           </div>
         </div>
       </section>
