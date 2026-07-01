@@ -5,9 +5,13 @@ import { MapPin, X, Check, ChevronDown, ChevronUp } from "lucide-react";
 import {
   VENUE_TYPES,
   INDOOR_OUTDOOR_OPTIONS,
-  AMENITIES_LIST,
   BUDGET_RANGES,
 } from "@/lib/constants";
+import { VENUE_FEATURE_OPTIONS } from "@/lib/venue-features";
+
+// Amenity filter options mirror the dashboard's feature picker so filters
+// match what venues actually store. Value and label are the same string.
+const AMENITY_OPTIONS = VENUE_FEATURE_OPTIONS.map((f) => ({ value: f, label: f }));
 
 export interface SearchFilters {
   location: string;
@@ -58,8 +62,8 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
   };
 
   const visibleAmenities = amenitiesExpanded
-    ? AMENITIES_LIST
-    : AMENITIES_LIST.slice(0, AMENITY_INITIAL_VISIBLE);
+    ? AMENITY_OPTIONS
+    : AMENITY_OPTIONS.slice(0, AMENITY_INITIAL_VISIBLE);
 
   const hasFilters =
     filters.location ||
@@ -219,7 +223,7 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
               );
             })}
           </div>
-          {AMENITIES_LIST.length > AMENITY_INITIAL_VISIBLE && (
+          {AMENITY_OPTIONS.length > AMENITY_INITIAL_VISIBLE && (
             <button
               type="button"
               onClick={() => setAmenitiesExpanded((v) => !v)}
@@ -231,7 +235,7 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
                 </>
               ) : (
                 <>
-                  Show all {AMENITIES_LIST.length} amenities <ChevronDown className="h-3 w-3" />
+                  Show all {AMENITY_OPTIONS.length} amenities <ChevronDown className="h-3 w-3" />
                 </>
               )}
             </button>

@@ -9,6 +9,8 @@ import { Search, SlidersHorizontal, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { trackEvent } from "@/lib/analytics";
 import { BUDGET_RANGES } from "@/lib/constants";
+import { venueHasFeature } from "@/lib/venue-features";
+import { locationHaystack } from "@/lib/format-location";
 import SiteFooter from "@/components/SiteFooter";
 import FilterPanel, { type SearchFilters, DEFAULT_FILTERS } from "@/components/search/FilterPanel";
 import VenueCard from "@/components/search/VenueCard";
@@ -18,6 +20,42 @@ const VenueMap = dynamic(() => import("@/components/search/VenueMap"), { ssr: fa
 
 const STORYPAY_URL = process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
 const PAGE_SIZE = 12;
+
+/** How far from a searched zip code a venue can be and still show up. */
+const ZIP_RADIUS_MILES = 50;
+
+const zipCache = new Map<string, { lat: number; lng: number } | null>();
+
+/** Zip → coordinates via Nominatim (same provider as the venue maps). */
+async function geocodeZip(zip: string): Promise<{ lat: number; lng: number } | null> {
+  if (zipCache.has(zip)) return zipCache.get(zip)!;
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/search?postalcode=${zip}&country=us&format=json&limit=1`,
+      { headers: { Accept: "application/json" } }
+    );
+    const rows = (await res.json()) as { lat: string; lon: string }[];
+    const hit = rows?.[0]
+      ? { lat: parseFloat(rows[0].lat), lng: parseFloat(rows[0].lon) }
+      : null;
+    const result = hit && Number.isFinite(hit.lat) && Number.isFinite(hit.lng) ? hit : null;
+    zipCache.set(zip, result);
+    return result;
+  } catch {
+    return null;
+  }
+}
+
+/** Haversine distance in miles. */
+function distanceMiles(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return 3958.8 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 
 function SearchContent() {
   const searchParams = useSearchParams();
@@ -49,36 +87,85 @@ function SearchContent() {
     setLoading(true);
     const supabase = createClient();
 
+    // Only cheap, structurally-safe filters run in the database. Everything
+    // nuanced (free-text location, zip radius, indoor/outdoor "both",
+    // amenity vocabulary) is filtered client-side below — the result set is
+    // small (≤200 rows) and this avoids PostgREST syntax pitfalls that used
+    // to silently zero out results.
     let query = supabase
       .from("venues")
       .select("*")
       .eq("is_published", true)
       .neq("is_demo", true);
 
-    if (f.location) {
-      query = query.or(
-        `location_full.ilike.%${f.location}%,location_city.ilike.%${f.location}%,location_state.ilike.%${f.location}%`
-      );
-    }
     if (f.guests) {
       const g = Number(f.guests);
-      query = query.gte("capacity_max", g);
+      if (Number.isFinite(g) && g > 0) query = query.gte("capacity_max", g);
     }
+    if (f.style) query = query.eq("venue_type", f.style);
+
+    const { data, error } = await query
+      .order("created_at", { ascending: false })
+      .limit(200);
+    if (error) console.error("[search] venue query failed:", error.message);
+
+    let rows = (data ?? []) as Venue[];
+
+    // ── Budget: price range overlap ─────────────────────────────────────
     if (f.budget) {
       const range = BUDGET_RANGES.find((r) => r.value === f.budget);
       if (range) {
-        query = query.lte("price_min", range.max).gte("price_max", range.min);
+        rows = rows.filter((v) => {
+          if (v.price_min == null && v.price_max == null) return false;
+          const lo = v.price_min ?? v.price_max ?? 0;
+          const hi = v.price_max ?? v.price_min ?? lo;
+          return lo <= range.max && hi >= range.min;
+        });
       }
     }
-    if (f.style) query = query.eq("venue_type", f.style);
-    if (f.indoor_outdoor) query = query.eq("indoor_outdoor", f.indoor_outdoor);
-    if (f.amenities.length > 0) {
-      query = query.contains("amenities", f.amenities);
+
+    // ── Setting: a venue marked "both" satisfies indoor OR outdoor ──────
+    if (f.indoor_outdoor) {
+      rows = rows.filter(
+        (v) =>
+          v.indoor_outdoor === f.indoor_outdoor || v.indoor_outdoor === "both"
+      );
     }
 
-    const { data } = await query.order("created_at", { ascending: false }).limit(200);
+    // ── Amenities: every selected amenity must be present (vocabulary-
+    //    normalized so legacy stored values still match) ─────────────────
+    if (f.amenities.length > 0) {
+      rows = rows.filter((v) =>
+        f.amenities.every((a) => venueHasFeature(v.features, a))
+      );
+    }
 
-    const sorted = (data ?? []).slice().sort((a, b) => {
+    // ── Location: zip → radius search around the zip's coordinates;
+    //    anything else → token text match on city/state/full address ─────
+    const loc = f.location.trim();
+    if (loc) {
+      const zipMatch = loc.match(/^\d{5}(-\d{4})?$/);
+      if (zipMatch) {
+        const zip5 = loc.slice(0, 5);
+        const center = await geocodeZip(zip5);
+        rows = rows.filter((v) => {
+          // Exact zip stored in the address always matches.
+          if ((v.location_full ?? "").includes(zip5)) return true;
+          if (center && v.lat != null && v.lng != null) {
+            return distanceMiles(center.lat, center.lng, Number(v.lat), Number(v.lng)) <= ZIP_RADIUS_MILES;
+          }
+          return false;
+        });
+      } else {
+        const tokens = loc.toLowerCase().split(/[,\s]+/).filter(Boolean);
+        rows = rows.filter((v) => {
+          const hay = locationHaystack(v.location_full, v.location_city, v.location_state);
+          return tokens.every((t) => hay.includes(t));
+        });
+      }
+    }
+
+    const sorted = rows.slice().sort((a, b) => {
       const sp =
         Number(b.directory_sponsored_status === "approved") -
         Number(a.directory_sponsored_status === "approved");

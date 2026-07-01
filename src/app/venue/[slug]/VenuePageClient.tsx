@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { formatLocation, formatLocationFull } from "@/lib/format-location";
+import { humanizeFeature } from "@/lib/venue-features";
 import Image from "next/image";
 import {
   MapPin,
@@ -430,12 +431,33 @@ export default function VenuePageClient({
     venue.show_map !== false && venue.lat != null && venue.lng != null;
   const hasSocial = Object.keys(socialIconLinks).length > 0;
   const hasFaq = faqItems.length > 0;
-  const groupedFeatures = FEATURE_GROUPS.map((g) => ({
-    label: g.label,
-    labels: g.items
-      .filter((item) => features.includes(item.value))
-      .map((item) => item.label),
-  })).filter((g) => g.labels.length > 0);
+  // Group stored features for display. Legacy rows store snake_case values
+  // matched against the constants lists; current dashboard rows store the
+  // human-readable labels directly — those (and anything unrecognized) fall
+  // into the Amenities bucket, humanized.
+  const groupedFeatures = (() => {
+    const matched = new Set<string>();
+    const groups: { label: string; labels: string[] }[] = FEATURE_GROUPS.map((g) => ({
+      label: g.label,
+      labels: g.items
+        .filter((item) => {
+          const hit = features.includes(item.value);
+          if (hit) matched.add(item.value);
+          return hit;
+        })
+        .map((item) => item.label),
+    }));
+    const leftovers = features
+      .filter((f) => !matched.has(f))
+      .map((f) => humanizeFeature(f));
+    if (leftovers.length > 0) {
+      const amenities = groups.find((g) => g.label === "Amenities")!;
+      for (const label of leftovers) {
+        if (!amenities.labels.includes(label)) amenities.labels.push(label);
+      }
+    }
+    return groups.filter((g) => g.labels.length > 0);
+  })();
   const allPhotos = [
     ...(venue.cover_image_url ? [venue.cover_image_url] : []),
     ...galleryImages.filter((url) => url !== venue.cover_image_url),

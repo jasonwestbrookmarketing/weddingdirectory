@@ -84,6 +84,34 @@ export function formatLocation(
   return cleaned[0];
 }
 
+const ABBR_TO_NAME: Record<string, string> = Object.fromEntries(
+  Object.entries(STATE_ABBR).map(([name, ab]) => [ab, name])
+);
+
+/**
+ * Builds a lowercase searchable string for a venue's location, expanding
+ * state abbreviations to full names (and vice versa) so "TN", "Tennessee",
+ * "Franklin, TN" and zip codes embedded in location_full all match.
+ */
+export function locationHaystack(
+  full: string | null | undefined,
+  city: string | null | undefined,
+  state: string | null | undefined,
+): string {
+  const parts: string[] = [];
+  if (full) parts.push(full);
+  if (city) parts.push(city);
+  if (state) {
+    const s = state.trim();
+    parts.push(s);
+    const lower = s.toLowerCase();
+    // "TN" → also index "tennessee"; "Tennessee" → also index "tn"
+    if (ABBR_TO_NAME[s.toUpperCase()]) parts.push(ABBR_TO_NAME[s.toUpperCase()]);
+    if (STATE_ABBR[lower]) parts.push(STATE_ABBR[lower]);
+  }
+  return parts.join(" ").toLowerCase();
+}
+
 /**
  * Returns a clean full address for venue detail pages:
  *   "1090 Ragged Edge Road, Chambersburg, PA 17202"
@@ -105,36 +133,85 @@ export function formatLocationFull(
 ): string {
   if (!full) return "";
 
-  const parts = full.split(",").map((p) => p.trim()).filter(Boolean);
-
-  // Extract zip anywhere in the string
-  const zipRaw = parts.find((p) => isZip(p));
-  const zip = zipRaw ? zipRaw.replace(/-\d{4}$/, "") : "";
-
-  // Resolve state abbreviation — prefer DB field
-  const resolvedState = state?.trim() ? abbr(state.trim()) : "";
-
-  // Resolve city — prefer DB field
+  // Prefer DB fields for city/state; fall back to whatever we parse out.
   const resolvedCity = city?.trim() || "";
+  let resolvedState = state?.trim() ? abbr(state.trim()) : "";
+  let zip = "";
 
-  // Keep only street-level parts: drop noise, zips, state names, and the city itself
-  const streetParts = parts.filter((p) => {
-    if (isNoise(p)) return false;
-    if (isZip(p)) return false;
-    if (isState(p)) return false;
-    if (resolvedCity && p.toLowerCase() === resolvedCity.toLowerCase()) return false;
-    return true;
-  });
+  const rawParts = full.split(",").map((p) => p.trim()).filter(Boolean);
+  const streetParts: string[] = [];
+
+  for (const part of rawParts) {
+    // Standalone zip part: "17202"
+    if (isZip(part)) {
+      zip = zip || part.replace(/-\d{4}$/, "");
+      continue;
+    }
+    // Combined state + zip part: "PA 17202" / "Pennsylvania 17202" — this is
+    // the exact format the dashboard's address picker saves.
+    const stateZipMatch = part.match(/^(.+?)\s+(\d{5})(?:-\d{4})?$/);
+    if (stateZipMatch && isState(stateZipMatch[1])) {
+      if (!resolvedState) resolvedState = abbr(stateZipMatch[1]);
+      zip = zip || stateZipMatch[2];
+      continue;
+    }
+    if (isNoise(part)) continue;
+    if (isState(part)) {
+      if (!resolvedState) resolvedState = abbr(part);
+      continue;
+    }
+    if (resolvedCity && part.toLowerCase() === resolvedCity.toLowerCase()) continue;
+    streetParts.push(part);
+  }
+
+  // Free-typed address without commas ("1090 Ragged Edge Rd Chambersburg PA
+  // 17202"): peel trailing zip / state / city tokens off the single part.
+  if (rawParts.length === 1 && streetParts.length === 1) {
+    let s = streetParts[0];
+    const zipTail = s.match(/\s+(\d{5})(?:-\d{4})?\s*$/);
+    if (zipTail) {
+      zip = zip || zipTail[1];
+      s = s.slice(0, zipTail.index).trim();
+    }
+    for (const wordCount of [2, 1]) {
+      const tokens = s.split(/\s+/);
+      if (tokens.length > wordCount) {
+        const tail = tokens.slice(-wordCount).join(" ");
+        if (isState(tail)) {
+          if (!resolvedState) resolvedState = abbr(tail);
+          s = tokens.slice(0, -wordCount).join(" ");
+          break;
+        }
+      }
+    }
+    if (resolvedCity && s.toLowerCase().endsWith(resolvedCity.toLowerCase())) {
+      s = s.slice(0, s.length - resolvedCity.length).trim().replace(/,$/, "");
+    }
+    streetParts[0] = s;
+  }
+
+  // No DB city: the last remaining part is usually the city (Nominatim puts
+  // street components first). With exactly 2 parts, only pop when the first
+  // contains letters — ["1090", "Ragged Edge Road"] is house number + road.
+  let cityFromFull = "";
+  if (
+    !resolvedCity &&
+    (streetParts.length >= 3 ||
+      (streetParts.length === 2 && /[a-z]/i.test(streetParts[0])))
+  ) {
+    cityFromFull = streetParts.pop()!;
+  }
 
   // Nominatim format: house_number, road, [sub-locality…], [city…]
   // The first 2 street parts are house number + road name; anything beyond
   // that is sub-locality noise (village, hamlet, etc.) — drop it.
   const streetAddress = streetParts.slice(0, 2).join(" ").trim();
 
-  // Build city/state/zip segment
+  // Build "City, ST 12345"
+  const displayCity = resolvedCity || cityFromFull;
   const stateZip = [resolvedState, zip].filter(Boolean).join(" ");
-  const cityLine = resolvedCity
-    ? stateZip ? `${resolvedCity}, ${stateZip}` : resolvedCity
+  const cityLine = displayCity
+    ? stateZip ? `${displayCity}, ${stateZip}` : displayCity
     : stateZip;
 
   return [streetAddress, cityLine].filter(Boolean).join(", ");
