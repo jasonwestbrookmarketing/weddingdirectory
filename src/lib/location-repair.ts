@@ -34,14 +34,15 @@ function parsed(venue: LocatableVenue) {
 
 /**
  * True when the stored address is missing its city, state, or zip and we
- * have something to repair it from (coordinates or an existing zip).
+ * have something to repair it from: coordinates (reverse geocode), a zip
+ * (postal-city lookup), or a street address (forward geocode).
  */
 export function needsLocationRepair(venue: LocatableVenue): boolean {
   const hasCoords = venue.lat != null && venue.lng != null;
   if (!venue.location_full) return hasCoords;
   const p = parsed(venue);
   const incomplete = !p.city || !p.zip || !p.state;
-  return incomplete && (hasCoords || !!p.zip);
+  return incomplete && (hasCoords || !!p.zip || !!p.street);
 }
 
 type NomAddress = {
@@ -84,6 +85,61 @@ async function postalCityForZip(
     return {
       city: place["place name"],
       state: place["state abbreviation"] ?? "",
+    };
+  } catch {
+    return null;
+  }
+}
+
+/** "BRAZIL" → "Brazil" — the Census geocoder returns ALL-CAPS components. */
+function titleCase(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/\b[a-z]/g, (c) => c.toUpperCase());
+}
+
+type CensusMatch = {
+  zip: string;
+  city: string;
+  state: string;
+  lat: number | null;
+  lng: number | null;
+};
+
+/**
+ * Forward-geocode a street address via the free US Census geocoder — the
+ * fallback for venues with no coordinates stored. Returns zip, city, state,
+ * and coordinates for the matched address.
+ */
+async function censusGeocode(address: string): Promise<CensusMatch | null> {
+  try {
+    const res = await fetch(
+      `https://geocoding.geo.census.gov/geocoder/locations/onelineaddress` +
+        `?address=${encodeURIComponent(address)}` +
+        `&benchmark=Public_AR_Current&format=json`,
+      {
+        headers: { Accept: "application/json" },
+        next: { revalidate: 60 * 60 * 24 * 30 },
+      }
+    );
+    if (!res.ok) return null;
+    const data = (await res.json()) as {
+      result?: {
+        addressMatches?: {
+          coordinates?: { x?: number; y?: number };
+          addressComponents?: { zip?: string; city?: string; state?: string };
+        }[];
+      };
+    };
+    const m = data.result?.addressMatches?.[0];
+    if (!m) return null;
+    const c = m.addressComponents ?? {};
+    return {
+      zip: c.zip ?? "",
+      city: c.city ? titleCase(c.city) : "",
+      state: c.state ?? "",
+      lat: Number.isFinite(m.coordinates?.y) ? m.coordinates!.y! : null,
+      lng: Number.isFinite(m.coordinates?.x) ? m.coordinates!.x! : null,
     };
   } catch {
     return null;
@@ -133,7 +189,23 @@ export async function repairVenueLocation<T extends LocatableVenue>(
     // A zip belongs to a street-level address; a "City, ST"-only listing
     // must not gain a zip from approximate coordinates.
     const geoZip = street && a.postcode ? a.postcode.split("-")[0] : "";
-    const zip = stored.zip || geoZip;
+    let zip = stored.zip || geoZip;
+
+    // No coordinates and still no zip, but we do have a street address:
+    // forward-geocode it through the US Census geocoder.
+    let repairedLat = venue.lat;
+    let repairedLng = venue.lng;
+    if (!zip && street) {
+      const oneLine = [street, city, state].filter(Boolean).join(", ");
+      const census = await censusGeocode(oneLine);
+      if (census) {
+        zip = census.zip;
+        city = city || census.city;
+        state = state || census.state;
+        if (repairedLat == null && census.lat != null) repairedLat = census.lat;
+        if (repairedLng == null && census.lng != null) repairedLng = census.lng;
+      }
+    }
 
     // Rural addresses often geocode to a township with no proper city.
     // The zip's USPS postal city is the authoritative mailing city.
@@ -152,6 +224,8 @@ export async function repairVenueLocation<T extends LocatableVenue>(
       location_full: composeAddress({ street, city, state, zip }),
       location_city: city || venue.location_city,
       location_state: state || venue.location_state,
+      lat: repairedLat,
+      lng: repairedLng,
     };
   } catch {
     return venue;
