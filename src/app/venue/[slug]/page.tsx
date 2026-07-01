@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { parseGoogleReviewsCache } from "@/lib/google-reviews";
+import { needsLocationRepair, repairVenueLocation } from "@/lib/location-repair";
 import VenuePageClient from "./VenuePageClient";
 import ListingTracker from "@/components/venue/ListingTracker";
 import SiteFooter from "@/components/SiteFooter";
@@ -69,9 +70,16 @@ export default async function VenuePage({ params, searchParams }: Props) {
   const { slug } = await params;
   const sp = await searchParams;
   const previewToken = typeof sp.preview === "string" ? sp.preview : null;
-  const venue = await fetchVenueWithDemoCheck(slug, previewToken);
+  let venue = await fetchVenueWithDemoCheck(slug, previewToken);
 
   if (!venue) notFound();
+
+  // Legacy rows can store townships as the city or lack a zip entirely.
+  // Reverse-geocode from coordinates (cached 30 days) so the public page
+  // always shows a proper "street, City, ST zip" address.
+  if (needsLocationRepair(venue)) {
+    venue = await repairVenueLocation(venue);
+  }
 
   // New supabase client for the remaining queries in this function
   const supabase = await createClient();

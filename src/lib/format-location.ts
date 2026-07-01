@@ -15,20 +15,30 @@ const STATE_ABBR: Record<string, string> = {
   wisconsin: "WI", wyoming: "WY", "district of columbia": "DC",
 };
 
-function abbr(state: string): string {
+/** "Pennsylvania" → "PA"; passes through existing abbreviations. */
+export function abbrState(state: string): string {
   const key = state.trim().toLowerCase();
   // Already an abbreviation
   if (/^[a-z]{2}$/i.test(key)) return state.trim().toUpperCase();
   return STATE_ABBR[key] ?? state.trim();
 }
 
-/** Returns true for any geocoder noise that is never part of a mailing address. */
-function isNoise(part: string): boolean {
+const abbr = abbrState;
+
+/**
+ * Returns true for any geocoder noise that is never part of a mailing
+ * address — countries, counties, townships, boroughs, etc. Also used to
+ * reject bad `location_city` values (e.g. "Greene Township") so we never
+ * display an administrative division where the city belongs.
+ */
+export function isNoisyLocationPart(part: string): boolean {
   const lower = part.toLowerCase();
   if (lower === "united states" || lower === "us" || lower === "usa") return true;
   if (/\b(county|township|borough|parish|district|municipality)\b/.test(lower)) return true;
   return false;
 }
+
+const isNoise = isNoisyLocationPart;
 
 /** Returns true if the part looks like a US state full name or abbreviation. */
 function isState(part: string): boolean {
@@ -58,7 +68,9 @@ export function formatLocation(
   state: string | null | undefined,
   full: string | null | undefined,
 ): string {
-  const c = city?.trim();
+  const cityRaw = city?.trim();
+  // Never show an administrative division ("Greene Township") as the city.
+  const c = cityRaw && !isNoise(cityRaw) ? cityRaw : "";
   const s = state?.trim();
 
   if (c && s) return `${c}, ${abbr(s)}`;
@@ -75,13 +87,15 @@ export function formatLocation(
     if (!maybeState) continue;
     const stateAbbr = abbr(maybeState);
     if (stateAbbr !== maybeState || /^[A-Z]{2}$/.test(maybeState)) {
+      // A street ("1090 Ragged Edge Road") is never the city — skip
+      // digit-leading candidates rather than mislabeling them.
       const maybeCity = cleaned[i - 1];
-      if (maybeCity) return `${maybeCity}, ${stateAbbr}`;
+      if (maybeCity && !/^\d/.test(maybeCity)) return `${maybeCity}, ${stateAbbr}`;
       return stateAbbr;
     }
   }
 
-  return cleaned[0];
+  return /^\d/.test(cleaned[0]) && cleaned.length === 1 ? "" : cleaned[0];
 }
 
 const ABBR_TO_NAME: Record<string, string> = Object.fromEntries(
@@ -126,15 +140,47 @@ export function locationHaystack(
  *   4. Reassemble using the DB city/state fields for accuracy, plus the zip
  *      extracted from location_full.
  */
+export interface ParsedLocation {
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+}
+
+/** Compose "street, City, ST zip" from parsed pieces, skipping empty parts. */
+export function composeAddress(p: ParsedLocation): string {
+  const stateZip = [p.state, p.zip].filter(Boolean).join(" ");
+  const cityLine = p.city
+    ? stateZip ? `${p.city}, ${stateZip}` : p.city
+    : stateZip;
+  return [p.street, cityLine].filter(Boolean).join(", ");
+}
+
 export function formatLocationFull(
   full: string | null | undefined,
   city?: string | null,
   state?: string | null,
 ): string {
   if (!full) return "";
+  return composeAddress(parseLocation(full, city, state));
+}
+
+/**
+ * Parses a stored location into clean street / city / state / zip pieces,
+ * handling every vintage: dashboard-picker saves, raw Nominatim
+ * display_names, Google formatted_addresses, and free-typed strings.
+ */
+export function parseLocation(
+  full: string | null | undefined,
+  city?: string | null,
+  state?: string | null,
+): ParsedLocation {
+  if (!full) full = "";
 
   // Prefer DB fields for city/state; fall back to whatever we parse out.
-  const resolvedCity = city?.trim() || "";
+  // A township/county stored in the city field is never displayed.
+  const cityRaw = city?.trim() || "";
+  const resolvedCity = cityRaw && !isNoise(cityRaw) ? cityRaw : "";
   let resolvedState = state?.trim() ? abbr(state.trim()) : "";
   let zip = "";
 
@@ -207,12 +253,10 @@ export function formatLocationFull(
   // that is sub-locality noise (village, hamlet, etc.) — drop it.
   const streetAddress = streetParts.slice(0, 2).join(" ").trim();
 
-  // Build "City, ST 12345"
-  const displayCity = resolvedCity || cityFromFull;
-  const stateZip = [resolvedState, zip].filter(Boolean).join(" ");
-  const cityLine = displayCity
-    ? stateZip ? `${displayCity}, ${stateZip}` : displayCity
-    : stateZip;
-
-  return [streetAddress, cityLine].filter(Boolean).join(", ");
+  return {
+    street: streetAddress,
+    city: resolvedCity || cityFromFull,
+    state: resolvedState,
+    zip,
+  };
 }
