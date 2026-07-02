@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { X, BadgeCheck } from "lucide-react";
+import { X } from "lucide-react";
 
 const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
@@ -121,15 +121,14 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel, mobileLift
       <div
         style={{
           width: 240,
-          background: "rgba(255, 255, 255, 0.80)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          border: "1px solid rgba(0, 0, 0, 0.10)",
+          background: "#ffffff",
+          border: "1px solid #e5e7eb",
           borderRadius: 10,
           padding: "10px 12px",
           display: "flex",
           flexDirection: "column",
           gap: 0,
+          boxShadow: "0 2px 12px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06)",
         }}
       >
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 6 }}>
@@ -157,14 +156,27 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel, mobileLift
               Just signed up
             </p>
 
-            {/* Verified — icon + plain text, no pill */}
+            {/* Verified — filled blue circle badge + plain text */}
             <div style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: 4,
+              gap: 5,
               marginTop: 6,
             }}>
-              <BadgeCheck size={12} color="#2563eb" strokeWidth={2.5} />
+              <span style={{
+                width: 14,
+                height: 14,
+                borderRadius: "50%",
+                background: "#2563eb",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}>
+                <svg width="8" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.8 7L9 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
               <span style={{
                 fontSize: 11,
                 color: "#2563eb",
