@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import Link from "next/link";
-import { X } from "lucide-react";
+import { X, BadgeCheck } from "lucide-react";
 
 const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
@@ -106,12 +105,6 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel, mobileLift
 
   return (
     <>
-      <style>{`
-        @keyframes fomo-pulse {
-          0%, 100% { transform: scale(1); opacity: 0.5; }
-          50% { transform: scale(2.2); opacity: 0; }
-        }
-      `}</style>
     <div
       aria-live="polite"
       aria-atomic="true"
@@ -141,81 +134,51 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel, mobileLift
       >
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
           <div style={{ flex: 1 }}>
-            {/* Dot + venue name on one line */}
-            <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-              <span style={{ position: "relative", width: 8, height: 8, display: "inline-flex", flexShrink: 0 }}>
-                <span style={{
-                  position: "absolute", inset: 0,
-                  borderRadius: "50%", background: "#22c55e",
-                  animation: "fomo-pulse 2s ease-in-out infinite",
-                  opacity: 0.5,
-                }} />
-                <span style={{
-                  position: "relative", width: 8, height: 8,
-                  borderRadius: "50%", background: "#22c55e",
-                }} />
-              </span>
-              <p style={{
-                margin: 0,
-                fontSize: 14,
-                fontWeight: 700,
-                color: "#1b1b1b",
-                fontFamily: "var(--font-open-sans, sans-serif)",
-                lineHeight: "1.3",
-              }}>
-                {venues[venueIndex]}
-              </p>
-            </div>
+            {/* Venue name */}
+            <p style={{
+              margin: 0,
+              fontSize: 14,
+              fontWeight: 700,
+              color: "#1b1b1b",
+              fontFamily: "var(--font-open-sans, sans-serif)",
+              lineHeight: "1.3",
+            }}>
+              {venues[venueIndex]}
+            </p>
 
             {/* Subheadline */}
             <p style={{
-              margin: "2px 0 0",
-              fontSize: 13,
-              color: "#555",
+              margin: "3px 0 0",
+              fontSize: 12,
+              color: "#666",
               fontFamily: "var(--font-open-sans, sans-serif)",
               lineHeight: "1.4",
             }}>
-              Signed Up
+              Just signed up
             </p>
 
-            {/* Text link CTA */}
-            {modalEvent ? (
-              <button
-                onClick={() => window.dispatchEvent(new Event(modalEvent))}
-                style={{
-                  display: "inline",
-                  marginTop: 6,
-                  fontSize: 11,
-                  color: "#1b1b1b",
-                  fontFamily: "var(--font-open-sans, sans-serif)",
-                  fontWeight: 600,
-                  textDecoration: "underline",
-                  textUnderlineOffset: 2,
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: 0,
-                }}
-              >
-                {ctaLabel ?? "Book a free strategy call →"}
-              </button>
-            ) : (
-              <Link
-                href={signupHref ?? "#"}
-                style={{
-                  display: "inline-block",
-                  marginTop: 6,
-                  fontSize: 11,
-                  color: "#1b1b1b",
-                  fontFamily: "var(--font-open-sans, sans-serif)",
-                  fontWeight: 600,
-                  textDecoration: "underline",
-                  textUnderlineOffset: 2,
-                }}
-              >
-                {ctaLabel ?? "List your venue free →"}
-              </Link>
-            )}
+            {/* Verified badge */}
+            <div style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 5,
+              marginTop: 8,
+              background: "#eff6ff",
+              border: "1px solid #bfdbfe",
+              borderRadius: 20,
+              padding: "3px 10px 3px 7px",
+            }}>
+              <BadgeCheck size={14} color="#2563eb" strokeWidth={2.5} />
+              <span style={{
+                fontSize: 11,
+                fontWeight: 600,
+                color: "#2563eb",
+                fontFamily: "var(--font-open-sans, sans-serif)",
+                letterSpacing: "0.01em",
+              }}>
+                Verified listing
+              </span>
+            </div>
           </div>
 
           {/* Dismiss */}
