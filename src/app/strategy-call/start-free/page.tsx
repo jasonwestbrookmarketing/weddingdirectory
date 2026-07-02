@@ -188,7 +188,7 @@ export default function StartFreePage() {
                 className="mt-3 text-[12px] sm:text-[13px] text-stone-500"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                Just $97/mo after · Downgrade to free anytime · No contract
+                Free for 14 days · Then $97/mo or downgrade to free · No contract
               </p>
 
               {/* Social proof */}
