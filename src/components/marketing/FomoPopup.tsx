@@ -120,24 +120,24 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel, mobileLift
     >
       <div
         style={{
-          width: 280,
-          background: "rgba(255, 255, 255, 0.75)",
+          width: 240,
+          background: "rgba(255, 255, 255, 0.80)",
           backdropFilter: "blur(12px)",
           WebkitBackdropFilter: "blur(12px)",
-          border: "1px solid rgba(0, 0, 0, 0.12)",
-          borderRadius: 12,
-          padding: "14px 16px",
+          border: "1px solid rgba(0, 0, 0, 0.10)",
+          borderRadius: 10,
+          padding: "10px 12px",
           display: "flex",
           flexDirection: "column",
-          gap: 8,
+          gap: 0,
         }}
       >
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 6 }}>
           <div style={{ flex: 1 }}>
             {/* Venue name */}
             <p style={{
               margin: 0,
-              fontSize: 14,
+              fontSize: 12,
               fontWeight: 700,
               color: "#1b1b1b",
               fontFamily: "var(--font-open-sans, sans-serif)",
@@ -148,33 +148,27 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel, mobileLift
 
             {/* Subheadline */}
             <p style={{
-              margin: "3px 0 0",
-              fontSize: 12,
-              color: "#666",
+              margin: "2px 0 0",
+              fontSize: 11,
+              color: "#777",
               fontFamily: "var(--font-open-sans, sans-serif)",
               lineHeight: "1.4",
             }}>
               Just signed up
             </p>
 
-            {/* Verified badge */}
+            {/* Verified — icon + plain text, no pill */}
             <div style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: 5,
-              marginTop: 8,
-              background: "#eff6ff",
-              border: "1px solid #bfdbfe",
-              borderRadius: 20,
-              padding: "3px 10px 3px 7px",
+              gap: 4,
+              marginTop: 6,
             }}>
-              <BadgeCheck size={14} color="#2563eb" strokeWidth={2.5} />
+              <BadgeCheck size={12} color="#2563eb" strokeWidth={2.5} />
               <span style={{
                 fontSize: 11,
-                fontWeight: 600,
                 color: "#2563eb",
                 fontFamily: "var(--font-open-sans, sans-serif)",
-                letterSpacing: "0.01em",
               }}>
                 Verified listing
               </span>
