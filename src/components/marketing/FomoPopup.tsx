@@ -156,30 +156,24 @@ export default function FomoPopup({ signupHref, modalEvent, ctaLabel, mobileLift
               Just signed up
             </p>
 
-            {/* Verified — filled blue circle badge + plain text */}
+            {/* Verified — Facebook-style 12-point starburst badge + plain text */}
             <div style={{
               display: "inline-flex",
               alignItems: "center",
               gap: 5,
               marginTop: 6,
             }}>
-              <span style={{
-                width: 14,
-                height: 14,
-                borderRadius: "50%",
-                background: "#2563eb",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}>
-                <svg width="8" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 4L3.8 7L9 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </span>
+              <svg width="15" height="15" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+                {/* 12-pointed starburst: alternating outer r=48 and inner r=36 points */}
+                <polygon
+                  points="50,2 59,15 74,8 76,25 92,26 85,41 98,50 85,59 92,74 76,75 74,92 59,85 50,98 41,85 26,92 24,75 8,74 15,59 2,50 15,41 8,26 24,25 26,8 41,15"
+                  fill="#5b9cf6"
+                />
+                <path d="M34 51 L45 63 L66 38" stroke="white" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               <span style={{
                 fontSize: 11,
-                color: "#2563eb",
+                color: "#5b9cf6",
                 fontFamily: "var(--font-open-sans, sans-serif)",
               }}>
                 Verified listing
