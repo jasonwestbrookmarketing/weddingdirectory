@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import Image from "next/image";
-import { Sparkles } from "lucide-react";
 import SiteFooter from "@/components/SiteFooter";
 import PhonePreview from "@/components/marketing/PhonePreview";
 import ScrollToTop from "@/components/marketing/ScrollToTop";
@@ -160,11 +159,10 @@ export default function StartFreePage() {
           <div className="lg:col-span-7 text-center lg:text-left">
             {/* Warm bridge badge — positive framing, no rejection */}
             <span
-              className="inline-flex items-center gap-1.5 rounded-full bg-brand-warm border border-brand-line px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.14em] uppercase text-brand-gold"
+              className="inline-flex items-center rounded-full bg-brand-warm border border-brand-line px-3.5 py-1.5 text-[11px] sm:text-[12px] font-semibold text-brand-gold"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              Your Best Next Step
+              Thanks for applying. This is your next best step to grow
             </span>
 
             <h1
@@ -181,7 +179,7 @@ export default function StartFreePage() {
               className="mt-4 sm:mt-5 text-[16px] sm:text-[19px] text-stone-700 leading-relaxed max-w-md lg:max-w-xl mx-auto lg:mx-0"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Based on your answers, our done-for-you program isn&apos;t your next step yet — but the engine behind it is. The Bride Booking System captures every bride and books more tours for you. Start it free for 14 days and grow into the full program when the timing&apos;s right.
+              Based on your answers, our done-for-you program isn&apos;t your next step yet, but the engine behind it is. The Bride Booking System captures every bride and books more tours for you. Start it free for 14 days and grow into the full program when the timing&apos;s right.
             </p>
 
             <div className="mt-7 sm:mt-8 flex flex-col items-center lg:items-start">
