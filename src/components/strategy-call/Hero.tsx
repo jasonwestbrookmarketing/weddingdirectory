@@ -53,7 +53,7 @@ export default function Hero() {
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             <span style={{ color: "#8a7448" }}>Fully Book Your Wedding Venue</span>{" "}
-            Without Relying on The Knot, WeddingWire or Agencies That Don&apos;t Care.
+            Without Relying on The Knot, WeddingWire or Waiting To Get Found.
           </motion.h1>
 
           {/* Subhead — single horizontal line */}
