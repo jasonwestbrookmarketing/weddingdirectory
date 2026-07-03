@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { CheckCircle2, Play, ArrowRight } from "lucide-react";
+import { CheckCircle2, Play, Mail, MessageSquare } from "lucide-react";
 import StrategyNav from "@/components/strategy-call/StrategyNav";
 import VideoPlayer from "@/components/strategy-call/VideoPlayer";
 import PageFooter from "@/components/strategy-call/PageFooter";
@@ -17,11 +16,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/strategy-call/confirmed" },
   robots: { index: false, follow: false },
 };
-
-const STORYPAY_URL =
-  process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
-
-const FREE_SIGNUP_HREF = `${STORYPAY_URL}/signup`;
 
 const RESULTS = [
   { venue: "Atlantic Stables", stat: "$15k in weddings", period: "first 30 days" },
@@ -108,7 +102,7 @@ export default function StrategyCallConfirmedPage() {
           </div>
         </section>
 
-        {/* Two numbered steps */}
+        {/* What to expect next */}
         <section className="bg-brand-bg py-14 sm:py-20">
           <div className="max-w-2xl mx-auto px-6 md:px-10">
             <Reveal>
@@ -116,15 +110,17 @@ export default function StrategyCallConfirmedPage() {
                 className="text-[11px] font-semibold tracking-[0.28em] uppercase text-brand-muted text-center mb-10"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                Two things to do right now
+                What to expect next
               </p>
             </Reveal>
 
-            {/* Step 1 */}
+            {/* Step 1 — Watch the video */}
             <Reveal delay={0.08}>
               <div className="flex gap-5 sm:gap-7 items-start">
-                <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-full bg-brand-ink text-white text-[15px] font-bold"
-                  style={{ fontFamily: "var(--font-open-sans)" }}>
+                <div
+                  className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-full bg-brand-ink text-white text-[15px] font-bold"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
                   1
                 </div>
                 <div className="flex-1 pb-10 border-b border-brand-line">
@@ -141,50 +137,65 @@ export default function StrategyCallConfirmedPage() {
                     className="text-[14px] sm:text-[15px] text-brand-muted leading-relaxed"
                     style={{ fontFamily: "var(--font-open-sans)" }}
                   >
-                    It&apos;s two minutes. It shows you exactly how our call works so we skip the small talk and get straight to your numbers.
+                    It&apos;s two minutes. It shows you exactly how our call works so we can skip the small talk and get straight to your numbers.
                   </p>
                 </div>
               </div>
             </Reveal>
 
-            {/* Step 2 */}
+            {/* Step 2 — Confirmation email & text */}
             <Reveal delay={0.16}>
               <div className="flex gap-5 sm:gap-7 items-start pt-10">
-                <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-full bg-brand-ink text-white text-[15px] font-bold"
-                  style={{ fontFamily: "var(--font-open-sans)" }}>
+                <div
+                  className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-full bg-brand-ink text-white text-[15px] font-bold"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
                   2
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 pb-10 border-b border-brand-line">
                   <div className="flex items-center gap-2 mb-1">
-                    <ArrowRight className="w-4 h-4 text-brand-gold" />
+                    <Mail className="w-4 h-4 text-brand-gold" />
                     <h2
                       className="text-[18px] sm:text-[20px] font-bold text-brand-ink"
                       style={{ fontFamily: "var(--font-open-sans)" }}
                     >
-                      Claim your free venue listing
+                      Check your email and phone
                     </h2>
                   </div>
                   <p
-                    className="text-[14px] sm:text-[15px] text-brand-muted leading-relaxed mb-5"
+                    className="text-[14px] sm:text-[15px] text-brand-muted leading-relaxed"
                     style={{ fontFamily: "var(--font-open-sans)" }}
                   >
-                    Get your venue in front of couples before our call even happens. It&apos;s free, takes five minutes, and gives us real data to work with on the call.
+                    You&apos;ll receive a confirmation email and text with your scheduled date, time, and video call link. Save it so you&apos;re ready to join right on time.
                   </p>
-                  <Link
-                    href={FREE_SIGNUP_HREF}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-2 rounded-full bg-brand-ink text-white px-7 py-3 text-[14px] font-semibold hover:bg-black transition-colors"
-                    style={{ fontFamily: "var(--font-open-sans)" }}
-                  >
-                    List Your Venue Free
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-                  </Link>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Step 3 — Day-of reminder */}
+            <Reveal delay={0.24}>
+              <div className="flex gap-5 sm:gap-7 items-start pt-10">
+                <div
+                  className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-full bg-brand-ink text-white text-[15px] font-bold"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
+                  3
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <MessageSquare className="w-4 h-4 text-brand-gold" />
+                    <h2
+                      className="text-[18px] sm:text-[20px] font-bold text-brand-ink"
+                      style={{ fontFamily: "var(--font-open-sans)" }}
+                    >
+                      Expect a reminder the day of your call
+                    </h2>
+                  </div>
                   <p
-                    className="mt-3 text-[12px] text-brand-muted"
+                    className="text-[14px] sm:text-[15px] text-brand-muted leading-relaxed"
                     style={{ fontFamily: "var(--font-open-sans)" }}
                   >
-                    Forever Free · No credit card required
+                    We&apos;ll send you a reminder email and a confirmation text the morning of your call to make sure the time still works for you. Just reply to confirm and we&apos;re all set.
                   </p>
                 </div>
               </div>
