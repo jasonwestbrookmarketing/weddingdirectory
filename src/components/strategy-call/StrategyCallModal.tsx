@@ -128,7 +128,7 @@ type Trigger = "button" | "exit";
 
 export default function StrategyCallModal() {
   const [open, setOpen] = useState(false);
-  const [shown, setShown] = useState(false);
+  const [exitShown, setExitShown] = useState(false);
   const [trigger, setTrigger] = useState<Trigger>("button");
 
   useSurveyCompletionListener();
@@ -145,25 +145,27 @@ export default function StrategyCallModal() {
 
   // Listen for button-triggered opens
   useEffect(() => {
-    const handler = () => { setTrigger("button"); setOpen(true); setShown(true); };
+    const handler = () => { setTrigger("button"); setOpen(true); };
     window.addEventListener("open-strategy-modal", handler);
     return () => window.removeEventListener("open-strategy-modal", handler);
   }, []);
 
-  // Exit-intent detection
+  // Exit-intent detection — fires whenever the visitor tries to leave,
+  // regardless of whether they already opened the button modal. Only
+  // suppressed once the exit-intent version has been shown once (exitShown).
   useEffect(() => {
     const onMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0 && !shown) {
+      if (e.clientY <= 0 && !exitShown && !open) {
         setTrigger("exit");
         setOpen(true);
-        setShown(true);
+        setExitShown(true);
       }
     };
 
     let mobileTimer: ReturnType<typeof setTimeout>;
     if (window.innerWidth < 1024) {
       mobileTimer = setTimeout(() => {
-        if (!shown) { setTrigger("exit"); setOpen(true); setShown(true); }
+        if (!exitShown) { setTrigger("exit"); setOpen(true); setExitShown(true); }
       }, 45_000);
     }
 
@@ -172,7 +174,7 @@ export default function StrategyCallModal() {
       document.removeEventListener("mouseleave", onMouseLeave);
       clearTimeout(mobileTimer);
     };
-  }, [shown]);
+  }, [exitShown, open]);
 
   // Lock body scroll while open
   useEffect(() => {
