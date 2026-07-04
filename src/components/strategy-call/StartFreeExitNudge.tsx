@@ -72,7 +72,7 @@ export default function StartFreeExitNudge({ trialHref }: { trialHref: string })
           style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
         >
           Before you go:{" "}
-          <span style={{ color: "#8a7448" }}>14 days free, no credit card needed.</span>
+          <span style={{ color: "#8a7448" }}>your first 14 days are on us.</span>
         </h2>
 
         <p
@@ -95,7 +95,7 @@ export default function StartFreeExitNudge({ trialHref }: { trialHref: string })
             className="text-[11px] text-stone-400"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Free for 14 days, then $97/mo or downgrade to free anytime
+            Card required · Free for 14 days · Then $97/mo or downgrade to free anytime
           </p>
           <button
             type="button"

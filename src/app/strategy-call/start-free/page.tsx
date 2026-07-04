@@ -204,7 +204,7 @@ export default function StartFreePage() {
                 className="group inline-flex items-center gap-2 rounded-full bg-stone-900 text-white font-semibold px-6 py-3 text-[14px] hover:bg-stone-800 active:scale-[0.98] transition-all"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                Start Free — No Credit Card Needed
+                Start My Free 14-Day Trial
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
               </a>
             </div>
