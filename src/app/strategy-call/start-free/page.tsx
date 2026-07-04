@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowRight, Store, Inbox, Zap, ChevronDown } from "lucide-react";
 import SiteFooter from "@/components/SiteFooter";
 import FireDisqualifiedEvent from "@/components/strategy-call/FireDisqualifiedEvent";
+import StartFreeExitNudge from "@/components/strategy-call/StartFreeExitNudge";
 
 const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
@@ -261,6 +262,8 @@ export default function StartFreePage() {
       </main>
 
       <SiteFooter />
+
+      <StartFreeExitNudge trialHref={TRIAL_HREF} />
     </>
   );
 }
