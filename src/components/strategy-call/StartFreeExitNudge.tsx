@@ -68,7 +68,7 @@ export default function StartFreeExitNudge({ trialHref }: { trialHref: string })
         </button>
 
         <h2
-          className="mt-2 text-[26px] sm:text-[32px] leading-[1.12] text-stone-900 whitespace-nowrap"
+          className="mt-8 sm:mt-6 text-[22px] sm:text-[32px] leading-[1.12] text-stone-900 whitespace-nowrap"
           style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
         >
           Before you go:{" "}

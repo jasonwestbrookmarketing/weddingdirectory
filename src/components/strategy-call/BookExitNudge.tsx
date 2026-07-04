@@ -89,7 +89,7 @@ export default function BookExitNudge() {
         </button>
 
         <h2
-          className="mt-2 text-[24px] sm:text-[34px] leading-[1.12] text-stone-900 sm:whitespace-nowrap"
+          className="mt-8 sm:mt-6 text-[24px] sm:text-[34px] leading-[1.12] text-stone-900 sm:whitespace-nowrap"
           style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
         >
           Before you go:{" "}
