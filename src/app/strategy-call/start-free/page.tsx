@@ -150,11 +150,10 @@ export default function StartFreePage() {
 
             {/* Bridge back to the main program */}
             <p
-              className="mt-6 text-[12px] sm:text-[13px] text-stone-400 leading-relaxed"
+              className="mt-6 text-[12px] sm:text-[13px] text-stone-400 leading-relaxed text-balance"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Already on the platform and ready to use our done-for-you program?
-              <br />
+              <span className="block text-balance">Already on the platform and ready for our done-for-you program?</span>
               <a
                 href="https://storyvenue.com/strategy-call"
                 className="underline underline-offset-2 text-stone-500 hover:text-stone-700 transition-colors"
