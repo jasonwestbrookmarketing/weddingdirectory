@@ -119,7 +119,7 @@ export default function StartFreePage() {
 
             {/* Short subhead — wider box so it wraps to 2 lines */}
             <p
-              className="mt-4 text-[15px] sm:text-[17px] text-stone-600 leading-relaxed max-w-xl sm:max-w-3xl mx-auto"
+              className="mt-4 text-[15px] sm:text-[17px] text-stone-600 leading-relaxed max-w-xl sm:max-w-4xl mx-auto"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               Our done-for-you program isn&apos;t your next step yet, but the engine behind it is.
