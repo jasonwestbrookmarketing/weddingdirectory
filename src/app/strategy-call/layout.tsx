@@ -10,13 +10,13 @@ export const viewport: Viewport = {
   userScalable: false,
 };
 
-// Shared 16:9 (1920x1080) social share card. Applied here on the layout so
-// every /strategy-call funnel page (main, /book, /confirmed, /start-free)
-// renders the exact same preview when a link is shared in a text or on social.
+// Shared social share card. Applied here on the layout so every
+// /strategy-call funnel page (main, /book, /confirmed, /start-free) renders
+// the exact same preview when a link is shared in a text or on social.
 const OG_IMAGE = {
-  url: "/og-strategy-call.jpg",
-  width: 1920,
-  height: 1080,
+  url: "/og-strategy-call.png",
+  width: 1731,
+  height: 909,
   alt: "StoryVenue — Fully Book Your Wedding Venue",
 };
 
