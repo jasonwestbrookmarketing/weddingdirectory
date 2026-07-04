@@ -124,9 +124,12 @@ function useSurveyCompletionListener() {
   }, []);
 }
 
+type Trigger = "button" | "exit";
+
 export default function StrategyCallModal() {
   const [open, setOpen] = useState(false);
   const [shown, setShown] = useState(false);
+  const [trigger, setTrigger] = useState<Trigger>("button");
 
   useSurveyCompletionListener();
 
@@ -142,7 +145,7 @@ export default function StrategyCallModal() {
 
   // Listen for button-triggered opens
   useEffect(() => {
-    const handler = () => { setOpen(true); setShown(true); };
+    const handler = () => { setTrigger("button"); setOpen(true); setShown(true); };
     window.addEventListener("open-strategy-modal", handler);
     return () => window.removeEventListener("open-strategy-modal", handler);
   }, []);
@@ -151,6 +154,7 @@ export default function StrategyCallModal() {
   useEffect(() => {
     const onMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0 && !shown) {
+        setTrigger("exit");
         setOpen(true);
         setShown(true);
       }
@@ -159,7 +163,7 @@ export default function StrategyCallModal() {
     let mobileTimer: ReturnType<typeof setTimeout>;
     if (window.innerWidth < 1024) {
       mobileTimer = setTimeout(() => {
-        if (!shown) { setOpen(true); setShown(true); }
+        if (!shown) { setTrigger("exit"); setOpen(true); setShown(true); }
       }, 45_000);
     }
 
@@ -205,11 +209,21 @@ export default function StrategyCallModal() {
         {/* Header + social proof (mirrors desktop) */}
         <div className="px-6 pt-12 pb-4 text-center">
           <h2
-            className="text-[28px] leading-[1.1] text-stone-900"
+            className="text-[26px] leading-[1.1] text-stone-900"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Get My Free Strategy Call
+            {trigger === "exit"
+              ? "Are you actually happy with how many weddings you're booking right now?"
+              : "Get My Free Strategy Call"}
           </h2>
+          {trigger === "exit" && (
+            <p
+              className="mt-3 text-[13px] text-stone-500 leading-relaxed"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              If not, this 30-minute call shows you exactly what&apos;s in the way. Free. No pitch. We&apos;ll even tell you if we can&apos;t help.
+            </p>
+          )}
           <div className="mt-3 flex flex-col items-center gap-2.5">
             <p
               className="text-[12px] text-stone-400 tracking-wide"
@@ -312,11 +326,21 @@ export default function StrategyCallModal() {
           {/* Header + social proof */}
           <div className="px-8 pt-2 pb-5 text-center">
             <h2
-              className="mt-2 text-[34px] leading-[1.1] text-stone-900"
+              className="mt-2 text-[30px] leading-[1.1] text-stone-900"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              Get My Free Strategy Call
+              {trigger === "exit"
+                ? "Are you actually happy with how many weddings you're booking right now?"
+                : "Get My Free Strategy Call"}
             </h2>
+            {trigger === "exit" && (
+              <p
+                className="mt-3 text-[14px] text-stone-500 leading-relaxed max-w-md mx-auto"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                If not, this 30-minute call shows you exactly what&apos;s in the way. Free. No pitch. We&apos;ll even tell you if we can&apos;t help.
+              </p>
+            )}
 
             {/* Social proof under headline */}
             <div className="mt-4 flex flex-col items-center gap-2.5">
