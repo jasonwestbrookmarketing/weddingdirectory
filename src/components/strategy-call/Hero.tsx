@@ -52,17 +52,17 @@ export default function Hero() {
             className="text-[36px] sm:text-[46px] md:text-[52px] lg:text-[58px] leading-[1.08] text-brand-ink"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            <span style={{ color: "#8a7448" }}>Fully Book Your Wedding Venue</span>{" "}
-            Without Relying on The Knot, WeddingWire or Waiting To Get Found.
+            Are you actually happy with how many weddings{" "}
+            <span style={{ color: "#8a7448" }}>you&apos;re booking right now?</span>
           </motion.h1>
 
-          {/* Subhead — single horizontal line */}
+          {/* Subhead */}
           <motion.p
             variants={item}
-            className="text-[15px] sm:text-[17px] text-brand-muted tracking-wide"
+            className="text-[15px] sm:text-[17px] text-brand-muted leading-relaxed max-w-2xl mx-auto"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            We bring the brides.&nbsp;&nbsp;&nbsp;Our team works the leads.&nbsp;&nbsp;&nbsp;You show up for the tour.
+            If not, this 30-minute call shows you exactly what&apos;s in the way. Free. No pitch. We&apos;ll even tell you if we can&apos;t help.
           </motion.p>
 
           {/* Video player — embed shown directly (no cover photo), matching the
