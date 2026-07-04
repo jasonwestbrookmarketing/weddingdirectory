@@ -61,7 +61,7 @@ export default function StrategyCallConfirmedPage() {
                 className="mt-3 text-[15px] sm:text-[16px] text-brand-muted"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                Complete both steps below before your call.
+                Do these before your call — it takes less than 3 minutes.
               </p>
             </Reveal>
 
