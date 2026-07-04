@@ -65,7 +65,8 @@ export default function StrategyCallBookPage() {
                 className="mt-3 text-[14px] sm:text-[15px] text-brand-muted max-w-md mx-auto"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                We&apos;re holding a spot for you. Pick the time that works best.
+                <span className="block">We&apos;re holding a spot for you.</span>
+                <span className="block">Pick the time that works best for you.</span>
               </p>
             </Reveal>
 
