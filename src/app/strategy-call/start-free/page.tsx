@@ -114,7 +114,7 @@ export default function StartFreePage() {
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
               Start Booking More Brides{" "}
-              <span style={{ color: "var(--color-brand-gold)" }}>on Your Own Terms.</span>
+              <span className="sm:block" style={{ color: "var(--color-brand-gold)" }}>on Your Own Terms.</span>
             </h1>
 
             {/* Short subhead — wider box so it wraps to 2 lines */}
