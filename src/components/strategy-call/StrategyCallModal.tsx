@@ -208,7 +208,7 @@ export default function StrategyCallModal() {
             className="text-[28px] leading-[1.1] text-stone-900"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Book Free Strategy Call
+            Get My Free Strategy Call
           </h2>
           <div className="mt-3 flex flex-col items-center gap-2.5">
             <p
@@ -315,7 +315,7 @@ export default function StrategyCallModal() {
               className="mt-2 text-[34px] leading-[1.1] text-stone-900"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              Book Free Strategy Call
+              Get My Free Strategy Call
             </h2>
 
             {/* Social proof under headline */}
