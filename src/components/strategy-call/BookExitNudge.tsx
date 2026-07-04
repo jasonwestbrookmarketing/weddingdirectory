@@ -92,17 +92,15 @@ export default function BookExitNudge() {
           className="mt-2 text-[26px] sm:text-[30px] leading-[1.12] text-stone-900"
           style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
         >
-          Wait, not ready to{" "}
-          <span style={{ color: "#8a7448" }}>pick a time?</span>
+          Before you go —{" "}
+          <span style={{ color: "#8a7448" }}>we only open a few spots each week.</span>
         </h2>
 
         <p
           className="mt-4 text-[15px] text-stone-500 leading-relaxed"
           style={{ fontFamily: "var(--font-open-sans)" }}
         >
-          It&apos;s free, 30 minutes, and there&apos;s no obligation.
-          <br />
-          Grab the time that works best for you, and reschedule anytime if plans change.
+          It&apos;s free, 30 minutes, and there&apos;s no pressure. We&apos;ll even tell you upfront if it&apos;s not a fit. Grab a time now — you can reschedule anytime.
         </p>
 
         <div className="mt-7 flex flex-col items-center gap-3">
@@ -112,7 +110,7 @@ export default function BookExitNudge() {
             className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#1b1b1b] text-white font-bold tracking-[0.1em] uppercase px-8 py-4 text-[13px] sm:text-[14px] hover:-translate-y-px hover:shadow-[0_14px_36px_-10px_rgba(0,0,0,0.4)] active:scale-[0.98] transition-all shadow-[0_6px_20px_-8px_rgba(0,0,0,0.3)]"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Pick My Time
+            Lock In My Spot
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
@@ -123,7 +121,7 @@ export default function BookExitNudge() {
             className="text-[13px] text-stone-400 hover:text-stone-600 transition-colors"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Maybe later
+            No thanks, I&apos;ll figure it out on my own
           </button>
         </div>
       </div>
