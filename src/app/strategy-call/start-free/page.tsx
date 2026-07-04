@@ -111,12 +111,13 @@ export default function StartFreePage() {
               <span style={{ color: "var(--color-brand-gold)" }}>on Your Own Terms.</span>
             </h1>
 
-            {/* Short subhead */}
+            {/* Short subhead — wider box so it wraps to 2 lines */}
             <p
-              className="mt-4 text-[15px] sm:text-[17px] text-stone-600 leading-relaxed"
+              className="mt-4 text-[15px] sm:text-[17px] text-stone-600 leading-relaxed max-w-xl mx-auto"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               Our done-for-you program isn&apos;t your next step yet, but the engine behind it is.
+              <br className="hidden sm:block" />
               Start the Bride Booking System free for 14 days and grow into the full program when you&apos;re ready.
             </p>
 
@@ -143,7 +144,8 @@ export default function StartFreePage() {
               className="mt-6 text-[12px] sm:text-[13px] text-stone-400 leading-relaxed"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Already on the platform and ready to use our done-for-you program?{" "}
+              Already on the platform and ready to use our done-for-you program?
+              <br />
               <a
                 href="https://storyvenue.com/strategy-call"
                 className="underline underline-offset-2 text-stone-500 hover:text-stone-700 transition-colors"
@@ -157,11 +159,17 @@ export default function StartFreePage() {
         {/* ── 3 CORE FEATURES — short, scannable ── */}
         <section className="bg-stone-50 py-14 sm:py-20 border-b border-stone-200/60">
           <div className="max-w-4xl mx-auto px-6 md:px-10">
+            <h2
+              className="text-center text-[26px] sm:text-[34px] text-stone-900 leading-[1.1] mb-2"
+              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+            >
+              The Bride Booking System<sup style={{ fontSize: "0.45em", verticalAlign: "super", fontWeight: 500 }}>™</sup>
+            </h2>
             <p
-              className="text-center text-[11px] font-semibold tracking-[0.22em] uppercase text-stone-400 mb-10"
+              className="text-center text-[13px] sm:text-[14px] text-stone-500 mb-10"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              What&apos;s included in your trial
+              Everything included in your 14-day free trial
             </p>
             <div className="grid sm:grid-cols-3 gap-6">
               {FEATURES.map(({ icon: Icon, title, desc }) => (
