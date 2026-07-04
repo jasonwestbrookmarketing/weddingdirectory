@@ -58,7 +58,7 @@ export default function StartFreeExitNudge({ trialHref }: { trialHref: string })
     >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setOpen(false)} />
 
-      <div className="relative z-10 w-full max-w-md bg-white rounded-3xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] px-7 pt-7 pb-8 text-center">
+      <div className="relative z-10 w-full max-w-lg sm:max-w-xl bg-white rounded-3xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.45)] px-8 sm:px-12 pt-7 pb-8 text-center">
         <button
           onClick={() => setOpen(false)}
           className="absolute top-4 right-4 flex items-center justify-center w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-800 transition-colors"
@@ -68,7 +68,7 @@ export default function StartFreeExitNudge({ trialHref }: { trialHref: string })
         </button>
 
         <h2
-          className="mt-2 text-[26px] sm:text-[30px] leading-[1.12] text-stone-900"
+          className="mt-2 text-[26px] sm:text-[32px] leading-[1.12] text-stone-900 whitespace-nowrap"
           style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
         >
           Before you go:{" "}
