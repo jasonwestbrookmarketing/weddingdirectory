@@ -65,8 +65,27 @@ export default function StrategyCallBookPage() {
                 className="mt-3 text-[14px] sm:text-[15px] text-brand-muted max-w-md mx-auto"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                Choose the time that works best below.
+                We&apos;re holding a spot — pick the time that works best for you.
               </p>
+            </Reveal>
+
+            {/* Call agenda — kills abandonment before the calendar */}
+            <Reveal delay={0.18}>
+              <ul
+                className="mt-5 inline-flex flex-col items-start gap-2.5 text-left"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                {[
+                  "30 minutes, no prep needed",
+                  "We'll show you exactly how many bookings you're likely leaving on the table",
+                  "Not a fit? We'll tell you that too",
+                ].map((line) => (
+                  <li key={line} className="flex items-start gap-2.5 text-[13px] sm:text-[14px] text-brand-muted">
+                    <span className="mt-px text-green-600 font-bold shrink-0">✓</span>
+                    {line}
+                  </li>
+                ))}
+              </ul>
             </Reveal>
 
           </div>
