@@ -107,10 +107,20 @@ export default function StrategyCallConfirmedPage() {
           <div className="max-w-2xl mx-auto px-6 md:px-10">
             <Reveal>
               <p
-                className="text-[11px] font-semibold tracking-[0.28em] uppercase text-brand-muted text-center mb-10"
+                className="text-[11px] font-semibold tracking-[0.28em] uppercase text-brand-muted text-center mb-6"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
                 What to expect next
+              </p>
+            </Reveal>
+
+            {/* Emotional momentum — peak excitement, right after booking */}
+            <Reveal delay={0.04}>
+              <p
+                className="text-center text-[15px] sm:text-[16px] text-brand-ink font-medium max-w-lg mx-auto mb-10 leading-relaxed"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                You made a smart move. Most venues go another whole season without fixing this. You didn&apos;t.
               </p>
             </Reveal>
 
@@ -181,21 +191,50 @@ export default function StrategyCallConfirmedPage() {
                 >
                   3
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 pb-10 border-b border-brand-line">
                   <div className="flex items-center gap-2 mb-1">
                     <MessageSquare className="w-4 h-4 text-brand-gold" />
                     <h2
                       className="text-[18px] sm:text-[20px] font-bold text-brand-ink"
                       style={{ fontFamily: "var(--font-open-sans)" }}
                     >
-                      Expect a reminder the day of your call
+                      We&apos;ll text you the day of your call
                     </h2>
                   </div>
                   <p
                     className="text-[14px] sm:text-[15px] text-brand-muted leading-relaxed"
                     style={{ fontFamily: "var(--font-open-sans)" }}
                   >
-                    We&apos;ll send you a reminder email and a confirmation text the morning of your call to make sure the time still works for you. Just reply to confirm and we&apos;re all set.
+                    We&apos;ll text you the day of your call to confirm you&apos;re still on. Reply <strong className="text-brand-ink">YES</strong> to hold your spot.
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Step 4 — Prepare for the call */}
+            <Reveal delay={0.32}>
+              <div className="flex gap-5 sm:gap-7 items-start pt-10">
+                <div
+                  className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-full bg-brand-ink text-white text-[15px] font-bold"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
+                  4
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Play className="w-4 h-4 text-brand-gold" />
+                    <h2
+                      className="text-[18px] sm:text-[20px] font-bold text-brand-ink"
+                      style={{ fontFamily: "var(--font-open-sans)" }}
+                    >
+                      Have these ready (optional, but worth it)
+                    </h2>
+                  </div>
+                  <p
+                    className="text-[14px] sm:text-[15px] text-brand-muted leading-relaxed"
+                    style={{ fontFamily: "var(--font-open-sans)" }}
+                  >
+                    Roughly how many weddings you booked last year, how many open dates you still have, and what you&apos;ve tried for marketing so far. No prep required — but knowing these makes the call 10x more valuable.
                   </p>
                 </div>
               </div>
