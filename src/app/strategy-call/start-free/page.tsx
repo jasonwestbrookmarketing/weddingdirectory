@@ -124,7 +124,7 @@ export default function StartFreePage() {
             >
               <span className="sm:whitespace-nowrap sm:block">
                 Our done-for-you program isn&apos;t your next step yet, but the engine behind it is.
-              </span>
+              </span>{" "}
               <span className="sm:whitespace-nowrap sm:block">
                 Start the Bride Booking System free for 14 days and grow into the full program when you&apos;re ready.
               </span>
