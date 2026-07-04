@@ -134,8 +134,8 @@ export default function StrategyCallConfirmedPage() {
                   1
                 </div>
                 <div className="flex-1 pb-10 border-b border-brand-line">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Play className="w-4 h-4 text-brand-gold" />
+                  <div className="flex items-start gap-2 mb-1">
+                    <Play className="w-4 h-4 text-brand-gold shrink-0 mt-1.5" />
                     <h2
                       className="text-[18px] sm:text-[20px] font-bold text-brand-ink"
                       style={{ fontFamily: "var(--font-open-sans)" }}
@@ -163,8 +163,8 @@ export default function StrategyCallConfirmedPage() {
                   2
                 </div>
                 <div className="flex-1 pb-10 border-b border-brand-line">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Mail className="w-4 h-4 text-brand-gold" />
+                  <div className="flex items-start gap-2 mb-1">
+                    <Mail className="w-4 h-4 text-brand-gold shrink-0 mt-1.5" />
                     <h2
                       className="text-[18px] sm:text-[20px] font-bold text-brand-ink"
                       style={{ fontFamily: "var(--font-open-sans)" }}
@@ -192,8 +192,8 @@ export default function StrategyCallConfirmedPage() {
                   3
                 </div>
                 <div className="flex-1 pb-10 border-b border-brand-line">
-                  <div className="flex items-center gap-2 mb-1">
-                    <MessageSquare className="w-4 h-4 text-brand-gold" />
+                  <div className="flex items-start gap-2 mb-1">
+                    <MessageSquare className="w-4 h-4 text-brand-gold shrink-0 mt-1.5" />
                     <h2
                       className="text-[18px] sm:text-[20px] font-bold text-brand-ink"
                       style={{ fontFamily: "var(--font-open-sans)" }}
@@ -221,8 +221,8 @@ export default function StrategyCallConfirmedPage() {
                   4
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Play className="w-4 h-4 text-brand-gold" />
+                  <div className="flex items-start gap-2 mb-1">
+                    <Play className="w-4 h-4 text-brand-gold shrink-0 mt-1.5" />
                     <h2
                       className="text-[18px] sm:text-[20px] font-bold text-brand-ink"
                       style={{ fontFamily: "var(--font-open-sans)" }}
@@ -234,7 +234,7 @@ export default function StrategyCallConfirmedPage() {
                     className="text-[14px] sm:text-[15px] text-brand-muted leading-relaxed"
                     style={{ fontFamily: "var(--font-open-sans)" }}
                   >
-                    Roughly how many weddings you booked last year, how many open dates you still have, and what you&apos;ve tried for marketing so far. No prep required — but knowing these makes the call 10x more valuable.
+                    Roughly how many weddings you booked last year, how many open dates you still have, and what you&apos;ve tried for marketing so far. No prep required, but knowing these makes the call 10x more valuable.
                   </p>
                 </div>
               </div>
