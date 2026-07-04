@@ -231,7 +231,7 @@ export default function StrategyCallModal() {
             >
               {trigger === "exit"
                 ? "30-minute fit call · No pitch · No pressure"
-                : "30 minutes · No pitch · You'll leave knowing exactly what's blocking your booking"}
+                : "30 minutes · No pitch · You'll leave knowing exactly what's blocking your bookings"}
             </p>
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2.5 shrink-0">
@@ -352,7 +352,7 @@ export default function StrategyCallModal() {
               >
                 {trigger === "exit"
                   ? "30-minute fit call · No pitch · No pressure"
-                  : "30 minutes · No pitch · You'll leave knowing exactly what's blocking your booking"}
+                  : "30 minutes · No pitch · You'll leave knowing exactly what's blocking your bookings"}
               </p>
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-2.5 shrink-0">
