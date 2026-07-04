@@ -92,7 +92,7 @@ export default function BookExitNudge() {
           className="mt-2 text-[26px] sm:text-[30px] leading-[1.12] text-stone-900"
           style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
         >
-          Before you go —{" "}
+          Before you go:{" "}
           <span style={{ color: "#8a7448" }}>we only open a few spots each week.</span>
         </h2>
 
@@ -100,7 +100,7 @@ export default function BookExitNudge() {
           className="mt-4 text-[15px] text-stone-500 leading-relaxed"
           style={{ fontFamily: "var(--font-open-sans)" }}
         >
-          It&apos;s free, 30 minutes, and there&apos;s no pressure. We&apos;ll even tell you upfront if it&apos;s not a fit. Grab a time now — you can reschedule anytime.
+          It&apos;s free, 30 minutes, and there&apos;s no pressure. We&apos;ll even tell you upfront if it&apos;s not a fit. Grab a time now, you can reschedule anytime.
         </p>
 
         <div className="mt-7 flex flex-col items-center gap-3">
