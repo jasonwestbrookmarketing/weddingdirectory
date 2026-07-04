@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Image from "next/image";
-import { ArrowRight, Store, Inbox, Zap, ChevronDown } from "lucide-react";
+import { ArrowRight, Store, Inbox, Zap, ChevronDown, CreditCard } from "lucide-react";
 import SiteFooter from "@/components/SiteFooter";
 import FireDisqualifiedEvent from "@/components/strategy-call/FireDisqualifiedEvent";
 import StartFreeExitNudge from "@/components/strategy-call/StartFreeExitNudge";
@@ -41,6 +41,11 @@ const FEATURES = [
     icon: Zap,
     title: "Speed to Lead System",
     desc: "Every new inquiry gets followed up in seconds so you're always first.",
+  },
+  {
+    icon: CreditCard,
+    title: "Payments & Proposals",
+    desc: "Send professional proposals and collect deposits at 0% processing — built specifically for wedding venue owners.",
   },
 ];
 
@@ -172,7 +177,7 @@ export default function StartFreePage() {
             >
               Everything included in your 14-day free trial
             </p>
-            <div className="grid sm:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {FEATURES.map(({ icon: Icon, title, desc }) => (
                 <div
                   key={title}
