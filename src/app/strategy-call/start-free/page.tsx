@@ -98,7 +98,7 @@ export default function StartFreePage() {
       <main>
         {/* ── HERO — above-the-fold offer, no images pushing CTA down ── */}
         <section className="bg-white pt-10 sm:pt-14 pb-12 sm:pb-16 border-b border-stone-200/60">
-          <div className="max-w-2xl mx-auto px-6 text-center">
+          <div className="max-w-2xl sm:max-w-3xl mx-auto px-6 text-center">
 
             {/* Badge */}
             <span
@@ -119,7 +119,7 @@ export default function StartFreePage() {
 
             {/* Short subhead — wider box so it wraps to 2 lines */}
             <p
-              className="mt-4 text-[15px] sm:text-[17px] text-stone-600 leading-relaxed max-w-xl sm:max-w-4xl mx-auto"
+              className="mt-4 text-[15px] sm:text-[17px] text-stone-600 leading-relaxed mx-auto"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               Our done-for-you program isn&apos;t your next step yet, but the engine behind it is.
