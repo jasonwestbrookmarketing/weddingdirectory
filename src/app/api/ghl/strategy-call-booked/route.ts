@@ -5,11 +5,20 @@ import { sendStrategyCallEvent } from "@/lib/meta-capi";
  * Server-to-server webhook GHL calls the moment a Strategy Call appointment
  * is booked (configured as a "Webhook" action on the GHL booking Workflow).
  *
- * This is the sole source for the booked conversion — it fires a Meta
- * "Schedule" event straight from our server. There is no client-side pixel
- * for this event anymore, so a real booking counts exactly once regardless of
- * whether the visitor's browser pixel is blocked (in-app browser, ad blocker,
- * Safari ITP, interrupted redirect, etc).
+ * This is the sole source for the booked conversion — it fires the two Meta
+ * events straight from our server. There is no client-side pixel for these
+ * events anymore, so a real booking counts exactly once regardless of whether
+ * the visitor's browser pixel is blocked (in-app browser, ad blocker, Safari
+ * ITP, interrupted redirect, etc).
+ *
+ * Sends two events:
+ *   1. `Schedule` (standard) with event_source_url = /strategy-call/confirmed —
+ *      a Meta standard event, useful for campaign optimisation.
+ *   2. `BookedStrategyCall` (custom) with the same event_source_url — the
+ *      "Booked Strategy Call" custom conversion should be reconfigured in
+ *      Events Manager to be event-based on this custom event (rather than the
+ *      old URL-contains rule), matching the qualified/disqualified pattern so
+ *      all three funnel conversions are set up identically and count once.
  *
  * Auth: shared secret in GHL_WEBHOOK_SECRET (header `x-webhook-secret` or
  * `?secret=`). Set GHL_WEBHOOK_SECRET to a long random string.
@@ -71,9 +80,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     req.headers.get("x-real-ip") ??
     undefined;
+  const clientUserAgent = req.headers.get("user-agent") ?? undefined;
 
-  const result = await sendStrategyCallEvent({
-    eventName: "Schedule",
+  const sharedParams = {
     email,
     phone,
     firstName: body.first_name?.trim(),
@@ -81,13 +90,24 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     eventSourceUrl: EVENT_SOURCE_URL,
     eventId: body.event_id,
     clientIpAddress,
-    clientUserAgent: req.headers.get("user-agent") ?? undefined,
+    clientUserAgent,
     fbc: body.fbc,
     fbp: body.fbp,
-  });
+  };
 
-  if (!result.success) {
-    console.error("[ghl-strategy-call-booked] Meta CAPI send failed:", result.error);
+  const [scheduleResult, customResult] = await Promise.all([
+    sendStrategyCallEvent({ eventName: "Schedule", ...sharedParams }),
+    sendStrategyCallEvent({ eventName: "BookedStrategyCall", ...sharedParams }),
+  ]);
+
+  if (!scheduleResult.success) {
+    console.error("[ghl-strategy-call-booked] Meta CAPI 'Schedule' send failed:", scheduleResult.error);
+  }
+  if (!customResult.success) {
+    console.error(
+      "[ghl-strategy-call-booked] Meta CAPI 'BookedStrategyCall' send failed:",
+      customResult.error,
+    );
   }
 
   return NextResponse.json({ received: true });
