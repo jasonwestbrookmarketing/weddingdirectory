@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import Image from "next/image";
 import { ArrowRight, Store, Inbox, Zap, ChevronDown, CreditCard } from "lucide-react";
 import SiteFooter from "@/components/SiteFooter";
-import FireDisqualifiedEvent from "@/components/strategy-call/FireDisqualifiedEvent";
 import StartFreeExitNudge from "@/components/strategy-call/StartFreeExitNudge";
 
 const STORYPAY_URL =
@@ -71,8 +70,6 @@ const FAQ = [
 export default function StartFreePage() {
   return (
     <>
-      <FireDisqualifiedEvent />
-
       {/* ── NAV ── */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/60">
         <nav className="max-w-5xl mx-auto flex items-center justify-between px-5 md:px-10 py-3">

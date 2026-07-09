@@ -5,11 +5,11 @@ import { sendStrategyCallEvent } from "@/lib/meta-capi";
  * Server-to-server webhook GHL calls the moment a Strategy Call appointment
  * is booked (configured as a "Webhook" action on the GHL booking Workflow).
  *
- * This is a fallback for the client-side pixel fired by `FireLeadEvent` on
- * /strategy-call/confirmed — it fires a Meta "Schedule" event straight from
- * our server, so a real booking still counts as a conversion even if the
- * visitor's browser pixel never fires (in-app browser, ad blocker, Safari
- * ITP, interrupted redirect, etc).
+ * This is the sole source for the booked conversion — it fires a Meta
+ * "Schedule" event straight from our server. There is no client-side pixel
+ * for this event anymore, so a real booking counts exactly once regardless of
+ * whether the visitor's browser pixel is blocked (in-app browser, ad blocker,
+ * Safari ITP, interrupted redirect, etc).
  *
  * Auth: shared secret in GHL_WEBHOOK_SECRET (header `x-webhook-secret` or
  * `?secret=`). Set GHL_WEBHOOK_SECRET to a long random string.

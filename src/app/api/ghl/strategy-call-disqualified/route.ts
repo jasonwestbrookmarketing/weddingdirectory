@@ -6,11 +6,11 @@ import { sendStrategyCallEvent } from "@/lib/meta-capi";
  * "disqualified" branch of the Strategy Call survey (configured as a
  * "Webhook" action on the GHL survey Workflow, on the disqualified branch).
  *
- * This is a fallback for the client-side pixel fired by
- * `FireDisqualifiedEvent` on /strategy-call/start-free — it fires the same
- * Meta custom event straight from our server, so a disqualified lead still
- * counts as a conversion even if the visitor's browser pixel never fires
- * (in-app browser, ad blocker, Safari ITP, interrupted redirect, etc).
+ * This is the sole source for the disqualified conversion — it fires the
+ * `DisqualifiedStrategyCall` Meta custom event straight from our server. There
+ * is no client-side pixel for this event anymore, so a disqualified lead
+ * counts exactly once regardless of whether the visitor's browser pixel is
+ * blocked (in-app browser, ad blocker, Safari ITP, interrupted redirect, etc).
  *
  * Auth: shared secret in GHL_WEBHOOK_SECRET (header `x-webhook-secret` or
  * `?secret=`). Set GHL_WEBHOOK_SECRET to a long random string.

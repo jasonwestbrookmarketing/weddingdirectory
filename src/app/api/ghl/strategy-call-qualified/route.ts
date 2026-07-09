@@ -6,20 +6,19 @@ import { sendStrategyCallEvent } from "@/lib/meta-capi";
  * "qualified" branch of the Strategy Call survey (configured as a "Webhook"
  * action on the GHL survey Workflow, on the qualified branch).
  *
- * This is a fallback for the client-side pixel fired by `FireQualifiedEvent`
- * on /strategy-call/book — it fires the same two Meta events straight from
- * our server, so a qualified lead still counts as a conversion even if the
- * visitor's browser pixel never fires (in-app browser, ad blocker, Safari
- * ITP, interrupted redirect, etc).
+ * This is the sole source for the qualified conversion — it fires the two
+ * Meta events straight from our server. There is no client-side pixel for
+ * these events anymore, so a qualified lead counts exactly once regardless of
+ * whether the visitor's browser pixel is blocked (in-app browser, ad blocker,
+ * Safari ITP, interrupted redirect, etc).
  *
- * Sends two events for parity with the client-side pixel:
- *   1. `Lead` with event_source_url = /strategy-call/book — the Meta custom
- *      conversion "Qualified Strategy Call" is currently configured as
- *      Event = Lead + Rule: URL contains that exact path, so this is what
- *      actually satisfies it today.
- *   2. `QualifiedStrategyCall` (custom) with the same event_source_url —
- *      belt-and-suspenders in case the Meta rule is later changed to be
- *      event-based instead of URL-based.
+ * Sends two events:
+ *   1. `Lead` with event_source_url = /strategy-call/book — used for Meta
+ *      Leads campaign optimisation.
+ *   2. `QualifiedStrategyCall` (custom) with the same event_source_url — the
+ *      "Qualified Strategy Call" custom conversion should be reconfigured in
+ *      Events Manager to be event-based on one of these events (rather than
+ *      the old URL-contains rule) so it dedupes cleanly.
  *
  * Auth: shared secret in GHL_WEBHOOK_SECRET (header `x-webhook-secret` or
  * `?secret=`). Set GHL_WEBHOOK_SECRET to a long random string.

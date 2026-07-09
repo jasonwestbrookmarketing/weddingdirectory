@@ -5,7 +5,6 @@ import VideoPlayer from "@/components/strategy-call/VideoPlayer";
 import PageFooter from "@/components/strategy-call/PageFooter";
 import { Reveal } from "@/components/strategy-call/Reveal";
 import { CONFIRMATION_VIDEO_URL } from "@/components/strategy-call/constants";
-import FireLeadEvent from "@/components/strategy-call/FireLeadEvent";
 
 export const dynamic = "force-static";
 
@@ -26,8 +25,6 @@ const RESULTS = [
 export default function StrategyCallConfirmedPage() {
   return (
     <div className="min-h-screen flex flex-col bg-brand-bg">
-      <FireLeadEvent />
-
       <div className="sticky top-0 z-40">
         <StrategyNav showCta={false} />
       </div>

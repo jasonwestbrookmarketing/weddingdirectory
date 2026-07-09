@@ -4,11 +4,12 @@
  * (/strategy-call → /strategy-call/book → /strategy-call/confirmed).
  *
  * This is unrelated to any per-venue SaaS tracking — venues never see or
- * configure this. It exists purely as a server-to-server fallback for the
- * client-side pixel fired by `FireLeadEvent`, so a booked Strategy Call still
- * counts as a conversion even when the browser pixel is blocked or lost
- * (Meta/Instagram in-app browser, ad blockers, Safari ITP, interrupted
- * redirects, etc).
+ * configure this. It is the SINGLE SOURCE OF TRUTH for the three funnel
+ * conversions (Qualified, Disqualified, Booked): the client-side browser
+ * pixel no longer fires these events, so there is nothing to dedupe against.
+ * Firing server-to-server means a conversion still counts even when the
+ * browser pixel is blocked or lost (Meta/Instagram in-app browser, ad
+ * blockers, Safari ITP, interrupted redirects, etc).
  *
  * Never throws — a Meta API failure must never break the caller (the GHL
  * webhook route needs to always respond 200 quickly).

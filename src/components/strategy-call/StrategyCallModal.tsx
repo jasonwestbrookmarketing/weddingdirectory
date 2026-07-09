@@ -31,13 +31,6 @@ const GHL_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
  * The survey prequalifies the lead, then GHL redirects them to the booking
  * calendar (/strategy-call/book) or the SaaS page (/book-more-weddings).
  */
-/** Fire a Meta pixel custom event from the parent window. */
-function firePixel(eventName: string) {
-  try {
-    const w = window as unknown as { fbq?: (...a: unknown[]) => void };
-    w.fbq?.("trackCustom", eventName);
-  } catch { /* non-fatal */ }
-}
 
 /**
  * GHL survey postMessage listener.
@@ -95,7 +88,6 @@ function useSurveyCompletionListener() {
 
         // Qualified → booking calendar
         if (!redirectUrl || redirectUrl.includes("/strategy-call/book")) {
-          firePixel("QualifiedStrategyCall");
           window.location.href = "/strategy-call/book";
           return;
         }
@@ -105,7 +97,6 @@ function useSurveyCompletionListener() {
           redirectUrl.includes("/strategy-call/start-free") ||
           redirectUrl.includes("/book-more-weddings")
         ) {
-          firePixel("DisqualifiedStrategyCall");
           window.location.href = redirectUrl.startsWith("http")
             ? new URL(redirectUrl).pathname
             : redirectUrl;
