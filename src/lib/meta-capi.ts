@@ -17,7 +17,9 @@
 import crypto from "crypto";
 
 const META_API_VERSION = "v21.0";
-const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "1897382194014416";
+// The StoryVenue Marketing Pixel id. NOTE: this is the PIXEL id, not the ad
+// account id (1897382194014416 is the ad account and must never be used here).
+const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "573278748454943";
 const ACCESS_TOKEN = process.env.META_CAPI_ACCESS_TOKEN;
 
 function sha256(value: string): string {

@@ -4,8 +4,10 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
 import MetaPixelRouteTracker from "@/components/MetaPixelRouteTracker";
 
-// Meta (Facebook) Pixel. Override via NEXT_PUBLIC_META_PIXEL_ID if needed.
-const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "1897382194014416";
+// Meta (Facebook) Pixel ID (the StoryVenue Marketing Pixel). Override via
+// NEXT_PUBLIC_META_PIXEL_ID if needed. NOTE: this is the PIXEL id, not the ad
+// account id (1897382194014416 is the ad account and must never be used here).
+const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "573278748454943";
 
 const openSans = Open_Sans({
   variable: "--font-open-sans",
