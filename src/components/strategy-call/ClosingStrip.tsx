@@ -34,7 +34,7 @@ export default function ClosingStrip() {
             className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-[#1b1b1b] font-bold tracking-[0.1em] uppercase px-7 py-3.5 text-[13px] sm:text-[14px] hover:-translate-y-px hover:shadow-[0_12px_32px_-8px_rgba(255,255,255,0.25)] active:scale-[0.98] transition-all"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Get My Free Strategy Call
+            See If I Qualify
             <svg
               className="w-4 h-4"
               fill="none"
@@ -46,6 +46,12 @@ export default function ClosingStrip() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </button>
+          <p
+            className="mt-3 text-[12px] text-white/60 tracking-wide"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
+            2-minute application · Free 30-minute strategy call for qualified venues
+          </p>
         </div>
       </div>
     </section>

@@ -15,8 +15,8 @@ const AVATARS = [
 // Prequalifier survey. It redirects qualified leads to /strategy-call/book
 // (the calendar page) and disqualified leads to /book-more-weddings — those
 // redirects are configured inside the GHL survey itself.
-const SURVEY_URL = "https://api.leadconnectorhq.com/widget/survey/foNEAvcN1Ecj7zm8gcoP";
-const SURVEY_ID  = "foNEAvcN1Ecj7zm8gcoP";
+const SURVEY_URL = "https://api.leadconnectorhq.com/widget/survey/YoQuxCMf68ZQbutsHbUg";
+const SURVEY_ID  = "YoQuxCMf68ZQbutsHbUg";
 const GHL_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
 
 /**

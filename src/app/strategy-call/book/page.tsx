@@ -58,15 +58,6 @@ export default function StrategyCallBookPage() {
               </h1>
             </Reveal>
 
-            <Reveal delay={0.12}>
-              <p
-                className="mt-3 text-[14px] sm:text-[15px] text-brand-muted max-w-md mx-auto"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                <span className="block">We&apos;re holding a spot for you.</span>
-                <span className="block">Pick the time that works best for you.</span>
-              </p>
-            </Reveal>
 
             {/* Call agenda — kills abandonment before the calendar */}
             <Reveal delay={0.18}>
