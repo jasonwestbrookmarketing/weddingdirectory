@@ -186,7 +186,7 @@ export default function StrategyCallModal() {
         className={`sm:hidden fixed inset-0 z-[9999] bg-white overflow-y-auto ${open ? "" : "!hidden"}`}
         role="dialog"
         aria-modal="true"
-        aria-label="Book your free strategy call"
+        aria-label="See if your venue qualifies"
         aria-hidden={!open}
         style={{ WebkitOverflowScrolling: "touch" }}
       >
@@ -207,25 +207,25 @@ export default function StrategyCallModal() {
           >
             {trigger === "exit"
               ? "Are you actually happy with how many weddings you're booking right now?"
-              : "Get My Free Strategy Call"}
+              : "See If Your Venue Qualifies"}
           </h2>
           {trigger === "exit" && (
             <p
               className="mt-3 text-[13px] text-stone-500 leading-relaxed"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              If not, this 30-minute call shows you exactly what&apos;s in the way. Free. No pitch. We&apos;ll even tell you if we can&apos;t help.
+              If not, this free 30-minute call shows you exactly what&apos;s in the way. No pitch. We&apos;ll even tell you if we can&apos;t help.
             </p>
           )}
           <div className="mt-3 flex flex-col items-center gap-2.5">
-            <p
-              className="text-[12px] text-stone-400 tracking-wide"
-              style={{ fontFamily: "var(--font-open-sans)" }}
-            >
-              {trigger === "exit"
-                ? "30-minute fit call · No pitch · No pressure"
-                : "30 minutes · No pitch · You'll leave knowing exactly what's blocking your bookings"}
-            </p>
+            {trigger !== "exit" && (
+              <p
+                className="text-[12px] text-stone-400 tracking-wide"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                2-minute application · Qualified venues receive a free 30-minute strategy call
+              </p>
+            )}
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2.5 shrink-0">
                 {AVATARS.map((src, i) => (
@@ -271,12 +271,30 @@ export default function StrategyCallModal() {
           </div>
         </div>
 
+        {/* Exit-intent: bridge into the application survey */}
+        {trigger === "exit" && (
+          <div className="px-6 pb-2 text-center">
+            <p
+              className="text-[18px] leading-[1.2] text-stone-900"
+              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+            >
+              See If Your Venue Qualifies
+            </p>
+            <p
+              className="mt-1.5 text-[12px] text-stone-400 tracking-wide"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              2-minute application · Qualified venues receive a free 30-minute strategy call
+            </p>
+          </div>
+        )}
+
         {/* GHL standard embed — iframe auto-resizes to content height via
             form_embed.js postMessage. Parent div handles all scrolling. */}
         <iframe
           src={SURVEY_URL}
           id={SURVEY_ID}
-          title="Book your free strategy call"
+          title="Venue qualification application"
           scrolling="no"
           style={{
             width: "100%",
@@ -293,7 +311,7 @@ export default function StrategyCallModal() {
         className={`hidden sm:flex fixed inset-0 z-[9999] items-center justify-center p-4 ${open ? "" : "!hidden"}`}
         role="dialog"
         aria-modal="true"
-        aria-label="Book your free strategy call"
+        aria-label="See if your venue qualifies"
         aria-hidden={!open}
       >
         {/* Backdrop */}
@@ -326,27 +344,27 @@ export default function StrategyCallModal() {
             >
               {trigger === "exit"
                 ? "Are you actually happy with how many weddings you're booking right now?"
-                : "Get My Free Strategy Call"}
+                : "See If Your Venue Qualifies"}
             </h2>
             {trigger === "exit" && (
               <p
                 className="mt-3 text-[14px] text-stone-500 leading-relaxed max-w-md mx-auto"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                If not, this 30-minute call shows you exactly what&apos;s in the way. Free. No pitch. We&apos;ll even tell you if we can&apos;t help.
+                If not, this free 30-minute call shows you exactly what&apos;s in the way. No pitch. We&apos;ll even tell you if we can&apos;t help.
               </p>
             )}
 
             {/* Social proof under headline */}
             <div className="mt-4 flex flex-col items-center gap-2.5">
-              <p
-                className="text-[12px] text-stone-400 tracking-wide"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                {trigger === "exit"
-                  ? "30-minute fit call · No pitch · No pressure"
-                  : "30 minutes · No pitch · You'll leave knowing exactly what's blocking your bookings"}
-              </p>
+              {trigger !== "exit" && (
+                <p
+                  className="text-[12px] text-stone-400 tracking-wide"
+                  style={{ fontFamily: "var(--font-open-sans)" }}
+                >
+                  2-minute application · Qualified venues receive a free 30-minute strategy call
+                </p>
+              )}
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-2.5 shrink-0">
                   {AVATARS.map((src, i) => (
@@ -392,6 +410,24 @@ export default function StrategyCallModal() {
             </div>
           </div>
 
+          {/* Exit-intent: bridge into the application survey */}
+          {trigger === "exit" && (
+            <div className="px-8 pb-3 text-center">
+              <p
+                className="text-[20px] leading-[1.2] text-stone-900"
+                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+              >
+                See If Your Venue Qualifies
+              </p>
+              <p
+                className="mt-1.5 text-[12px] text-stone-400 tracking-wide"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                2-minute application · Qualified venues receive a free 30-minute strategy call
+              </p>
+            </div>
+          )}
+
           {/* Survey iframe */}
           <div className="bg-white px-10">
             <iframe
@@ -404,7 +440,7 @@ export default function StrategyCallModal() {
                 overflow: "hidden",
               }}
               scrolling="no"
-              title="Book your free strategy call"
+              title="Venue qualification application"
             />
           </div>
 

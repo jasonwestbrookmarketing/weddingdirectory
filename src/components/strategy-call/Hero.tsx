@@ -98,7 +98,7 @@ export default function Hero() {
               2-minute application · Free 30-minute strategy call for qualified venues
             </p>
             <p
-              className="text-[12px] text-brand-muted/80"
+              className="text-[11px] text-brand-muted/60"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               Month-to-month · No contracts · No cancellation fees
