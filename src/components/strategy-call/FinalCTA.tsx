@@ -82,7 +82,7 @@ export default function FinalCTA() {
               className="text-[12px] text-brand-muted/70 tracking-wide"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              2-minute application · Free 30-minute strategy call for qualified venues
+              Answer 5 quick questions to see if your venue qualifies for a free 30-minute strategy call.
             </p>
 
             {/* Social proof */}

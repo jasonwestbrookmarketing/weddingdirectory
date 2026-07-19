@@ -218,14 +218,6 @@ export default function StrategyCallModal() {
             </p>
           )}
           <div className="mt-3 flex flex-col items-center gap-2.5">
-            {trigger !== "exit" && (
-              <p
-                className="text-[12px] text-stone-400 tracking-wide"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                2-minute application · Qualified venues receive a free 30-minute strategy call
-              </p>
-            )}
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2.5 shrink-0">
                 {AVATARS.map((src, i) => (
@@ -271,23 +263,15 @@ export default function StrategyCallModal() {
           </div>
         </div>
 
-        {/* Exit-intent: bridge into the application survey */}
-        {trigger === "exit" && (
-          <div className="px-6 pb-2 text-center">
-            <p
-              className="text-[18px] leading-[1.2] text-stone-900"
-              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-            >
-              See If Your Venue Qualifies
-            </p>
-            <p
-              className="mt-1.5 text-[12px] text-stone-400 tracking-wide"
-              style={{ fontFamily: "var(--font-open-sans)" }}
-            >
-              2-minute application · Qualified venues receive a free 30-minute strategy call
-            </p>
-          </div>
-        )}
+        {/* Single expectation line above the survey — both triggers */}
+        <div className="px-6 pb-2 text-center">
+          <p
+            className="text-[12px] text-stone-400 tracking-wide"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
+            Answer 5 quick questions to see if your venue qualifies.
+          </p>
+        </div>
 
         {/* GHL standard embed — iframe auto-resizes to content height via
             form_embed.js postMessage. Parent div handles all scrolling. */}
@@ -357,14 +341,6 @@ export default function StrategyCallModal() {
 
             {/* Social proof under headline */}
             <div className="mt-4 flex flex-col items-center gap-2.5">
-              {trigger !== "exit" && (
-                <p
-                  className="text-[12px] text-stone-400 tracking-wide"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
-                >
-                  2-minute application · Qualified venues receive a free 30-minute strategy call
-                </p>
-              )}
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-2.5 shrink-0">
                   {AVATARS.map((src, i) => (
@@ -410,23 +386,15 @@ export default function StrategyCallModal() {
             </div>
           </div>
 
-          {/* Exit-intent: bridge into the application survey */}
-          {trigger === "exit" && (
-            <div className="px-8 pb-3 text-center">
-              <p
-                className="text-[20px] leading-[1.2] text-stone-900"
-                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-              >
-                See If Your Venue Qualifies
-              </p>
-              <p
-                className="mt-1.5 text-[12px] text-stone-400 tracking-wide"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                2-minute application · Qualified venues receive a free 30-minute strategy call
-              </p>
-            </div>
-          )}
+          {/* Single expectation line above the survey — both triggers */}
+          <div className="px-8 pb-3 text-center">
+            <p
+              className="text-[12px] text-stone-400 tracking-wide"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              Answer 5 quick questions to see if your venue qualifies.
+            </p>
+          </div>
 
           {/* Survey iframe */}
           <div className="bg-white px-10">
