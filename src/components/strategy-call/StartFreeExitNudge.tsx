@@ -79,7 +79,7 @@ export default function StartFreeExitNudge({ trialHref }: { trialHref: string })
           className="mt-4 text-[15px] text-stone-500 leading-relaxed"
           style={{ fontFamily: "var(--font-open-sans)" }}
         >
-          The Bride Booking System captures every bride, follows up in seconds, and books more tours for you. Try it free and see what changes in your first two weeks.
+          The Bride Booking System helps you capture more bride inquiries, follow up in seconds, and book more tours. Start free and see what changes in your first 14 days.
         </p>
 
         <div className="mt-7 flex flex-col items-center gap-3">

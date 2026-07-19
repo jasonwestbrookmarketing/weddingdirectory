@@ -5,6 +5,8 @@ import { X } from "lucide-react";
 
 // Mobile fallback: fire after this much dwell time (ms)
 const MOBILE_DWELL_MS = 35000;
+// Minimum time on page before exit intent can fire on desktop (ms)
+const MIN_DWELL_MS = 5000;
 // The booking calendar anchor on the page
 const CALENDAR_ID = "book-calendar";
 
@@ -35,11 +37,15 @@ export default function BookExitNudge() {
     // from a cursor that merely started at the top edge on load.
     const onPointerActive = () => { enteredRef.current = true; };
 
+    // Only allow firing after the visitor has spent meaningful time on the page.
+    const readyAt = Date.now() + MIN_DWELL_MS;
+
     // mouseout bubbles to document; relatedTarget is null only when the pointer
     // leaves the window entirely. clientY near 0 means it exited via the top
     // (toward the browser chrome / search bar) — fire instantly.
     const onMouseOut = (e: MouseEvent) => {
       if (!enteredRef.current) return;
+      if (Date.now() < readyAt) return;
       if (e.relatedTarget || (e as MouseEvent & { toElement?: unknown }).toElement) return;
       if (e.clientY > 10) return;
       fire();
@@ -100,7 +106,7 @@ export default function BookExitNudge() {
           className="mt-4 text-[15px] text-stone-500 leading-relaxed"
           style={{ fontFamily: "var(--font-open-sans)" }}
         >
-          It&apos;s free, 30 minutes, and there&apos;s no pressure. We&apos;ll even tell you upfront if it&apos;s not a fit. Grab a time now, you can reschedule anytime.
+          It&apos;s free, takes 30 minutes, and there&apos;s no pressure. If we&apos;re not a fit, we&apos;ll tell you upfront. Pick a time now. You can always reschedule.
         </p>
 
         <div className="mt-7 flex flex-col items-center gap-3">
