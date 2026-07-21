@@ -369,6 +369,39 @@ export default function VenuePageClient({
     });
   }, [venue.id, venue.name]);
 
+  // Exit-intent: open the pricing-guide lead form when the visitor's cursor
+  // leaves through the top of the viewport (heading for the browser chrome).
+  // Only fires for all-inclusive plan listings (pricingGuideEnabled === true),
+  // at most once per session, and only after 5 s of dwell time.
+  useEffect(() => {
+    if (!pricingGuideEnabled) return;
+
+    const SESSION_KEY = `sv_venue_exit_${venue.id}`;
+    if (sessionStorage.getItem(SESSION_KEY)) return;
+
+    const MIN_DWELL_MS = 5000;
+    const readyAt = Date.now() + MIN_DWELL_MS;
+    let hasEntered = false;
+
+    const onPointerActive = () => { hasEntered = true; };
+
+    const onMouseOut = (e: MouseEvent) => {
+      if (!hasEntered) return;
+      if (Date.now() < readyAt) return;
+      if (e.relatedTarget || (e as MouseEvent & { toElement?: unknown }).toElement) return;
+      if (e.clientY > 10) return;
+      sessionStorage.setItem(SESSION_KEY, "1");
+      setIsOpen(true);
+    };
+
+    document.addEventListener("mousemove", onPointerActive, { once: true });
+    document.addEventListener("mouseout", onMouseOut);
+    return () => {
+      document.removeEventListener("mousemove", onPointerActive);
+      document.removeEventListener("mouseout", onMouseOut);
+    };
+  }, [pricingGuideEnabled, venue.id]);
+
   const handleCTAClick = () => {
     trackEvent("lead_cta_clicked", { venue_id: venue.id });
     setIsOpen(true);
