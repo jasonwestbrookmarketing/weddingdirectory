@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import VideoPlayer from "./VideoPlayer";
+import VslGatePlayer from "./VslGatePlayer";
 
 const AVATARS = [
   "/avatars/av1.jpg",
@@ -65,10 +65,10 @@ export default function Hero() {
             We bring the brides.&nbsp;&nbsp;&nbsp;Our team works the leads.&nbsp;&nbsp;&nbsp;You show up for the tour.
           </motion.p>
 
-          {/* Video player — embed shown directly (no cover photo), matching the
-              confirmation page. No fillScale so Loom's controls stay visible. */}
+          {/* VSL player with 30-second soft gate — collects name + email
+              via GHL form before the visitor can continue watching. */}
           <motion.div variants={item} className="pt-2 sm:pt-4">
-            <VideoPlayer showPoster={false} />
+            <VslGatePlayer />
           </motion.div>
 
           {/* CTA */}
