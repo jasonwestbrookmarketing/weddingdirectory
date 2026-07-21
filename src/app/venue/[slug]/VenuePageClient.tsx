@@ -70,12 +70,6 @@ interface VenuePageClientProps {
   guidePreviewUrl: string;
   /** When false the entire booking card and mobile CTA are hidden. */
   pricingGuideEnabled: boolean;
-  /**
-   * When true the exit-intent lead-form popup fires on this listing.
-   * Requires the plan's nav_permissions to include "nav_listing_exit_intent": true.
-   * Defaults to false — free and $97/mo plans never get this regardless of pricingGuideEnabled.
-   */
-  exitIntentEnabled: boolean;
 }
 
 function PhotoMosaic({
@@ -339,7 +333,6 @@ export default function VenuePageClient({
   googleReviews,
   guidePreviewUrl,
   pricingGuideEnabled,
-  exitIntentEnabled,
 }: VenuePageClientProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
@@ -378,13 +371,12 @@ export default function VenuePageClient({
 
   // Exit-intent: open the pricing-guide lead form when the visitor's cursor
   // leaves through the top of the viewport (heading for the browser chrome).
-  // Gated by exitIntentEnabled — a separate permission from pricingGuideEnabled.
-  // Free-plan and $97/mo plan listings always pass false here regardless of
-  // whether they have a pricing guide enabled. Only all-inclusive plans
-  // get nav_listing_exit_intent: true in their directory_plans nav_permissions.
+  // Only fires for all-inclusive plan listings where pricingGuideEnabled is
+  // true (nav_listing_pricing_guide permission in directory_plans). Free-plan
+  // and $97/mo plan venues have this permission false, so they never see it.
   // Fires at most once per session, after a 5 s dwell minimum.
   useEffect(() => {
-    if (!exitIntentEnabled) return;
+    if (!pricingGuideEnabled) return;
 
     const SESSION_KEY = `sv_venue_exit_${venue.id}`;
     if (sessionStorage.getItem(SESSION_KEY)) return;
@@ -410,7 +402,7 @@ export default function VenuePageClient({
       document.removeEventListener("mousemove", onPointerActive);
       document.removeEventListener("mouseout", onMouseOut);
     };
-  }, [exitIntentEnabled, venue.id]);
+  }, [pricingGuideEnabled, venue.id]);
 
   const handleCTAClick = () => {
     trackEvent("lead_cta_clicked", { venue_id: venue.id });

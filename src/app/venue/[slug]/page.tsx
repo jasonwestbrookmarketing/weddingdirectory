@@ -106,11 +106,6 @@ export default async function VenuePage({ params, searchParams }: Props) {
   // Fetch nav_permissions + hide_header in one query.
   // Venues without a plan (legacy) get full access + header visible.
   let pricingGuideEnabled = true;
-  // Exit-intent is a separate, stricter gate. It must be explicitly granted by
-  // the plan via nav_listing_exit_intent: true. Free and $97/mo plans never
-  // get this permission — only all-inclusive tiers do. Defaults to false so
-  // it stays off until a plan explicitly enables it.
-  let exitIntentEnabled = false;
   let hideHeader = false;
   if (venue.directory_plan_id) {
     const { data: plan } = await supabase
@@ -121,11 +116,9 @@ export default async function VenuePage({ params, searchParams }: Props) {
     if (plan) {
       const perms = (plan.nav_permissions ?? {}) as Record<string, boolean>;
       pricingGuideEnabled = perms["nav_listing_pricing_guide"] === true;
-      exitIntentEnabled = perms["nav_listing_exit_intent"] === true;
       hideHeader = (plan as Record<string, unknown>).hide_header === true;
     } else {
       pricingGuideEnabled = false;
-      exitIntentEnabled = false;
     }
   }
 
@@ -186,7 +179,6 @@ export default async function VenuePage({ params, searchParams }: Props) {
         googleReviews={googleReviews}
         guidePreviewUrl={guidePreviewUrl}
         pricingGuideEnabled={pricingGuideEnabled}
-        exitIntentEnabled={exitIntentEnabled}
       />
       {hideHeader ? (
         <footer className="bg-stone-100 py-4 text-center">
