@@ -8,16 +8,11 @@ import { VSL_VIDEO_URL } from "./constants";
 const FORM_URL   = "https://api.leadconnectorhq.com/widget/form/64C3haEpJbc8aJ9RmsW0";
 const FORM_ID    = "64C3haEpJbc8aJ9RmsW0";
 const GHL_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
-
-// localStorage key — once set, the gate is never shown again for this browser
 const STORAGE_KEY = "sv_vsl_gate_passed";
-
-// How many milliseconds of free play before the gate fires
-const GATE_AT_MS = 30_000;
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-function toLoomEmbed(url: string): string {
+function toLoomEmbed(url: string, autoplay: boolean): string {
   try {
     const u = new URL(url);
     if (u.hostname.includes("loom.com")) {
@@ -28,14 +23,13 @@ function toLoomEmbed(url: string): string {
           hide_owner:      "true",
           hide_title:      "true",
           hide_share:      "true",
-          autoplay:        "1",
         });
+        if (autoplay) p.set("autoplay", "1");
         return `https://www.loom.com/embed/${id}?${p.toString()}`;
       }
     }
-    // Vimeo / YouTube / other: just append autoplay
     const u2 = new URL(url);
-    if (!u2.searchParams.has("autoplay")) u2.searchParams.set("autoplay", "1");
+    if (autoplay && !u2.searchParams.has("autoplay")) u2.searchParams.set("autoplay", "1");
     return u2.toString();
   } catch {
     return url;
@@ -45,29 +39,24 @@ function toLoomEmbed(url: string): string {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 /**
- * VSL player with a soft 30-second gate.
+ * VSL player with a hard gate before play.
  *
- * Flow:
- *   1. Custom poster + play button shown initially.
- *   2. User clicks play → Loom iframe mounts with autoplay, 30s timer starts.
- *   3. At 30s (gate not yet passed) → dark overlay + GHL "VSL Lead" form appears
- *      over the still-playing video.
- *   4. Visitor submits their name + email → postMessage fires → overlay dismissed,
- *      video continues. localStorage flag prevents the gate ever showing again.
- *
- * Returning visitors who already submitted skip straight to the video on play.
+ * Phases:
+ *   "gate"    — new visitor: GHL name/email form shown, no video yet.
+ *   "playing" — form just submitted: video autoplays immediately as the reward.
+ *   "poster"  — returning visitor (gate already passed): poster + play button,
+ *               video loads on click (no repeat gate, no autoplay).
  */
 export default function VslGatePlayer() {
-  const [gatePassed, setGatePassed] = useState(false);
-  const [playing, setPlaying]       = useState(false);
-  const [showGate, setShowGate]     = useState(false);
+  type Phase = "gate" | "playing" | "poster";
+  const [phase, setPhase] = useState<Phase>("gate");
   const handled = useRef(false);
 
-  // ── Check localStorage on first render ──────────────────────────────────
+  // ── Returning visitor: skip the gate entirely ────────────────────────────
   useEffect(() => {
     try {
-      if (localStorage.getItem(STORAGE_KEY)) setGatePassed(true);
-    } catch { /* private browsing may throw */ }
+      if (localStorage.getItem(STORAGE_KEY)) setPhase("poster");
+    } catch { /* private browsing */ }
   }, []);
 
   // ── Load GHL embed script once ───────────────────────────────────────────
@@ -79,21 +68,14 @@ export default function VslGatePlayer() {
     document.body.appendChild(s);
   }, []);
 
-  // ── 30-second gate timer (skipped if gate already passed) ────────────────
+  // ── GHL postMessage listener — active only while gate is showing ─────────
+  // The VSL Lead form should be configured in GHL to redirect to
+  // https://storyvenue.com/strategy-call after submission. That redirect URL
+  // appears in GHL's postMessage and is the primary submit signal.
+  // Generic submit/success event fields serve as a fallback.
   useEffect(() => {
-    if (!playing || gatePassed) return;
-    const t = setTimeout(() => setShowGate(true), GATE_AT_MS);
-    return () => clearTimeout(t);
-  }, [playing, gatePassed]);
-
-  // ── GHL postMessage listener ─────────────────────────────────────────────
-  // Fires when the visitor submits the VSL Lead form. GHL sends a postMessage
-  // containing the redirect URL (form should be configured to redirect back to
-  // https://storyvenue.com/strategy-call after submit — most reliable signal).
-  // We also catch generic submit/success event fields as a fallback.
-  useEffect(() => {
-    if (!showGate) return;
-    handled.current = false; // reset on each gate show
+    if (phase !== "gate") return;
+    handled.current = false;
 
     function onMessage(e: MessageEvent) {
       if (handled.current) return;
@@ -106,16 +88,14 @@ export default function VslGatePlayer() {
         const data =
           typeof e.data === "string" ? JSON.parse(e.data) : (e.data ?? {});
 
-        // Primary signal: redirect URL present in the message
         const redirectUrl: string =
-          data?.redirectURL   ||
-          data?.redirect_url  ||
-          data?.redirectUrl   ||
-          data?.url           ||
+          data?.redirectURL      ||
+          data?.redirect_url     ||
+          data?.redirectUrl      ||
+          data?.url              ||
           data?.data?.redirectURL ||
           "";
 
-        // Secondary: generic submit/success event fields
         const isSubmit =
           redirectUrl.length > 0 ||
           /submit|complete|success/i.test(String(data?.event  ?? "")) ||
@@ -126,24 +106,63 @@ export default function VslGatePlayer() {
 
         handled.current = true;
         try { localStorage.setItem(STORAGE_KEY, "1"); } catch { /* ignore */ }
-        setGatePassed(true);
-        setShowGate(false);
+        setPhase("playing"); // video autoplays as the reward
       } catch { /* ignore parse errors */ }
     }
 
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, [showGate]);
+  }, [phase]);
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  // ── Gate — form shown before any video ───────────────────────────────────
+  if (phase === "gate") {
+    return (
+      <div className="w-full max-w-[920px] mx-auto">
+        <div className="bg-white rounded-2xl shadow-[0_32px_80px_-24px_rgba(0,0,0,0.18)] border border-stone-100 overflow-hidden">
+          {/* Card header */}
+          <div className="px-7 pt-8 pb-2 text-center">
+            <h3
+              className="text-[24px] sm:text-[28px] leading-[1.15] text-stone-900"
+              style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+            >
+              Where should we send<br className="hidden sm:block" /> your follow-up?
+            </h3>
+            <p
+              className="mt-2.5 text-[13px] text-stone-400 tracking-wide"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              Enter your details below to watch the full presentation.
+            </p>
+          </div>
+
+          {/* GHL form — form_embed.js auto-resizes the iframe height */}
+          <iframe
+            src={FORM_URL}
+            id={FORM_ID}
+            data-form-id={FORM_ID}
+            title="VSL Lead"
+            scrolling="no"
+            style={{
+              width: "100%",
+              border: "none",
+              overflow: "hidden",
+              display: "block",
+              minHeight: "340px",
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // ── Shared video container (playing + poster phases) ──────────────────────
   return (
     <div
       className="relative w-full max-w-[920px] mx-auto rounded-2xl overflow-hidden shadow-[0_32px_80px_-24px_rgba(0,0,0,0.28)]"
       style={{ aspectRatio: "16 / 9" }}
     >
-
-      {/* ── Poster (shown before first click) ── */}
-      {!playing && (
+      {/* Poster — returning visitor, click to play */}
+      {phase === "poster" && (
         <>
           <div className="absolute inset-0">
             <Image
@@ -159,7 +178,7 @@ export default function VslGatePlayer() {
 
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <button
-              onClick={() => setPlaying(true)}
+              onClick={() => setPhase("playing")}
               className="relative group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/50 rounded-full"
               aria-label="Play video — Watch · 4 minutes 40 seconds"
             >
@@ -191,58 +210,16 @@ export default function VslGatePlayer() {
         </>
       )}
 
-      {/* ── Video iframe (mounted once user clicks play) ── */}
-      {playing && (
+      {/* Video iframe — autoplays on first watch, normal play on return */}
+      {phase === "playing" && (
         <iframe
-          src={toLoomEmbed(VSL_VIDEO_URL)}
+          src={toLoomEmbed(VSL_VIDEO_URL, true)}
           className="absolute inset-0 w-full h-full"
           allow="autoplay; fullscreen; picture-in-picture"
           allowFullScreen
           title="StoryVenue — Book Your Free Strategy Call"
         />
       )}
-
-      {/* ── Gate overlay (shown at 30s until form submitted) ── */}
-      {showGate && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/78 backdrop-blur-[3px] p-4">
-          <div
-            className="w-full max-w-[380px] bg-white rounded-2xl shadow-[0_32px_80px_-12px_rgba(0,0,0,0.55)] overflow-hidden"
-          >
-            {/* Card header */}
-            <div className="px-7 pt-7 pb-2 text-center">
-              <h3
-                className="text-[22px] sm:text-[24px] leading-[1.15] text-stone-900"
-                style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-              >
-                Where should we send<br />your follow-up?
-              </h3>
-              <p
-                className="mt-2 text-[12px] text-stone-400 tracking-wide"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                Enter your details below to keep watching.
-              </p>
-            </div>
-
-            {/* GHL form iframe — form_embed.js auto-resizes */}
-            <iframe
-              src={FORM_URL}
-              id={FORM_ID}
-              data-form-id={FORM_ID}
-              title="VSL Lead"
-              scrolling="no"
-              style={{
-                width: "100%",
-                border: "none",
-                overflow: "hidden",
-                display: "block",
-                minHeight: "320px",
-              }}
-            />
-          </div>
-        </div>
-      )}
-
     </div>
   );
 }
