@@ -237,11 +237,11 @@ export default function VslGatePlayer() {
               </button>
             </div>
             {/* Modal header */}
-            <div className="px-8 pt-1 pb-3 text-center">
+            <div className="px-8 pt-1 pb-0 text-center">
               <h2 className="mt-1 text-[28px] leading-[1.1] text-stone-900" style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}>
                 Watch Now
               </h2>
-              <p className="mt-2 text-[12px] text-stone-400 tracking-wide" style={{ fontFamily: "var(--font-open-sans)" }}>
+              <p className="mt-1.5 text-[12px] text-stone-400 tracking-wide" style={{ fontFamily: "var(--font-open-sans)" }}>
                 Enter your details to watch the full presentation.
               </p>
             </div>
