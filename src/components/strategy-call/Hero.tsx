@@ -48,17 +48,32 @@ export default function Hero() {
             For Wedding Venue Owners
           </motion.p>
 
-          {/* H1 */}
+          {/* H1
+              Mobile  (< md)  → 4 lines
+              Desktop (md +)  → 3 lines
+          */}
           <motion.h1
             variants={item}
-            className="text-[20px] sm:text-[26px] md:text-[34px] lg:text-[42px] leading-[1.15] text-brand-ink"
+            className="text-[22px] sm:text-[28px] md:text-[32px] lg:text-[40px] leading-[1.18] text-brand-ink"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
+            {/* ── line 1 (both) ───────────────────────────────────────── */}
             See The New Bride Booking System to
             <br />
-            Fully Book Your Wedding Venue Without Relying on
-            <br />
-            The Knot, WeddingWire or Waiting To Get Found.
+            {/* ── line 2 mobile: "Fully Book Your Wedding Venue Without"
+                   line 2 desktop: same + " Relying on" ──────────────── */}
+            Fully Book Your Wedding Venue Without
+            {/* mobile only: break here */}
+            <br className="block md:hidden" />
+            {" "}Relying on
+            {/* desktop only: break here */}
+            <br className="hidden md:block" />
+            {/* ── line 3 mobile: "The Knot,"
+                   line 3 desktop: "The Knot, WeddingWire …" ─────────── */}
+            {" "}The Knot,
+            {/* mobile only: break here */}
+            <br className="block md:hidden" />
+            {" "}WeddingWire or Waiting To Get Found.
           </motion.h1>
 
           {/* Subhead — single horizontal line */}
