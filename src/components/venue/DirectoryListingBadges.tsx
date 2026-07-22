@@ -35,8 +35,7 @@ export function DirectoryListingBadges({
       {verified ? (
         <span
           className="inline-flex shrink-0"
-          title="Verified venue"
-          aria-label="Verified"
+          aria-label="Verified venue"
         >
           <svg
             width={checkSize}
@@ -66,7 +65,7 @@ export function DirectoryListingBadges({
         </span>
       ) : null}
       {sponsored ? (
-        <span className={sponsoredClass} title="Sponsored listing">
+        <span className={sponsoredClass}>
           Sponsored
         </span>
       ) : null}

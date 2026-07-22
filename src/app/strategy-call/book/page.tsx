@@ -90,7 +90,7 @@ export default function StrategyCallBookPage() {
                 id={`${BOOKING_ID}_1781719379172`}
                 style={{ width: "100%", border: "none", overflow: "hidden" }}
                 scrolling="no"
-                title="Book Your Strategy Call"
+                aria-label="Book Your Strategy Call"
               />
             </div>
           </div>

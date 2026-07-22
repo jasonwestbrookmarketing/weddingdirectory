@@ -81,7 +81,7 @@ export default function ExitIntentModal() {
         <iframe
           src={CALENDAR_URL}
           id={CALENDAR_ID}
-          title="Book a free demo"
+          aria-label="Book a free demo"
           scrolling="no"
           style={{
             width: "100%",
@@ -155,7 +155,7 @@ export default function ExitIntentModal() {
                 overflow: "hidden",
               }}
               scrolling="no"
-              title="Book a free demo"
+              aria-label="Book a free demo"
             />
           </div>
 

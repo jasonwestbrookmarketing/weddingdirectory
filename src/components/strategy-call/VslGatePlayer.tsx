@@ -162,7 +162,7 @@ export default function VslGatePlayer() {
         className="absolute inset-0 w-full h-full"
         allow="autoplay; fullscreen; picture-in-picture"
         allowFullScreen
-        title="StoryVenue — Book Your Free Strategy Call"
+        aria-label="StoryVenue — Book Your Free Strategy Call"
       />
     );
   }

@@ -289,7 +289,7 @@ export default function StrategyCallModal() {
         <iframe
           src={SURVEY_URL}
           id={SURVEY_ID}
-          title="Venue qualification application"
+          aria-label="Venue qualification application"
           scrolling="no"
           style={{
             width: "100%",
@@ -419,7 +419,7 @@ export default function StrategyCallModal() {
                 overflow: "hidden",
               }}
               scrolling="no"
-              title="Venue qualification application"
+              aria-label="Venue qualification application"
             />
           </div>
 

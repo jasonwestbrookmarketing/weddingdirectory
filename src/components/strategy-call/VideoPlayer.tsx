@@ -147,7 +147,7 @@ export default function VideoPlayer({
           }
           allow="autoplay; fullscreen; picture-in-picture"
           allowFullScreen
-          title="StoryVenue — Book Your Free Strategy Call"
+          aria-label="StoryVenue — Book Your Free Strategy Call"
         />
       )}
     </div>
