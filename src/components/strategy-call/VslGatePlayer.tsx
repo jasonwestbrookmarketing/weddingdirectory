@@ -11,6 +11,26 @@ const FORM_ID     = "64C3haEpJbc8aJ9RmsW0";
 const GHL_SCRIPT  = "https://link.msgsndr.com/js/form_embed.js";
 const STORAGE_KEY = VSL_STORAGE_KEY;
 
+/**
+ * Fire the Meta Pixel VSL opt-in conversion when the gate form is submitted.
+ *
+ * Uses a distinct custom event ("FreeTrainingOptIn") — NOT the standard "Lead"
+ * event, which is already used by the strategy-call qualifier funnel. Keeping
+ * them separate lets you build a Custom Conversion + optimize the VSL ad set
+ * for opt-ins without conflating the two funnel steps. Fires once per visitor
+ * (guarded by the caller's `handled` ref + the localStorage gate).
+ */
+function fireVslOptIn() {
+  try {
+    (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq?.(
+      "trackCustom",
+      "FreeTrainingOptIn",
+    );
+  } catch {
+    /* pixel not loaded — non-fatal */
+  }
+}
+
 function toLoomEmbed(url: string): string {
   try {
     const u = new URL(url);
@@ -92,6 +112,7 @@ export default function VslGatePlayer() {
         // Primary path: array-format (what GHL actually sends on submission)
         if (Array.isArray(e.data) && e.data[0] === "set-sticky-contacts") {
           handled.current = true;
+          fireVslOptIn();
           try { localStorage.setItem(STORAGE_KEY, "1"); } catch {}
           window.dispatchEvent(new Event(VSL_EVENT_PASSED));
           setPhase((cur) => (cur === "modal" ? "playing" : cur));
@@ -112,6 +133,7 @@ export default function VslGatePlayer() {
         if (!isSubmit) return;
 
         handled.current = true;
+        fireVslOptIn();
         try { localStorage.setItem(STORAGE_KEY, "1"); } catch {}
         window.dispatchEvent(new Event(VSL_EVENT_PASSED));
         setPhase((cur) => (cur === "modal" ? "playing" : cur));
