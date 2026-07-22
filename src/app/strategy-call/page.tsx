@@ -32,14 +32,15 @@ export default function StrategyCallPage() {
       <main className="flex-1">
         <Hero />
         <LogoWall />
-        <RealProblem />
-        <Agitate />
-        <Cascade />
+        {/* HIDDEN — change false → true to restore each section */}
+        {false && <RealProblem />}
+        {false && <Agitate />}
+        {false && <Cascade />}
         <ProofDrop />
-        <MathSection />
-        <MidPageCTA />
-        <Differentiation />
-        <Guarantee />
+        {false && <MathSection />}
+        {false && <MidPageCTA />}
+        {false && <Differentiation />}
+        {false && <Guarantee />}
         <FinalCTA />
       </main>
 

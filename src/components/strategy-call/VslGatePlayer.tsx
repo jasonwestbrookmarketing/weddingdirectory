@@ -215,7 +215,7 @@ export default function VslGatePlayer() {
                 Enter your details to watch the full presentation.
               </p>
             </div>
-            <iframe src={FORM_URL} id={FORM_ID} title="VSL Lead" scrolling="no" style={{ width: "100%", border: "none", overflow: "hidden", display: "block" }} />
+            <iframe src={FORM_URL} id={FORM_ID} title="VSL Lead" scrolling="no" style={{ width: "100%", height: "380px", border: "none", overflow: "hidden", display: "block" }} />
           </div>
 
           {/* DESKTOP: centered card */}
@@ -234,7 +234,7 @@ export default function VslGatePlayer() {
             </div>
             {/* Form */}
             <div className="px-4 pb-2">
-              <iframe src={FORM_URL} id={`${FORM_ID}_modal`} title="VSL Lead" scrolling="no" style={{ width: "100%", border: "none", overflow: "hidden", display: "block", minHeight: "320px" }} />
+              <iframe src={FORM_URL} id={`${FORM_ID}_modal`} title="VSL Lead" scrolling="no" style={{ width: "100%", height: "380px", border: "none", overflow: "hidden", display: "block" }} />
             </div>
           </div>
         </div>
