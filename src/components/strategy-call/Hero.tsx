@@ -51,13 +51,13 @@ export default function Hero() {
           {/* H1 */}
           <motion.h1
             variants={item}
-            className="text-[26px] sm:text-[32px] md:text-[38px] lg:text-[44px] leading-[1.1] text-brand-ink"
+            className="text-[20px] sm:text-[26px] md:text-[34px] lg:text-[42px] leading-[1.15] text-brand-ink"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            See The New Bride Booking System to Fully Book{" "}
-            <br className="hidden md:block" />
-            Your Wedding Venue Without Relying on{" "}
-            <br className="hidden md:block" />
+            See The New Bride Booking System to
+            <br />
+            Fully Book Your Wedding Venue Without Relying on
+            <br />
             The Knot, WeddingWire or Waiting To Get Found.
           </motion.h1>
 
