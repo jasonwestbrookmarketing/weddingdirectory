@@ -260,7 +260,10 @@ export default function VslGatePlayer() {
                 Enter your details to watch the full presentation.
               </p>
             </div>
-            <iframe src={FORM_URL} id={FORM_ID} title="VSL Lead" scrolling="no" style={{ width: "100%", height: "380px", border: "none", overflow: "hidden", display: "block" }} />
+            {/* aria-label (not title) gives an accessible name WITHOUT a browser
+                hover tooltip, so the internal "VSL Lead" label never shows. */}
+            {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
+            <iframe src={FORM_URL} id={FORM_ID} aria-label="Watch the full presentation" scrolling="no" style={{ width: "100%", height: "380px", border: "none", overflow: "hidden", display: "block" }} />
           </div>
 
           {/* DESKTOP: centered card */}
@@ -282,7 +285,9 @@ export default function VslGatePlayer() {
             </div>
             {/* Form */}
             <div className="px-4 pb-2">
-              <iframe src={FORM_URL} id={`${FORM_ID}_modal`} title="VSL Lead" scrolling="no" style={{ width: "100%", height: "380px", border: "none", overflow: "hidden", display: "block" }} />
+              {/* aria-label (not title) — accessible name with no hover tooltip. */}
+              {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
+              <iframe src={FORM_URL} id={`${FORM_ID}_modal`} aria-label="Watch the full presentation" scrolling="no" style={{ width: "100%", height: "380px", border: "none", overflow: "hidden", display: "block" }} />
             </div>
           </div>
         </div>
