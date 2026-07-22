@@ -46,9 +46,9 @@ export default function VslGatePlayer() {
   const [phase, setPhase] = useState<Phase>("locked");
   const handled = useRef(false);
 
-  // Skip gate for returning visitors
+  // Returning visitors skip the gate entirely — go straight to the video
   useEffect(() => {
-    try { if (localStorage.getItem(STORAGE_KEY)) setPhase("poster"); } catch {}
+    try { if (localStorage.getItem(STORAGE_KEY)) setPhase("playing"); } catch {}
   }, []);
 
   // Allow external triggers (exit intent, CTA buttons) to open the modal
