@@ -70,10 +70,10 @@ export default function Hero() {
             <br className="hidden md:block" />
             {/* ── line 3 mobile: "The Knot,"
                    line 3 desktop: "The Knot, WeddingWire …" ─────────── */}
-            {" "}The Knot,
+            {" "}The Knot, WeddingWire
             {/* mobile only: break here */}
             <br className="block md:hidden" />
-            {" "}WeddingWire or Waiting To Get Found.
+            {" "}or Waiting To Get Found.
           </motion.h1>
 
           {/* Subhead — single horizontal line */}
