@@ -144,9 +144,15 @@ export default function StrategyCallModal() {
   // Exit-intent detection — fires whenever the visitor tries to leave,
   // regardless of whether they already opened the button modal. Only
   // suppressed once the exit-intent version has been shown once (exitShown).
+  // GATE CHECK: if the VSL lead form hasn't been submitted yet, ExitIntent.tsx
+  // handles the exit (opens the Watch Now modal). Only take over once the
+  // visitor has passed the VSL gate and is a known lead.
   useEffect(() => {
     const onMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0 && !exitShown && !open) {
+        let gatePassed = false;
+        try { gatePassed = !!localStorage.getItem("sv_vsl_gate_passed"); } catch {}
+        if (!gatePassed) return; // let ExitIntent.tsx handle it via open-vsl-modal
         setTrigger("exit");
         setOpen(true);
         setExitShown(true);
@@ -156,7 +162,12 @@ export default function StrategyCallModal() {
     let mobileTimer: ReturnType<typeof setTimeout>;
     if (window.innerWidth < 1024) {
       mobileTimer = setTimeout(() => {
-        if (!exitShown) { setTrigger("exit"); setOpen(true); setExitShown(true); }
+        if (!exitShown) {
+          let gatePassed = false;
+          try { gatePassed = !!localStorage.getItem("sv_vsl_gate_passed"); } catch {}
+          if (!gatePassed) return;
+          setTrigger("exit"); setOpen(true); setExitShown(true);
+        }
       }, 45_000);
     }
 
