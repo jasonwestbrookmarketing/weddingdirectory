@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useVslGate } from "./useVslGate";
 
 export default function StrategyNav({ showCta = true }: { showCta?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
+  const { gatePassed, openCta } = useVslGate();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 12);
@@ -34,11 +36,11 @@ export default function StrategyNav({ showCta = true }: { showCta?: boolean }) {
         {showCta && (
           <button
             type="button"
-            onClick={() => window.dispatchEvent(new Event("open-strategy-modal"))}
+            onClick={openCta}
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1b1b1b] text-white text-[11px] sm:text-[12px] font-bold tracking-[0.1em] uppercase px-4 sm:px-5 py-2 sm:py-2.5 hover:-translate-y-px hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.35)] active:scale-[0.98] transition-all"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            See If I Qualify
+            {gatePassed ? "See If I Qualify" : "Watch Now"}
           </button>
         )}
       </nav>

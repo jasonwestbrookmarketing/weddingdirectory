@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { VSL_VIDEO_URL } from "./constants";
+import { VSL_STORAGE_KEY, VSL_EVENT_OPEN, VSL_EVENT_PASSED } from "./useVslGate";
 
 const FORM_URL    = "https://api.leadconnectorhq.com/widget/form/64C3haEpJbc8aJ9RmsW0";
 const FORM_ID     = "64C3haEpJbc8aJ9RmsW0";
 const GHL_SCRIPT  = "https://link.msgsndr.com/js/form_embed.js";
-const STORAGE_KEY = "sv_vsl_gate_passed";
+const STORAGE_KEY = VSL_STORAGE_KEY;
 
 function toLoomEmbed(url: string): string {
   try {
@@ -50,6 +51,19 @@ export default function VslGatePlayer() {
     try { if (localStorage.getItem(STORAGE_KEY)) setPhase("poster"); } catch {}
   }, []);
 
+  // Allow external triggers (exit intent, CTA buttons) to open the modal
+  useEffect(() => {
+    const onOpen = () => {
+      setPhase((current) => {
+        // Only open if the gate hasn't been passed yet
+        if (current === "locked") return "modal";
+        return current;
+      });
+    };
+    window.addEventListener(VSL_EVENT_OPEN, onOpen);
+    return () => window.removeEventListener(VSL_EVENT_OPEN, onOpen);
+  }, []);
+
   // Load GHL embed script
   useEffect(() => {
     if (document.querySelector(`script[src="${GHL_SCRIPT}"]`)) return;
@@ -86,6 +100,7 @@ export default function VslGatePlayer() {
         if (!isSubmit) return;
         handled.current = true;
         try { localStorage.setItem(STORAGE_KEY, "1"); } catch {}
+        window.dispatchEvent(new Event(VSL_EVENT_PASSED));
         setPhase("playing");
       } catch {}
     }
@@ -202,8 +217,11 @@ export default function VslGatePlayer() {
             <button onClick={() => setPhase("locked")} className="fixed top-3 right-3 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-white/95 shadow-lg text-stone-700" aria-label="Close">
               <X className="w-5 h-5" />
             </button>
-            <div className="px-6 pt-12 pb-4 text-center">
-              <p className="text-[12px] text-stone-400 tracking-wide" style={{ fontFamily: "var(--font-open-sans)" }}>
+            <div className="px-6 pt-12 pb-3 text-center">
+              <h2 className="text-[26px] leading-[1.1] text-stone-900" style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}>
+                Watch Now
+              </h2>
+              <p className="mt-2 text-[12px] text-stone-400 tracking-wide" style={{ fontFamily: "var(--font-open-sans)" }}>
                 Enter your details to watch the full presentation.
               </p>
             </div>
@@ -218,9 +236,12 @@ export default function VslGatePlayer() {
                 <X className="w-4 h-4" />
               </button>
             </div>
-            {/* Minimal header */}
-            <div className="px-8 pt-1 pb-2 text-center">
-              <p className="text-[12px] text-stone-400 tracking-wide" style={{ fontFamily: "var(--font-open-sans)" }}>
+            {/* Modal header */}
+            <div className="px-8 pt-1 pb-3 text-center">
+              <h2 className="mt-1 text-[28px] leading-[1.1] text-stone-900" style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}>
+                Watch Now
+              </h2>
+              <p className="mt-2 text-[12px] text-stone-400 tracking-wide" style={{ fontFamily: "var(--font-open-sans)" }}>
                 Enter your details to watch the full presentation.
               </p>
             </div>

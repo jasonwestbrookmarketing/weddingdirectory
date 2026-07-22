@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Reveal } from "./Reveal";
+import { useVslGate } from "./useVslGate";
 
 const AVATARS = [
   "/avatars/av1.jpg",
@@ -12,6 +13,8 @@ const AVATARS = [
 ];
 
 export default function FinalCTA() {
+  const { gatePassed, openCta } = useVslGate();
+
   return (
     <section id="cta" className="bg-brand-bg py-20 sm:py-28 border-b border-brand-line">
       <div className="max-w-5xl mx-auto px-6 md:px-10 text-center">
@@ -61,11 +64,11 @@ export default function FinalCTA() {
           <div className="mt-10 sm:mt-12 flex flex-col items-center gap-4">
             <button
               type="button"
-              onClick={() => window.dispatchEvent(new Event("open-strategy-modal"))}
+              onClick={openCta}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1b1b1b] text-white font-bold tracking-[0.1em] uppercase px-8 py-4 text-[13px] sm:text-[14px] hover:-translate-y-px hover:shadow-[0_14px_36px_-10px_rgba(0,0,0,0.4)] active:scale-[0.98] transition-all shadow-[0_6px_20px_-8px_rgba(0,0,0,0.3)]"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              See If I Qualify
+              {gatePassed ? "See If I Qualify" : "Watch Now"}
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -82,7 +85,9 @@ export default function FinalCTA() {
               className="text-[12px] text-brand-muted/70 tracking-wide"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Answer 5 quick questions to see if your venue qualifies for a free 30-minute strategy call.
+              {gatePassed
+                ? "Answer 5 quick questions to see if your venue qualifies for a free 30-minute strategy call."
+                : "Watch the full presentation · Free · No obligation"}
             </p>
 
             {/* Social proof */}

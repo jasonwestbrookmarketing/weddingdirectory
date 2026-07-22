@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
+import { VSL_STORAGE_KEY, VSL_EVENT_OPEN } from "./useVslGate";
 
 const SESSION_KEY = "sv_exit_intent_shown";
-// Minimum time on page before exit intent can fire (ms)
 const MIN_TIME_MS = 5000;
 
 /**
- * Fires the "open-strategy-modal" event when the user moves their cursor
- * above the viewport (about to hit the browser chrome / close tab).
+ * Fires the correct exit-intent modal based on whether the visitor has
+ * already passed the VSL gate:
+ *   - gate not passed → "open-vsl-modal"      (VSL lead form)
+ *   - gate passed     → "open-strategy-modal"  (qualifier survey)
  * Triggers at most once per session.
  */
 export default function ExitIntent() {
@@ -20,13 +22,18 @@ export default function ExitIntent() {
     const readyAt = Date.now() + MIN_TIME_MS;
 
     function handleMouseLeave(e: MouseEvent) {
-      // Only fire when cursor exits through the top edge
       if (e.clientY > 20) return;
       if (Date.now() < readyAt) return;
       if (sessionStorage.getItem(SESSION_KEY)) return;
 
       sessionStorage.setItem(SESSION_KEY, "1");
-      window.dispatchEvent(new Event("open-strategy-modal"));
+
+      // Read gate status at fire-time (visitor may have submitted between
+      // page load and this event firing)
+      let gatePassed = false;
+      try { gatePassed = !!localStorage.getItem(VSL_STORAGE_KEY); } catch {}
+
+      window.dispatchEvent(new Event(gatePassed ? "open-strategy-modal" : VSL_EVENT_OPEN));
     }
 
     document.addEventListener("mouseleave", handleMouseLeave);
