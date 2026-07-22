@@ -256,7 +256,7 @@ export default function StrategyCallModal() {
                   className="text-[10px] text-stone-400 mt-0.5"
                   style={{ fontFamily: "var(--font-open-sans)" }}
                 >
-                  Google Reviews
+                  Trusted by venues nationwide
                 </p>
               </div>
             </div>
@@ -379,7 +379,7 @@ export default function StrategyCallModal() {
                     className="text-[10px] text-stone-400 mt-0.5"
                     style={{ fontFamily: "var(--font-open-sans)" }}
                   >
-                    Google Reviews
+                    Trusted by venues nationwide
                   </p>
                 </div>
               </div>

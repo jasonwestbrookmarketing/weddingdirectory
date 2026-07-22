@@ -148,7 +148,7 @@ export default function Hero() {
                 className="text-[10px] sm:text-[11px] text-brand-muted mt-0.5"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                Google Reviews
+                Trusted by venues nationwide
               </p>
             </div>
           </motion.div>
