@@ -163,7 +163,7 @@ export default function VslGatePlayer() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/25 to-black/65" />
 
           {/* Centre — pulsing red badge + play button */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-6">
             {/* Live badge */}
             <div className="flex items-center gap-2 bg-black/50 backdrop-blur-sm text-white text-[11px] sm:text-[12px] font-semibold tracking-[0.12em] uppercase px-3.5 py-1.5 rounded-full" style={{ fontFamily: "var(--font-open-sans)" }}>
               <span className="relative inline-flex w-2 h-2">
@@ -188,14 +188,6 @@ export default function VslGatePlayer() {
             </button>
           </div>
 
-          {/* Duration pill — bottom */}
-          <div className="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/55 backdrop-blur-sm text-white text-[11px] sm:text-xs px-3 py-1.5 rounded-full tracking-wide pointer-events-none">
-            <span className="relative inline-flex w-2 h-2">
-              <span className="absolute inline-flex w-full h-full rounded-full bg-red-500 opacity-75 animate-ping" />
-              <span className="relative inline-flex w-2 h-2 rounded-full bg-red-500" />
-            </span>
-            <span style={{ fontFamily: "var(--font-open-sans)" }}>Watch · 4 min 40 sec</span>
-          </div>
         </>
       )}
 
