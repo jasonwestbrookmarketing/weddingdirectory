@@ -78,17 +78,29 @@ export default function VslGatePlayer() {
     return () => { document.body.style.overflow = ""; };
   }, [phase]);
 
-  // GHL postMessage — active only while modal is open
+  // GHL postMessage — always active so we never miss a late-arriving event.
+  // GHL's form_embed.js sends submission as an array:
+  //   ["set-sticky-contacts", userDataKey, payload, locationId, fingerprint]
+  // It also sends object-style messages in some configurations, so we check both.
   useEffect(() => {
-    if (phase !== "modal") return;
-    handled.current = false;
-
     function onMessage(e: MessageEvent) {
       if (handled.current) return;
       try {
         const fromGhl = /leadconnectorhq\.com|msgsndr\.com|gohighlevel\.com/.test(e.origin ?? "");
         if (!fromGhl) return;
+
+        // Primary path: array-format (what GHL actually sends on submission)
+        if (Array.isArray(e.data) && e.data[0] === "set-sticky-contacts") {
+          handled.current = true;
+          try { localStorage.setItem(STORAGE_KEY, "1"); } catch {}
+          window.dispatchEvent(new Event(VSL_EVENT_PASSED));
+          setPhase((cur) => (cur === "modal" ? "playing" : cur));
+          return;
+        }
+
+        // Fallback: object-format (older / alternative GHL configs)
         const data = typeof e.data === "string" ? JSON.parse(e.data) : (e.data ?? {});
+        if (typeof data !== "object" || Array.isArray(data)) return;
         const redirect: string =
           data?.redirectURL || data?.redirect_url || data?.redirectUrl ||
           data?.url || data?.data?.redirectURL || "";
@@ -98,16 +110,17 @@ export default function VslGatePlayer() {
           /submit|complete|success/i.test(String(data?.type   ?? "")) ||
           /submit|complete|success/i.test(String(data?.action ?? ""));
         if (!isSubmit) return;
+
         handled.current = true;
         try { localStorage.setItem(STORAGE_KEY, "1"); } catch {}
         window.dispatchEvent(new Event(VSL_EVENT_PASSED));
-        setPhase("playing");
+        setPhase((cur) => (cur === "modal" ? "playing" : cur));
       } catch {}
     }
 
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, [phase]);
+  }, []);
 
   // ── Shared 16:9 video container ───────────────────────────────────────────
   const videoContainer = (children: React.ReactNode) => (
