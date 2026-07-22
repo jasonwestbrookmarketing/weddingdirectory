@@ -7,7 +7,82 @@ import { needsLocationRepair, repairVenueLocation } from "@/lib/location-repair"
 import VenuePageClient from "./VenuePageClient";
 import ListingTracker from "@/components/venue/ListingTracker";
 import SiteFooter from "@/components/SiteFooter";
+import { VenueSeoFooter } from "@/components/VenueSeoFooter";
 import type { Metadata } from "next";
+
+/** Minimal server-side FAQ parser (mirrors the client parseFaq shape). */
+function parseFaqServer(raw: unknown): Array<{ question: string; answer: string }> {
+  if (!Array.isArray(raw)) return [];
+  const out: Array<{ question: string; answer: string }> = [];
+  for (const entry of raw) {
+    if (!entry || typeof entry !== "object" || Array.isArray(entry)) continue;
+    const o = entry as Record<string, unknown>;
+    const question = typeof o.question === "string" ? o.question.trim() : "";
+    const answer = typeof o.answer === "string" ? o.answer.trim() : "";
+    if (!question || !answer) continue;
+    out.push({ question, answer });
+    if (out.length >= 20) break;
+  }
+  return out;
+}
+
+/** Build EventVenue + FAQPage JSON-LD from whatever venue fields are present. */
+function buildVenueJsonLd(venue: Record<string, unknown>, url: string): object {
+  const name = String(venue.name ?? "");
+  const description =
+    (typeof venue.seo_description === "string" && venue.seo_description) ||
+    (typeof venue.description === "string" ? venue.description.slice(0, 300) : "") ||
+    `${name} on StoryVenue`;
+  const images = [
+    typeof venue.cover_image_url === "string" ? venue.cover_image_url : null,
+    ...(Array.isArray(venue.gallery_images) ? (venue.gallery_images as string[]) : []),
+  ].filter(Boolean).slice(0, 6);
+
+  const city = typeof venue.location_city === "string" ? venue.location_city : null;
+  const region = typeof venue.location_state === "string" ? venue.location_state : null;
+  const lat = typeof venue.lat === "number" ? venue.lat : null;
+  const lng = typeof venue.lng === "number" ? venue.lng : null;
+
+  const eventVenue: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "EventVenue",
+    name,
+    description,
+    url,
+    ...(images.length ? { image: images } : {}),
+    ...(city || region
+      ? {
+          address: {
+            "@type": "PostalAddress",
+            ...(city ? { addressLocality: city } : {}),
+            ...(region ? { addressRegion: region } : {}),
+            addressCountry: "US",
+          },
+        }
+      : {}),
+    ...(lat != null && lng != null
+      ? { geo: { "@type": "GeoCoordinates", latitude: lat, longitude: lng } }
+      : {}),
+    ...(typeof venue.capacity === "number" && venue.capacity > 0
+      ? { maximumAttendeeCapacity: venue.capacity }
+      : {}),
+  };
+
+  const faqs = parseFaqServer(venue.faq);
+  const graph: object[] = [eventVenue];
+  if (faqs.length) {
+    graph.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
+    });
+  }
+  return graph.length === 1 ? eventVenue : { "@context": "https://schema.org", "@graph": graph };
+}
 
 // Demo venue pages must never be CDN-cached — the preview token is the
 // only auth mechanism and must be validated on every request.
@@ -15,6 +90,12 @@ export const dynamic = "force-dynamic";
 
 const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
+
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_DIRECTORY_SITE_URL ||
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://storyvenue.com"
+).replace(/\/$/, "");
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -49,18 +130,39 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 
   if (!venue) return { title: "Venue Not Found — StoryVenue", robots: { index: false } };
 
+  // Prefer the AI-generated SEO fields (backfilled + regenerated on edits);
+  // fall back to sensible derived defaults when they're not populated yet.
+  const title: string = venue.seo_title?.trim() || `${venue.name} — StoryVenue`;
+  const description: string =
+    venue.seo_description?.trim() ||
+    venue.description?.slice(0, 160) ||
+    `Discover ${venue.name} on StoryVenue`;
+  const keywords: string[] = Array.isArray(venue.seo_keywords)
+    ? (venue.seo_keywords as string[])
+    : typeof venue.seo_keywords === "string" && venue.seo_keywords
+      ? venue.seo_keywords.split(",").map((k: string) => k.trim()).filter(Boolean)
+      : [];
+  const canonical = `${SITE_URL}/venue/${slug}`;
+
   return {
-    title: `${venue.name} — StoryVenue`,
+    metadataBase: new URL(SITE_URL),
+    title,
+    ...(keywords.length ? { keywords } : {}),
     // Demo venues accessed via preview token must never be indexed
     ...(previewToken ? { robots: { index: false, follow: false } } : {}),
-    description:
-      venue.description?.slice(0, 160) ||
-      `Discover ${venue.name} on StoryVenue`,
+    alternates: { canonical },
+    description,
     openGraph: {
-      title: `${venue.name} — StoryVenue`,
-      description:
-        venue.description?.slice(0, 160) ||
-        `Discover ${venue.name} on StoryVenue`,
+      title,
+      description,
+      url: canonical,
+      type: "website",
+      images: venue.cover_image_url ? [venue.cover_image_url] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
       images: venue.cover_image_url ? [venue.cover_image_url] : [],
     },
   };
@@ -139,6 +241,15 @@ export default async function VenuePage({ params, searchParams }: Props) {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Structured data for search + AI answer engines (skip on demo preview). */}
+      {!previewToken && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(buildVenueJsonLd(venue, `${SITE_URL}/venue/${slug}`)),
+          }}
+        />
+      )}
       {/* Top nav — hidden when the plan has landing-page mode enabled */}
       {!hideHeader && (
       <nav className="sticky top-0 z-30 bg-white border-b border-stone-200">
@@ -179,6 +290,13 @@ export default async function VenuePage({ params, searchParams }: Props) {
         googleReviews={googleReviews}
         guidePreviewUrl={guidePreviewUrl}
         pricingGuideEnabled={pricingGuideEnabled}
+      />
+      <VenueSeoFooter
+        venueName={venue.name}
+        city={venue.location_city ?? null}
+        state={venue.location_state ?? null}
+        venueType={venue.venue_type ?? null}
+        landingMode={hideHeader}
       />
       {hideHeader ? (
         <footer className="bg-stone-100 py-4 text-center">
