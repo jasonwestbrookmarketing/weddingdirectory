@@ -54,7 +54,7 @@ export default function Hero() {
           */}
           <motion.h1
             variants={item}
-            className="text-[22px] sm:text-[28px] md:text-[32px] lg:text-[40px] leading-[1.18] text-brand-ink"
+            className="text-[24px] sm:text-[28px] md:text-[32px] lg:text-[40px] leading-[1.18] text-brand-ink"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             {/* ── line 1 (both) ───────────────────────────────────────── */}
