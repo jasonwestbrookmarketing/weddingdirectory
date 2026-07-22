@@ -66,6 +66,20 @@ export default function VslGatePlayer() {
   const [phase, setPhase] = useState<Phase>("locked");
   const handled = useRef(false);
 
+  // ?reset (or ?reset_gate) in the URL clears the gate so you can re-test
+  // from any browser without juggling incognito sessions. Strip it from the
+  // URL immediately so sharing the link doesn't accidentally reset for others.
+  useEffect(() => {
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      if (sp.has("reset") || sp.has("reset_gate")) {
+        localStorage.removeItem(STORAGE_KEY);
+        const clean = window.location.pathname;
+        window.history.replaceState(null, "", clean);
+      }
+    } catch {}
+  }, []);
+
   // Returning visitors skip the gate entirely — go straight to the video
   useEffect(() => {
     try { if (localStorage.getItem(STORAGE_KEY)) setPhase("playing"); } catch {}
