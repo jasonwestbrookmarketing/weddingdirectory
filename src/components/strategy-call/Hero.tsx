@@ -51,11 +51,14 @@ export default function Hero() {
           {/* H1 */}
           <motion.h1
             variants={item}
-            className="text-[36px] sm:text-[46px] md:text-[52px] lg:text-[58px] leading-[1.08] text-brand-ink"
+            className="text-[26px] sm:text-[32px] md:text-[38px] lg:text-[44px] leading-[1.1] text-brand-ink"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            <span style={{ color: "#8a7448" }}>Fully Book Your Wedding Venue</span>{" "}
-            Without Relying on The Knot, WeddingWire or Waiting To Get Found.
+            See The New Bride Booking System to Fully Book{" "}
+            <br className="hidden md:block" />
+            Your Wedding Venue Without Relying on{" "}
+            <br className="hidden md:block" />
+            The Knot, WeddingWire or Waiting To Get Found.
           </motion.h1>
 
           {/* Subhead — single horizontal line */}
