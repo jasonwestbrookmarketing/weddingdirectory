@@ -130,8 +130,8 @@ const FAQ_ITEMS = [
     a: "As soon as you're set up. Share your listing link and the next bride who clicks becomes a lead in your inbox.",
   },
   {
-    q: "What happens after the 14-day free trial?",
-    a: "You continue on the Bride Booking System™ for $97/month, or downgrade to the free plan anytime and keep your listing live. You're never locked in.",
+    q: "What does the free listing include?",
+    a: "Your free listing includes your venue page, direct inquiries, proposals with e-signatures, and online payments. Upgrade anytime for managed Meta ads and our Concierge follow-up team.",
   },
   {
     q: "Is there a contract?",
@@ -143,7 +143,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What makes this different from a directory or an agency?",
-    a: "Directories list you next to every competitor. Agencies just send traffic. The Bride Booking System™ captures every bride, follows up in seconds, and books tours for you. It's built to get you booked, not just seen.",
+    a: "We are the wedding directory built to send each bride to you, not hand her to ten venues at once. Then we give you the system to follow up fast and turn her into a booked tour.",
   },
 ] as const;
 
@@ -153,7 +153,7 @@ const FAQ_ITEMS = [
 
 export function PrimaryCTA({
   href,
-  label = "Start Your 14-Day Free Trial",
+  label = "Claim Your Free Listing",
   size = "lg",
   className = "",
 }: {
@@ -564,17 +564,14 @@ export default function BrideBookingSections({ trialHref }: { trialHref: string 
               className="mt-6 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              Try It Free for 14 Days.
+              List Your Venue Free
             </h2>
             <div
               className="mt-6 space-y-4 text-stone-600 text-base sm:text-lg leading-relaxed"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              <p className="lg:whitespace-nowrap">
-                Start your 14-day free trial and use the entire Bride Booking System™.
-              </p>
-              <p className="lg:whitespace-nowrap">
-                Downgrade to the free plan anytime and keep your listing live.
+              <p>
+                Claim your free listing and get found by couples searching for a venue right now. Add your photos, your reviews, and your details, and start receiving inquiries. Upgrade anytime you want managed ads and done-for-you follow-up.
               </p>
             </div>
             <div className="mt-8 flex justify-center">
@@ -648,14 +645,13 @@ export default function BrideBookingSections({ trialHref }: { trialHref: string 
             className="text-[28px] sm:text-4xl md:text-5xl leading-[1.1]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Start Booking More Brides{" "}
-            <span className="whitespace-nowrap">in 5 Minutes.</span>
+            List Your Venue Free In Minutes
           </h2>
           <p
             className="mt-5 text-base sm:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Set up your Bride Booking System™, share your link, and start turning brides into booked tours. Free for 14 days. Downgrade anytime.
+            Claim your spot on the fastest growing wedding directory and get found by more couples. Free to list. Upgrade anytime.
           </p>
 
           <div className="mt-10 flex justify-center">
@@ -664,13 +660,10 @@ export default function BrideBookingSections({ trialHref }: { trialHref: string 
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-white text-stone-900 font-semibold px-7 py-4 text-base shadow-[0_18px_45px_-12px_rgba(0,0,0,0.6)] hover:bg-stone-100 active:scale-[0.98] transition-all"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Start Your 14-Day Free Trial
+              Claim Your Free Listing
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </a>
           </div>
-          <p className="mt-5 text-[12px] text-white/50" style={{ fontFamily: "var(--font-open-sans)" }}>
-            Free for 14 days · Downgrade to free anytime
-          </p>
         </div>
       </section>
     </>

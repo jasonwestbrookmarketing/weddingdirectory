@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   title:
     "The Bride Booking System — Start Booking More Brides in 5 Minutes | StoryVenue",
   description:
-    "Capture every bride, follow up in seconds, and book more tours. The booking system built only for wedding venues. 14-day free trial.",
+    "List your venue free and get found by couples actively searching for a place to get married. The fastest growing wedding directory for venues.",
   alternates: { canonical: "/bride-booking-system" },
   robots: { index: false, follow: false },
 };
@@ -96,7 +96,7 @@ export default async function BrideBookingSystemPage() {
                 priority
               />
             </span>
-            <PrimaryCTA href={TRIAL_HREF} label="Start Free Trial" size="md" />
+            <PrimaryCTA href={TRIAL_HREF} label="Claim Your Free Listing" size="md" />
           </nav>
         </header>
       </div>
@@ -199,7 +199,7 @@ export default async function BrideBookingSystemPage() {
                 className="mt-3 text-[12px] sm:text-[13px] text-stone-500"
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
-                Free for 14 days · Downgrade to free anytime
+                Free to list. Live in minutes.
               </p>
 
               {/* Social proof */}
@@ -218,7 +218,7 @@ export default async function BrideBookingSystemPage() {
                     ))}
                   </div>
                   <p className="text-[10px] sm:text-[11px] text-stone-500 mt-0.5" style={{ fontFamily: "var(--font-open-sans)" }}>
-                    Over 500+ Venues Served
+                    Over 500 venues listed
                   </p>
                 </div>
               </div>
