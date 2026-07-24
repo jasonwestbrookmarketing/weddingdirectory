@@ -380,11 +380,10 @@ export default function BookMoreWeddingsPage() {
           {/* Left — copy */}
           <div className="lg:col-span-7 text-center lg:text-left">
             <h1
-              className="text-[26px] sm:text-[38px] md:text-[44px] lg:text-[50px] leading-[1.1] text-stone-900 lg:whitespace-nowrap"
+              className="text-[26px] sm:text-[38px] md:text-[44px] lg:text-[50px] leading-[1.1] text-stone-900"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              <span className="block">Fully Book Your Wedding Venue</span>
-              <span className="block" style={{ color: "var(--color-brand-gold)" }}>Without Empty Weekends.</span>
+              Get Your Free Venue Listing With The Fastest Growing Wedding Directory
             </h1>
 
             <p
