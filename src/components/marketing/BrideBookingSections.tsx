@@ -8,6 +8,7 @@ import {
   CalendarDays,
   Clock,
   Link2,
+  Plus,
   Settings,
   Shield,
   ChevronDown,
@@ -320,7 +321,7 @@ export default function BrideBookingSections({
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl lg:whitespace-nowrap text-stone-900 leading-[1.08]"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                Meet the Bride Booking System<sup style={{ fontSize: "0.45em", verticalAlign: "super", fontWeight: 500 }}>™</sup>.
+                Meet the Bride Booking System<sup style={{ fontSize: "0.38em", verticalAlign: "top", lineHeight: 1, fontWeight: 500, marginLeft: "0.05em" }}>™</sup>.
               </h2>
 
               <div
@@ -485,7 +486,7 @@ export default function BrideBookingSections({
       {/* PROPOSAL & PAYMENTS                                             */}
       {/* ============================================================== */}
       <section className="bg-white py-20 sm:py-28">
-        <div className="max-w-5xl mx-auto px-6 md:px-10 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <div className="max-w-6xl mx-auto px-6 md:px-10 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
           <div className="flex justify-center lg:justify-start order-2 lg:order-1">
             <PhonePreview
               screenshotSrc="/phone-proposals.png"
@@ -494,6 +495,14 @@ export default function BrideBookingSections({
             />
           </div>
           <div className="order-1 lg:order-2">
+            {/* Green Plus badge */}
+            <span
+              className="inline-flex items-center gap-1.5 rounded-lg bg-green-500 px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white mb-5"
+              style={{ fontFamily: "var(--font-open-sans)" }}
+            >
+              <Plus className="w-3.5 h-3.5" strokeWidth={3} />
+              Plus
+            </span>
             <h2
               className="text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}

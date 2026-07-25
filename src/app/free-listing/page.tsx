@@ -158,7 +158,9 @@ export default function FreeListingPage() {
               className="mt-4 sm:mt-5 text-[16px] sm:text-[19px] text-stone-700 leading-relaxed max-w-md lg:max-w-xl mx-auto lg:mx-0"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              List your venue free and get found by couples actively searching for a place to get married.
+              List your venue free and get found by couples
+              <br className="hidden sm:block" />
+              {" "}actively searching for a place to get married.
             </p>
 
             <div className="mt-7 sm:mt-8 flex flex-col items-center lg:items-start">
