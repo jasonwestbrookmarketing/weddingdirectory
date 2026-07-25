@@ -48,7 +48,7 @@ export default function SiteFooter() {
             href={`${STORYPAY_URL}/signup`}
             className="hover:text-stone-900 transition-colors"
           >
-            Claim Your Free Listing
+            Start Free
           </a>
         </div>
       </div>

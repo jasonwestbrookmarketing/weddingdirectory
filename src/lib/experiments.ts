@@ -33,9 +33,9 @@ export interface HeroSelection {
 
 const DEFAULTS: Record<string, Record<ElementKey, string>> = {
   "bride-booking-system": {
-    headline: "Join The Fastest Growing Wedding Directory",
-    subheadline: "List your venue free and get found by couples actively searching for a place to get married.",
-    cta: "Claim Your Free Listing",
+    headline: "Start Booking More Brides|in 5 Minutes.",
+    subheadline: "Stop losing brides to the venue that replied first.",
+    cta: "Start Your 14-Day Free Trial",
   },
 };
 
