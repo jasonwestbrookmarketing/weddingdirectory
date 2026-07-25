@@ -4,7 +4,9 @@ import SiteFooter from "@/components/SiteFooter";
 import PhonePreview from "@/components/marketing/PhonePreview";
 import ScrollToTop from "@/components/marketing/ScrollToTop";
 import FomoPopup from "@/components/marketing/FomoPopup";
-import BrideBookingSections, { PrimaryCTA } from "@/components/marketing/BrideBookingSections";
+import BrideBookingSections from "@/components/marketing/BrideBookingSections";
+import TrackedFreeListingCTA from "@/components/marketing/TrackedFreeListingCTA";
+import FireFreeListingLandingEvent from "@/components/marketing/FireFreeListingLandingEvent";
 
 const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
@@ -74,7 +76,7 @@ export default function FreeListingPage() {
                 priority
               />
             </span>
-            <PrimaryCTA href={LISTING_HREF} label="Claim Your Free Listing" size="md" />
+            <TrackedFreeListingCTA href={LISTING_HREF} label="Claim Your Free Listing" size="md" />
           </nav>
         </header>
       </div>
@@ -164,7 +166,7 @@ export default function FreeListingPage() {
             </p>
 
             <div className="mt-7 sm:mt-8 flex flex-col items-center lg:items-start">
-              <PrimaryCTA href={LISTING_HREF} label="Claim Your Free Listing" />
+              <TrackedFreeListingCTA href={LISTING_HREF} label="Claim Your Free Listing" />
               <p
                 className="mt-3 text-[12px] sm:text-[13px] text-stone-500"
                 style={{ fontFamily: "var(--font-open-sans)" }}
@@ -209,6 +211,9 @@ export default function FreeListingPage() {
 
       <ScrollToTop />
       <FomoPopup signupHref={LISTING_HREF} />
+
+      {/* Meta Pixel — ViewContent + FreeListingLanding on page load */}
+      <FireFreeListingLandingEvent />
     </>
   );
 }
