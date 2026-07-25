@@ -182,7 +182,45 @@ export function PrimaryCTA({
 /*  proven SaaS pitch stays identical across both entry points.           */
 /* -------------------------------------------------------------------- */
 
-export default function BrideBookingSections({ trialHref }: { trialHref: string }) {
+// ── Free-listing variant overrides ───────────────────────────────────────────
+
+const FREE_LISTING_FAQ: Array<{ q: string; a: string }> = [
+  {
+    q: "Do I need a website or any tech skills?",
+    a: "No. Your listing page and booking funnel are built for you during setup. If you can share a link, you can run this.",
+  },
+  {
+    q: "How fast can I actually start getting leads?",
+    a: "As soon as you're set up. Share your listing link and the next bride who clicks becomes a lead in your inbox.",
+  },
+  {
+    q: "What does the free listing include?",
+    a: "Your free listing includes your venue page, direct inquiries, proposals with e-signatures, and online payments. Upgrade anytime for managed Meta ads and our Concierge follow-up team.",
+  },
+  {
+    q: "Is there a contract?",
+    a: "No contracts and no commitment. Stay month to month, downgrade, or cancel whenever you want.",
+  },
+  {
+    q: "Will this replace the tools I already use?",
+    a: "For most venues, yes. Your listing page, lead inbox, follow-up, calendar, proposals, and payments all live in one place, so you can stop paying for and juggling separate tools.",
+  },
+  {
+    q: "What makes this different from a directory or an agency?",
+    a: "We are the wedding directory built to send each bride to you, not hand her to ten venues at once. Then we give you the system to follow up fast and turn her into a booked tour.",
+  },
+];
+
+export default function BrideBookingSections({
+  trialHref,
+  variant = "trial",
+}: {
+  trialHref: string;
+  variant?: "trial" | "free-listing";
+}) {
+  const isFreeListing = variant === "free-listing";
+  const ctaLabel = isFreeListing ? "Claim Your Free Listing" : "Start Your 14-Day Free Trial";
+  const faqItems: Array<{ q: string; a: string }> = isFreeListing ? FREE_LISTING_FAQ : [...FAQ_ITEMS];
   return (
     <>
       {/* ============================================================== */}
@@ -298,7 +336,7 @@ export default function BrideBookingSections({ trialHref }: { trialHref: string 
               </div>
 
               <div className="mt-8">
-                <PrimaryCTA href={trialHref} size="md" />
+                <PrimaryCTA href={trialHref} label={ctaLabel} size="md" />
               </div>
             </div>
 
@@ -564,21 +602,29 @@ export default function BrideBookingSections({ trialHref }: { trialHref: string 
               className="mt-6 text-3xl sm:text-4xl text-stone-900 leading-[1.08]"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              Try It Free for 14 Days.
+              {isFreeListing ? "List Your Venue Free" : "Try It Free for 14 Days."}
             </h2>
             <div
               className="mt-6 space-y-4 text-stone-600 text-base sm:text-lg leading-relaxed"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              <p className="lg:whitespace-nowrap">
-                Start your 14-day free trial and use the entire Bride Booking System™.
-              </p>
-              <p className="lg:whitespace-nowrap">
-                Downgrade to the free plan anytime and keep your listing live.
-              </p>
+              {isFreeListing ? (
+                <p>
+                  Claim your free listing and get found by couples searching for a venue right now. Add your photos, your reviews, and your details, and start receiving inquiries. Upgrade anytime you want managed ads and done-for-you follow-up.
+                </p>
+              ) : (
+                <>
+                  <p className="lg:whitespace-nowrap">
+                    Start your 14-day free trial and use the entire Bride Booking System™.
+                  </p>
+                  <p className="lg:whitespace-nowrap">
+                    Downgrade to the free plan anytime and keep your listing live.
+                  </p>
+                </>
+              )}
             </div>
             <div className="mt-8 flex justify-center">
-              <PrimaryCTA href={trialHref} />
+              <PrimaryCTA href={trialHref} label={ctaLabel} />
             </div>
           </div>
         </div>
@@ -597,7 +643,7 @@ export default function BrideBookingSections({ trialHref }: { trialHref: string 
           </h2>
 
           <div className="mt-12 divide-y divide-stone-200">
-            {FAQ_ITEMS.map((item, i) => (
+            {faqItems.map((item, i) => (
               <details key={item.q} open={i === 0} className="group py-5">
                 <summary
                   className="flex cursor-pointer items-start justify-between gap-4 list-none"
@@ -648,14 +694,17 @@ export default function BrideBookingSections({ trialHref }: { trialHref: string 
             className="text-[28px] sm:text-4xl md:text-5xl leading-[1.1]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Start Booking More Brides{" "}
-            <span className="whitespace-nowrap">in 5 Minutes.</span>
+            {isFreeListing
+              ? "List Your Venue Free In Minutes"
+              : <>Start Booking More Brides{" "}<span className="whitespace-nowrap">in 5 Minutes.</span></>}
           </h2>
           <p
             className="mt-5 text-base sm:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Set up your Bride Booking System™, share your link, and start turning brides into booked tours. Free for 14 days. Downgrade anytime.
+            {isFreeListing
+              ? "Claim your spot on the fastest growing wedding directory and get found by more couples. Free to list. Upgrade anytime."
+              : "Set up your Bride Booking System™, share your link, and start turning brides into booked tours. Free for 14 days. Downgrade anytime."}
           </p>
 
           <div className="mt-10 flex justify-center">
@@ -664,13 +713,15 @@ export default function BrideBookingSections({ trialHref }: { trialHref: string 
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-white text-stone-900 font-semibold px-7 py-4 text-base shadow-[0_18px_45px_-12px_rgba(0,0,0,0.6)] hover:bg-stone-100 active:scale-[0.98] transition-all"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              Start Your 14-Day Free Trial
+              {ctaLabel}
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </a>
           </div>
-          <p className="mt-5 text-[12px] text-white/50" style={{ fontFamily: "var(--font-open-sans)" }}>
-            Free for 14 days · Downgrade to free anytime
-          </p>
+          {!isFreeListing && (
+            <p className="mt-5 text-[12px] text-white/50" style={{ fontFamily: "var(--font-open-sans)" }}>
+              Free for 14 days · Downgrade to free anytime
+            </p>
+          )}
         </div>
       </section>
     </>
