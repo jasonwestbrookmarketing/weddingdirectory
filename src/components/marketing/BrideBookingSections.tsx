@@ -321,7 +321,7 @@ export default function BrideBookingSections({
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl lg:whitespace-nowrap text-stone-900 leading-[1.08]"
                 style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
               >
-                Meet the Bride Booking System<span style={{ fontSize: "0.38em", position: "relative", bottom: "0.55em", marginLeft: "0.06em", fontWeight: 500 }}>™</span>.
+                Meet the Bride Booking System<span style={{ fontSize: "0.5em", position: "relative", bottom: "0.5em", marginLeft: "0.05em" }}>™</span>.
               </h2>
 
               <div
