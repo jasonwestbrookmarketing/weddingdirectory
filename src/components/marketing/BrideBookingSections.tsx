@@ -456,22 +456,10 @@ export default function BrideBookingSections({
                     <div className={`order-1 ${reverse ? "lg:order-1" : "lg:order-2"}`}>
                       <span
                         className="flex h-12 w-12 items-center justify-center rounded-2xl text-white"
-                        style={
-                          elevated
-                            ? { backgroundColor: "var(--color-brand-gold)" }
-                            : { backgroundColor: "#1c1917" }
-                        }
+                        style={{ backgroundColor: "#1c1917" }}
                       >
                         <Icon className="w-5 h-5" />
                       </span>
-                      {elevated && (
-                        <span
-                          className="mt-4 inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"
-                          style={{ backgroundColor: "var(--color-brand-gold)", fontFamily: "var(--font-open-sans)" }}
-                        >
-                          Your edge
-                        </span>
-                      )}
                       <h3
                         className="mt-4 text-2xl sm:text-3xl md:text-4xl text-stone-900 leading-[1.1]"
                         style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
@@ -510,9 +498,11 @@ export default function BrideBookingSections({
               className="text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-[1.08]"
               style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
             >
-              Send Branded Proposals & Online Payments.{" "}
-              <br className="sm:hidden" />
-              <span className="whitespace-nowrap">With 0% Processing Fees.</span>
+              Send Branded Proposals &amp;
+              <br />
+              Online Payments With
+              <br />
+              0% Processing Fees
             </h2>
             <div
               className="mt-8 space-y-4 text-stone-600 text-base sm:text-lg leading-relaxed"
