@@ -3,28 +3,30 @@
 import { ArrowRight } from "lucide-react";
 
 /**
- * Identical look to PrimaryCTA but fires fbq('track', 'Lead') on click.
- * Use this for every "Claim Your Free Listing" button on /free-listing so
- * Meta can optimise for people who actually intent to sign up.
- *
- * Meta event map:
- *   ViewContent          → fired on page load (FireFreeListingLandingEvent)
- *   Lead                 → fired here on CTA click (intent to create listing)
- *   CompleteRegistration → must be fired by StoryPay on signup success page
+ * Fires fbq('track', 'Lead') on click.
+ * variant="dark"  → black pill (default, light backgrounds)
+ * variant="light" → white pill (dark/black section backgrounds)
  */
 export default function TrackedFreeListingCTA({
   href,
   label = "Claim Your Free Listing",
   size = "lg",
+  variant = "dark",
   className = "",
 }: {
   href: string;
   label?: string;
   size?: "md" | "lg";
+  variant?: "dark" | "light";
   className?: string;
 }) {
   const sizing =
     size === "lg" ? "px-6 py-3.5 text-[15px]" : "px-5 py-2.5 text-sm";
+
+  const tone =
+    variant === "light"
+      ? "bg-white text-stone-900 hover:bg-stone-50 shadow-[0_18px_45px_-12px_rgba(0,0,0,0.35)]"
+      : "bg-stone-900 text-white hover:bg-stone-800 shadow-[0_8px_24px_-10px_rgba(0,0,0,0.4)]";
 
   function handleClick() {
     try {
@@ -40,7 +42,7 @@ export default function TrackedFreeListingCTA({
     <a
       href={href}
       onClick={handleClick}
-      className={`group inline-flex items-center justify-center gap-2 rounded-full bg-stone-900 text-white font-semibold hover:bg-stone-800 active:scale-[0.98] transition-all shadow-[0_8px_24px_-10px_rgba(0,0,0,0.4)] ${sizing} ${className}`}
+      className={`group inline-flex items-center justify-center gap-2 rounded-full font-semibold active:scale-[0.98] transition-all ${tone} ${sizing} ${className}`}
       style={{ fontFamily: "var(--font-open-sans)" }}
     >
       {label}

@@ -138,7 +138,7 @@ export default async function HomePage() {
               Find Your Perfect
             </span>
             <em className="not-italic text-5xl sm:text-7xl md:text-8xl lg:text-9xl leading-[1.05] tracking-tight text-white relative" style={{ fontFamily: "EditorsNote, serif", fontWeight: 300, fontStyle: "italic" }}>
-              StoryVenue<sup className="text-[0.25em] align-super not-italic tracking-normal text-white/70" style={{ fontFamily: "var(--font-open-sans)", fontStyle: "normal" }}>™</sup>
+              Wedding Venue
             </em>
           </h1>
 
