@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Metadata, Viewport } from "next";
+import { Search, MessageCircle } from "lucide-react";
 import SiteFooter from "@/components/SiteFooter";
 import PhonePreview from "@/components/marketing/PhonePreview";
 import ScrollToTop from "@/components/marketing/ScrollToTop";
@@ -138,18 +139,21 @@ const STEPS = [
     title: "Find your venue",
     description:
       "Search your Google Business Profile and we pull in your photos, address, and details automatically.",
+    icon: "search" as const,
   },
   {
     number: "02",
     title: "Review and Go Live",
     description:
       "Review your listing, get your blue verified badge, and go live.",
+    icon: "verified" as const,
   },
   {
     number: "03",
     title: "Start taking inquiries",
     description:
       "Send your link anywhere brides find you and every response lands in your inbox.",
+    icon: "chat" as const,
   },
 ];
 
@@ -569,12 +573,43 @@ export default async function FreeListingPage() {
                 >
                   Step {step.number}
                 </span>
-                <h3
-                  className="mt-3 text-[26px] sm:text-[30px] text-stone-900 leading-snug"
-                  style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
-                >
+                <div className="mt-3 flex items-center gap-3">
+                  {/* Step icon */}
+                  {step.icon === "search" && (
+                    <span className="shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-stone-100">
+                      <Search className="w-5 h-5 text-stone-700" strokeWidth={1.75} />
+                    </span>
+                  )}
+                  {step.icon === "verified" && (
+                    <span className="shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-[#EFF6FF]">
+                      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden>
+                        <path
+                          d="M12.00 0.50 L14.54 2.53 L17.75 2.04 L18.93 5.07 L21.96 6.25 L21.47 9.46 L23.50 12.00 L21.47 14.54 L21.96 17.75 L18.93 18.93 L17.75 21.96 L14.54 21.47 L12.00 23.50 L9.46 21.47 L6.25 21.96 L5.07 18.93 L2.04 17.75 L2.53 14.54 L0.50 12.00 L2.53 9.46 L2.04 6.25 L5.07 5.07 L6.25 2.04 L9.46 2.53 Z"
+                          fill="#1D9BF0"
+                        />
+                        <path
+                          d="M6.8 12.4 l3.0 3.0 l7.4 -7.4"
+                          fill="none"
+                          stroke="white"
+                          strokeWidth="2.4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  )}
+                  {step.icon === "chat" && (
+                    <span className="shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-stone-100">
+                      <MessageCircle className="w-5 h-5 text-stone-700" strokeWidth={1.75} />
+                    </span>
+                  )}
+                  <h3
+                    className="text-[26px] sm:text-[30px] text-stone-900 leading-snug"
+                    style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
+                  >
                   {step.title}
-                </h3>
+                  </h3>
+                </div>
                 <p
                   className="mt-3 text-[14px] text-stone-500 leading-relaxed"
                   style={{ fontFamily: "var(--font-open-sans)" }}
