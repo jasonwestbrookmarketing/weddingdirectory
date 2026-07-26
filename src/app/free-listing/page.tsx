@@ -6,7 +6,6 @@ import ScrollToTop from "@/components/marketing/ScrollToTop";
 import FomoPopup from "@/components/marketing/FomoPopup";
 import TrackedFreeListingCTA from "@/components/marketing/TrackedFreeListingCTA";
 import FireFreeListingLandingEvent from "@/components/marketing/FireFreeListingLandingEvent";
-import FreeListingVenueInput from "@/components/marketing/FreeListingVenueInput";
 import { getAdminClient } from "@/lib/supabase/admin";
 
 const STORYPAY_URL =
@@ -171,7 +170,7 @@ function FeatureCard({
           className="ml-2 flex-1 rounded-md bg-white border border-stone-200 px-2 py-[3px] text-[9px] text-stone-400"
           style={{ fontFamily: "ui-monospace, monospace" }}
         >
-          app.storyvenue.com
+          storyvenue.com
         </div>
       </div>
 
@@ -320,7 +319,7 @@ export default async function FreeListingPage() {
           <div className="lg:col-span-7 text-center lg:text-left">
             {/* Eyebrow */}
             <p
-              className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.2em] text-stone-400 mb-4"
+              className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.2em] text-stone-900 mb-4"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               For Wedding Venue Owners
@@ -345,9 +344,13 @@ export default async function FreeListingPage() {
               </strong>
             </p>
 
-            {/* Input pill CTA */}
+            {/* CTA */}
             <div className="mt-7 sm:mt-8 flex flex-col items-center lg:items-start gap-3">
-              <FreeListingVenueInput href={LISTING_HREF} />
+              <TrackedFreeListingCTA
+                href={LISTING_HREF}
+                label="Claim My Free Listing"
+                size="lg"
+              />
 
               {/* Microcopy */}
               <p
@@ -509,7 +512,7 @@ export default async function FreeListingPage() {
           {/* Section header */}
           <div className="text-center mb-12 sm:mb-16">
             <p
-              className="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400 mb-3"
+              className="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-900 mb-3"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               The Software Behind Your Listing
@@ -539,7 +542,7 @@ export default async function FreeListingPage() {
           {/* Section header */}
           <div className="text-center mb-12 sm:mb-14">
             <p
-              className="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400 mb-3"
+              className="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-900 mb-3"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
               How It Works
@@ -560,13 +563,13 @@ export default async function FreeListingPage() {
                 className={`px-6 py-8 md:py-0 ${idx === 0 ? "md:pl-0" : ""} ${idx === STEPS.length - 1 ? "md:pr-0" : ""}`}
               >
                 <span
-                  className="text-[11px] font-bold uppercase tracking-[0.22em] text-stone-300"
+                  className="text-[11px] font-bold uppercase tracking-[0.22em] text-stone-900"
                   style={{ fontFamily: "var(--font-open-sans)" }}
                 >
                   Step {step.number}
                 </span>
                 <h3
-                  className="mt-3 text-[20px] sm:text-[22px] text-stone-900 leading-snug"
+                  className="mt-3 text-[26px] sm:text-[30px] text-stone-900 leading-snug"
                   style={{
                     fontFamily: "EditorsNote, serif",
                     fontWeight: 300,
