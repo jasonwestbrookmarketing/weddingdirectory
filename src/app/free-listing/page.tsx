@@ -142,7 +142,8 @@ const STEPS = [
   {
     number: "02",
     title: "Review and publish",
-    description: "Add your finishing touches and go live.",
+    description:
+      "Add your finishing touches, verify your listing to keep the platform trusted, then go live.",
   },
   {
     number: "03",
@@ -287,7 +288,7 @@ export default async function FreeListingPage() {
       {/* ================================================================ */}
       {/* HERO                                                              */}
       {/* ================================================================ */}
-      <section className="relative bg-white overflow-hidden pt-2 lg:pt-16 lg:pb-24">
+      <section className="relative bg-white overflow-hidden pt-0 lg:pt-16 lg:pb-24">
         {/* Mobile couple image */}
         <div
           className="lg:hidden relative"
@@ -569,8 +570,8 @@ export default async function FreeListingPage() {
                   Step {step.number}
                 </span>
                 <h3
-                  className="mt-3 text-[26px] sm:text-[30px] text-stone-900 leading-snug font-semibold"
-                  style={{ fontFamily: "var(--font-open-sans)" }}
+                  className="mt-3 text-[26px] sm:text-[30px] text-stone-900 leading-snug"
+                  style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
                 >
                   {step.title}
                 </h3>
