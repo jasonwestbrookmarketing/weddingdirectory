@@ -7,11 +7,15 @@ import FomoPopup from "@/components/marketing/FomoPopup";
 import TrackedFreeListingCTA from "@/components/marketing/TrackedFreeListingCTA";
 import FireFreeListingLandingEvent from "@/components/marketing/FireFreeListingLandingEvent";
 import FreeListingVenueInput from "@/components/marketing/FreeListingVenueInput";
+import { getAdminClient } from "@/lib/supabase/admin";
 
 const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
 
 const LISTING_HREF = `${STORYPAY_URL}/signup?plan=venue-free&utm_source=meta&utm_campaign=free-listing`;
+
+// Regenerate this page at most once per hour so the ticker stays fresh.
+export const revalidate = 3600;
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -31,14 +35,52 @@ export const metadata: Metadata = {
 };
 
 // ── Ticker ───────────────────────────────────────────────────────────────────
-const TICKER_VENUES = [
+// Shown when the DB has fewer than MIN_REAL names, or as padding.
+const FALLBACK_VENUES = [
   "Meadow Ridge Estate",
   "Waterloo Farms",
   "Atlantic Stables",
   "Retreat at Evans Farms",
   "Red Barn Acres",
   "Irongate Venue",
+  "The Barn of Hidden Valley",
+  "White Pine Manor",
+  "Arbor at the Port",
+  "Vista on the Docks",
+  "Bogart House",
+  "The Pinetree",
 ];
+
+const MIN_TICKER_NAMES = 10; // pad up to this many so the scroll looks full
+
+async function getTickerVenues(): Promise<string[]> {
+  try {
+    const supabase = getAdminClient();
+    if (!supabase) return FALLBACK_VENUES;
+
+    const { data, error } = await supabase
+      .from("venues")
+      .select("name")
+      .not("name", "is", null)
+      .neq("name", "")
+      .order("created_at", { ascending: false })
+      .limit(30);
+
+    if (error || !data) return FALLBACK_VENUES;
+
+    const real = data.map((r) => r.name as string).filter(Boolean);
+
+    // Pad with fallback names (not already in real list) if we don't have enough
+    if (real.length < MIN_TICKER_NAMES) {
+      const extras = FALLBACK_VENUES.filter((n) => !real.includes(n));
+      return [...real, ...extras].slice(0, Math.max(real.length, MIN_TICKER_NAMES));
+    }
+
+    return real;
+  } catch {
+    return FALLBACK_VENUES;
+  }
+}
 
 // ── Logos ────────────────────────────────────────────────────────────────────
 const LOGOS = [
@@ -185,7 +227,9 @@ function FeatureCard({
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function FreeListingPage() {
+export default async function FreeListingPage() {
+  const tickerVenues = await getTickerVenues();
+
   return (
     <>
       <FireFreeListingLandingEvent />
@@ -198,7 +242,8 @@ export default function FreeListingPage() {
         {/* TICKER */}
         <div className="w-full overflow-hidden shrink-0 py-2 bg-[#1c1c1c]">
           <div className="flex animate-[announcement-ticker_28s_linear_infinite] lg:animate-[announcement-ticker_55s_linear_infinite] whitespace-nowrap">
-            {[...TICKER_VENUES, ...TICKER_VENUES, ...TICKER_VENUES].map(
+            {/* Triple the list so there's always content visible at any scroll position */}
+            {[...tickerVenues, ...tickerVenues, ...tickerVenues].map(
               (venue, i) => (
                 <span
                   key={i}
