@@ -543,7 +543,7 @@ export default async function FreeListingPage() {
       {/* HOW IT WORKS                                                      */}
       {/* ================================================================ */}
       <section className="bg-stone-50 border-y border-stone-100 py-20 sm:py-24">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-6">
           {/* Section header */}
           <div className="text-center mb-12 sm:mb-14">
             <p
@@ -561,11 +561,11 @@ export default async function FreeListingPage() {
           </div>
 
           {/* Steps */}
-          <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-stone-200">
+          <div className="grid lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-stone-200">
             {STEPS.map((step, idx) => (
               <div
                 key={step.number}
-                className={`px-6 py-8 md:py-0 ${idx === 0 ? "md:pl-0" : ""} ${idx === STEPS.length - 1 ? "md:pr-0" : ""}`}
+                className={`px-6 py-8 lg:py-0 ${idx === 0 ? "lg:pl-0" : ""} ${idx === STEPS.length - 1 ? "lg:pr-0" : ""}`}
               >
                 <span
                   className="text-[11px] font-bold uppercase tracking-[0.22em] text-stone-900"
@@ -573,7 +573,7 @@ export default async function FreeListingPage() {
                 >
                   Step {step.number}
                 </span>
-                <div className="mt-3 flex items-center gap-3">
+                <div className="mt-3 flex items-center gap-3 whitespace-nowrap">
                   {/* Step icon */}
                   {step.icon === "search" && (
                     <span className="shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-stone-100">
