@@ -3,21 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 import { X, ArrowRight } from "lucide-react";
 
-const SESSION_KEY = "sv_free_listing_exit";
-
 /**
  * Exit-intent modal for /free-listing.
- * Arms after 3 seconds so accidental cursor movement at page load doesn't fire it.
- * Fires once per session (sessionStorage gate).
+ * Arms after 800ms (enough to ignore accidental cursor blips on load).
+ * No session gate — fires every page load so refreshes and return visits always see it.
+ * Only fires once per page load (fired ref).
  */
 export default function FreeListingExitModal({ href }: { href: string }) {
   const [open, setOpen] = useState(false);
   const armed = useRef(false);
   const fired = useRef(false);
 
-  // Arm after 3 s
+  // Arm quickly — just long enough to ignore initial cursor positioning
   useEffect(() => {
-    const t = setTimeout(() => { armed.current = true; }, 3000);
+    const t = setTimeout(() => { armed.current = true; }, 800);
     return () => clearTimeout(t);
   }, []);
 
@@ -26,9 +25,7 @@ export default function FreeListingExitModal({ href }: { href: string }) {
     function onLeave(e: MouseEvent) {
       if (!armed.current || fired.current) return;
       if (e.clientY > 5) return; // only top-edge exits
-      try { if (sessionStorage.getItem(SESSION_KEY)) return; } catch {}
       fired.current = true;
-      try { sessionStorage.setItem(SESSION_KEY, "1"); } catch {}
       setOpen(true);
     }
     document.addEventListener("mouseleave", onLeave);
