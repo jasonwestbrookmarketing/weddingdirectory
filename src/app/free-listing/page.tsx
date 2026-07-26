@@ -662,25 +662,10 @@ export default async function FreeListingPage() {
       {/* ================================================================ */}
       {/* FOOTER                                                            */}
       {/* ================================================================ */}
-      <div className="sm:hidden h-20" aria-hidden />
       <SiteFooter />
 
       <FomoPopup signupHref={LISTING_HREF} />
 
-      {/* ================================================================ */}
-      {/* STICKY MOBILE FOOTER CTA                                         */}
-      {/* ================================================================ */}
-      <div
-        className="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-white border-t border-stone-200 shadow-[0_-8px_24px_-6px_rgba(0,0,0,0.1)] px-4 py-3"
-        style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom))" }}
-      >
-        <TrackedFreeListingCTA
-          href={LISTING_HREF}
-          label="Claim Your Free Listing"
-          size="lg"
-          className="w-full justify-center"
-        />
-      </div>
     </>
   );
 }
