@@ -51,7 +51,7 @@ export default function FreeListingExitModal({ href }: { href: string }) {
       onClick={() => setOpen(false)}
     >
       <div
-        className="relative bg-white rounded-3xl shadow-[0_32px_80px_-16px_rgba(0,0,0,0.35)] w-full max-w-[420px] aspect-square flex flex-col items-center justify-center text-center px-10 animate-[slideUp_0.22s_ease]"
+        className="relative bg-white rounded-3xl shadow-[0_32px_80px_-16px_rgba(0,0,0,0.35)] w-full max-w-[520px] flex flex-col items-center justify-center text-center px-12 py-12 animate-[slideUp_0.22s_ease]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Dismiss */}
@@ -81,7 +81,7 @@ export default function FreeListingExitModal({ href }: { href: string }) {
 
         {/* Subtext */}
         <p
-          className="text-[14px] text-stone-500 leading-relaxed mb-8 max-w-[300px]"
+          className="text-[14px] text-stone-500 leading-relaxed mb-8"
           style={{ fontFamily: "var(--font-open-sans)" }}
         >
           Couples are searching for venues right now. Get your spot before another venue in your area does.
