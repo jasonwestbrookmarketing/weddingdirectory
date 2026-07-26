@@ -141,9 +141,9 @@ const STEPS = [
   },
   {
     number: "02",
-    title: "Review and publish",
+    title: "Review and Go Live",
     description:
-      "Add your finishing touches, verify your listing to keep the platform trusted, then go live.",
+      "Review your listing, get your blue verified badge, and go live.",
   },
   {
     number: "03",
