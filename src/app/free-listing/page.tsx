@@ -8,6 +8,7 @@ import FomoPopup from "@/components/marketing/FomoPopup";
 import TrackedFreeListingCTA from "@/components/marketing/TrackedFreeListingCTA";
 import FireFreeListingLandingEvent from "@/components/marketing/FireFreeListingLandingEvent";
 import { getAdminClient } from "@/lib/supabase/admin";
+import FreeListingExitModal from "@/components/marketing/FreeListingExitModal";
 
 const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
@@ -665,6 +666,7 @@ export default async function FreeListingPage() {
       <SiteFooter />
 
       <FomoPopup signupHref={LISTING_HREF} />
+      <FreeListingExitModal href={LISTING_HREF} />
 
     </>
   );
