@@ -282,7 +282,7 @@ export default async function FreeListingPage() {
             </span>
             <TrackedFreeListingCTA
               href={LISTING_HREF}
-              label="Claim Your Free Listing"
+              label="Claim My Free Listing"
               size="md"
             />
           </nav>
@@ -631,7 +631,7 @@ export default async function FreeListingPage() {
             className="text-[34px] sm:text-[48px] text-white leading-[1.08]"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            Claim Your Free Listing
+            Claim My Free Listing
           </h2>
           <p
             className="mt-4 text-[15px] sm:text-[17px] text-white/60 leading-relaxed"
