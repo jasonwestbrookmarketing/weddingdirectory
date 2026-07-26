@@ -360,7 +360,7 @@ export default function FreeListingPage() {
                     className="text-[11px] text-stone-500 mt-0.5"
                     style={{ fontFamily: "var(--font-open-sans)" }}
                   >
-                    60+ venues have claimed their listing
+                    Trusted by venues nationwide
                   </p>
                 </div>
               </div>
@@ -407,41 +407,53 @@ export default function FreeListingPage() {
       {/* ================================================================ */}
       {/* LOGO STRIP                                                        */}
       {/* ================================================================ */}
-      <section className="bg-stone-50 border-y border-stone-100 py-10 sm:py-12">
-        <div className="max-w-5xl mx-auto px-6">
-          <p
-            className="text-center text-[10px] font-bold uppercase tracking-[0.22em] text-stone-400 mb-7"
-            style={{ fontFamily: "var(--font-open-sans)" }}
-          >
-            Trusted by venues nationwide
-          </p>
+      <section className="bg-stone-50 border-y border-stone-100 py-8 sm:py-10">
+        <p
+          className="text-center text-[10px] font-bold uppercase tracking-[0.22em] text-stone-400 mb-6"
+          style={{ fontFamily: "var(--font-open-sans)" }}
+        >
+          Trusted by venues nationwide
+        </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 sm:gap-x-14">
-            {LOGOS.map(({ src, alt, h }) => (
-              <Image
-                key={src}
-                src={src}
-                alt={alt}
-                width={160}
-                height={h}
-                unoptimized
-                placeholder="empty"
-                className="object-contain opacity-60 hover:opacity-90 transition-opacity"
-                style={{ height: h, width: "auto" }}
-              />
+        {/* Animated logo scroller */}
+        <div className="overflow-hidden">
+          <div
+            className="flex whitespace-nowrap items-center gap-12 lg:gap-20"
+            style={{ animation: "announcement-ticker 40s linear infinite" }}
+          >
+            {[...LOGOS, ...LOGOS, ...LOGOS].map(({ src, alt, h }, i) => (
+              <div key={i} className="shrink-0 flex items-center justify-center">
+                <Image
+                  src={src}
+                  alt={i < LOGOS.length ? alt : ""}
+                  width={160}
+                  height={h}
+                  unoptimized
+                  placeholder="empty"
+                  className="w-auto object-contain"
+                  style={{
+                    height: h,
+                    maxWidth: 140,
+                    filter:
+                      "brightness(0) invert(0) sepia(0) saturate(0) hue-rotate(0deg) brightness(0.11)",
+                    mixBlendMode: "multiply",
+                    opacity: 0.55,
+                  }}
+                />
+              </div>
             ))}
           </div>
-
-          <p
-            className="text-center text-[11px] text-stone-400 mt-7"
-            style={{ fontFamily: "var(--font-open-sans)" }}
-          >
-            <strong className="font-semibold text-stone-500">
-              Verified venues only
-            </strong>{" "}
-            · 14 years in the wedding venue industry
-          </p>
         </div>
+
+        <p
+          className="text-center text-[11px] text-stone-400 mt-6"
+          style={{ fontFamily: "var(--font-open-sans)" }}
+        >
+          <strong className="font-semibold text-stone-500">
+            Verified venues only
+          </strong>{" "}
+          · 14 years in the wedding venue industry
+        </p>
       </section>
 
       {/* ================================================================ */}
