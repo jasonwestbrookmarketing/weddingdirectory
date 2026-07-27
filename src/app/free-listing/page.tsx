@@ -100,6 +100,7 @@ const FEATURES = [
     pillDetail: "Red Barn Acres",
     title: "Venue Listing",
     description: "Gives you one link that shows off everything your venue offers.",
+    screenshotSrc: "/feature-venue-listing.png",
   },
   {
     pillLabel: "GUIDE SENT",
@@ -164,6 +165,7 @@ function FeatureCard({
   pillDetail,
   title,
   description,
+  screenshotSrc,
 }: (typeof FEATURES)[number]) {
   return (
     <div className="rounded-2xl border border-stone-200 overflow-hidden bg-white shadow-[0_4px_20px_-8px_rgba(0,0,0,0.08)] flex flex-col">
@@ -180,15 +182,27 @@ function FeatureCard({
         </div>
       </div>
 
-      {/* Placeholder screenshot area */}
+      {/* Screenshot area — real image if provided, placeholder lines otherwise */}
       <div className="relative bg-stone-50 h-[148px]">
-        <div className="p-4 space-y-3">
-          <div className="h-2 rounded-full bg-stone-200 w-3/4" />
-          <div className="h-2 rounded-full bg-stone-200 w-full" />
-          <div className="h-2 rounded-full bg-stone-200 w-1/2" />
-          <div className="mt-4 h-2 rounded-full bg-stone-200 w-full" />
-          <div className="h-2 rounded-full bg-stone-200 w-2/3" />
-        </div>
+        {screenshotSrc ? (
+          <Image
+            src={screenshotSrc}
+            alt={title}
+            fill
+            unoptimized
+            placeholder="empty"
+            className="object-cover object-top"
+            sizes="320px"
+          />
+        ) : (
+          <div className="p-4 space-y-3">
+            <div className="h-2 rounded-full bg-stone-200 w-3/4" />
+            <div className="h-2 rounded-full bg-stone-200 w-full" />
+            <div className="h-2 rounded-full bg-stone-200 w-1/2" />
+            <div className="mt-4 h-2 rounded-full bg-stone-200 w-full" />
+            <div className="h-2 rounded-full bg-stone-200 w-2/3" />
+          </div>
+        )}
 
         {/* Status pill */}
         <div className="absolute bottom-3 left-3 flex items-center gap-2 bg-white rounded-full px-3 py-1.5 shadow-sm border border-stone-100">
