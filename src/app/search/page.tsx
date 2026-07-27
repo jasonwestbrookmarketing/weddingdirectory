@@ -64,6 +64,7 @@ function SearchContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [filters, setFilters] = useState<SearchFilters>({
+    name: searchParams.get("name") || "",
     location: searchParams.get("location") || "",
     budget: searchParams.get("budget") || "",
     guests: searchParams.get("guests") || "",
@@ -138,6 +139,14 @@ function SearchContent() {
     if (f.amenities.length > 0) {
       rows = rows.filter((v) =>
         f.amenities.every((a) => venueHasFeature(v.features, a))
+      );
+    }
+
+    // ── Venue name: case-insensitive substring match ────────────────────
+    const nameQuery = f.name.trim().toLowerCase();
+    if (nameQuery) {
+      rows = rows.filter((v) =>
+        (v.name ?? "").toLowerCase().includes(nameQuery)
       );
     }
 
@@ -217,6 +226,7 @@ function SearchContent() {
   const pagedVenues = sortedVenues.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const activeFilterCount = [
+    pendingFilters.name,
     pendingFilters.location,
     pendingFilters.budget,
     pendingFilters.guests,

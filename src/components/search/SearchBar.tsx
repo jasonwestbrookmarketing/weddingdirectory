@@ -8,6 +8,7 @@ import { trackEvent } from "@/lib/analytics";
 
 export default function SearchBar() {
   const router = useRouter();
+  const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [guests, setGuests] = useState("");
   const [budget, setBudget] = useState("");
@@ -16,12 +17,14 @@ export default function SearchBar() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
+    if (name) params.set("name", name);
     if (location) params.set("location", location);
     if (guests) params.set("guests", guests);
     if (budget) params.set("budget", budget);
     if (style) params.set("style", style);
 
     trackEvent("homepage_search_submitted", {
+      name,
       location,
       guests: guests ? Number(guests) : null,
       budget,
@@ -37,8 +40,22 @@ export default function SearchBar() {
       {/* ── Desktop pill ── */}
       <div className="hidden md:flex items-stretch bg-white rounded-full overflow-hidden h-[56px] shadow-[0_8px_40px_rgba(0,0,0,0.55)]">
 
+        {/* Venue Name — fixed width */}
+        <div className="flex items-center w-[180px] shrink-0 pl-5 pr-4 border-r border-stone-200">
+          <div className="w-full">
+            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest leading-none mb-1 text-left">Venue</p>
+            <input
+              type="text"
+              placeholder="Venue name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full bg-transparent text-stone-900 placeholder:text-stone-400 text-sm focus:outline-none"
+            />
+          </div>
+        </div>
+
         {/* Location — takes remaining space */}
-        <div className="flex items-center gap-2.5 flex-1 min-w-0 pl-5 pr-4 border-r border-stone-200">
+        <div className="flex items-center gap-2.5 flex-1 min-w-0 pl-4 pr-4 border-r border-stone-200">
           <div className="flex-1 min-w-0">
             <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest leading-none mb-1 text-left">Where</p>
             <div className="flex items-center gap-2">
@@ -117,6 +134,16 @@ export default function SearchBar() {
 
       {/* ── Mobile stacked card ── */}
       <div className="flex flex-col md:hidden bg-white rounded-2xl overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.55)]">
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-stone-100">
+          <Search className="h-4 w-4 text-stone-400 shrink-0" />
+          <input
+            type="text"
+            placeholder="Venue name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="flex-1 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none"
+          />
+        </div>
         <div className="flex items-center gap-3 px-4 py-3.5 border-b border-stone-100">
           <MapPin className="h-4 w-4 text-stone-400 shrink-0" />
           <input

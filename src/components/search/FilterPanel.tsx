@@ -14,6 +14,7 @@ import { VENUE_FEATURE_OPTIONS } from "@/lib/venue-features";
 const AMENITY_OPTIONS = VENUE_FEATURE_OPTIONS.map((f) => ({ value: f, label: f }));
 
 export interface SearchFilters {
+  name: string;
   location: string;
   budget: string;
   guests: string;
@@ -23,6 +24,7 @@ export interface SearchFilters {
 }
 
 export const DEFAULT_FILTERS: SearchFilters = {
+  name: "",
   location: "",
   budget: "",
   guests: "",
@@ -66,6 +68,7 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
     : AMENITY_OPTIONS.slice(0, AMENITY_INITIAL_VISIBLE);
 
   const hasFilters =
+    filters.name ||
     filters.location ||
     filters.budget ||
     filters.guests ||
@@ -90,6 +93,19 @@ export default function FilterPanel({ filters, onChange, onApply, loading }: Pro
       </div>
 
       <div className="flex flex-col gap-5 px-1 pb-6">
+
+        {/* Venue Name */}
+        <div>
+          <label className={sectionLabel}>Venue Name</label>
+          <input
+            type="text"
+            placeholder="Search by name…"
+            value={filters.name}
+            onChange={(e) => set("name", e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); onApply(); } }}
+            className={inputClass}
+          />
+        </div>
 
         {/* Location */}
         <div>
