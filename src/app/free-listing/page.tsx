@@ -114,6 +114,7 @@ const FEATURES = [
     pillDetail: "Jonathan B.",
     title: "Lead Inbox",
     description: "Puts every inquiry in front of you in one place.",
+    screenshotSrc: "/feature-lead-inbox.png",
   },
   {
     pillLabel: "PROPOSAL SENT",
