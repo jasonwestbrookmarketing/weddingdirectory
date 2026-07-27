@@ -556,6 +556,15 @@ export default async function FreeListingPage() {
               <FeatureCard key={f.title} {...f} />
             ))}
           </div>
+
+          {/* Supporting features line */}
+          <p
+            className="mt-10 text-center text-[13px] sm:text-[14px] text-stone-400 leading-relaxed max-w-3xl mx-auto"
+            style={{ fontFamily: "var(--font-open-sans)" }}
+          >
+            <span className="font-semibold text-stone-500">Plus everything else that runs your venue day to day:</span>{" "}
+            embeddable lead forms for your website, review collection, instant follow-up, a full sales pipeline, contract templates and e-signatures, deposit collection with zero processing fees, tour scheduling with hold dates and conflict detection, calendar sync, and live analytics and reports on booked revenue, contacts, proposals, help center, support, and Ask AI.
+          </p>
         </div>
       </section>
 
