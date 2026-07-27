@@ -107,6 +107,7 @@ const FEATURES = [
     pillDetail: "Pricing delivered",
     title: "Pricing Guide",
     description: "Answers the pricing question for you in seconds, not days.",
+    screenshotSrc: "/feature-pricing-guide.png",
   },
   {
     pillLabel: "NEW LEAD",
