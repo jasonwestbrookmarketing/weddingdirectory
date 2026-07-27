@@ -184,7 +184,7 @@ export default async function HomePage() {
 
           {/* Venue trust ticker — last 20 signups, any plan */}
           <div className="w-full mt-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_12%,white_88%,transparent)]">
-            <div className="flex gap-12 animate-[ticker_60s_linear_infinite] whitespace-nowrap w-max">
+            <div className="flex gap-12 animate-[ticker_120s_linear_infinite] whitespace-nowrap w-max">
               {[...tickerNames, ...tickerNames].map((venueName, i) => (
                 <span
                   key={i}
