@@ -10,8 +10,34 @@ export const revalidate = 120;
 
 const STORYPAY_URL = process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
 
+const TICKER_FALLBACK = [
+  "White Pine Manor", "Red Barn Acres", "Atlantic Stables", "Arbor Venues",
+  "Arete Event Center", "Waters Building", "Vista on the Docks", "Legacy Ranch Event Center",
+  "Magnolia Wedding & Event Center", "Starlight Grove Events",
+];
+
 export default async function HomePage() {
   const supabase = await createClient();
+
+  // Last 20 venue signups for the trust ticker — any plan, paid or free.
+  const { data: tickerRows } = await supabase
+    .from("venues")
+    .select("name")
+    .not("name", "is", null)
+    .neq("is_demo", true)
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  const tickerBase = (tickerRows ?? [])
+    .map((r) => (r.name as string).trim())
+    .filter(Boolean);
+
+  // Need at least 10 names for a smooth loop; pad with fallbacks if needed.
+  const tickerNames =
+    tickerBase.length >= 10
+      ? tickerBase
+      : [...tickerBase, ...TICKER_FALLBACK].slice(0, Math.max(10, tickerBase.length));
+
   // Pull a wider window so the sponsored/verified re-sort below has something
   // to work with; we still render at most 6.
   const { data: rawVenues } = await supabase
@@ -156,31 +182,16 @@ export default async function HomePage() {
             <SearchBar />
           </div>
 
-          {/* Venue trust ticker */}
+          {/* Venue trust ticker — last 20 signups, any plan */}
           <div className="w-full mt-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_12%,white_88%,transparent)]">
             <div className="flex gap-12 animate-[ticker_60s_linear_infinite] whitespace-nowrap w-max">
-              {[
-                "White Pine Manor",
-                "Red Barn Acres",
-                "Atlantic Stables",
-                "Arbor Venues",
-                "Arete Event Center",
-                "Waters Building",
-                "Vista on the Docks",
-                "White Pine Manor",
-                "Red Barn Acres",
-                "Atlantic Stables",
-                "Arbor Venues",
-                "Arete Event Center",
-                "Waters Building",
-                "Vista on the Docks",
-              ].map((name, i) => (
+              {[...tickerNames, ...tickerNames].map((venueName, i) => (
                 <span
                   key={i}
                   className="text-xs sm:text-sm font-semibold text-white/40 tracking-widest uppercase shrink-0"
                   style={{ fontFamily: "var(--font-open-sans)" }}
                 >
-                  {name}
+                  {venueName}
                 </span>
               ))}
             </div>
