@@ -35,13 +35,13 @@ export default function SearchBar() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-5xl mx-auto">
+    <form onSubmit={handleSubmit} className="w-full max-w-6xl mx-auto">
 
       {/* ── Desktop pill ── */}
       <div className="hidden md:flex items-stretch bg-white rounded-full overflow-hidden h-[56px] shadow-[0_8px_40px_rgba(0,0,0,0.55)]">
 
         {/* Venue Name — fixed width */}
-        <div className="flex items-center w-[180px] shrink-0 pl-5 pr-4 border-r border-stone-200">
+        <div className="flex items-center w-[160px] shrink-0 pl-5 pr-3 border-r border-stone-200">
           <div className="w-full">
             <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest leading-none mb-1 text-left">Venue</p>
             <input
@@ -55,7 +55,7 @@ export default function SearchBar() {
         </div>
 
         {/* Location — takes remaining space */}
-        <div className="flex items-center gap-2.5 flex-1 min-w-0 pl-4 pr-4 border-r border-stone-200">
+        <div className="flex items-center gap-2 flex-1 min-w-0 pl-4 pr-3 border-r border-stone-200">
           <div className="flex-1 min-w-0">
             <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest leading-none mb-1 text-left">Where</p>
             <div className="flex items-center gap-2">
@@ -72,7 +72,7 @@ export default function SearchBar() {
         </div>
 
         {/* Guests — fixed narrow */}
-        <div className="flex items-center w-[110px] shrink-0 px-4 border-r border-stone-200">
+        <div className="flex items-center w-[95px] shrink-0 px-3 border-r border-stone-200">
           <div className="w-full">
             <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest leading-none mb-1 text-left">Guests</p>
             <input
@@ -87,7 +87,7 @@ export default function SearchBar() {
         </div>
 
         {/* Budget — fixed */}
-        <div className="flex items-center w-[155px] shrink-0 px-4 border-r border-stone-200">
+        <div className="flex items-center w-[140px] shrink-0 px-3 border-r border-stone-200">
           <div className="w-full">
             <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest leading-none mb-1 text-left">Budget</p>
             <select
@@ -104,7 +104,7 @@ export default function SearchBar() {
         </div>
 
         {/* Style — fixed */}
-        <div className="flex items-center w-[150px] shrink-0 px-4">
+        <div className="flex items-center w-[130px] shrink-0 px-3">
           <div className="w-full">
             <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest leading-none mb-1 text-left">Style</p>
             <select
