@@ -96,7 +96,8 @@ function SearchContent() {
       .from("venues")
       .select("*")
       .eq("is_published", true)
-      .neq("is_demo", true);
+      .neq("is_demo", true)
+      .not("slug", "is", null);
 
     if (f.guests) {
       const g = Number(f.guests);

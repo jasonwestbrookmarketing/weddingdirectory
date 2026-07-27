@@ -21,6 +21,7 @@ export default async function HomePage() {
     )
     .eq("is_published", true)
     .neq("is_demo", true)
+    .not("slug", "is", null)
     .order("created_at", { ascending: false })
     .limit(24);
 
