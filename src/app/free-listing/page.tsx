@@ -128,6 +128,7 @@ const FEATURES = [
     pillDetail: "$2,500 received",
     title: "Payments",
     description: "Land in your account on the spot, no chasing.",
+    screenshotSrc: "/feature-payments.png",
   },
   {
     pillLabel: "TOUR BOOKED",
