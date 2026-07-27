@@ -118,7 +118,7 @@ const FEATURES = [
   },
   {
     pillLabel: "PROPOSAL SENT",
-    pillDetail: "Sophie + Will",
+    pillDetail: "Jason W.",
     title: "Proposals",
     description: "Go out the same day, built once and reused.",
     screenshotSrc: "/feature-proposals.png",
