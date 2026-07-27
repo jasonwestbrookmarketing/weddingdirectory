@@ -383,10 +383,9 @@ export default async function FreeListingPage() {
                 style={{ fontFamily: "var(--font-open-sans)" }}
               >
                 <strong className="font-semibold text-stone-700">
-                  Live in five minutes.
+                  Live in 5 minutes.
                 </strong>{" "}
-                Pulls straight from your Google Business Profile. No website
-                changes, no contract.
+                Built from your Google Business Profile. Verified blue badge.
               </p>
 
               {/* Avatar row */}
