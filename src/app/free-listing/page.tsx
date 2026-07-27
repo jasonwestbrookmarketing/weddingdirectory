@@ -385,7 +385,7 @@ export default async function FreeListingPage() {
                 <strong className="font-semibold text-stone-700">
                   Live in 5 minutes.
                 </strong>{" "}
-                Built from your Google Business Profile. Includes verified blue badge.
+                Built from your Google Business Profile.<br className="sm:hidden" /> Includes verified blue badge.
               </p>
 
               {/* Avatar row */}
