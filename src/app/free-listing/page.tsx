@@ -135,6 +135,7 @@ const FEATURES = [
     pillDetail: "Sat, Nov 8",
     title: "Booking Calendar",
     description: "Shows every tour, hold, and booking on one screen.",
+    screenshotSrc: "/feature-calendar.png",
   },
 ];
 
