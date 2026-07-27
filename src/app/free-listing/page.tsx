@@ -121,6 +121,7 @@ const FEATURES = [
     pillDetail: "Sophie + Will",
     title: "Proposals",
     description: "Go out the same day, built once and reused.",
+    screenshotSrc: "/feature-proposals.png",
   },
   {
     pillLabel: "DEPOSIT PAID",
