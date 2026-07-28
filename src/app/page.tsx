@@ -38,7 +38,8 @@ export default async function HomePage() {
       ? tickerBase
       : [...tickerBase, ...TICKER_FALLBACK].slice(0, Math.max(10, tickerBase.length));
 
-  // Latest 20 venues to go live — shown in a 4×5 grid below the hero.
+  // Latest 20 venues to go live that have a cover image — shown in a 4×5 grid.
+  // Venues without a photo are excluded so the grid always looks full and polished.
   const { data: rawVenues } = await supabase
     .from("venues")
     .select(
@@ -47,6 +48,8 @@ export default async function HomePage() {
     .eq("is_published", true)
     .neq("is_demo", true)
     .not("slug", "is", null)
+    .not("cover_image_url", "is", null)
+    .neq("cover_image_url", "")
     .order("created_at", { ascending: false })
     .limit(20);
 
@@ -205,21 +208,12 @@ export default async function HomePage() {
       {venues && venues.length > 0 && (
         <section className="py-20 px-6 md:px-12">
           <div className="max-w-screen-xl mx-auto">
-            <div className="flex items-end justify-between mb-10 gap-4">
-              <h2
-                className="text-3xl md:text-4xl font-normal tracking-tight text-stone-900"
-                style={{ fontFamily: "var(--font-playfair)" }}
-              >
-                Newest Venues
-              </h2>
-              <Link
-                href="/search"
-                className="shrink-0 text-sm font-semibold text-stone-900 underline underline-offset-4 hover:text-stone-600 transition-colors"
-                style={{ fontFamily: "var(--font-open-sans)" }}
-              >
-                View all →
-              </Link>
-            </div>
+            <h2
+              className="text-3xl md:text-4xl font-normal tracking-tight text-stone-900 mb-10"
+              style={{ fontFamily: "var(--font-playfair)" }}
+            >
+              Newest Venues
+            </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {venues.map((venue) => (
                 <VenueCard key={venue.id} venue={venue} />
