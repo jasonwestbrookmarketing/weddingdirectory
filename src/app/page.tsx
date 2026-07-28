@@ -38,8 +38,7 @@ export default async function HomePage() {
       ? tickerBase
       : [...tickerBase, ...TICKER_FALLBACK].slice(0, Math.max(10, tickerBase.length));
 
-  // Pull a wider window so the sponsored/verified re-sort below has something
-  // to work with; we still render at most 6.
+  // Latest 20 venues to go live — shown in a 4×5 grid below the hero.
   const { data: rawVenues } = await supabase
     .from("venues")
     .select(
@@ -49,18 +48,9 @@ export default async function HomePage() {
     .neq("is_demo", true)
     .not("slug", "is", null)
     .order("created_at", { ascending: false })
-    .limit(24);
+    .limit(20);
 
-  // Directory promise: paid sponsors surface first, then verified venues, then
-  // everyone else in recency order. Matches the dashboard's public directory API.
-  const venues = (rawVenues ?? [])
-    .map((v) => ({
-      ...v,
-      _sp: v.directory_sponsored_status === "approved" ? 1 : 0,
-      _vf: v.directory_verified_status === "approved" ? 1 : 0,
-    }))
-    .sort((a, b) => b._sp - a._sp || b._vf - a._vf)
-    .slice(0, 6);
+  const venues = rawVenues ?? [];
 
   return (
     <>
@@ -211,17 +201,26 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Venues */}
+      {/* Latest 20 live venues — 4 across, 5 rows */}
       {venues && venues.length > 0 && (
-        <section className="py-24 px-6 md:px-12">
-          <div className="max-w-7xl mx-auto">
-            <h2
-              className="text-3xl md:text-4xl font-normal tracking-tight text-stone-900 mb-12"
-              style={{ fontFamily: "var(--font-playfair)" }}
-            >
-              Featured Venues
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <section className="py-20 px-6 md:px-12">
+          <div className="max-w-screen-xl mx-auto">
+            <div className="flex items-end justify-between mb-10 gap-4">
+              <h2
+                className="text-3xl md:text-4xl font-normal tracking-tight text-stone-900"
+                style={{ fontFamily: "var(--font-playfair)" }}
+              >
+                Newest Venues
+              </h2>
+              <Link
+                href="/search"
+                className="shrink-0 text-sm font-semibold text-stone-900 underline underline-offset-4 hover:text-stone-600 transition-colors"
+                style={{ fontFamily: "var(--font-open-sans)" }}
+              >
+                View all →
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {venues.map((venue) => (
                 <VenueCard key={venue.id} venue={venue} />
               ))}
