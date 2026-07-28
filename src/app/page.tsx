@@ -51,7 +51,7 @@ export default async function HomePage() {
     .not("cover_image_url", "is", null)
     .neq("cover_image_url", "")
     .order("created_at", { ascending: false })
-    .limit(20);
+    .limit(16);
 
   const venues = rawVenues ?? [];
 
