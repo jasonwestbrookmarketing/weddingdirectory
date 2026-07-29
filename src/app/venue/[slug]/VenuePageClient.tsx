@@ -384,15 +384,19 @@ export default function VenuePageClient({
     const MIN_DWELL_MS = 5000;
     const readyAt = Date.now() + MIN_DWELL_MS;
     let hasEntered = false;
+    let fired = false;
 
     const onPointerActive = () => { hasEntered = true; };
 
     const onMouseOut = (e: MouseEvent) => {
+      if (fired) return;
       if (!hasEntered) return;
       if (Date.now() < readyAt) return;
       if (e.relatedTarget || (e as MouseEvent & { toElement?: unknown }).toElement) return;
       if (e.clientY > 10) return;
+      fired = true;
       sessionStorage.setItem(SESSION_KEY, "1");
+      document.removeEventListener("mouseout", onMouseOut);
       setIsOpen(true);
     };
 
