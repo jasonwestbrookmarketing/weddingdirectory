@@ -114,10 +114,16 @@ export default function LeadFormModal({
         lead_id: data.leadId,
       });
       const params = new URLSearchParams();
-      if (venueSlug) params.set("slug", venueSlug);
       if (venueWebsite) params.set("website", venueWebsite);
       if (venueName) params.set("name", venueName);
-      router.push(`/confirmation?${params.toString()}`);
+      // Per-venue thank-you page (fires the venue's own Meta Pixel for their
+      // custom conversion). Falls back to the generic /confirmation page in
+      // the rare case a caller doesn't have a venue slug on hand.
+      if (venueSlug) {
+        router.push(`/venue/${encodeURIComponent(venueSlug)}/thankyou?${params.toString()}`);
+      } else {
+        router.push(`/confirmation?${params.toString()}`);
+      }
     } catch {
       setError("Network error. Please check your connection and try again.");
       setLoading(false);
