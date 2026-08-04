@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin } from "lucide-react";
+import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 import { getPriceScale, PRICE_SCALE_LABELS } from "@/lib/constants";
 import { resolveBadges } from "@/lib/directory-badges";
@@ -32,6 +33,10 @@ interface VenueCardProps {
 }
 
 export default function VenueCard({ venue }: VenueCardProps) {
+  // If the cover image fails to load (broken URL, 404, etc.) we hide the
+  // entire card so it never appears on the public directory.
+  const [imgError, setImgError] = useState(false);
+
   const handleClick = () => {
     trackEvent("venue_card_clicked", {
       venue_id: venue.id,
@@ -42,6 +47,9 @@ export default function VenueCard({ venue }: VenueCardProps) {
   const { verified, sponsored } = resolveBadges(venue);
   const scale = getPriceScale(venue.price_min);
   const scaleLabel = scale ? PRICE_SCALE_LABELS[scale] : null;
+
+  // Hide the card entirely if the image is broken — no placeholder, no stub.
+  if (imgError) return null;
 
   return (
     <Link
@@ -61,8 +69,11 @@ export default function VenueCard({ venue }: VenueCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             loading="lazy"
             className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            onError={() => setImgError(true)}
           />
         ) : (
+          // cover_image_url is null/empty — this path is filtered out on
+          // the homepage but may appear on the search page. Treat as broken.
           <div className="aspect-[4/3] w-full bg-stone-100 flex items-center justify-center rounded-xl">
             <MapPin className="h-10 w-10 text-stone-300" />
           </div>
