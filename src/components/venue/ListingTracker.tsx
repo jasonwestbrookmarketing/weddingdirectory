@@ -15,6 +15,7 @@
  */
 
 import { useEffect, useRef } from "react";
+import { captureFbclid } from "@/lib/attribution";
 
 const API_BASE =
   (process.env.NEXT_PUBLIC_STORYPAY_URL?.replace(/\/$/, "") ||
@@ -104,6 +105,9 @@ export default function ListingTracker({ venueId }: Props) {
 
   useEffect(() => {
     sessionId.current = getOrCreateSessionId(venueId);
+    // Stash the Meta fbclid before any client-side navigation clears the URL,
+    // so the lead form can still attach it on submit (paid-ad attribution).
+    captureFbclid(venueId);
     console.log(`[ListingTracker] venue=${venueId} url=${TRACK_URL}`);
 
     if (!firedPageView.current) {

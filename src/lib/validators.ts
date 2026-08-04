@@ -18,6 +18,15 @@ export const leadFormSchema = z
     booking_timeline: z.string().optional(),
     venue_matters: z.string().optional(),
     message: z.string().optional(),
+    // First-touch attribution — forwarded to StoryPay for lead-source
+    // bucketing (Meta / Google / Direct). Optional; absent for untagged traffic.
+    utm_source: z.string().optional(),
+    utm_medium: z.string().optional(),
+    utm_campaign: z.string().optional(),
+    utm_term: z.string().optional(),
+    utm_content: z.string().optional(),
+    fbclid: z.string().optional(),
+    referrer: z.string().optional(),
   })
   .refine((d) => d.venue_id || d.listing_slug, {
     message: "venue_id or listing_slug required",

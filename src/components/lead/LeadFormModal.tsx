@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { BOOKING_TIMELINES } from "@/lib/constants";
 import { trackEvent } from "@/lib/analytics";
+import { getAttribution } from "@/lib/attribution";
 
 const MODAL_HEADER = "Get Pricing & Check Availability";
 const SUBMIT_LABEL = "Download Pricing & Availability Guide";
@@ -88,6 +89,9 @@ export default function LeadFormModal({
       booking_timeline: bookingTimeline || undefined,
       venue_matters: venueMatters || undefined,
       message: message || undefined,
+      // First-touch attribution (fbclid / UTMs / referrer) so StoryPay can
+      // bucket this lead as Meta / Google instead of defaulting to Direct.
+      ...getAttribution(venueId),
     };
 
     try {

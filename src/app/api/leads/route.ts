@@ -77,6 +77,17 @@ export async function POST(request: NextRequest) {
     venue_matters: d.venue_matters ?? null,
     message: d.message ?? null,
     source: "directory",
+    // First-touch attribution — StoryPay persists these into the lead's
+    // first_touch_utm and buckets the lead as Meta / Google / Direct.
+    // Undefined keys are dropped by JSON.stringify, so untagged traffic is
+    // forwarded exactly as before.
+    utm_source: d.utm_source,
+    utm_medium: d.utm_medium,
+    utm_campaign: d.utm_campaign,
+    utm_term: d.utm_term,
+    utm_content: d.utm_content,
+    fbclid: d.fbclid,
+    referrer: d.referrer,
   };
 
   const rawBody = JSON.stringify(forwarded);
