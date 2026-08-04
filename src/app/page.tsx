@@ -5,6 +5,24 @@ import SearchBar from "@/components/search/SearchBar";
 import VenueCard from "@/components/search/VenueCard";
 import SiteFooter from "@/components/SiteFooter";
 import FomoPopup from "@/components/marketing/FomoPopup";
+import type { Venue } from "@/types/database";
+
+type VenueGridRow = Pick<
+  Venue,
+  | "id"
+  | "name"
+  | "slug"
+  | "location_full"
+  | "location_city"
+  | "location_state"
+  | "cover_image_url"
+  | "capacity_min"
+  | "capacity_max"
+  | "price_min"
+  | "venue_type"
+  | "directory_verified_status"
+  | "directory_sponsored_status"
+>;
 
 export const revalidate = 120;
 
@@ -15,6 +33,25 @@ const TICKER_FALLBACK = [
   "Arete Event Center", "Waters Building", "Vista on the Docks", "Legacy Ranch Event Center",
   "Magnolia Wedding & Event Center", "Starlight Grove Events",
 ];
+
+const VENUE_GRID_SELECT =
+  "id, name, slug, location_full, location_city, location_state, cover_image_url, capacity_min, capacity_max, price_min, venue_type, directory_verified_status, directory_sponsored_status";
+
+/** HEAD-check a cover image URL so a broken/404 photo never reaches the grid. */
+async function isImageReachable(url: string): Promise<boolean> {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 4000);
+    const res = await fetch(url, { method: "HEAD", signal: controller.signal, cache: "no-store" });
+    clearTimeout(timeout);
+    if (!res.ok) return false;
+    const contentType = res.headers.get("content-type") ?? "";
+    // Some CDNs omit content-type on HEAD responses — don't punish those.
+    return contentType === "" || contentType.startsWith("image/");
+  } catch {
+    return false;
+  }
+}
 
 export default async function HomePage() {
   const supabase = await createClient();
@@ -38,22 +75,40 @@ export default async function HomePage() {
       ? tickerBase
       : [...tickerBase, ...TICKER_FALLBACK].slice(0, Math.max(10, tickerBase.length));
 
-  // Latest 20 venues to go live that have a cover image — shown in a 4×5 grid.
-  // Venues without a photo are excluded so the grid always looks full and polished.
-  const { data: rawVenues } = await supabase
-    .from("venues")
-    .select(
-      "id, name, slug, location_full, location_city, location_state, cover_image_url, capacity_min, capacity_max, price_min, venue_type, directory_verified_status, directory_sponsored_status"
-    )
-    .eq("is_published", true)
-    .neq("is_demo", true)
-    .not("slug", "is", null)
-    .not("cover_image_url", "is", null)
-    .neq("cover_image_url", "")
-    .order("created_at", { ascending: false })
-    .limit(30);
+  // Latest 20 venues to go live with a cover image that actually loads —
+  // shown in a 4×5 grid. We page through recency-ordered batches and
+  // HEAD-check each photo, so a broken/404 image never leaves a gap: the
+  // next-oldest venue with a working photo fills the spot instead.
+  const TARGET_COUNT = 20;
+  const BATCH_SIZE = 20;
+  const MAX_BATCHES = 6; // safety cap — checks at most 120 venues
 
-  const venues = rawVenues ?? [];
+  const validVenues: VenueGridRow[] = [];
+  let offset = 0;
+  for (let batch = 0; batch < MAX_BATCHES && validVenues.length < TARGET_COUNT; batch++) {
+    const { data: batchRows } = await supabase
+      .from("venues")
+      .select(VENUE_GRID_SELECT)
+      .eq("is_published", true)
+      .neq("is_demo", true)
+      .not("slug", "is", null)
+      .not("cover_image_url", "is", null)
+      .neq("cover_image_url", "")
+      .order("created_at", { ascending: false })
+      .range(offset, offset + BATCH_SIZE - 1);
+
+    if (!batchRows || batchRows.length === 0) break;
+
+    const reachable = await Promise.all(
+      batchRows.map((v) => isImageReachable(v.cover_image_url as string))
+    );
+    batchRows.forEach((v, i) => { if (reachable[i]) validVenues.push(v as VenueGridRow); });
+
+    if (batchRows.length < BATCH_SIZE) break; // no more rows in the table
+    offset += BATCH_SIZE;
+  }
+
+  const venues = validVenues.slice(0, TARGET_COUNT);
 
   return (
     <>
@@ -215,7 +270,7 @@ export default async function HomePage() {
               Newest Venues
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {venues.slice(0, 20).map((venue) => (
+              {venues.map((venue) => (
                 <VenueCard key={venue.id} venue={venue} />
               ))}
             </div>
