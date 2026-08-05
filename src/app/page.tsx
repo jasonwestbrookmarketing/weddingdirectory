@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getAdminClient } from "@/lib/supabase/admin";
 import SearchBar from "@/components/search/SearchBar";
 import VenueCard from "@/components/search/VenueCard";
 import SiteFooter from "@/components/SiteFooter";
@@ -56,8 +57,13 @@ async function isImageReachable(url: string): Promise<boolean> {
 export default async function HomePage() {
   const supabase = await createClient();
 
-  // Last 20 venue signups for the trust ticker — any plan, paid or free.
-  const { data: tickerRows } = await supabase
+  // Last 20 venue signups for the trust ticker — any plan, paid or free,
+  // published or not (that's the point: newest signups show up immediately).
+  // Uses the service-role client deliberately: this is the one query on this
+  // page that must see unpublished rows, so it can't go through the anon
+  // client once anon is row-restricted to is_published = true (see
+  // db/023_restrict_anon_venues_to_published_rows.sql).
+  const { data: tickerRows } = await getAdminClient()
     .from("venues")
     .select("name")
     .not("name", "is", null)
