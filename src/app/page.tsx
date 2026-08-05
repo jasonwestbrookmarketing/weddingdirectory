@@ -63,13 +63,16 @@ export default async function HomePage() {
   // page that must see unpublished rows, so it can't go through the anon
   // client once anon is row-restricted to is_published = true (see
   // db/023_restrict_anon_venues_to_published_rows.sql).
-  const { data: tickerRows } = await getAdminClient()
-    .from("venues")
-    .select("name")
-    .not("name", "is", null)
-    .neq("is_demo", true)
-    .order("created_at", { ascending: false })
-    .limit(20);
+  const adminClient = getAdminClient();
+  const { data: tickerRows } = adminClient
+    ? await adminClient
+        .from("venues")
+        .select("name")
+        .not("name", "is", null)
+        .neq("is_demo", true)
+        .order("created_at", { ascending: false })
+        .limit(20)
+    : { data: null };
 
   const tickerBase = (tickerRows ?? [])
     .map((r) => (r.name as string).trim())
