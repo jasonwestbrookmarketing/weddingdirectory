@@ -6,6 +6,7 @@ import { MapPin } from 'lucide-react';
 import SiteFooter from '@/components/SiteFooter';
 import { stateFromSlug, cityFromSlug } from '@/lib/us-states';
 import { fetchAllPublishedVenues, venuesInCity, citiesForState } from '@/lib/directory-venues';
+import { safeJsonLd } from '@/lib/json-ld';
 
 const SITE_URL = (
   process.env.NEXT_PUBLIC_DIRECTORY_SITE_URL ||
@@ -68,7 +69,7 @@ export default async function CityHubPage({
 
   return (
     <div className="min-h-screen bg-stone-50">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListJsonLd) }} />
 
       <nav className="sticky top-0 z-20 border-b border-stone-200 bg-white px-4 py-3">
         <div className="mx-auto flex max-w-7xl items-center justify-between">

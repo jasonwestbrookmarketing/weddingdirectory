@@ -10,6 +10,7 @@ import SiteFooter from "@/components/SiteFooter";
 import { VenueSeoFooter } from "@/components/VenueSeoFooter";
 import type { Metadata } from "next";
 import { ANON_VENUE_SELECT } from "@/types/database";
+import { safeJsonLd } from "@/lib/json-ld";
 
 /** Minimal server-side FAQ parser (mirrors the client parseFaq shape). */
 function parseFaqServer(raw: unknown): Array<{ question: string; answer: string }> {
@@ -247,7 +248,7 @@ export default async function VenuePage({ params, searchParams }: Props) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(buildVenueJsonLd(venue, `${SITE_URL}/venue/${slug}`)),
+            __html: safeJsonLd(buildVenueJsonLd(venue, `${SITE_URL}/venue/${slug}`)),
           }}
         />
       )}
