@@ -9,6 +9,7 @@ import ListingTracker from "@/components/venue/ListingTracker";
 import SiteFooter from "@/components/SiteFooter";
 import { VenueSeoFooter } from "@/components/VenueSeoFooter";
 import type { Metadata } from "next";
+import { ANON_VENUE_SELECT } from "@/types/database";
 
 /** Minimal server-side FAQ parser (mirrors the client parseFaq shape). */
 function parseFaqServer(raw: unknown): Array<{ question: string; answer: string }> {
@@ -107,7 +108,7 @@ async function fetchVenueWithDemoCheck(slug: string, previewToken: string | null
   const supabase = await createClient();
   const { data: venue } = await supabase
     .from("venues")
-    .select("*, demo_preview_token, is_demo")
+    .select(ANON_VENUE_SELECT)
     .eq("slug", slug)
     .eq("is_published", true)
     .single();

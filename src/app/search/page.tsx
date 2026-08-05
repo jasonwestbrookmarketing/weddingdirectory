@@ -7,6 +7,7 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { ANON_VENUE_SELECT } from "@/types/database";
 import { trackEvent } from "@/lib/analytics";
 import { BUDGET_RANGES } from "@/lib/constants";
 import { venueHasFeature } from "@/lib/venue-features";
@@ -95,7 +96,7 @@ function SearchContent() {
     // to silently zero out results.
     let query = supabase
       .from("venues")
-      .select("*")
+      .select(ANON_VENUE_SELECT)
       .eq("is_published", true)
       .neq("is_demo", true)
       .not("slug", "is", null);

@@ -15,6 +15,20 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
+/**
+ * Explicit column allowlist for anon-key `venues` queries.
+ *
+ * MUST stay in sync with the `grant select (...) on public.venues to anon`
+ * column list in db/020_lock_down_anon_column_exposure.sql. Postgres does NOT
+ * gracefully degrade `select("*")` to a granted column subset — a wildcard
+ * select requires privilege on every column it expands to, so any anon query
+ * using `*` against `venues` will fail outright once that migration's
+ * column-level grant is applied. Every anon-key `.from("venues")` call in
+ * this repo must select from this list (or a subset of it) instead of `*`.
+ */
+export const ANON_VENUE_SELECT =
+  "id, slug, name, description, venue_type, location_full, location_city, location_state, lat, lng, capacity_min, capacity_max, price_min, price_max, indoor_outdoor, features, cover_image_url, gallery_images, availability_notes, is_published, is_demo, demo_preview_token, brand_website, phone, email, show_map, social_links, faq, google_place_id, google_reviews_cache, google_reviews_fetched_at, directory_verified_status, directory_sponsored_status, directory_plan_id, meta_pixel_id, seo_title, seo_description, seo_keywords, created_at, updated_at" as const;
+
 export type Database = {
   public: {
     Tables: {
@@ -69,9 +83,10 @@ export interface Venue {
   gallery_images: Json | null;
   availability_notes: string | null;
   is_published: boolean;
-  onboarding_completed: boolean;
-  notification_email: string | null;
-  email_notifications: boolean;
+  /** True for demo/preview listings — gated by `demo_preview_token`, see page.tsx. */
+  is_demo: boolean | null;
+  /** Preview-link secret for demo listings. Never rendered; compared server-side only. */
+  demo_preview_token: string | null;
   /** Venue's public website URL set in Branding settings. */
   brand_website: string | null;
   /** Public contact phone (set in Branding → Contact Information). */
@@ -112,6 +127,14 @@ export interface Venue {
    * public badge only appears when this is `'approved'`.
    */
   directory_sponsored_status: DirectoryBadgeStatus | null;
+  /** FK into `directory_plans` — gates nav visibility/pricing-guide access. */
+  directory_plan_id: string | null;
+  /** Venue-specific Meta Pixel ID, fired on the lead thank-you page. */
+  meta_pixel_id: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  /** Comma-separated string or array, depending on how it was set. */
+  seo_keywords: Json | null;
   created_at: string;
   updated_at: string;
 }
