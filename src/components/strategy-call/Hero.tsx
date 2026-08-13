@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import VslGatePlayer from "./VslGatePlayer";
+import VideoPlayer from "./VideoPlayer";
 import { useVslGate } from "./useVslGate";
 
 const AVATARS = [
@@ -28,7 +28,7 @@ export default function Hero() {
   const container = reduce ? {} : containerVariants;
   const item = reduce ? {} : itemVariants;
   const initial = reduce ? "visible" : "hidden";
-  const { gatePassed, openCta } = useVslGate();
+  const { openCta } = useVslGate();
 
   return (
     <section className="bg-brand-bg pt-8 sm:pt-10 lg:pt-12 pb-16 sm:pb-20 lg:pb-24 border-b border-brand-line">
@@ -85,10 +85,9 @@ export default function Hero() {
             We bring the brides.&nbsp;&nbsp;&nbsp;Our team works the leads.&nbsp;&nbsp;&nbsp;You show up for the tour.
           </motion.p>
 
-          {/* VSL player with 30-second soft gate — collects name + email
-              via GHL form before the visitor can continue watching. */}
+          {/* VSL — ungated, autoplays as soon as they land. */}
           <motion.div variants={item} className="pt-2 sm:pt-4">
-            <VslGatePlayer />
+            <VideoPlayer showPoster={false} autoplay />
           </motion.div>
 
           {/* CTA */}
@@ -99,7 +98,7 @@ export default function Hero() {
               className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1b1b1b] text-white font-bold tracking-[0.1em] uppercase px-7 py-3.5 text-[13px] sm:text-[14px] hover:-translate-y-px hover:shadow-[0_12px_32px_-10px_rgba(0,0,0,0.4)] active:scale-[0.98] transition-all shadow-[0_6px_20px_-8px_rgba(0,0,0,0.3)]"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              {gatePassed ? "See If I Qualify" : "Watch Now"}
+              See If I Qualify
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -115,9 +114,7 @@ export default function Hero() {
               className="text-[12px] text-brand-muted tracking-wide"
               style={{ fontFamily: "var(--font-open-sans)" }}
             >
-              {gatePassed
-                ? "Answer 5 quick questions to see if your venue qualifies for a free 30-minute strategy call."
-                : "Watch the full presentation · Free · No obligation"}
+              Answer 5 quick questions to see if your venue qualifies for a free 30-minute strategy call.
             </p>
             <p
               className="text-[11px] text-brand-muted/60"

@@ -30,6 +30,13 @@ interface VideoPlayerProps {
    * confirmation page where we just want the video front and center.
    */
   showPoster?: boolean;
+  /**
+   * Start the embed immediately. Defaults to true when a poster is shown
+   * (play click = user gesture) and false when embedding on mount, so the
+   * confirmation page isn't blocked by the browser. Pass true on the
+   * strategy-call landing page to autoplay as soon as they arrive.
+   */
+  autoplay?: boolean;
 }
 
 /**
@@ -38,7 +45,7 @@ interface VideoPlayerProps {
  * appends an autoplay flag so the video starts as soon as the iframe mounts
  * (it only mounts after the user taps the poster play button).
  */
-function toEmbedUrl(url: string, autoplay: boolean): string {
+function toEmbedUrl(url: string, autoplay: boolean, muted = false): string {
   try {
     const u = new URL(url);
 
@@ -55,6 +62,9 @@ function toEmbedUrl(url: string, autoplay: boolean): string {
           hide_share: "true",
         });
         if (autoplay) params.set("autoplay", "1");
+        // Unmuted autoplay is blocked without a user gesture. Mute only when
+        // we start on mount (landing page) so the video actually plays.
+        if (muted) params.set("muted", "1");
         return `https://www.loom.com/embed/${id}?${params.toString()}`;
       }
     }
@@ -63,6 +73,7 @@ function toEmbedUrl(url: string, autoplay: boolean): string {
     if (autoplay && !/autoplay=/.test(u.search)) {
       u.searchParams.set("autoplay", "1");
     }
+    if (muted) u.searchParams.set("muted", "1");
     return u.toString();
   } catch {
     // Not a parseable URL (e.g. an unresolved placeholder) — return as-is.
@@ -77,10 +88,11 @@ export default function VideoPlayer({
   ariaLabel = "Play video — Watch · 4 minutes 40 seconds",
   fillScale = 1,
   showPoster = true,
+  autoplay,
 }: VideoPlayerProps) {
-  // When there's no poster, embed the player immediately (no autoplay so the
-  // browser doesn't block it — Loom shows its own thumbnail + play control).
+  // When there's no poster, embed the player immediately.
   const [playing, setPlaying] = useState(!showPoster);
+  const shouldAutoplay = autoplay ?? showPoster;
 
   return (
     <div
@@ -138,7 +150,7 @@ export default function VideoPlayer({
         </>
       ) : (
         <iframe
-          src={toEmbedUrl(videoUrl, showPoster)}
+          src={toEmbedUrl(videoUrl, shouldAutoplay, shouldAutoplay && !showPoster)}
           className="absolute inset-0 w-full h-full"
           style={
             fillScale !== 1

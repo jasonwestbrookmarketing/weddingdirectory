@@ -50,7 +50,7 @@ export default function StrategyCallPage() {
       <StrategyCallModal />
       <StickyMobileCTA />
       <ScrollToTop mobileLift />
-      <FomoPopup modalEvent="open-strategy-modal" ctaLabel="Book a free strategy call →" mobileLift />
+      <FomoPopup modalEvent="open-strategy-modal" ctaLabel="See If I Qualify" mobileLift />
       <ExitIntent />
     </div>
   );
