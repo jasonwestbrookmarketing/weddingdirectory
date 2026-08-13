@@ -56,7 +56,7 @@ export default function FinalCTA() {
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
             <p className="font-bold text-brand-ink">This isn&apos;t a sales call. It&apos;s a fit call.</p>
-            <p>We don&apos;t pitch. We don&apos;t pressure. We don&apos;t read from a script.</p>
+            <p>We only take venues we know we can help. This call is how we find out.</p>
           </div>
         </Reveal>
 

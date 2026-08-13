@@ -45,7 +45,7 @@ interface VideoPlayerProps {
  * appends an autoplay flag so the video starts as soon as the iframe mounts
  * (it only mounts after the user taps the poster play button).
  */
-function toEmbedUrl(url: string, autoplay: boolean, muted = false): string {
+function toEmbedUrl(url: string, autoplay: boolean): string {
   try {
     const u = new URL(url);
 
@@ -62,9 +62,6 @@ function toEmbedUrl(url: string, autoplay: boolean, muted = false): string {
           hide_share: "true",
         });
         if (autoplay) params.set("autoplay", "1");
-        // Unmuted autoplay is blocked without a user gesture. Mute only when
-        // we start on mount (landing page) so the video actually plays.
-        if (muted) params.set("muted", "1");
         return `https://www.loom.com/embed/${id}?${params.toString()}`;
       }
     }
@@ -73,7 +70,6 @@ function toEmbedUrl(url: string, autoplay: boolean, muted = false): string {
     if (autoplay && !/autoplay=/.test(u.search)) {
       u.searchParams.set("autoplay", "1");
     }
-    if (muted) u.searchParams.set("muted", "1");
     return u.toString();
   } catch {
     // Not a parseable URL (e.g. an unresolved placeholder) — return as-is.
@@ -150,7 +146,7 @@ export default function VideoPlayer({
         </>
       ) : (
         <iframe
-          src={toEmbedUrl(videoUrl, shouldAutoplay, shouldAutoplay && !showPoster)}
+          src={toEmbedUrl(videoUrl, shouldAutoplay)}
           className="absolute inset-0 w-full h-full"
           style={
             fillScale !== 1
