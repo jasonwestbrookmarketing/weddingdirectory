@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Script from "next/script";
 import { Globe } from "lucide-react";
 import BlockWidgetScroll from "./BlockWidgetScroll";
 
@@ -109,6 +108,20 @@ export default function JasonPage() {
     // thumb-scroll on mobile, and BlockWidgetScroll neutralizes the widget's
     // programmatic page-jumps without ever touching the visitor's own scroll.
     <main className="min-h-screen flex items-center justify-center bg-brand-warm px-4 py-10 sm:py-16">
+      {/* Warm up the connections to GHL up front so the booking widget and its
+          resizer script start downloading the instant the page HTML parses,
+          instead of waiting — this is what keeps the calendar's time slots
+          from buffering on first interaction. */}
+      <link
+        rel="preconnect"
+        href="https://api.leadconnectorhq.com"
+        crossOrigin=""
+      />
+      <link rel="preconnect" href="https://link.msgsndr.com" crossOrigin="" />
+      {/* Load GHL's resizer eagerly in the initial HTML (React hoists this
+          async script into <head>) rather than after hydration, so the widget
+          has its helper ready immediately. */}
+      <script async src="https://link.msgsndr.com/js/form_embed.js" />
       <BlockWidgetScroll />
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] border border-brand-line overflow-hidden grid grid-cols-1 md:grid-cols-[420px_1fr] divide-y md:divide-y-0 md:divide-x divide-brand-line">
         {/* Left — profile / bio. Photo is full-bleed: flush against the
@@ -190,10 +203,6 @@ export default function JasonPage() {
           />
         </div>
       </div>
-      <Script
-        src="https://link.msgsndr.com/js/form_embed.js"
-        strategy="afterInteractive"
-      />
     </main>
   );
 }
