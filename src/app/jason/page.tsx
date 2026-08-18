@@ -138,15 +138,30 @@ export default function JasonPage() {
             </div>
           </div>
 
-          {/* Right — GHL calendar embed (renders its own date/time picker UI) */}
-          <div className="bg-white p-2 sm:p-4">
+          {/* Right — GHL calendar embed (renders its own date/time picker UI).
+              form_embed.js auto-resizes the iframe's height as the booking
+              flow advances (date -> time -> confirmation). That height change
+              can otherwise trigger the browser's scroll-anchoring and jump
+              the page; `overflow-anchor: none` opts this subtree out of that,
+              and the generous reserved min-height on the wrapper (not just
+              the iframe) keeps the resize deltas small. */}
+          <div
+            className="bg-white p-2 sm:p-4 min-h-[720px] sm:min-h-[780px]"
+            style={{ overflowAnchor: "none" }}
+          >
             <iframe
               src={GHL_CALENDAR_URL}
               id={GHL_CALENDAR_ID}
               allow="payment"
               scrolling="no"
-              style={{ width: "100%", border: "none", overflow: "hidden", display: "block" }}
-              className="min-h-[640px] sm:min-h-[700px]"
+              style={{
+                width: "100%",
+                border: "none",
+                overflow: "hidden",
+                display: "block",
+                overflowAnchor: "none",
+              }}
+              className="min-h-[720px] sm:min-h-[780px]"
               title="Book a call"
             />
           </div>
