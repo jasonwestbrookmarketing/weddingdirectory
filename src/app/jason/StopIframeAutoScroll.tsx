@@ -4,57 +4,71 @@ import { useEffect } from "react";
 
 /**
  * The embedded GHL booking widget scrolls THIS page on its own as the visitor
- * advances through date -> time -> confirmation. It does this two ways we can't
- * reach into from the parent: its (optional) form_embed.js posts a scrollTo
- * message, and — even without that script — the widget's own internal page runs
- * focus()/scrollIntoView() on each step, which the browser natively propagates
- * up across the iframe boundary to move our document. Neither is cancelable with
- * CSS or by listening on the iframe (it's cross-origin).
+ * advances through date -> time -> confirmation (its internal page runs
+ * focus()/scrollIntoView(), which the browser natively propagates up across the
+ * cross-origin iframe boundary to move our document). We can't cancel that from
+ * the parent, so instead we snap the page back to where it was.
  *
- * So instead of trying to prevent the jump, we let the page flow and scroll
- * exactly like normal, and simply *undo* any scroll that the user didn't cause.
- * We treat wheel / touch / keyboard / scrollbar-drag as "real" user intent and
- * remember that position; any scroll event that lands somewhere else without a
- * recent user gesture is the widget moving us, so we snap straight back. The
- * snap happens inside the scroll handler (same frame, before paint), so there's
- * no visible flicker — the page just stays put while the visitor books.
+ * The important part — and what an earlier version got wrong on mobile — is that
+ * this must NEVER interfere with the visitor's own scrolling:
+ *
+ *   1. We only ever act while the calendar <iframe> actually holds focus. Just
+ *      landing on the page and scrolling to read never touches the iframe, so
+ *      the guard is completely dormant during normal browsing.
+ *   2. Even once the iframe is focused (after they tap a date), an active finger
+ *      drag / wheel / key press always wins — we track those and stand down,
+ *      with a grace window so momentum ("flick") scrolling on iOS isn't cut off
+ *      after the finger lifts.
+ *
+ * Only a scroll that happens while the iframe is focused AND with no real user
+ * input behind it is treated as the widget yanking the page, and reverted.
  */
 export default function StopIframeAutoScroll() {
   useEffect(() => {
-    let allowedY = window.scrollY;
-    let lastGestureAt = 0;
-    const GESTURE_WINDOW_MS = 250;
+    let anchorY = window.scrollY;
+    let releaseUntil = 0; // while now < this, the visitor is scrolling: hands off
 
-    const markGesture = () => {
-      lastGestureAt = Date.now();
+    const iframeFocused = () => document.activeElement?.tagName === "IFRAME";
+
+    // Any genuine user scroll input opens/refreshes a grace window. touchmove
+    // refreshing it is what keeps iOS momentum scrolling from being clipped
+    // after the finger lifts.
+    const userInput = () => {
+      releaseUntil = Date.now() + 900;
+      anchorY = window.scrollY;
     };
 
     const onScroll = () => {
-      if (Date.now() - lastGestureAt < GESTURE_WINDOW_MS) {
-        // Scroll the visitor drove themselves — accept the new position.
-        allowedY = window.scrollY;
+      // Dormant during normal browsing — the iframe isn't focused, so just
+      // track the position and let the page scroll 100% naturally.
+      if (!iframeFocused()) {
+        anchorY = window.scrollY;
         return;
       }
-      // Scroll with no recent user gesture => the widget moved us. Undo it.
-      if (Math.abs(window.scrollY - allowedY) > 1) {
-        window.scrollTo(0, allowedY);
+      // Iframe is focused, but the visitor is actively scrolling — let them,
+      // and keep the anchor synced to where they land.
+      if (Date.now() < releaseUntil) {
+        anchorY = window.scrollY;
+        return;
+      }
+      // Iframe focused + no user input behind this scroll => widget yanked the
+      // page. Put it back (synchronously, same frame, so there's no flicker).
+      if (Math.abs(window.scrollY - anchorY) > 1) {
+        window.scrollTo(0, anchorY);
       }
     };
 
-    // Passive listeners for every way a person actually initiates a scroll.
-    window.addEventListener("wheel", markGesture, { passive: true });
-    window.addEventListener("touchstart", markGesture, { passive: true });
-    window.addEventListener("touchmove", markGesture, { passive: true });
-    window.addEventListener("keydown", markGesture, { passive: true });
-    window.addEventListener("mousedown", markGesture, { passive: true });
+    window.addEventListener("touchstart", userInput, { passive: true });
+    window.addEventListener("touchmove", userInput, { passive: true });
+    window.addEventListener("wheel", userInput, { passive: true });
+    window.addEventListener("keydown", userInput, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
-      window.removeEventListener("wheel", markGesture);
-      window.removeEventListener("touchstart", markGesture);
-      window.removeEventListener("touchmove", markGesture);
-      window.removeEventListener("keydown", markGesture);
-      window.removeEventListener("mousedown", markGesture);
+      window.removeEventListener("touchstart", userInput);
+      window.removeEventListener("touchmove", userInput);
+      window.removeEventListener("wheel", userInput);
+      window.removeEventListener("keydown", userInput);
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
