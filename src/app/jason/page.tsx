@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Script from "next/script";
-import { Clock, MapPin } from "lucide-react";
 
 // Brand icons were removed from lucide-react 0.543+ (see the same pattern in
 // src/components/venue/VenuePublicBlocks.tsx), so we ship our own small
@@ -61,7 +60,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Book a Call with Jason | StoryVenue",
   description:
-    "Get in touch with Jason and book time on his calendar to talk about fully booking your wedding venue.",
+    "Schedule a one-on-one call with Jason to talk specifically about your venue.",
   alternates: { canonical: "/jason" },
   // Personal contact/booking link — meant for direct sharing, not organic search.
   // Flip this to true if you'd rather it be discoverable via Google.
@@ -69,7 +68,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Book a Call with Jason | StoryVenue",
     description:
-      "Get in touch with Jason and book time on his calendar to talk about fully booking your wedding venue.",
+      "Schedule a one-on-one call with Jason to talk specifically about your venue.",
     url: "/jason",
     siteName: "StoryVenue",
     type: "profile",
@@ -78,15 +77,15 @@ export const metadata: Metadata = {
 
 // ── Edit everything in this block to update the page content ──────────────
 const PROFILE = {
-  // Drop a square headshot into /public/jason-photo.jpg (at least 200x200px).
-  photo: "/jason-photo.jpg",
+  // Full-bleed portrait photo — fills the entire width/top edge of the left
+  // panel. Drop a replacement into /public/jason-photo.png (portrait orientation
+  // works best; it's cropped with object-cover at a 4:5 aspect ratio).
+  photo: "/jason-photo.png",
   name: "Jason Westbrook",
   title: "Founder, StoryVenue",
   heading: "Let's Talk About Your Venue",
   description:
-    "Want to fully book your wedding venue without paying The Knot or WeddingWire another cent? Grab a few minutes on my calendar and I'll walk you through exactly how StoryVenue can help.",
-  hours: "Monday–Friday · 9:00 AM – 5:00 PM ET",
-  location: "USA · Remote",
+    "Grab 15 minutes on my calendar and let's talk specifically about your venue — fit, pricing, and next steps.",
   socials: [
     { icon: FacebookIcon, href: "https://facebook.com/storyvenue", label: "Facebook" },
     { icon: InstagramIcon, href: "https://instagram.com/storyvenue", label: "Instagram" },
@@ -105,58 +104,53 @@ export default function JasonPage() {
     <>
       <main className="min-h-screen flex items-center justify-center bg-brand-warm px-4 py-10 sm:py-16">
         <div className="w-full max-w-5xl bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] border border-brand-line overflow-hidden grid grid-cols-1 md:grid-cols-[420px_1fr] divide-y md:divide-y-0 md:divide-x divide-brand-line">
-          {/* Left — profile / bio */}
-          <div className="flex flex-col justify-between gap-10 p-8 sm:p-10">
-            <div>
-              <div className="relative w-16 h-16 rounded-full overflow-hidden bg-brand-warm ring-1 ring-brand-line">
-                <Image
-                  src={PROFILE.photo}
-                  alt={PROFILE.name}
-                  fill
-                  sizes="64px"
-                  className="object-cover"
-                />
-              </div>
-
-              <p className="mt-4 text-base font-semibold text-brand-ink">{PROFILE.name}</p>
-              <p className="text-sm text-brand-muted">{PROFILE.title}</p>
-
-              <h1
-                className="mt-6 text-3xl sm:text-[2.25rem] font-normal leading-tight tracking-tight text-brand-ink"
-                style={{ fontFamily: "var(--font-playfair)" }}
-              >
-                {PROFILE.heading}
-              </h1>
-
-              <p className="mt-4 text-[15px] leading-relaxed text-brand-muted">
-                {PROFILE.description}
-              </p>
-
-              <div className="mt-6 space-y-3">
-                <div className="flex items-center gap-2.5 text-sm text-brand-ink">
-                  <Clock className="w-4 h-4 text-brand-muted shrink-0" />
-                  <span>{PROFILE.hours}</span>
-                </div>
-                <div className="flex items-center gap-2.5 text-sm text-brand-ink">
-                  <MapPin className="w-4 h-4 text-brand-muted shrink-0" />
-                  <span>{PROFILE.location}</span>
-                </div>
-              </div>
+          {/* Left — profile / bio. Photo is full-bleed: flush against the
+              panel's top + side edges, no padding, so it reads edge-to-edge.
+              The outer card's `overflow-hidden rounded-3xl` automatically
+              clips its top corner(s) to match — no rounding needed here. */}
+          <div className="flex flex-col">
+            <div className="relative w-full aspect-[4/5]">
+              <Image
+                src={PROFILE.photo}
+                alt={PROFILE.name}
+                fill
+                priority
+                sizes="(min-width: 768px) 420px, 100vw"
+                className="object-cover"
+              />
             </div>
 
-            <div className="flex items-center gap-3">
-              {PROFILE.socials.map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="flex items-center justify-center w-9 h-9 rounded-full border border-brand-line text-brand-muted hover:text-brand-ink hover:border-brand-ink transition-colors"
+            <div className="flex flex-col justify-between gap-8 flex-1 p-8 sm:p-10">
+              <div>
+                <p className="text-base font-semibold text-brand-ink">{PROFILE.name}</p>
+                <p className="text-sm text-brand-muted">{PROFILE.title}</p>
+
+                <h1
+                  className="mt-5 text-2xl sm:text-[1.75rem] font-normal leading-tight tracking-tight text-brand-ink"
+                  style={{ fontFamily: "var(--font-playfair)" }}
                 >
-                  <Icon className="w-4 h-4" />
-                </a>
-              ))}
+                  {PROFILE.heading}
+                </h1>
+
+                <p className="mt-3 text-[15px] leading-relaxed text-brand-muted">
+                  {PROFILE.description}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {PROFILE.socials.map(({ icon: Icon, href, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="flex items-center justify-center w-9 h-9 rounded-full border border-brand-line text-brand-muted hover:text-brand-ink hover:border-brand-ink transition-colors"
+                  >
+                    <Icon className="w-4 h-4" />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
