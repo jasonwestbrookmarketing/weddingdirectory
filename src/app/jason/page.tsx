@@ -5,14 +5,6 @@ import Script from "next/script";
 // Brand icons were removed from lucide-react 0.543+ (see the same pattern in
 // src/components/venue/VenuePublicBlocks.tsx), so we ship our own small
 // inline SVGs. `currentColor` so they inherit from the button text color.
-function FacebookIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M13.5 21v-7.5h2.54l.38-2.95H13.5V8.7c0-.85.24-1.43 1.47-1.43h1.56V4.64a20.8 20.8 0 0 0-2.28-.12c-2.26 0-3.81 1.38-3.81 3.92v2.11H7.88v2.95h2.56V21h3.06z" />
-    </svg>
-  );
-}
-
 function InstagramIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -79,7 +71,6 @@ const PROFILE = {
   description:
     "Time on my calendar to talk through whatever you need. Strategy, questions, next steps, or just to catch up.",
   socials: [
-    { icon: FacebookIcon, href: "https://www.facebook.com/storyvenuemarketing", label: "Facebook" },
     { icon: InstagramIcon, href: "https://www.instagram.com/storyvenue", label: "Instagram" },
     { icon: YoutubeIcon, href: "https://www.youtube.com/@bridebookingsystem", label: "YouTube" },
   ],
