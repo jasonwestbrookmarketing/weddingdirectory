@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Script from "next/script";
 import { Globe } from "lucide-react";
-import StopIframeAutoScroll from "./StopIframeAutoScroll";
+import BlockWidgetScroll from "./BlockWidgetScroll";
 
 // Brand icons were removed from lucide-react 0.543+ (see the same pattern in
 // src/components/venue/VenuePublicBlocks.tsx), so we ship our own small
@@ -102,13 +103,13 @@ const GHL_CALENDAR_ID = "3elDdFHS38YLNp25JeB5_1787061067537";
 
 export default function JasonPage() {
   return (
-    // Normal, natural document flow — the whole page scrolls as one when the
-    // visitor scrolls. We do NOT pin it. To stop the calendar widget from
-    // auto-scrolling the page on its own, StopIframeAutoScroll (below) simply
-    // undoes any scroll the visitor didn't initiate, leaving their own
-    // scrolling completely untouched.
+    // Normal, natural document flow — the whole page scrolls as one smooth
+    // surface. The calendar iframe below auto-sizes to its content (via GHL's
+    // form_embed.js) so it never has an internal scrollbar that would trap a
+    // thumb-scroll on mobile, and BlockWidgetScroll neutralizes the widget's
+    // programmatic page-jumps without ever touching the visitor's own scroll.
     <main className="min-h-screen flex items-center justify-center bg-brand-warm px-4 py-10 sm:py-16">
-      <StopIframeAutoScroll />
+      <BlockWidgetScroll />
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] border border-brand-line overflow-hidden grid grid-cols-1 md:grid-cols-[420px_1fr] divide-y md:divide-y-0 md:divide-x divide-brand-line">
         {/* Left — profile / bio. Photo is full-bleed: flush against the
               panel's top + side edges, no padding, so it reads edge-to-edge.
@@ -163,23 +164,36 @@ export default function JasonPage() {
         </div>
 
         {/* Right — GHL calendar embed (renders its own date/time picker UI).
-              Deliberately NOT loading GHL's form_embed.js "iframe resizer"
-              script: its message handler fires `window.scrollTo(...)` on this
-              page as the booking advances. We instead give the iframe a fixed
-              height with its own native scrollbar so its content stays
-              contained, and StopIframeAutoScroll (mounted above) reverses any
-              remaining page scroll the widget tries to force. */}
+              We load GHL's form_embed.js so the iframe auto-resizes to fit its
+              content: with `scrolling="no"` and no fixed height, it never gets
+              an internal scrollbar, so a thumb-drag anywhere on mobile scrolls
+              the whole page instead of getting trapped inside the widget. The
+              scroll-jump that form_embed.js would otherwise cause is defused by
+              BlockWidgetScroll (mounted above), which no-ops the programmatic
+              scroll APIs while leaving native finger/wheel scrolling alone.
+              `min-h` is only a first-paint placeholder before the script sizes
+              it. */}
         <div className="bg-white p-2 sm:p-4">
           <iframe
             src={GHL_CALENDAR_URL}
             id={GHL_CALENDAR_ID}
             allow="payment"
-            style={{ width: "100%", border: "none", display: "block" }}
-            className="h-[720px] sm:h-[820px]"
+            scrolling="no"
+            style={{
+              width: "100%",
+              border: "none",
+              display: "block",
+              overflow: "hidden",
+            }}
+            className="min-h-[640px]"
             title="Book a call"
           />
         </div>
       </div>
+      <Script
+        src="https://link.msgsndr.com/js/form_embed.js"
+        strategy="afterInteractive"
+      />
     </main>
   );
 }
