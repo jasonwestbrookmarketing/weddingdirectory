@@ -13,37 +13,10 @@ function FacebookIcon({ className }: { className?: string }) {
   );
 }
 
-function InstagramIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
-
 function YoutubeIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
       <path d="M23.498 6.186a2.994 2.994 0 0 0-2.112-2.115C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.386.526A2.994 2.994 0 0 0 .502 6.186 31.03 31.03 0 0 0 0 12a31.03 31.03 0 0 0 .502 5.814 2.994 2.994 0 0 0 2.112 2.115c1.881.526 9.386.526 9.386.526s7.505 0 9.386-.526a2.994 2.994 0 0 0 2.112-2.115A31.03 31.03 0 0 0 24 12a31.03 31.03 0 0 0-.502-5.814zM9.75 15.568V8.432L15.818 12 9.75 15.568z" />
-    </svg>
-  );
-}
-
-function LinkedinIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM7.114 20.452H3.558V9h3.556v11.452zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124z" />
     </svg>
   );
 }
@@ -85,12 +58,10 @@ const PROFILE = {
   title: "Founder, StoryVenue",
   heading: "Let's Talk About Your Venue",
   description:
-    "Grab 15 minutes on my calendar and let's talk specifically about your venue — fit, pricing, and next steps.",
+    "Time on my calendar to talk through whatever you need. Strategy, questions, next steps, or just to catch up.",
   socials: [
-    { icon: FacebookIcon, href: "https://facebook.com/storyvenue", label: "Facebook" },
-    { icon: InstagramIcon, href: "https://instagram.com/storyvenue", label: "Instagram" },
-    { icon: YoutubeIcon, href: "https://youtube.com/@storyvenue", label: "YouTube" },
-    { icon: LinkedinIcon, href: "https://linkedin.com/company/storyvenue", label: "LinkedIn" },
+    { icon: FacebookIcon, href: "https://www.facebook.com/storyvenuemarketing", label: "Facebook" },
+    { icon: YoutubeIcon, href: "https://www.youtube.com/@bridebookingsystem", label: "YouTube" },
   ],
 };
 
