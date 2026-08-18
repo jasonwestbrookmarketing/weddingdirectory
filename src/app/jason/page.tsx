@@ -101,7 +101,26 @@ const GHL_CALENDAR_ID = "3elDdFHS38YLNp25JeB5_1787061067537";
 
 export default function JasonPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-brand-warm px-4 py-10 sm:py-16">
+    // `fixed inset-0` pins this to the visual viewport instead of flowing in
+    // the normal document. There is nothing else on this page outside this
+    // element, so `document`/`window` scroll position can never change — it
+    // has nothing to scroll. This matters because removing form_embed.js
+    // (previous fix) stopped the *scripted* window.scrollTo call, but the
+    // page still jumped — meaning the GHL calendar widget's own internal
+    // page JS is separately calling `scrollIntoView()`/focusing an element
+    // as it advances through the booking flow. Per the CSSOM View spec,
+    // `scrollIntoView()` and focus-driven scrolling walk up every ancestor
+    // *scrolling box* to keep the target visible, including across an
+    // iframe boundary — that's native browser behavior that no CSS or JS on
+    // our side can intercept or cancel from the parent. The only reliable
+    // countermeasure is removing the browser's top-level document from that
+    // ancestor chain entirely, by making sure it's never a scrollable box in
+    // the first place. Any residual auto-adjustment this can still cause is
+    // now contained to this element's own `overflow-y-auto` (a much smaller,
+    // local shift, not the whole tab/page jumping), and the user can still
+    // freely scroll this element by hand if the card is taller than their
+    // viewport.
+    <main className="fixed inset-0 overflow-y-auto flex items-center justify-center bg-brand-warm px-4 py-10 sm:py-16">
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] border border-brand-line overflow-hidden grid grid-cols-1 md:grid-cols-[420px_1fr] divide-y md:divide-y-0 md:divide-x divide-brand-line">
         {/* Left — profile / bio. Photo is full-bleed: flush against the
               panel's top + side edges, no padding, so it reads edge-to-edge.
