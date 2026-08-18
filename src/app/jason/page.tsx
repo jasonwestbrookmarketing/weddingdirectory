@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Script from "next/script";
+import { Globe } from "lucide-react";
 
 // Brand icons were removed from lucide-react 0.543+ (see the same pattern in
 // src/components/venue/VenuePublicBlocks.tsx), so we ship our own small
@@ -71,6 +72,7 @@ const PROFILE = {
   description:
     "Time on my calendar to talk through whatever you need. Strategy, questions, next steps, or just to catch up.",
   socials: [
+    { icon: Globe, href: "https://storyvenue.com", label: "Website" },
     { icon: InstagramIcon, href: "https://www.instagram.com/storyvenue", label: "Instagram" },
     { icon: YoutubeIcon, href: "https://www.youtube.com/@bridebookingsystem", label: "YouTube" },
   ],
