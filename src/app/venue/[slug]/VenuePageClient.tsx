@@ -527,61 +527,87 @@ export default function VenuePageClient({
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12">
           {/* Left column */}
           <div className="min-w-0">
-            {/* Title row */}
-            <div className="flex items-start justify-between gap-4 mb-3">
-              <div>
-                <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-stone-900 flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                  <span>{venue.name}</span>
-                  <DirectoryListingBadges
-                    verified={badges.verified}
-                    sponsored={badges.sponsored}
-                    variant="onLight"
-                    size="md"
-                  />
+            {/* Title row.
+                Desktop (md+): name+badges on the left, action icons pinned
+                top-right, side by side — unchanged from before.
+                Mobile (<md): stacked so a long venue name never fights the
+                icons for space — name (own line) → icons → badges → address
+                → reviews. The icon/badge blocks below are duplicated with
+                responsive visibility rather than reordered with flex `order`,
+                since the desktop version also merges icons+badges inline
+                with the name in a way that doesn't translate to a simple
+                reorder. */}
+            <div className="mb-3">
+              <div className="flex items-start justify-between gap-3">
+                <h1 className="min-w-0 text-2xl md:text-3xl font-semibold tracking-tight text-stone-900 flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                  <span className="break-words">{venue.name}</span>
+                  <span className="hidden md:inline-flex">
+                    <DirectoryListingBadges
+                      verified={badges.verified}
+                      sponsored={badges.sponsored}
+                      variant="onLight"
+                      size="md"
+                    />
+                  </span>
                 </h1>
-                <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-stone-500">
-                  {venue.location_full && (
+                {/* Action buttons (desktop) — phone → email → website → social → share/save */}
+                <div className="hidden md:flex items-center gap-1 flex-shrink-0">
+                  {venue.phone && (
                     <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.location_full)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 hover:underline"
+                      href={`tel:${venue.phone}`}
+                      className="flex items-center justify-center h-8 w-8 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-full transition-colors"
+                      aria-label="Call venue"
                     >
-                      <MapPin className="h-4 w-4 flex-shrink-0" />
-                      {formatLocationFull(venue.location_full, venue.location_city, venue.location_state)}
+                      <Phone className="h-4 w-4" />
                     </a>
                   )}
-                </div>
-                {headlineCount > 0 && (
-                  <a
-                    href="#reviews"
-                    className="inline-flex items-center gap-1.5 mt-2 hover:underline"
+                  {venue.email && (
+                    <a
+                      href={`mailto:${venue.email}`}
+                      className="flex items-center justify-center h-8 w-8 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-full transition-colors"
+                      aria-label="Email venue"
+                    >
+                      <Mail className="h-4 w-4" />
+                    </a>
+                  )}
+                  {socialWebsite && (
+                    <a
+                      href={socialWebsite}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center h-8 w-8 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-full transition-colors"
+                      aria-label="Website"
+                    >
+                      <Globe className="h-4 w-4" />
+                    </a>
+                  )}
+                  {hasSocial && (
+                    <VenueSocialButtons
+                      social={socialIconLinks}
+                      size="sm"
+                    />
+                  )}
+                  <span className="w-px h-5 bg-stone-300" aria-hidden />
+                  <button
+                    onClick={handleShareClick}
+                    className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-2 py-2 rounded-xl transition-colors"
                   >
-                    <div className="flex items-center gap-0.5">
-                      {[1, 2, 3, 4, 5].map((n) => (
-                        <Star
-                          key={n}
-                          className={`h-5 w-5 ${
-                            n <= Math.round(headlineAvg)
-                              ? "fill-yellow-400 text-yellow-400"
-                              : "fill-stone-200 text-stone-200"
-                          }`}
-                          strokeWidth={0}
-                        />
-                      ))}
-                    </div>
-                    <span className="font-semibold text-stone-900 text-base">
-                      {headlineAvg.toFixed(1)}
-                    </span>
-                    <span className="text-stone-500 text-sm">
-                      ({headlineCount}{" "}
-                      {headlineCount === 1 ? "review" : "reviews"})
-                    </span>
+                    <Share2 className="h-4 w-4" />
+                    <span className="hidden sm:inline">Share</span>
+                  </button>
+                  <a
+                    href={saveHref}
+                    onClick={handleSaveClick}
+                    className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-2 py-2 rounded-xl transition-colors"
+                  >
+                    <Heart className="h-4 w-4" />
+                    <span className="hidden sm:inline">Save</span>
                   </a>
-                )}
+                </div>
               </div>
-              {/* Action buttons — phone → email → website → social → share/save */}
-              <div className="flex items-center gap-1 flex-shrink-0">
+
+              {/* Action buttons (mobile) — own row directly under the name */}
+              <div className="mt-2.5 flex flex-wrap items-center gap-1 md:hidden">
                 {venue.phone && (
                   <a
                     href={`tel:${venue.phone}`}
@@ -623,7 +649,7 @@ export default function VenuePageClient({
                   className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-2 py-2 rounded-xl transition-colors"
                 >
                   <Share2 className="h-4 w-4" />
-                  <span className="hidden sm:inline">Share</span>
+                  <span>Share</span>
                 </button>
                 <a
                   href={saveHref}
@@ -631,9 +657,62 @@ export default function VenuePageClient({
                   className="flex items-center gap-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-sm font-medium px-2 py-2 rounded-xl transition-colors"
                 >
                   <Heart className="h-4 w-4" />
-                  <span className="hidden sm:inline">Save</span>
+                  <span>Save</span>
                 </a>
               </div>
+
+              {/* Badges (mobile) — own row under the icons */}
+              {(badges.verified || badges.sponsored) && (
+                <div className="mt-2 md:hidden">
+                  <DirectoryListingBadges
+                    verified={badges.verified}
+                    sponsored={badges.sponsored}
+                    variant="onLight"
+                    size="md"
+                  />
+                </div>
+              )}
+
+              <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-stone-500">
+                {venue.location_full && (
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.location_full)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 hover:underline"
+                  >
+                    <MapPin className="h-4 w-4 flex-shrink-0" />
+                    {formatLocationFull(venue.location_full, venue.location_city, venue.location_state)}
+                  </a>
+                )}
+              </div>
+              {headlineCount > 0 && (
+                <a
+                  href="#reviews"
+                  className="inline-flex items-center gap-1.5 mt-2 hover:underline"
+                >
+                  <div className="flex items-center gap-0.5">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <Star
+                        key={n}
+                        className={`h-5 w-5 ${
+                          n <= Math.round(headlineAvg)
+                            ? "fill-yellow-400 text-yellow-400"
+                            : "fill-stone-200 text-stone-200"
+                        }`}
+                        strokeWidth={0}
+                      />
+                    ))}
+                  </div>
+                  <span className="font-semibold text-stone-900 text-base">
+                    {headlineAvg.toFixed(1)}
+                  </span>
+                  <span className="text-stone-500 text-sm">
+                    ({headlineCount}{" "}
+                    {headlineCount === 1 ? "review" : "reviews"})
+                  </span>
+                </a>
+              )}
             </div>
 
             {/* Quick-stat pills */}
