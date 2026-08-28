@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendStrategyCallEvent } from "@/lib/meta-capi";
+import { extractMetaClickIds, sendStrategyCallEvent } from "@/lib/meta-capi";
 
 /**
  * Server-to-server webhook GHL calls the moment a Strategy Call appointment
@@ -81,6 +81,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     req.headers.get("x-real-ip") ??
     undefined;
   const clientUserAgent = req.headers.get("user-agent") ?? undefined;
+  const { fbc, fbp } = extractMetaClickIds(body);
 
   const sharedParams = {
     email,
@@ -91,8 +92,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     eventId: body.event_id,
     clientIpAddress,
     clientUserAgent,
-    fbc: body.fbc,
-    fbp: body.fbp,
+    fbc,
+    fbp,
   };
 
   const [scheduleResult, customResult] = await Promise.all([

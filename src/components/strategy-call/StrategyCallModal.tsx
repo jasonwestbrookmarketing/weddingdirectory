@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
+import { useAttributedIframeSrc } from "./useAttributedIframeSrc";
 
 const AVATARS = [
   "/avatars/av1.jpg",
@@ -123,6 +124,10 @@ export default function StrategyCallModal() {
   const [trigger, setTrigger] = useState<Trigger>("button");
 
   useSurveyCompletionListener();
+
+  // Forward the Meta click ids (_fbc/_fbp) into the survey iframe so GHL can
+  // pass them back to our server-side CAPI webhooks for match quality.
+  const surveyUrl = useAttributedIframeSrc(SURVEY_URL);
 
   // Pre-load GHL script so the calendar is ready before first open
   useEffect(() => {
@@ -278,7 +283,7 @@ export default function StrategyCallModal() {
         {/* GHL standard embed — iframe auto-resizes to content height via
             form_embed.js postMessage. Parent div handles all scrolling. */}
         <iframe
-          src={SURVEY_URL}
+          src={surveyUrl}
           id={SURVEY_ID}
           aria-label="Venue qualification application"
           scrolling="no"
@@ -401,7 +406,7 @@ export default function StrategyCallModal() {
           {/* Survey iframe */}
           <div className="bg-white px-10">
             <iframe
-              src={SURVEY_URL}
+              src={surveyUrl}
               id={`${SURVEY_ID}_desktop`}
               className="bg-white block"
               style={{

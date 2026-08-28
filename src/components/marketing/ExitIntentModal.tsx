@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
+import { useAttributedIframeSrc } from "@/components/strategy-call/useAttributedIframeSrc";
+
 const CALENDAR_URL = "https://api.leadconnectorhq.com/widget/booking/YeI4ZUC2SwV8MXDRKfzr";
 const CALENDAR_ID  = "YeI4ZUC2SwV8MXDRKfzr_1779890654536";
 const GHL_SCRIPT   = "https://link.msgsndr.com/js/form_embed.js";
@@ -10,6 +12,10 @@ const GHL_SCRIPT   = "https://link.msgsndr.com/js/form_embed.js";
 export default function ExitIntentModal() {
   const [open, setOpen] = useState(false);
   const [shown, setShown] = useState(false);
+
+  // Same GHL booking calendar as the strategy-call funnel — carry the Meta
+  // click ids (_fbc/_fbp) through so bookings from this popup attribute too.
+  const calendarSrc = useAttributedIframeSrc(CALENDAR_URL);
 
   // Load GHL embed script immediately on mount so the calendar is already
   // initialised by the time the user triggers the modal.
@@ -79,7 +85,7 @@ export default function ExitIntentModal() {
         </button>
 
         <iframe
-          src={CALENDAR_URL}
+          src={calendarSrc}
           id={CALENDAR_ID}
           aria-label="Book a free demo"
           scrolling="no"
@@ -146,7 +152,7 @@ export default function ExitIntentModal() {
               looks naturally proportioned inside the wider card. */}
           <div className="bg-white px-10">
             <iframe
-              src={CALENDAR_URL}
+              src={calendarSrc}
               id={`${CALENDAR_ID}_desktop`}
               className="bg-white block"
               style={{

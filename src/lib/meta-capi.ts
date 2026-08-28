@@ -37,6 +37,48 @@ function hashPhone(value: string): string {
   return sha256(value.replace(/\D/g, ""));
 }
 
+/**
+ * Pull the Meta click identifiers out of a GHL webhook payload. GHL can deliver
+ * mapped custom fields at the top level or nested under a `customData` /
+ * `customFields` / `contact` container, and the exact key depends on how the
+ * user maps the URL params — so we check a few likely paths and names. These
+ * values are forwarded to Meta raw (never hashed), per the CAPI spec.
+ */
+export function extractMetaClickIds(payload: unknown): {
+  fbc?: string;
+  fbp?: string;
+} {
+  const containers: Record<string, unknown>[] = [];
+  const add = (v: unknown) => {
+    if (v && typeof v === "object") containers.push(v as Record<string, unknown>);
+  };
+  add(payload);
+  if (payload && typeof payload === "object") {
+    const p = payload as Record<string, unknown>;
+    add(p.customData);
+    add(p.custom_data);
+    add(p.customFields);
+    add(p.custom_fields);
+    add(p.contact);
+    add(p.data);
+  }
+
+  const pick = (keys: string[]): string | undefined => {
+    for (const c of containers) {
+      for (const k of keys) {
+        const v = c[k];
+        if (typeof v === "string" && v.trim()) return v.trim();
+      }
+    }
+    return undefined;
+  };
+
+  return {
+    fbc: pick(["fbc", "_fbc"]),
+    fbp: pick(["fbp", "_fbp"]),
+  };
+}
+
 export interface SendStrategyCallEventParams {
   eventName: string;
   email?: string;

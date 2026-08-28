@@ -6,11 +6,9 @@ import StrategyNav from "@/components/strategy-call/StrategyNav";
 import PageFooter from "@/components/strategy-call/PageFooter";
 import BookExitNudge from "@/components/strategy-call/BookExitNudge";
 import { Reveal } from "@/components/strategy-call/Reveal";
+import BookingIframe from "@/components/strategy-call/BookingIframe";
 
 export const dynamic = "force-static";
-
-const BOOKING_ID = "YeI4ZUC2SwV8MXDRKfzr";
-const BOOKING_SRC = `https://api.leadconnectorhq.com/widget/booking/${BOOKING_ID}`;
 
 // Distinct, no-index URL so the Meta pixel can fire a qualified-lead conversion
 // scoped to /strategy-call/book (the survey redirects qualified leads here).
@@ -85,13 +83,7 @@ export default function StrategyCallBookPage() {
         <section id="book-calendar" className="bg-brand-bg pb-10 sm:pb-12 scroll-mt-24">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-10">
             <div className="bg-white rounded-2xl overflow-hidden">
-              <iframe
-                src={BOOKING_SRC}
-                id={`${BOOKING_ID}_1781719379172`}
-                style={{ width: "100%", border: "none", overflow: "hidden" }}
-                scrolling="no"
-                aria-label="Book Your Strategy Call"
-              />
+              <BookingIframe />
             </div>
           </div>
         </section>

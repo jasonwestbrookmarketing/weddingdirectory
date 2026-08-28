@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendStrategyCallEvent } from "@/lib/meta-capi";
+import { extractMetaClickIds, sendStrategyCallEvent } from "@/lib/meta-capi";
 
 /**
  * Server-to-server webhook GHL calls the moment a lead is routed to the
@@ -72,6 +72,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     req.headers.get("x-real-ip") ??
     undefined;
+  const { fbc, fbp } = extractMetaClickIds(body);
 
   const result = await sendStrategyCallEvent({
     eventName: "DisqualifiedStrategyCall",
@@ -83,8 +84,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     eventId: body.event_id,
     clientIpAddress,
     clientUserAgent: req.headers.get("user-agent") ?? undefined,
-    fbc: body.fbc,
-    fbp: body.fbp,
+    fbc,
+    fbp,
   });
 
   if (!result.success) {
