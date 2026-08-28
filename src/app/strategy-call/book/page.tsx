@@ -7,6 +7,7 @@ import PageFooter from "@/components/strategy-call/PageFooter";
 import BookExitNudge from "@/components/strategy-call/BookExitNudge";
 import { Reveal } from "@/components/strategy-call/Reveal";
 import BookingIframe from "@/components/strategy-call/BookingIframe";
+import { FirePixelEvent } from "@/components/strategy-call/FirePixelEvent";
 
 export const dynamic = "force-static";
 
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
 export default function StrategyCallBookPage() {
   return (
     <div className="min-h-screen flex flex-col bg-brand-bg">
+      <FirePixelEvent eventName="QualifiedStrategyCall" />
       <Script src="https://link.msgsndr.com/js/form_embed.js" strategy="afterInteractive" />
 
       {/* Sticky shell — marquee + nav scroll together (matches /strategy-call) */}

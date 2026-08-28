@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowRight, Store, Inbox, Zap, ChevronDown, CreditCard } from "lucide-react";
 import SiteFooter from "@/components/SiteFooter";
 import StartFreeExitNudge from "@/components/strategy-call/StartFreeExitNudge";
+import { FirePixelEvent } from "@/components/strategy-call/FirePixelEvent";
 
 const STORYPAY_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
@@ -70,6 +71,7 @@ const FAQ = [
 export default function StartFreePage() {
   return (
     <>
+      <FirePixelEvent eventName="DisqualifiedStrategyCall" />
       {/* ── NAV ── */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/60">
         <nav className="max-w-5xl mx-auto flex items-center justify-between px-5 md:px-10 py-3">
