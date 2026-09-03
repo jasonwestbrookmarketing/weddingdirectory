@@ -73,6 +73,7 @@ export async function POST(request: NextRequest) {
     last_name: d.last_name,
     email: d.email,
     phone: d.phone,
+    guest_count: d.guest_count ?? null,
     booking_timeline: d.booking_timeline ?? null,
     venue_matters: d.venue_matters ?? null,
     message: d.message ?? null,

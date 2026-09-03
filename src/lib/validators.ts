@@ -15,6 +15,7 @@ export const leadFormSchema = z
     last_name: z.string().optional(),
     email: z.email("Valid email required"),
     phone: z.string().min(7, "Phone number is required"),
+    guest_count: z.number().int().positive().optional(),
     booking_timeline: z.string().optional(),
     venue_matters: z.string().optional(),
     message: z.string().optional(),

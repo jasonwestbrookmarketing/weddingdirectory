@@ -38,9 +38,9 @@ export default function LeadFormModal({
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [guestCount, setGuestCount] = useState("");
   const [bookingTimeline, setBookingTimeline] = useState("");
   const [venueMatters, setVenueMatters] = useState("");
-  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -86,9 +86,9 @@ export default function LeadFormModal({
       name: `${firstName} ${lastName}`.trim(),
       email,
       phone,
+      guest_count: guestCount ? Number(guestCount) : undefined,
       booking_timeline: bookingTimeline || undefined,
       venue_matters: venueMatters || undefined,
-      message: message || undefined,
       // First-touch attribution (fbclid / UTMs / referrer) so StoryPay can
       // bucket this lead as Meta / Google instead of defaulting to Direct.
       ...getAttribution(venueId),
@@ -217,6 +217,19 @@ export default function LeadFormModal({
             error={fieldErrors.phone}
           />
 
+          <Input
+            id="lead-guest-count"
+            label="How many guests do you plan to host?"
+            type="number"
+            inputMode="numeric"
+            min={1}
+            placeholder="e.g. 120"
+            value={guestCount}
+            onChange={(e) => setGuestCount(e.target.value)}
+            required
+            error={fieldErrors.guest_count}
+          />
+
           <Select
             id="lead-timeline"
             label="When do you plan to start touring?"
@@ -240,25 +253,6 @@ export default function LeadFormModal({
             required
             error={fieldErrors.venue_matters}
           />
-
-          {/* Optional free-text — not required */}
-          <div>
-            <label
-              htmlFor="lead-message"
-              className="block text-sm font-medium text-stone-700 mb-1.5"
-            >
-              Anything you&apos;d like the venue to know?{" "}
-              <span className="text-stone-400 font-normal">(optional)</span>
-            </label>
-            <textarea
-              id="lead-message"
-              rows={3}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="We'd love an outdoor ceremony..."
-              className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm focus:ring-2 focus:ring-stone-900 focus:border-transparent outline-none resize-none"
-            />
-          </div>
 
           {error && (
             <p className="text-sm text-stone-700 bg-stone-100 rounded-lg px-3 py-2">
