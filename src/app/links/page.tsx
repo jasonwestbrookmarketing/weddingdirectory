@@ -91,6 +91,9 @@ export const metadata: Metadata = {
 const PROFILE = {
   // Circular brand mark shown at the top. Swap the file in /public if needed.
   mark: "/storyvenue-mark.png",
+  // Official wordmark (with ™) used as the name/heading. Dark version reads on
+  // the light background.
+  logo: "/storyvenue-dark-logo.png",
   name: "StoryVenue",
   handle: "@storyvenue",
   tagline: "Fully book your wedding venue without empty weekends",
@@ -115,13 +118,13 @@ const LINKS: LinkItem[] = [
     featured: true,
   },
   {
-    label: "List Your Venue — Free",
+    label: "List Your Venue Free",
     description: "Venue owners: claim your free StoryVenue listing",
     href: "/free-listing",
     icon: Building2,
   },
   {
-    label: "Find Your Wedding Venue",
+    label: "Find Your Perfect Wedding Venue",
     description: "Browse venues by location, guest count & budget",
     href: "/",
     icon: Search,
@@ -138,7 +141,7 @@ const SOCIALS = [
   { icon: Globe, href: "https://storyvenue.com", label: "Website" },
   { icon: InstagramIcon, href: "https://www.instagram.com/storyvenue", label: "Instagram" },
   { icon: YoutubeIcon, href: "https://www.youtube.com/@bridebookingsystem", label: "YouTube" },
-  { icon: FacebookIcon, href: "https://www.facebook.com/storyvenue", label: "Facebook" },
+  { icon: FacebookIcon, href: "https://www.facebook.com/storyvenuemarketing", label: "Facebook" },
   { icon: PinterestIcon, href: "https://www.pinterest.com/storyvenue", label: "Pinterest" },
 ];
 // ────────────────────────────────────────────────────────────────────────────
@@ -148,7 +151,7 @@ function LinkButton({ item }: { item: LinkItem }) {
   const external = href.startsWith("http");
 
   const base =
-    "group relative flex items-center gap-4 w-full rounded-2xl border px-5 py-4 text-left transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/40";
+    "group relative flex items-center gap-4 w-full rounded-2xl border px-5 py-4 text-left transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-ink/15";
   const skin = featured
     ? "border-transparent bg-brand-ink text-white shadow-[0_16px_40px_-18px_rgba(0,0,0,0.55)] hover:bg-black"
     : "border-brand-line bg-white text-brand-ink shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)] hover:border-brand-ink";
@@ -159,7 +162,7 @@ function LinkButton({ item }: { item: LinkItem }) {
         className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${
           featured
             ? "bg-white/10 text-white"
-            : "bg-brand-warm text-brand-gold"
+            : "bg-brand-warm text-brand-muted"
         }`}
       >
         <Icon className="h-5 w-5" />
@@ -225,16 +228,20 @@ export default function LinksPage() {
             />
           </div>
 
-          <h1
-            className="mt-5 text-3xl font-normal tracking-tight text-brand-ink"
-            style={{ fontFamily: "var(--font-playfair)" }}
-          >
-            {PROFILE.name}
+          <h1 className="mt-6">
+            <Image
+              src={PROFILE.logo}
+              alt={PROFILE.name}
+              width={3000}
+              height={751}
+              priority
+              className="h-9 w-auto sm:h-10"
+            />
           </h1>
-          <p className="mt-1 text-sm font-medium text-brand-gold">
+          <p className="mt-2 text-sm font-medium text-brand-ink">
             {PROFILE.handle}
           </p>
-          <p className="mt-3 max-w-[22rem] text-[15px] leading-relaxed text-brand-muted">
+          <p className="mt-3 whitespace-nowrap text-[13px] leading-relaxed text-brand-muted sm:text-[15px]">
             {PROFILE.tagline}
           </p>
         </div>
