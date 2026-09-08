@@ -20,6 +20,12 @@ interface LeadFormModalProps {
   venueName?: string;
   venueSlug?: string;
   venueWebsite?: string;
+  /**
+   * First-touch attribution defaults applied when the URL carries no UTM tags
+   * (e.g. the Lead Link bio page sets utm_source=lead_link). Real URL/ad
+   * attribution from getAttribution() always wins over these defaults.
+   */
+  attributionOverride?: Record<string, string>;
 }
 
 export default function LeadFormModal({
@@ -29,6 +35,7 @@ export default function LeadFormModal({
   venueName,
   venueSlug,
   venueWebsite,
+  attributionOverride,
 }: LeadFormModalProps) {
   const router = useRouter();
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -91,6 +98,9 @@ export default function LeadFormModal({
       venue_matters: venueMatters || undefined,
       // First-touch attribution (fbclid / UTMs / referrer) so StoryPay can
       // bucket this lead as Meta / Google instead of defaulting to Direct.
+      // `attributionOverride` seeds defaults (e.g. the Lead Link page's
+      // utm_source=lead_link); real URL/ad attribution below always wins.
+      ...(attributionOverride ?? {}),
       ...getAttribution(venueId),
     };
 
