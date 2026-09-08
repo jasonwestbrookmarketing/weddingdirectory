@@ -4,7 +4,7 @@ import Link from "next/link";
 import {
   Search,
   Building2,
-  TrendingUp,
+  Gem,
   ArrowUpRight,
   Globe,
 } from "lucide-react";
@@ -114,7 +114,7 @@ const LINKS: LinkItem[] = [
     label: "Book More Weddings",
     description: "The system that fills your venue's calendar",
     href: "/strategy-call",
-    icon: TrendingUp,
+    icon: Gem,
     featured: true,
   },
   {
@@ -205,7 +205,12 @@ function LinkButton({ item }: { item: LinkItem }) {
   }
 
   return (
-    <Link href={href} className={`${base} ${skin}`}>
+    <Link
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${base} ${skin}`}
+    >
       {inner}
     </Link>
   );
@@ -272,7 +277,12 @@ export default function LinksPage() {
         {/* Footer */}
         <p className="mt-10 text-center text-xs text-brand-muted">
           © {new Date().getFullYear()} StoryVenue ·{" "}
-          <Link href="/" className="underline-offset-2 hover:text-brand-ink hover:underline">
+          <Link
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline-offset-2 hover:text-brand-ink hover:underline"
+          >
             storyvenue.com
           </Link>
         </p>
