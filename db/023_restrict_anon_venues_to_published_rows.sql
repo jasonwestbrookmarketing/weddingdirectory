@@ -1,0 +1,54 @@
+-- ============================================================================
+-- storyvenue.com — restrict anon row-level access on public.venues to
+-- published rows only (defense-in-depth; DB-layer enforcement of what
+-- application code already filters for itself).
+--
+-- TARGET PROJECT: brnxhsaakmhgwcthcapd (same shared project as 020/021/022).
+--
+-- PREREQUISITE (already done): src/app/page.tsx's homepage "recent signups"
+-- ticker was moved off the anon client onto the service-role client
+-- (commit 2374d32, deployed and confirmed live) — that was the one anon
+-- query in this repo that intentionally read unpublished rows. Every other
+-- anon .from("venues") call in this repo already filters
+-- .eq("is_published", true) itself. Do NOT run this file if that deploy is
+-- not confirmed live — it will silently break the homepage ticker.
+--
+-- WHY THIS FILE EXISTS
+-- While reviewing pg_policies together, we found public.venues already has
+-- a pre-existing policy "Public can read published venues" (anon,
+-- authenticated; using (is_published = true)) — that's the correct
+-- restriction, and it long predates tonight's audit. However, migration 020
+-- separately created "anon_select_venues" with `using (true)` (unrestricted)
+-- for the `anon` role. Because Postgres OR's together all permissive
+-- policies that apply to a role, that unconditional policy was silently
+-- overriding the older published-only restriction for anon — meaning anon
+-- could see EVERY row (published or not) despite the correct policy already
+-- existing. This file removes the redundant/overly-permissive policy 020
+-- introduced, letting the original "Public can read published venues"
+-- policy do its job as designed. It does not add any new restriction that
+-- didn't already exist in the schema before tonight.
+--
+-- Column-level grants from migrations 020/021 are untouched by this file —
+-- row-level policies (this file) and column-level grants are independent
+-- mechanisms in Postgres.
+--
+-- Idempotent — safe to run multiple times.
+-- ============================================================================
+
+drop policy if exists "anon_select_venues" on public.venues;
+
+-- No replacement policy needed: "Public can read published venues"
+-- (roles {anon, authenticated}, using (is_published = true)) already covers
+-- anon's legitimate read access and predates this audit.
+
+-- ============================================================================
+-- RE-VERIFICATION — run after applying:
+--
+-- select policyname, roles, qual
+-- from pg_policies
+-- where schemaname = 'public' and tablename = 'venues'
+-- order by policyname;
+--
+-- Expect to see "anon_select_venues" GONE, and "Public can read published
+-- venues" / "Deny public access" / "Owners can read own venue" remaining.
+-- ============================================================================

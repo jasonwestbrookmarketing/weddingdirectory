@@ -26,10 +26,11 @@
 -- they had an old bookmarked magic-link URL (which was the actual security
 -- issue — those links never expired).
 -- No extensions required (gen_random_uuid() is core Postgres 13+).
+-- login_token is a uuid column, so gen_random_uuid() is a direct type match.
 
 update public.venues
 set
-  login_token = replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', ''),
+  login_token = gen_random_uuid(),
   login_token_expires_at = now() - interval '1 day'
 where login_token_expires_at is null
    or login_token_expires_at >= now();
