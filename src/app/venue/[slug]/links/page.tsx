@@ -4,7 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BadgeCheck, MapPin, Store, ArrowUpRight, Globe } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import type { VenueSocialLinks } from "@/types/database";
+import type { VenueSocialLinks, LeadLinkCustomLink } from "@/types/database";
+import { leadLinkIcon } from "@/lib/lead-link-icons";
 import LeadLinkTracker from "@/components/venue/LeadLinkTracker";
 import LeadLinkPricingCard from "./LeadLinkPricingCard";
 
@@ -19,7 +20,7 @@ const SITE_URL = (
 ).replace(/\/$/, "");
 
 const LINKS_VENUE_SELECT =
-  "id, slug, name, cover_image_url, location_city, location_state, is_published, is_demo, demo_preview_token, social_links, directory_verified_status" as const;
+  "id, slug, name, cover_image_url, location_city, location_state, is_published, is_demo, demo_preview_token, social_links, lead_link_links, directory_verified_status" as const;
 
 type LinksVenue = {
   id: string;
@@ -32,6 +33,7 @@ type LinksVenue = {
   is_demo: boolean | null;
   demo_preview_token: string | null;
   social_links: VenueSocialLinks | null;
+  lead_link_links: LeadLinkCustomLink[] | null;
   directory_verified_status: string | null;
 };
 
@@ -148,6 +150,20 @@ export default async function VenueLinksPage({ params, searchParams }: Props) {
     .filter(([key, url]) => key in SOCIAL_META && typeof url === "string" && /^https?:\/\//i.test(url))
     .map(([key, url]) => ({ key, url: url as string }));
 
+  // Owner-defined custom buttons (max 3). Only render rows that have both a
+  // label and a real outbound URL.
+  const customLinks: LeadLinkCustomLink[] = (Array.isArray(venue.lead_link_links) ? venue.lead_link_links : [])
+    .filter(
+      (l): l is LeadLinkCustomLink =>
+        !!l &&
+        typeof l === "object" &&
+        typeof (l as LeadLinkCustomLink).url === "string" &&
+        /^https?:\/\//i.test((l as LeadLinkCustomLink).url) &&
+        typeof (l as LeadLinkCustomLink).label === "string" &&
+        (l as LeadLinkCustomLink).label.trim().length > 0,
+    )
+    .slice(0, 3);
+
   const listingHref = `/venue/${venue.slug}?utm_source=lead_link&utm_medium=bio&utm_campaign=venue_listing`;
 
   return (
@@ -238,6 +254,31 @@ export default async function VenueLinksPage({ params, searchParams }: Props) {
             venueName={name}
             venueSlug={venue.slug ?? slug}
           />
+
+          {customLinks.map((l, i) => {
+            const Icon = leadLinkIcon(l.icon);
+            return (
+              <a
+                key={`${l.url}-${i}`}
+                href={l.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track="lead_link_click"
+                data-track-platform="custom"
+                className="group flex w-full items-center gap-4 rounded-2xl border border-brand-line bg-white px-5 py-4 text-left shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-ink"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-ink text-white">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[15px] font-semibold leading-snug text-brand-ink">
+                    {l.label}
+                  </span>
+                </span>
+                <ArrowUpRight className="h-5 w-5 shrink-0 text-brand-muted transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+            );
+          })}
         </div>
 
         {/* Footer */}
