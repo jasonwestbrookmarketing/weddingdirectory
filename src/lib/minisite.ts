@@ -23,6 +23,7 @@ export interface MinisiteData {
   photoUrl: string | null;
   coverUrl: string | null;
   weddingDate: string | null;
+  weddingTime: string | null;
   socials: { instagram: string | null; facebook: string | null; tiktok: string | null; pinterest: string | null };
   storyHtml: string | null;
   customLinks: { label: string; url: string; icon: string }[];
@@ -63,6 +64,7 @@ export async function fetchMinisite(slug: string, key?: string | null): Promise<
       photoUrl: (j.photoUrl as string | null) ?? null,
       coverUrl: (j.coverUrl as string | null) ?? null,
       weddingDate: (j.weddingDate as string | null) ?? null,
+      weddingTime: (j.weddingTime as string | null) ?? null,
       socials: (j.socials as MinisiteData["socials"]) ?? { instagram: null, facebook: null, tiktok: null, pinterest: null },
       customLinks: (j.customLinks as MinisiteData["customLinks"]) ?? [],
       gallery: (j.gallery as string[]) ?? [],

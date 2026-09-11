@@ -68,7 +68,7 @@ export default function Guestbook({ slug }: { slug: string }) {
         <Heart className="h-4 w-4 text-rose-400" /> Guestbook
       </h2>
 
-      <form onSubmit={submit} className="mx-auto mt-4 max-w-[520px] rounded-[5px] border border-brand-line bg-white p-4 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)]">
+      <form onSubmit={submit} className="mt-4 w-full rounded-[5px] border border-brand-line bg-white p-4 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)]">
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -98,7 +98,7 @@ export default function Guestbook({ slug }: { slug: string }) {
       </form>
 
       {entries.length > 0 && (
-        <div className="mx-auto mt-5 max-w-[520px] space-y-3">
+        <div className="mt-5 w-full space-y-3">
           {entries.map((entry) => (
             <div key={entry.id} className="rounded-[5px] border border-brand-line bg-white px-4 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,0.3)]">
               <p className="text-sm text-brand-ink">{entry.message}</p>

@@ -10,6 +10,7 @@ import Countdown from "@/components/minisite/Countdown";
 import Guestbook from "@/components/minisite/Guestbook";
 import Gallery from "@/components/minisite/Gallery";
 import RsvpFloating from "@/components/minisite/RsvpFloating";
+import AddToCalendar from "@/components/minisite/AddToCalendar";
 import LockGate from "@/components/minisite/LockGate";
 
 export const dynamic = "force-dynamic";
@@ -260,6 +261,19 @@ export default async function MinisitePage({ params }: Props) {
             </p>
           )}
           {data.headline && <p className="mt-3 max-w-[440px] text-[15px] text-brand-ink">{data.headline}</p>}
+          {data.weddingDate && (
+            <AddToCalendar
+              title={`${data.coupleName} — Wedding`}
+              date={data.weddingDate}
+              time={data.weddingTime}
+              location={
+                data.venue
+                  ? [data.venue.name, data.venue.address || [data.venue.city, data.venue.state].filter(Boolean).join(", ")].filter(Boolean).join(", ")
+                  : null
+              }
+              details={data.headline || `Celebrate with ${data.coupleName}! RSVP at ${SITE_URL}/${slug}`}
+            />
+          )}
         </div>
 
         {/* Socials */}
