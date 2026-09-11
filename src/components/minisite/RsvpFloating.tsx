@@ -27,14 +27,14 @@ export default function RsvpFloating({ slug, weddingDate }: { slug: string; wedd
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed bottom-5 left-1/2 z-[70] -translate-x-1/2 inline-flex items-center gap-2.5 rounded-full bg-brand-ink px-9 py-3.5 text-sm font-semibold text-white shadow-[0_12px_32px_-8px_rgba(0,0,0,0.55)] transition-transform hover:-translate-y-0.5 hover:-translate-x-1/2"
+        className="fixed bottom-5 left-1/2 z-[70] inline-flex -translate-x-1/2 items-center gap-2.5 whitespace-nowrap rounded-full bg-brand-ink px-9 py-3.5 text-sm font-semibold text-white shadow-[0_12px_32px_-8px_rgba(0,0,0,0.55)] transition-transform hover:-translate-y-0.5 hover:-translate-x-1/2"
       >
         <CalendarHeart className="h-4 w-4 shrink-0" />
         <span>RSVP</span>
         {shortDate && (
           <>
-            <span className="h-4 w-px bg-white/30" aria-hidden />
-            <span className="font-medium text-white/85">{shortDate}</span>
+            <span className="h-4 w-px flex-none bg-white/30" aria-hidden />
+            <span className="whitespace-nowrap font-medium text-white/85">{shortDate}</span>
           </>
         )}
       </button>
