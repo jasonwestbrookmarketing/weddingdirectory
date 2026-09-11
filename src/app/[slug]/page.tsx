@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { MapPin, ArrowUpRight, Store, Globe, CalendarHeart } from "lucide-react";
+import { MapPin, ArrowUpRight, Store, Globe, CalendarHeart, Radio } from "lucide-react";
 import { fetchMinisite, RESERVED_TOP_PATHS, type MinisiteData } from "@/lib/minisite";
 import { leadLinkIcon } from "@/lib/lead-link-icons";
 import Countdown from "@/components/minisite/Countdown";
 import Guestbook from "@/components/minisite/Guestbook";
 import Rsvp from "@/components/minisite/Rsvp";
+import LockGate from "@/components/minisite/LockGate";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +39,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (isBlockedSlug(slug)) return { title: "StoryVenue", robots: { index: false } };
   const data = await fetchMinisite(slug);
   if (!data) return { title: "Wedding — StoryVenue", robots: { index: false } };
+  if (data.locked) {
+    return { title: `${data.coupleName} — Private`, robots: { index: false } };
+  }
 
   const dateLine = formatDate(data.weddingDate);
   const title = `${data.coupleName}${dateLine ? ` — ${dateLine}` : " — Our Wedding"}`;
@@ -107,8 +112,12 @@ export default async function MinisitePage({ params }: Props) {
   const { slug } = await params;
   if (isBlockedSlug(slug)) notFound();
 
-  const data = await fetchMinisite(slug);
+  const cookieStore = await cookies();
+  const unlockKey = cookieStore.get(`sv_ms_${slug}`)?.value ?? null;
+
+  const data = await fetchMinisite(slug, unlockKey);
   if (!data) notFound();
+  if (data.locked) return <LockGate slug={slug} coupleName={data.coupleName} />;
 
   const dateLine = formatDate(data.weddingDate);
   const socials = socialList(data);
@@ -228,6 +237,22 @@ export default async function MinisitePage({ params }: Props) {
               );
             })}
           </div>
+        )}
+
+        {/* Livestream / embed */}
+        {data.embedHtml && (
+          <section className="mt-10">
+            <h2 className="flex items-center justify-center gap-2 text-center text-lg font-semibold text-brand-ink">
+              <Radio className="h-4 w-4" /> {data.embedTitle || "Livestream"}
+            </h2>
+            <div
+              className="relative mt-4 w-full overflow-hidden rounded-2xl border border-brand-line bg-black shadow-[0_10px_30px_-20px_rgba(0,0,0,0.5)]"
+              style={{ paddingBottom: "56.25%" }}
+              // Content is a single https iframe rebuilt server-side by StoryPay
+              // (no scripts/handlers), so this is safe to inject.
+              dangerouslySetInnerHTML={{ __html: data.embedHtml }}
+            />
+          </section>
         )}
 
         {/* RSVP */}
