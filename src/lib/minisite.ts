@@ -30,6 +30,7 @@ export interface MinisiteData {
   gallery: string[];
   embedHtml: string | null;
   embedTitle: string | null;
+  embedMode: "page" | "live";
   sectionOrder: string[];
   showCountdown: boolean;
   showGuestbook: boolean;
@@ -70,6 +71,7 @@ export async function fetchMinisite(slug: string, key?: string | null): Promise<
       gallery: (j.gallery as string[]) ?? [],
       embedHtml: (j.embedHtml as string | null) ?? null,
       embedTitle: (j.embedTitle as string | null) ?? null,
+      embedMode: j.embedMode === "live" ? "live" : "page",
       sectionOrder: (j.sectionOrder as string[]) ?? ["countdown", "story", "gallery", "links", "embed"],
       showCountdown: Boolean(j.showCountdown),
       showGuestbook: Boolean(j.showGuestbook),
