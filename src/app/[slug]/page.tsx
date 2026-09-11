@@ -165,7 +165,7 @@ export default async function MinisitePage({ params }: Props) {
         <Radio className="h-4 w-4" /> {data.embedTitle || "Livestream"}
       </h2>
       <div
-        className="relative mt-4 w-full overflow-hidden rounded-2xl border border-brand-line bg-black shadow-[0_10px_30px_-20px_rgba(0,0,0,0.5)]"
+        className="relative mt-4 w-full overflow-hidden rounded-[5px] border border-brand-line bg-black shadow-[0_10px_30px_-20px_rgba(0,0,0,0.5)]"
         style={{ paddingBottom: "56.25%" }}
         // Single https iframe rebuilt server-side by StoryPay (no scripts) — safe.
         dangerouslySetInnerHTML={{ __html: data.embedHtml }}
@@ -182,7 +182,7 @@ export default async function MinisitePage({ params }: Props) {
             href={data.venue.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex w-full items-center gap-4 rounded-2xl border border-brand-line bg-white px-5 py-4 text-left shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-ink"
+            className="group flex w-full items-center gap-4 rounded-[5px] border border-brand-line bg-white px-5 py-4 text-left shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-ink"
           >
             <span className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-ink text-white">
               {data.venue.coverUrl ? (
@@ -210,7 +210,7 @@ export default async function MinisitePage({ params }: Props) {
               href={l.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex w-full items-center gap-4 rounded-2xl border border-brand-line bg-white px-5 py-4 text-left shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-ink"
+              className="group flex w-full items-center gap-4 rounded-[5px] border border-brand-line bg-white px-5 py-4 text-left shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-ink"
             >
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-ink text-white">
                 <Icon className="h-5 w-5" />
@@ -234,11 +234,11 @@ export default async function MinisitePage({ params }: Props) {
   };
 
   return (
-    <main className="flex min-h-screen justify-center bg-brand-warm px-4 py-12 pb-28 sm:py-16 sm:pb-28">
+    <main className="flex min-h-screen justify-center bg-brand-warm px-4 pt-4 pb-28">
       <div className="w-full max-w-[560px]">
         {/* Cover hero */}
         {data.coverUrl && (
-          <div className="relative mb-[-56px] h-52 w-full overflow-hidden rounded-[3px] border border-brand-line shadow-[0_16px_40px_-24px_rgba(0,0,0,0.4)] sm:h-60">
+          <div className="relative mb-[-56px] h-52 w-full overflow-hidden rounded-[5px] border border-brand-line shadow-[0_16px_40px_-24px_rgba(0,0,0,0.4)] sm:h-60">
             <Image src={data.coverUrl} alt="" fill unoptimized priority sizes="560px" className="object-cover" />
           </div>
         )}
