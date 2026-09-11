@@ -41,7 +41,7 @@ export default function Gallery({ images, coupleName }: { images: string[]; coup
             key={`${url}-${i}`}
             type="button"
             onClick={() => setOpen(i)}
-            className="group block w-full overflow-hidden rounded-[5px] bg-white"
+            className="group block w-full overflow-hidden rounded-[10px] bg-white"
           >
             {/* Natural aspect ratio via intrinsic sizing keeps the masonry feel. */}
             <Image
