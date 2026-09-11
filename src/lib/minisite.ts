@@ -24,14 +24,19 @@ export interface MinisiteData {
   coverUrl: string | null;
   weddingDate: string | null;
   socials: { instagram: string | null; facebook: string | null; tiktok: string | null; pinterest: string | null };
+  storyHtml: string | null;
   customLinks: { label: string; url: string; icon: string }[];
   gallery: string[];
   embedHtml: string | null;
   embedTitle: string | null;
+  sectionOrder: string[];
   showCountdown: boolean;
   showGuestbook: boolean;
   rsvpEnabled: boolean;
-  venue: { name: string; city: string | null; state: string | null; coverUrl: string | null; listingUrl: string } | null;
+  venue: {
+    name: string; city: string | null; state: string | null; address: string | null;
+    coverUrl: string | null; listingUrl: string; mapsUrl: string;
+  } | null;
 }
 
 /**
@@ -54,6 +59,7 @@ export async function fetchMinisite(slug: string, key?: string | null): Promise<
       coupleName: (j.coupleName as string) ?? "Our Wedding",
       headline: (j.headline as string | null) ?? null,
       story: (j.story as string | null) ?? null,
+      storyHtml: (j.storyHtml as string | null) ?? null,
       photoUrl: (j.photoUrl as string | null) ?? null,
       coverUrl: (j.coverUrl as string | null) ?? null,
       weddingDate: (j.weddingDate as string | null) ?? null,
@@ -62,6 +68,7 @@ export async function fetchMinisite(slug: string, key?: string | null): Promise<
       gallery: (j.gallery as string[]) ?? [],
       embedHtml: (j.embedHtml as string | null) ?? null,
       embedTitle: (j.embedTitle as string | null) ?? null,
+      sectionOrder: (j.sectionOrder as string[]) ?? ["countdown", "story", "gallery", "links", "embed"],
       showCountdown: Boolean(j.showCountdown),
       showGuestbook: Boolean(j.showGuestbook),
       rsvpEnabled: Boolean(j.rsvpEnabled),

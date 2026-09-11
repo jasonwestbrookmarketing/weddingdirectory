@@ -3,12 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { MapPin, ArrowUpRight, Store, Globe, CalendarHeart, Radio } from "lucide-react";
+import { MapPin, ArrowUpRight, Store, Globe, CalendarHeart, Radio, Navigation } from "lucide-react";
 import { fetchMinisite, RESERVED_TOP_PATHS, type MinisiteData } from "@/lib/minisite";
 import { leadLinkIcon } from "@/lib/lead-link-icons";
 import Countdown from "@/components/minisite/Countdown";
 import Guestbook from "@/components/minisite/Guestbook";
-import Rsvp from "@/components/minisite/Rsvp";
+import Gallery from "@/components/minisite/Gallery";
+import RsvpFloating from "@/components/minisite/RsvpFloating";
 import LockGate from "@/components/minisite/LockGate";
 
 export const dynamic = "force-dynamic";
@@ -128,19 +129,123 @@ export default async function MinisitePage({ params }: Props) {
     .slice(0, 2)
     .toUpperCase();
 
+  // ── Reorderable blocks ────────────────────────────────────────────────────
+  const countdownBlock =
+    data.showCountdown && data.weddingDate ? (
+      <div key="countdown" className="mt-7">
+        <Countdown date={data.weddingDate} />
+      </div>
+    ) : null;
+
+  const storyBlock =
+    data.storyHtml || data.story ? (
+      <div key="story" className="mt-7">
+        {data.storyHtml ? (
+          <div
+            className="story-content mx-auto max-w-[520px] text-left text-[15px] leading-relaxed text-brand-ink [&_h1]:mb-1 [&_h1]:mt-2 [&_h1]:text-2xl [&_h1]:font-semibold [&_h2]:mb-1 [&_h2]:mt-2 [&_h2]:text-xl [&_h2]:font-semibold [&_h3]:text-lg [&_p]:my-1.5"
+            // Sanitized on write in StoryPay (allowlist of formatting tags only).
+            dangerouslySetInnerHTML={{ __html: data.storyHtml }}
+          />
+        ) : (
+          <p className="mx-auto max-w-[520px] whitespace-pre-line text-left text-[15px] leading-relaxed text-brand-ink">{data.story}</p>
+        )}
+      </div>
+    ) : null;
+
+  const galleryBlock =
+    data.gallery.length > 0 ? (
+      <div key="gallery" className="mt-8">
+        <Gallery images={data.gallery} coupleName={data.coupleName} />
+      </div>
+    ) : null;
+
+  const embedBlock = data.embedHtml ? (
+    <section key="embed" className="mt-10">
+      <h2 className="flex items-center justify-center gap-2 text-center text-lg font-semibold text-brand-ink">
+        <Radio className="h-4 w-4" /> {data.embedTitle || "Livestream"}
+      </h2>
+      <div
+        className="relative mt-4 w-full overflow-hidden rounded-2xl border border-brand-line bg-black shadow-[0_10px_30px_-20px_rgba(0,0,0,0.5)]"
+        style={{ paddingBottom: "56.25%" }}
+        // Single https iframe rebuilt server-side by StoryPay (no scripts) — safe.
+        dangerouslySetInnerHTML={{ __html: data.embedHtml }}
+      />
+    </section>
+  ) : null;
+
+  // Links block: venue always first (name + address → Google Maps), then custom links.
+  const linksBlock =
+    data.venue || data.customLinks.length > 0 ? (
+      <div key="links" className="mt-8 flex flex-col gap-3">
+        {data.venue && (
+          <a
+            href={data.venue.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex w-full items-center gap-4 rounded-2xl border border-brand-line bg-white px-5 py-4 text-left shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-ink"
+          >
+            <span className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-ink text-white">
+              {data.venue.coverUrl ? (
+                <Image src={data.venue.coverUrl} alt="" fill unoptimized sizes="48px" className="object-cover" />
+              ) : (
+                <Store className="h-5 w-5" />
+              )}
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[13px] uppercase tracking-wide text-brand-muted">Our Venue</span>
+              <span className="block truncate text-[15px] font-semibold leading-snug text-brand-ink">{data.venue.name}</span>
+              <span className="mt-0.5 flex items-center gap-1 text-[13px] text-brand-muted">
+                <MapPin className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">{data.venue.address || [data.venue.city, data.venue.state].filter(Boolean).join(", ") || "Get directions"}</span>
+              </span>
+            </span>
+            <Navigation className="h-5 w-5 shrink-0 text-brand-muted transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </a>
+        )}
+        {data.customLinks.map((l, i) => {
+          const Icon = leadLinkIcon(l.icon);
+          return (
+            <a
+              key={`${l.url}-${i}`}
+              href={l.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex w-full items-center gap-4 rounded-2xl border border-brand-line bg-white px-5 py-4 text-left shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-ink"
+            >
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-ink text-white">
+                <Icon className="h-5 w-5" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[15px] font-semibold leading-snug text-brand-ink">{l.label}</span>
+              </span>
+              <ArrowUpRight className="h-5 w-5 shrink-0 text-brand-muted transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+          );
+        })}
+      </div>
+    ) : null;
+
+  const blockMap: Record<string, React.ReactNode> = {
+    countdown: countdownBlock,
+    story: storyBlock,
+    gallery: galleryBlock,
+    links: linksBlock,
+    embed: embedBlock,
+  };
+
   return (
-    <main className="flex min-h-screen justify-center bg-brand-warm px-4 py-12 sm:py-16">
+    <main className="flex min-h-screen justify-center bg-brand-warm px-4 py-12 pb-28 sm:py-16 sm:pb-28">
       <div className="w-full max-w-[560px]">
-        {/* Cover banner */}
+        {/* Cover hero */}
         {data.coverUrl && (
-          <div className="relative mb-[-48px] h-40 w-full overflow-hidden rounded-3xl border border-brand-line shadow-[0_16px_40px_-24px_rgba(0,0,0,0.4)]">
+          <div className="relative mb-[-56px] h-52 w-full overflow-hidden rounded-3xl border border-brand-line shadow-[0_16px_40px_-24px_rgba(0,0,0,0.4)] sm:h-60">
             <Image src={data.coverUrl} alt="" fill unoptimized priority sizes="560px" className="object-cover" />
           </div>
         )}
 
         {/* Header */}
         <div className="flex flex-col items-center text-center">
-          <div className={`relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-white shadow-[0_16px_40px_-20px_rgba(0,0,0,0.4)] ${data.coverUrl ? "relative z-10" : ""}`}>
+          <div className={`relative z-10 flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-white shadow-[0_16px_40px_-20px_rgba(0,0,0,0.4)]`}>
             {data.photoUrl ? (
               <Image src={data.photoUrl} alt={data.coupleName} fill priority unoptimized sizes="112px" className="object-cover" />
             ) : (
@@ -156,13 +261,6 @@ export default async function MinisitePage({ params }: Props) {
           )}
           {data.headline && <p className="mt-3 max-w-[440px] text-[15px] text-brand-ink">{data.headline}</p>}
         </div>
-
-        {/* Countdown */}
-        {data.showCountdown && data.weddingDate && (
-          <div className="mt-7">
-            <Countdown date={data.weddingDate} />
-          </div>
-        )}
 
         {/* Socials */}
         {socials.length > 0 && (
@@ -182,114 +280,8 @@ export default async function MinisitePage({ params }: Props) {
           </div>
         )}
 
-        {/* Story */}
-        {data.story && (
-          <p className="mx-auto mt-7 max-w-[520px] whitespace-pre-line text-center text-[15px] leading-relaxed text-brand-ink">
-            {data.story}
-          </p>
-        )}
-
-        {/* Photo gallery */}
-        {data.gallery.length > 0 && (
-          <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-3">
-            {data.gallery.map((url, i) => (
-              <a
-                key={`${url}-${i}`}
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative aspect-square overflow-hidden rounded-2xl border border-brand-line bg-white shadow-[0_10px_30px_-24px_rgba(0,0,0,0.4)]"
-              >
-                <Image
-                  src={url}
-                  alt={`${data.coupleName} photo ${i + 1}`}
-                  fill
-                  unoptimized
-                  sizes="(max-width: 640px) 33vw, 180px"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </a>
-            ))}
-          </div>
-        )}
-
-        {/* Custom links */}
-        {data.customLinks.length > 0 && (
-          <div className="mt-8 flex flex-col gap-3">
-            {data.customLinks.map((l, i) => {
-              const Icon = leadLinkIcon(l.icon);
-              return (
-                <a
-                  key={`${l.url}-${i}`}
-                  href={l.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex w-full items-center gap-4 rounded-2xl border border-brand-line bg-white px-5 py-4 text-left shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-ink"
-                >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-ink text-white">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[15px] font-semibold leading-snug text-brand-ink">{l.label}</span>
-                  </span>
-                  <ArrowUpRight className="h-5 w-5 shrink-0 text-brand-muted transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                </a>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Livestream / embed */}
-        {data.embedHtml && (
-          <section className="mt-10">
-            <h2 className="flex items-center justify-center gap-2 text-center text-lg font-semibold text-brand-ink">
-              <Radio className="h-4 w-4" /> {data.embedTitle || "Livestream"}
-            </h2>
-            <div
-              className="relative mt-4 w-full overflow-hidden rounded-2xl border border-brand-line bg-black shadow-[0_10px_30px_-20px_rgba(0,0,0,0.5)]"
-              style={{ paddingBottom: "56.25%" }}
-              // Content is a single https iframe rebuilt server-side by StoryPay
-              // (no scripts/handlers), so this is safe to inject.
-              dangerouslySetInnerHTML={{ __html: data.embedHtml }}
-            />
-          </section>
-        )}
-
-        {/* RSVP */}
-        {data.rsvpEnabled && (
-          <section className="mt-10">
-            <h2 className="text-center text-lg font-semibold text-brand-ink">RSVP</h2>
-            <Rsvp slug={slug} />
-          </section>
-        )}
-
-        {/* Venue card */}
-        {data.venue && (
-          <a
-            href={data.venue.listingUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group mt-8 flex w-full items-center gap-4 rounded-2xl border border-brand-line bg-white px-5 py-4 text-left shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-ink"
-          >
-            <span className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-brand-ink text-white">
-              {data.venue.coverUrl ? (
-                <Image src={data.venue.coverUrl} alt="" fill unoptimized sizes="48px" className="object-cover" />
-              ) : (
-                <Store className="h-5 w-5" />
-              )}
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-[13px] uppercase tracking-wide text-brand-muted">Our Venue</span>
-              <span className="block truncate text-[15px] font-semibold leading-snug text-brand-ink">{data.venue.name}</span>
-              {(data.venue.city || data.venue.state) && (
-                <span className="mt-0.5 flex items-center gap-1 text-[13px] text-brand-muted">
-                  <MapPin className="h-3.5 w-3.5" /> {[data.venue.city, data.venue.state].filter(Boolean).join(", ")}
-                </span>
-              )}
-            </span>
-            <ArrowUpRight className="h-5 w-5 shrink-0 text-brand-muted transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-          </a>
-        )}
+        {/* Reorderable blocks, in the couple's chosen order */}
+        {data.sectionOrder.map((key) => blockMap[key] ?? null)}
 
         {/* Guestbook */}
         {data.showGuestbook && <Guestbook slug={slug} />}
@@ -301,6 +293,9 @@ export default async function MinisitePage({ params }: Props) {
           </Link>
         </p>
       </div>
+
+      {/* Always-present floating RSVP */}
+      {data.rsvpEnabled && <RsvpFloating slug={slug} />}
     </main>
   );
 }
