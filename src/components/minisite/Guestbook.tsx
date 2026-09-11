@@ -1,9 +1,57 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Loader2, Heart, Send } from "lucide-react";
 
 type Entry = { id: string; guest_name: string; message: string; created_at: string };
+
+/** Friendly timestamp: just the time for today, else short date + time. */
+function formatWhen(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const now = new Date();
+  const time = d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+  if (d.toDateString() === now.toDateString()) return time;
+  const sameYear = d.getFullYear() === now.getFullYear();
+  const date = d.toLocaleDateString(undefined, { month: "short", day: "numeric", ...(sameYear ? {} : { year: "numeric" }) });
+  return `${date} · ${time}`;
+}
+
+/** An iMessage-style received bubble that eases in as it scrolls into view. */
+function Bubble({ entry }: { entry: Entry }) {
+  const ref = useRef<HTMLLIElement>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setShown(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.15 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const when = formatWhen(entry.created_at);
+  return (
+    <li
+      ref={ref}
+      className={`flex max-w-[85%] flex-col transition-all duration-500 ease-out ${shown ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}
+    >
+      <div className="rounded-2xl rounded-bl-md border border-brand-line bg-white px-4 py-2.5 shadow-[0_6px_18px_-12px_rgba(0,0,0,0.35)]">
+        <p className="whitespace-pre-line break-words text-[15px] leading-relaxed text-brand-ink [overflow-wrap:anywhere]">{entry.message}</p>
+      </div>
+      <span className="mt-1 pl-2.5 text-xs text-brand-muted">
+        {entry.guest_name}
+        {when ? ` · ${when}` : ""}
+      </span>
+    </li>
+  );
+}
 
 export default function Guestbook({ slug }: { slug: string }) {
   const [entries, setEntries] = useState<Entry[]>([]);
@@ -98,14 +146,12 @@ export default function Guestbook({ slug }: { slug: string }) {
       </form>
 
       {entries.length > 0 && (
-        <div className="mt-5 w-full space-y-3">
-          {entries.map((entry) => (
-            <div key={entry.id} className="rounded-[10px] border border-brand-line bg-white px-4 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,0.3)]">
-              <p className="text-sm text-brand-ink">{entry.message}</p>
-              <p className="mt-1.5 text-xs font-medium text-brand-muted">— {entry.guest_name}</p>
-            </div>
+        // Oldest → newest, like a message thread; each bubble eases in on scroll.
+        <ul className="mt-6 flex w-full flex-col gap-3">
+          {[...entries].reverse().map((entry) => (
+            <Bubble key={entry.id} entry={entry} />
           ))}
-        </div>
+        </ul>
       )}
     </section>
   );

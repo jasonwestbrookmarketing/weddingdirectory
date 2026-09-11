@@ -13,7 +13,10 @@ type GuestData = {
   mealOptions: string[];
 };
 
-export default function Rsvp({ slug }: { slug: string }) {
+export default function Rsvp({ slug, embedded = false }: { slug: string; embedded?: boolean }) {
+  // When rendered inside the RSVP modal the surrounding card supplies the chrome,
+  // so each step drops its own border/shadow/max-width and sits flush.
+  const cardBase = "rounded-2xl border border-brand-line bg-white shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)]";
   const [name, setName] = useState("");
   const [searching, setSearching] = useState(false);
   const [matches, setMatches] = useState<Match[] | null>(null);
@@ -131,7 +134,7 @@ export default function Rsvp({ slug }: { slug: string }) {
   // ── Thank-you ───────────────────────────────────────────────────────────
   if (done !== null) {
     return (
-      <section className="mx-auto mt-4 max-w-[520px] rounded-2xl border border-brand-line bg-white p-6 text-center shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)]">
+      <section className={embedded ? "px-2 py-4 text-center" : `mx-auto mt-4 max-w-[520px] p-6 text-center ${cardBase}`}>
         <CheckCircle2 className="mx-auto h-8 w-8 text-emerald-500" />
         <p className="mt-3 text-brand-ink">
           {done ? "You're on the list — can't wait to celebrate with you! 🤍" : "Thanks for letting us know. You'll be missed! 🤍"}
@@ -146,7 +149,7 @@ export default function Rsvp({ slug }: { slug: string }) {
   // ── Guest form ───────────────────────────────────────────────────────────
   if (token) {
     return (
-      <section className="mx-auto mt-4 max-w-[520px] rounded-2xl border border-brand-line bg-white p-5 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)]">
+      <section className={embedded ? "" : `mx-auto mt-4 max-w-[520px] p-5 ${cardBase}`}>
         {loadingGuest || !guest ? (
           <div className="flex justify-center py-6 text-brand-muted"><Loader2 className="h-6 w-6 animate-spin" /></div>
         ) : (
@@ -240,8 +243,8 @@ export default function Rsvp({ slug }: { slug: string }) {
 
   // ── Name lookup ────────────────────────────────────────────────────────
   return (
-    <section className="mx-auto mt-4 max-w-[520px]">
-      <form onSubmit={search} className="rounded-2xl border border-brand-line bg-white p-4 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)]">
+    <section className={embedded ? "" : "mx-auto mt-4 max-w-[520px]"}>
+      <form onSubmit={search} className={embedded ? "" : `p-4 ${cardBase}`}>
         <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-brand-muted">Find your invitation</label>
         <div className="flex gap-2">
           <input

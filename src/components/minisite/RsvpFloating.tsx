@@ -41,22 +41,31 @@ export default function RsvpFloating({ slug, weddingDate }: { slug: string; wedd
 
       {open && (
         <div
-          className="fixed inset-0 z-[80] flex items-start justify-center overflow-y-auto bg-black/60 p-4 py-10 backdrop-blur-sm"
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
           onClick={() => setOpen(false)}
           role="dialog"
           aria-modal="true"
         >
-          <div className="relative w-full max-w-[520px]" onClick={(e) => e.stopPropagation()}>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Close"
-              className="absolute -top-2 right-0 z-10 flex h-9 w-9 -translate-y-full items-center justify-center rounded-full bg-white/90 text-brand-ink shadow hover:bg-white sm:-right-2"
-            >
-              <X className="h-5 w-5" />
-            </button>
-            <h2 className="mb-1 text-center text-lg font-semibold text-white">RSVP</h2>
-            <Rsvp slug={slug} />
+          <style>{`@keyframes svRsvpPop{0%{opacity:0;transform:scale(.94) translateY(8px)}100%{opacity:1;transform:none}}`}</style>
+          <div
+            className="relative flex max-h-[90vh] w-full max-w-[440px] flex-col overflow-hidden rounded-3xl bg-white shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)]"
+            style={{ animation: "svRsvpPop .22s cubic-bezier(.16,1,.3,1) both" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-brand-line px-5 py-3.5">
+              <span className="text-base font-semibold text-brand-ink">RSVP</span>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Close"
+                className="-mr-1.5 flex h-9 w-9 items-center justify-center rounded-full text-brand-muted transition-colors hover:bg-brand-warm hover:text-brand-ink"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="overflow-y-auto px-4 py-4">
+              <Rsvp slug={slug} embedded />
+            </div>
           </div>
         </div>
       )}
