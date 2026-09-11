@@ -143,12 +143,12 @@ export default async function MinisitePage({ params }: Props) {
       <div key="story" className="mt-7">
         {data.storyHtml ? (
           <div
-            className="story-content mx-auto max-w-[520px] text-left text-[15px] leading-relaxed text-brand-ink [&_h1]:mb-1 [&_h1]:mt-2 [&_h1]:text-2xl [&_h1]:font-semibold [&_h2]:mb-1 [&_h2]:mt-2 [&_h2]:text-xl [&_h2]:font-semibold [&_h3]:text-lg [&_p]:my-1.5"
+            className="story-content mx-auto max-w-[520px] break-words text-left text-[15px] leading-relaxed text-brand-ink [overflow-wrap:anywhere] [&_h1]:mb-1 [&_h1]:mt-2 [&_h1]:text-2xl [&_h1]:font-semibold [&_h2]:mb-1 [&_h2]:mt-2 [&_h2]:text-xl [&_h2]:font-semibold [&_h3]:text-lg [&_p]:my-1.5"
             // Sanitized on write in StoryPay (allowlist of formatting tags only).
             dangerouslySetInnerHTML={{ __html: data.storyHtml }}
           />
         ) : (
-          <p className="mx-auto max-w-[520px] whitespace-pre-line text-left text-[15px] leading-relaxed text-brand-ink">{data.story}</p>
+          <p className="mx-auto max-w-[520px] whitespace-pre-line break-words text-left text-[15px] leading-relaxed text-brand-ink [overflow-wrap:anywhere]">{data.story}</p>
         )}
       </div>
     ) : null;
@@ -235,7 +235,7 @@ export default async function MinisitePage({ params }: Props) {
   };
 
   return (
-    <main className="flex min-h-screen justify-center bg-brand-warm px-4 pt-4 pb-28">
+    <main className="flex min-h-screen justify-center overflow-x-hidden bg-brand-warm px-4 pt-4 pb-28">
       <div className="w-full max-w-[560px]">
         {/* Cover hero */}
         {data.coverUrl && (

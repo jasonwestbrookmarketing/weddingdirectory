@@ -53,36 +53,14 @@ export default function AddToCalendar({
     return `${dt.getUTCFullYear()}${pad(dt.getUTCMonth() + 1)}${pad(dt.getUTCDate())}T${pad(dt.getUTCHours())}${pad(dt.getUTCMinutes())}00`;
   })();
 
-  function downloadIcs() {
-    const stampDt = new Date();
-    const stamp = `${stampDt.getUTCFullYear()}${pad(stampDt.getUTCMonth() + 1)}${pad(stampDt.getUTCDate())}T${pad(stampDt.getUTCHours())}${pad(stampDt.getUTCMinutes())}${pad(stampDt.getUTCSeconds())}Z`;
-    const esc = (s: string) => s.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
-    const lines = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "PRODID:-//StoryVenue//Wedding//EN",
-      "CALSCALE:GREGORIAN",
-      "BEGIN:VEVENT",
-      `UID:${dateOnly}-${Math.random().toString(36).slice(2)}@storyvenue`,
-      `DTSTAMP:${stamp}`,
-      hasTime ? `DTSTART:${startFloating}` : `DTSTART;VALUE=DATE:${dateOnly}`,
-      hasTime ? `DTEND:${endFloating}` : `DTEND;VALUE=DATE:${nextDay}`,
-      `SUMMARY:${esc(title)}`,
-      location ? `LOCATION:${esc(location)}` : "",
-      details ? `DESCRIPTION:${esc(details)}` : "",
-      "END:VEVENT",
-      "END:VCALENDAR",
-    ].filter(Boolean);
-    const blob = new Blob([lines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${title.replace(/[^\w]+/g, "-").toLowerCase()}.ics`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-    setOpen(false);
+  // Server-served .ics with a calendar content-type opens the Calendar app
+  // directly on iOS/Android (no download-then-import step).
+  function icsUrl(): string {
+    const params = new URLSearchParams({ title, date });
+    if (hasTime) params.set("time", time!);
+    if (location) params.set("location", location);
+    if (details) params.set("details", details);
+    return `/api/calendar?${params.toString()}`;
   }
 
   function googleUrl(): string {
@@ -118,13 +96,13 @@ export default function AddToCalendar({
           >
             Google Calendar
           </a>
-          <button
-            type="button"
-            onClick={downloadIcs}
+          <a
+            href={icsUrl()}
+            onClick={() => setOpen(false)}
             className="block w-full px-4 py-2 text-left text-sm text-brand-ink hover:bg-brand-warm"
           >
             Apple / Outlook
-          </button>
+          </a>
         </div>
       )}
     </div>
