@@ -180,6 +180,30 @@ export default async function MinisitePage({ params }: Props) {
           </p>
         )}
 
+        {/* Photo gallery */}
+        {data.gallery.length > 0 && (
+          <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-3">
+            {data.gallery.map((url, i) => (
+              <a
+                key={`${url}-${i}`}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative aspect-square overflow-hidden rounded-2xl border border-brand-line bg-white shadow-[0_10px_30px_-24px_rgba(0,0,0,0.4)]"
+              >
+                <Image
+                  src={url}
+                  alt={`${data.coupleName} photo ${i + 1}`}
+                  fill
+                  unoptimized
+                  sizes="(max-width: 640px) 33vw, 180px"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </a>
+            ))}
+          </div>
+        )}
+
         {/* Custom links */}
         {data.customLinks.length > 0 && (
           <div className="mt-8 flex flex-col gap-3">

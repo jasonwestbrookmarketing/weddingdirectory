@@ -24,6 +24,7 @@ export interface MinisiteData {
   weddingDate: string | null;
   socials: { instagram: string | null; facebook: string | null; tiktok: string | null; pinterest: string | null };
   customLinks: { label: string; url: string; icon: string }[];
+  gallery: string[];
   showCountdown: boolean;
   showGuestbook: boolean;
   rsvpEnabled: boolean;
