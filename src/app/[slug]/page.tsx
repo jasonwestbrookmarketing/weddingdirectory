@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { MapPin, ArrowUpRight, Store, Globe, CalendarHeart, Radio, Navigation } from "lucide-react";
+import { MapPin, ArrowUpRight, Store, Globe, CalendarHeart, Navigation } from "lucide-react";
 import { fetchMinisite, RESERVED_TOP_PATHS, type MinisiteData } from "@/lib/minisite";
 import { leadLinkIcon } from "@/lib/lead-link-icons";
 import Countdown from "@/components/minisite/Countdown";
@@ -11,6 +11,8 @@ import Guestbook from "@/components/minisite/Guestbook";
 import Gallery from "@/components/minisite/Gallery";
 import RsvpFloating from "@/components/minisite/RsvpFloating";
 import AddToCalendar from "@/components/minisite/AddToCalendar";
+import LiveCover from "@/components/minisite/LiveCover";
+import LiveEmbedSection from "@/components/minisite/LiveEmbedSection";
 import LockGate from "@/components/minisite/LockGate";
 
 export const dynamic = "force-dynamic";
@@ -161,17 +163,14 @@ export default async function MinisitePage({ params }: Props) {
     ) : null;
 
   const embedBlock = data.embedHtml ? (
-    <section key="embed" className="mt-10">
-      <h2 className="flex items-center justify-center gap-2 text-center text-lg font-semibold text-brand-ink">
-        <Radio className="h-4 w-4" /> {data.embedTitle || "Livestream"}
-      </h2>
-      <div
-        className="relative mt-4 w-full overflow-hidden rounded-[10px] border border-brand-line bg-black shadow-[0_10px_30px_-20px_rgba(0,0,0,0.5)]"
-        style={{ paddingBottom: "56.25%" }}
-        // Single https iframe rebuilt server-side by StoryPay (no scripts) — safe.
-        dangerouslySetInnerHTML={{ __html: data.embedHtml }}
+    <div key="embed">
+      <LiveEmbedSection
+        embedHtml={data.embedHtml}
+        embedTitle={data.embedTitle}
+        weddingDate={data.weddingDate}
+        weddingTime={data.weddingTime}
       />
-    </section>
+    </div>
   ) : null;
 
   // Links block: venue always first (name + address → Google Maps), then custom links.
@@ -237,12 +236,13 @@ export default async function MinisitePage({ params }: Props) {
   return (
     <main className="flex min-h-screen justify-center overflow-x-hidden bg-brand-warm px-4 pt-4 pb-28">
       <div className="w-full max-w-[560px]">
-        {/* Cover hero */}
-        {data.coverUrl && (
-          <div className="relative mb-[-56px] h-52 w-full overflow-hidden rounded-[10px] border border-brand-line shadow-[0_16px_40px_-24px_rgba(0,0,0,0.4)] sm:h-60">
-            <Image src={data.coverUrl} alt="" fill unoptimized priority sizes="560px" className="object-cover" />
-          </div>
-        )}
+        {/* Cover hero — swaps to the livestream during the event window */}
+        <LiveCover
+          coverUrl={data.coverUrl}
+          embedHtml={data.embedHtml}
+          weddingDate={data.weddingDate}
+          weddingTime={data.weddingTime}
+        />
 
         {/* Header */}
         <div className="flex flex-col items-center text-center">
