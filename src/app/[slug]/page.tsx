@@ -238,7 +238,7 @@ export default async function MinisitePage({ params }: Props) {
       <div className="w-full max-w-[560px]">
         {/* Cover hero */}
         {data.coverUrl && (
-          <div className="relative mb-[-56px] h-52 w-full overflow-hidden rounded-3xl border border-brand-line shadow-[0_16px_40px_-24px_rgba(0,0,0,0.4)] sm:h-60">
+          <div className="relative mb-[-56px] h-52 w-full overflow-hidden rounded-[3px] border border-brand-line shadow-[0_16px_40px_-24px_rgba(0,0,0,0.4)] sm:h-60">
             <Image src={data.coverUrl} alt="" fill unoptimized priority sizes="560px" className="object-cover" />
           </div>
         )}

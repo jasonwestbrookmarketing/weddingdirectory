@@ -41,7 +41,7 @@ export default function Countdown({ date }: { date: string }) {
       {cells.map(([value, label]) => (
         <div
           key={label}
-          className="flex min-w-[62px] flex-col items-center rounded-2xl border border-brand-line bg-white px-3 py-3 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)]"
+          className="flex w-[68px] flex-col items-center rounded-2xl border border-brand-line bg-white px-2 py-3 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)]"
         >
           <span className="text-2xl font-semibold tabular-nums text-brand-ink">{String(value).padStart(2, "0")}</span>
           <span className="mt-0.5 text-[11px] uppercase tracking-wide text-brand-muted">{label}</span>

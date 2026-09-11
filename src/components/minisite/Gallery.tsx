@@ -35,13 +35,13 @@ export default function Gallery({ images, coupleName }: { images: string[]; coup
 
   return (
     <>
-      <div className="columns-2 gap-3 sm:columns-3 [&>*]:mb-3">
+      <div className="columns-2 gap-[5px] sm:columns-3 [&>*]:mb-[5px]">
         {images.map((url, i) => (
           <button
             key={`${url}-${i}`}
             type="button"
             onClick={() => setOpen(i)}
-            className="group block w-full overflow-hidden rounded-2xl border border-brand-line bg-white shadow-[0_10px_30px_-24px_rgba(0,0,0,0.4)]"
+            className="group block w-full overflow-hidden rounded-[3px] bg-white"
           >
             {/* Natural aspect ratio via intrinsic sizing keeps the masonry feel. */}
             <Image
