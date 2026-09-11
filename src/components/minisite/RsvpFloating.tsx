@@ -8,8 +8,12 @@ import Rsvp from "./Rsvp";
  * Always-present floating RSVP button (mobile + desktop). Opens the full RSVP
  * flow in a centered modal so guests can respond from anywhere on the page.
  */
-export default function RsvpFloating({ slug }: { slug: string }) {
+export default function RsvpFloating({ slug, weddingDate }: { slug: string; weddingDate?: string | null }) {
   const [open, setOpen] = useState(false);
+
+  const shortDate = weddingDate
+    ? new Date(`${weddingDate}T00:00:00`).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })
+    : null;
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -23,9 +27,16 @@ export default function RsvpFloating({ slug }: { slug: string }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed bottom-5 left-1/2 z-[70] -translate-x-1/2 inline-flex items-center gap-2 rounded-full bg-brand-ink px-7 py-3.5 text-sm font-semibold text-white shadow-[0_12px_32px_-8px_rgba(0,0,0,0.55)] transition-transform hover:-translate-y-0.5 hover:-translate-x-1/2"
+        className="fixed bottom-5 left-1/2 z-[70] -translate-x-1/2 inline-flex items-center gap-2.5 rounded-full bg-brand-ink px-9 py-3.5 text-sm font-semibold text-white shadow-[0_12px_32px_-8px_rgba(0,0,0,0.55)] transition-transform hover:-translate-y-0.5 hover:-translate-x-1/2"
       >
-        <CalendarHeart className="h-4 w-4" /> RSVP
+        <CalendarHeart className="h-4 w-4 shrink-0" />
+        <span>RSVP</span>
+        {shortDate && (
+          <>
+            <span className="h-4 w-px bg-white/30" aria-hidden />
+            <span className="font-medium text-white/85">{shortDate}</span>
+          </>
+        )}
       </button>
 
       {open && (

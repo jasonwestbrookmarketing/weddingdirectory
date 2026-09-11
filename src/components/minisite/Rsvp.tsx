@@ -4,8 +4,12 @@ import { useState } from "react";
 import { Loader2, CheckCircle2, Search, ChevronRight } from "lucide-react";
 
 type Match = { token: string; fullName: string; partySize: number; group: string | null; rsvpStatus: string };
+type PartyMeal = { meal: string | null; dietary: string | null };
 type GuestData = {
-  guest: { name: string; partySize: number; rsvpStatus: string; mealChoice: string | null; dietaryNotes: string | null; responded: boolean };
+  guest: {
+    name: string; partySize: number; rsvpStatus: string;
+    mealChoice: string | null; dietaryNotes: string | null; partyMeals: PartyMeal[]; responded: boolean;
+  };
   mealOptions: string[];
 };
 
@@ -20,11 +24,22 @@ export default function Rsvp({ slug }: { slug: string }) {
   const [guest, setGuest] = useState<GuestData | null>(null);
   const [loadingGuest, setLoadingGuest] = useState(false);
   const [attending, setAttending] = useState<boolean | null>(null);
-  const [headcount, setHeadcount] = useState(1);
-  const [meal, setMeal] = useState("");
-  const [dietary, setDietary] = useState("");
+  // One entry per attending person — each picks their own meal + allergies.
+  const [attendees, setAttendees] = useState<{ meal: string; dietary: string }[]>([{ meal: "", dietary: "" }]);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState<null | boolean>(null);
+
+  function setCount(n: number) {
+    const size = Math.max(1, Math.min(30, n));
+    setAttendees((prev) => {
+      const next = prev.slice(0, size);
+      while (next.length < size) next.push({ meal: "", dietary: "" });
+      return next;
+    });
+  }
+  function updateAttendee(i: number, patch: Partial<{ meal: string; dietary: string }>) {
+    setAttendees((prev) => prev.map((a, idx) => (idx === i ? { ...a, ...patch } : a)));
+  }
 
   async function search(e: React.FormEvent) {
     e.preventDefault();
@@ -69,9 +84,11 @@ export default function Rsvp({ slug }: { slug: string }) {
       }
       setGuest(data);
       setAttending(data.guest.rsvpStatus === "attending" ? true : data.guest.rsvpStatus === "declined" ? false : null);
-      setHeadcount(Math.max(1, data.guest.partySize || 1));
-      setMeal(data.guest.mealChoice ?? "");
-      setDietary(data.guest.dietaryNotes ?? "");
+      // Seed one row per invited person. Meals prefill from any prior choice;
+      // allergies always start empty (never prepopulated).
+      const size = Math.max(1, data.guest.partySize || 1);
+      const prior: PartyMeal[] = Array.isArray(data.guest.partyMeals) ? data.guest.partyMeals : [];
+      setAttendees(Array.from({ length: size }, (_, i) => ({ meal: prior[i]?.meal ?? "", dietary: "" })));
     } finally {
       setLoadingGuest(false);
     }
@@ -86,9 +103,8 @@ export default function Rsvp({ slug }: { slug: string }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           attending,
-          headcount,
-          meal_choice: meal || null,
-          dietary_notes: dietary || null,
+          headcount: attendees.length,
+          party: attendees.map((a) => ({ meal: a.meal || null, dietary: a.dietary || null })),
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -107,6 +123,7 @@ export default function Rsvp({ slug }: { slug: string }) {
     setGuest(null);
     setDone(null);
     setAttending(null);
+    setAttendees([{ meal: "", dietary: "" }]);
     setMatches(null);
     setName("");
   }
@@ -157,39 +174,49 @@ export default function Rsvp({ slug }: { slug: string }) {
                 <div>
                   <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-brand-muted">Number attending</label>
                   <div className="flex items-center gap-3">
-                    <button onClick={() => setHeadcount((n) => Math.max(1, n - 1))} className="h-9 w-9 rounded-lg border border-brand-line text-brand-ink">−</button>
-                    <span className="min-w-[2ch] text-center text-lg font-semibold text-brand-ink">{headcount}</span>
-                    <button onClick={() => setHeadcount((n) => Math.min(30, n + 1))} className="h-9 w-9 rounded-lg border border-brand-line text-brand-ink">+</button>
+                    <button onClick={() => setCount(attendees.length - 1)} className="h-9 w-9 rounded-lg border border-brand-line text-brand-ink">−</button>
+                    <span className="min-w-[2ch] text-center text-lg font-semibold text-brand-ink">{attendees.length}</span>
+                    <button onClick={() => setCount(attendees.length + 1)} className="h-9 w-9 rounded-lg border border-brand-line text-brand-ink">+</button>
                     <span className="text-xs text-brand-muted">of {guest.guest.partySize} invited</span>
                   </div>
                 </div>
 
-                {guest.mealOptions.length > 0 && (
-                  <div>
-                    <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-brand-muted">Meal choice</label>
-                    <select
-                      value={meal}
-                      onChange={(e) => setMeal(e.target.value)}
-                      className="w-full rounded-xl border border-brand-line bg-white px-3 py-2.5 text-sm text-brand-ink focus:border-brand-ink focus:outline-none"
-                    >
-                      <option value="">Select…</option>
-                      {guest.mealOptions.map((m) => (
-                        <option key={m} value={m}>{m}</option>
-                      ))}
-                    </select>
-                  </div>
-                )}
+                {attendees.map((a, i) => (
+                  <div key={i} className={attendees.length > 1 ? "space-y-3 rounded-xl border border-brand-line p-3" : "space-y-3"}>
+                    {attendees.length > 1 && (
+                      <p className="text-xs font-semibold uppercase tracking-wide text-brand-ink">
+                        {i === 0 ? guest.guest.name : `Guest ${i + 1}`}
+                      </p>
+                    )}
 
-                <div>
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-brand-muted">Dietary notes (optional)</label>
-                  <input
-                    value={dietary}
-                    onChange={(e) => setDietary(e.target.value)}
-                    maxLength={500}
-                    placeholder="Allergies, preferences…"
-                    className="w-full rounded-xl border border-brand-line bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-muted focus:border-brand-ink focus:outline-none"
-                  />
-                </div>
+                    {guest.mealOptions.length > 0 && (
+                      <div>
+                        <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-brand-muted">Meal choice</label>
+                        <select
+                          value={a.meal}
+                          onChange={(e) => updateAttendee(i, { meal: e.target.value })}
+                          className="w-full rounded-xl border border-brand-line bg-white px-3 py-2.5 text-sm text-brand-ink focus:border-brand-ink focus:outline-none"
+                        >
+                          <option value="">Select…</option>
+                          {guest.mealOptions.map((m) => (
+                            <option key={m} value={m}>{m}</option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+
+                    <div>
+                      <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-brand-muted">Allergies (optional)</label>
+                      <input
+                        value={a.dietary}
+                        onChange={(e) => updateAttendee(i, { dietary: e.target.value })}
+                        maxLength={300}
+                        placeholder="Peanuts, dairy, none…"
+                        className="w-full rounded-xl border border-brand-line bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-muted focus:border-brand-ink focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
 

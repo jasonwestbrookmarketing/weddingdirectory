@@ -295,7 +295,7 @@ export default async function MinisitePage({ params }: Props) {
       </div>
 
       {/* Always-present floating RSVP */}
-      {data.rsvpEnabled && <RsvpFloating slug={slug} />}
+      {data.rsvpEnabled && <RsvpFloating slug={slug} weddingDate={data.weddingDate} />}
     </main>
   );
 }
