@@ -5,16 +5,18 @@ import { Loader2, Heart, Send } from "lucide-react";
 
 type Entry = { id: string; guest_name: string; message: string; created_at: string };
 
-/** Friendly timestamp: just the time for today, else short date + time. */
+/** Always shows date + time, e.g. "4-6-28 9:00pm". */
 function formatWhen(iso: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "";
-  const now = new Date();
-  const time = d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
-  if (d.toDateString() === now.toDateString()) return time;
-  const sameYear = d.getFullYear() === now.getFullYear();
-  const date = d.toLocaleDateString(undefined, { month: "short", day: "numeric", ...(sameYear ? {} : { year: "numeric" }) });
-  return `${date} · ${time}`;
+  const month = d.getMonth() + 1;
+  const day = d.getDate();
+  const year = d.getFullYear() % 100;
+  let hours = d.getHours();
+  const minutes = d.getMinutes().toString().padStart(2, "0");
+  const ampm = hours >= 12 ? "pm" : "am";
+  hours = hours % 12 || 12;
+  return `${month}-${day}-${year} ${hours}:${minutes}${ampm}`;
 }
 
 /** An iMessage-style received bubble that eases in as it scrolls into view. */
