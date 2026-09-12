@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { MapPin, ArrowUpRight, Store, Globe, CalendarHeart, Navigation, Radio } from "lucide-react";
+import { MapPin, ArrowUpRight, Store, Heart, CalendarHeart, Navigation, Radio } from "lucide-react";
 import { fetchMinisite, RESERVED_TOP_PATHS, type MinisiteData } from "@/lib/minisite";
 import { leadLinkIcon } from "@/lib/lead-link-icons";
 import Countdown from "@/components/minisite/Countdown";
@@ -307,7 +307,7 @@ export default async function MinisitePage({ params }: Props) {
         {/* Footer */}
         <p className="mt-12 text-center text-xs text-brand-muted">
           <Link href="/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 underline-offset-2 hover:text-brand-ink hover:underline">
-            <Globe className="h-3.5 w-3.5" /> Made with StoryVenue
+            <Heart className="h-3.5 w-3.5" /> Made with StoryVenue
           </Link>
         </p>
       </div>
