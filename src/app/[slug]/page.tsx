@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { MapPin, ArrowUpRight, Store, Heart, CalendarHeart, Navigation, Radio } from "lucide-react";
+import { MapPin, ArrowUpRight, Store, Heart, CalendarHeart, Navigation, Radio, Gift } from "lucide-react";
 import { fetchMinisite, RESERVED_TOP_PATHS, type MinisiteData } from "@/lib/minisite";
 import { leadLinkIcon } from "@/lib/lead-link-icons";
 import Countdown from "@/components/minisite/Countdown";
@@ -229,11 +229,42 @@ export default async function MinisitePage({ params }: Props) {
       </div>
     ) : null;
 
+  // Gift registry: outbound links only (we never host anything). Gated by the
+  // couple's show_registry toggle (already applied server-side in StoryPay).
+  const registryBlock =
+    data.showRegistry && data.registryItems.length > 0 ? (
+      <section key="registry" className="mt-10">
+        <h2 className="flex items-center justify-center gap-2 text-center text-lg font-semibold text-brand-ink">
+          <Gift className="h-4 w-4" /> Gift registry
+        </h2>
+        <div className="mt-4 flex flex-col gap-3">
+          {data.registryItems.map((r, i) => (
+            <a
+              key={`${r.url}-${i}`}
+              href={r.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex w-full items-center gap-4 rounded-[10px] border border-brand-line bg-white px-5 py-4 text-left shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-ink"
+            >
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-ink text-white">
+                <Gift className="h-5 w-5" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[15px] font-semibold leading-snug text-brand-ink">{r.label}</span>
+              </span>
+              <ArrowUpRight className="h-5 w-5 shrink-0 text-brand-muted transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+          ))}
+        </div>
+      </section>
+    ) : null;
+
   const blockMap: Record<string, React.ReactNode> = {
     countdown: countdownBlock,
     story: storyBlock,
     gallery: galleryBlock,
     links: linksBlock,
+    registry: registryBlock,
     embed: embedBlock,
   };
 

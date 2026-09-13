@@ -28,6 +28,8 @@ export interface MinisiteData {
   storyHtml: string | null;
   customLinks: { label: string; url: string; icon: string }[];
   gallery: string[];
+  showRegistry: boolean;
+  registryItems: { label: string; url: string }[];
   embedHtml: string | null;
   embedTitle: string | null;
   embedMode: "page" | "live";
@@ -69,10 +71,12 @@ export async function fetchMinisite(slug: string, key?: string | null): Promise<
       socials: (j.socials as MinisiteData["socials"]) ?? { instagram: null, facebook: null, tiktok: null, pinterest: null },
       customLinks: (j.customLinks as MinisiteData["customLinks"]) ?? [],
       gallery: (j.gallery as string[]) ?? [],
+      showRegistry: Boolean(j.showRegistry),
+      registryItems: (j.registryItems as MinisiteData["registryItems"]) ?? [],
       embedHtml: (j.embedHtml as string | null) ?? null,
       embedTitle: (j.embedTitle as string | null) ?? null,
       embedMode: j.embedMode === "live" ? "live" : "page",
-      sectionOrder: (j.sectionOrder as string[]) ?? ["countdown", "story", "gallery", "links", "embed"],
+      sectionOrder: (j.sectionOrder as string[]) ?? ["countdown", "story", "gallery", "links", "registry", "embed"],
       showCountdown: Boolean(j.showCountdown),
       showGuestbook: Boolean(j.showGuestbook),
       rsvpEnabled: Boolean(j.rsvpEnabled),
