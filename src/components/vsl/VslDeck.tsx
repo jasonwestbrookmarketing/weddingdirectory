@@ -8,8 +8,7 @@ import {
   Maximize2,
   Minimize2,
 } from "lucide-react";
-import ProofTicker from "./ProofTicker";
-import { SLIDES } from "./slides";
+import { SLIDES, SLIDE_IMAGES } from "./slides";
 
 const BASE_W = 1280;
 const BASE_H = 720;
@@ -51,6 +50,14 @@ export default function VslDeck() {
     fit();
     window.addEventListener("resize", fit);
     return () => window.removeEventListener("resize", fit);
+  }, []);
+
+  // Warm the browser cache for every slide image so navigation is instant.
+  useEffect(() => {
+    SLIDE_IMAGES.forEach((src) => {
+      const img = new window.Image();
+      img.src = src;
+    });
   }, []);
 
   // Deep-link to a slide via the URL hash on first load.
@@ -156,22 +163,19 @@ export default function VslDeck() {
         }}
         className="relative shrink-0 cursor-pointer select-none overflow-hidden bg-brand-warm shadow-[0_40px_120px_-40px_rgba(0,0,0,0.8)]"
       >
-        <div className="flex h-full w-full flex-col">
-          <ProofTicker />
-          <div className="relative flex-1 overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={index}
-                className="absolute inset-0"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.35, ease: "easeInOut" }}
-              >
-                {SLIDES[index].node}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+        <div className="relative h-full w-full overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index}
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.28, ease: "easeInOut" }}
+            >
+              {SLIDES[index].node}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Progress bar */}
