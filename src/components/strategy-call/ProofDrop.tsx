@@ -7,6 +7,7 @@ import { SketchUnderline } from "./SketchUnderline";
 const PROOF_CARDS = [
   {
     venue: "Retreat at Evans Farms",
+    client: "Cheryl",
     stat: "100+",
     detail: "Bride inquiries every month",
     logo: "/logos/retreat.png",
@@ -14,6 +15,7 @@ const PROOF_CARDS = [
   },
   {
     venue: "White Pine Manor",
+    client: "Joanne",
     stat: "8 Tours + 3 Weddings",
     detail: "Booked in the last 30 days",
     logo: "/logos/white-pine.png",
@@ -21,13 +23,15 @@ const PROOF_CARDS = [
   },
   {
     venue: "Atlantic Stables",
+    client: "Cole",
     stat: "$10,000",
-    detail: "In booked weddings his first month live",
+    detail: "In booked weddings their first month live",
     logo: "/logos/atlantic.png",
     logoDims: { w: 120, h: 28 },
   },
   {
     venue: "Magnolia Weddings & Event Center",
+    client: "Antonio",
     stat: "48 Hours",
     detail: "To their very first booked tour after going live",
     logo: "/logos/magnolia.png",
@@ -47,6 +51,7 @@ function statFont(stat: string): string {
 
 function ProofCard({
   venue,
+  client,
   stat,
   detail,
   logo,
@@ -54,6 +59,7 @@ function ProofCard({
   delay,
 }: {
   venue: string;
+  client: string;
   stat: string;
   detail: string;
   logo: string | null;
@@ -61,8 +67,8 @@ function ProofCard({
   delay: number;
 }) {
   return (
-    <Reveal delay={delay} className="w-full sm:w-auto">
-      <div className="relative bg-white border border-brand-line rounded-xl overflow-hidden h-full flex flex-col w-full sm:w-[280px]">
+    <Reveal delay={delay} className="w-full">
+      <div className="relative bg-white border border-brand-line rounded-xl overflow-hidden h-full flex flex-col w-full">
         {/* Gold accent bar */}
         <div className="h-[3px] w-full bg-[#8a7448] shrink-0" />
 
@@ -112,6 +118,17 @@ function ProofCard({
           >
             {detail}
           </p>
+
+          {/* Client attribution — real person, third person. Thin divider keeps
+              it structured and on-brand. */}
+          <p
+            className="mt-auto pt-4 border-t border-brand-line text-[12px] sm:text-[12.5px] leading-snug"
+            style={{ fontFamily: "var(--font-open-sans)", color: "#78716c" }}
+          >
+            <span className="font-semibold text-brand-ink">{client}</span>
+            {" · "}
+            {venue}
+          </p>
         </div>
       </div>
     </Reveal>
@@ -144,7 +161,7 @@ export default function ProofDrop() {
           </h2>
         </Reveal>
 
-        <div className="mt-12 sm:mt-14 flex flex-wrap justify-center gap-4 sm:gap-5">
+        <div className="mt-12 sm:mt-14 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 max-w-[720px] mx-auto text-left">
           {PROOF_CARDS.map((card, i) => (
             <ProofCard key={card.venue} {...card} delay={0.07 * i} />
           ))}
