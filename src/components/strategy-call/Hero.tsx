@@ -51,7 +51,7 @@ export default function Hero() {
           {/* H1 */}
           <motion.h1
             variants={item}
-            className="text-[24px] sm:text-[28px] md:text-[32px] lg:text-[40px] leading-[1.18] text-brand-ink text-balance"
+            className="text-[28px] sm:text-[32px] md:text-[38px] lg:text-[46px] leading-[1.18] text-brand-ink text-balance"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Fully Book Your Wedding Venue Without Relying on The Knot,
@@ -64,9 +64,9 @@ export default function Hero() {
             className="text-[15px] sm:text-[17px] text-brand-muted tracking-wide text-balance"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Discover the Bride Booking System
-            <sup className="align-super text-[0.6em]">™</sup> that helps wedding
-            venues find more brides, host more tours, and book more weddings.
+            Discover the Bride Booking System<sup className="text-[0.55em] align-top relative -top-[0.1em] ml-[0.5px]">™</sup>{" "}
+            that helps wedding venues find more brides, host more tours, and book
+            more weddings.
           </motion.p>
 
           {/* VSL — branded poster, click-to-play (Cloudflare Stream). Tapping
