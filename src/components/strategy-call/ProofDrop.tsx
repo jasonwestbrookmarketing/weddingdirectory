@@ -150,7 +150,7 @@ export default function ProofDrop() {
 
         <Reveal delay={0.08}>
           <h2
-            className="mt-4 text-[26px] sm:text-4xl md:text-[42px] text-brand-ink leading-[1.12] max-w-2xl mx-auto"
+            className="mt-4 text-[26px] sm:text-4xl md:text-[40px] text-brand-ink leading-[1.12] max-w-5xl mx-auto text-balance"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
             Not because they get more leads. Because they finally have a{" "}
