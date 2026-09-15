@@ -48,41 +48,25 @@ export default function Hero() {
             For Wedding Venue Owners
           </motion.p>
 
-          {/* H1
-              Mobile  (< md)  → 4 lines
-              Desktop (md +)  → 3 lines
-          */}
+          {/* H1 */}
           <motion.h1
             variants={item}
-            className="text-[24px] sm:text-[28px] md:text-[32px] lg:text-[40px] leading-[1.18] text-brand-ink"
+            className="text-[24px] sm:text-[28px] md:text-[32px] lg:text-[40px] leading-[1.18] text-brand-ink text-balance"
             style={{ fontFamily: "EditorsNote, serif", fontWeight: 300 }}
           >
-            {/* ── line 1 (both) ───────────────────────────────────────── */}
-            See The New Bride Booking System to
-            <br />
-            {/* ── line 2 mobile: "Fully Book Your Wedding Venue Without"
-                   line 2 desktop: same + " Relying on" ──────────────── */}
-            Fully Book Your Wedding Venue Without
-            {/* mobile only: break here */}
-            <br className="block md:hidden" />
-            {" "}Relying on
-            {/* desktop only: break here */}
-            <br className="hidden md:block" />
-            {/* ── line 3 mobile: "The Knot,"
-                   line 3 desktop: "The Knot, WeddingWire …" ─────────── */}
-            {" "}The Knot, WeddingWire
-            {/* mobile only: break here */}
-            <br className="block md:hidden" />
-            {" "}or Waiting To Get Found.
+            Fully Book Your Wedding Venue Without Relying on The Knot,
+            WeddingWire, Endless Social Media Posts, or Agencies That Don’t Care.
           </motion.h1>
 
-          {/* Subhead — single horizontal line */}
+          {/* Subhead */}
           <motion.p
             variants={item}
-            className="text-[15px] sm:text-[17px] text-brand-muted tracking-wide"
+            className="text-[15px] sm:text-[17px] text-brand-muted tracking-wide text-balance"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            We bring the brides.&nbsp;&nbsp;&nbsp;Our team works the leads.&nbsp;&nbsp;&nbsp;You show up for the tour.
+            Discover the Bride Booking System
+            <sup className="align-super text-[0.6em]">™</sup> that helps wedding
+            venues find more brides, host more tours, and book more weddings.
           </motion.p>
 
           {/* VSL — branded poster, click-to-play (Cloudflare Stream). Tapping
