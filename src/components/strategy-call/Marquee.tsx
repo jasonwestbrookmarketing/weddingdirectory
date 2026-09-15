@@ -5,7 +5,7 @@ import { useState } from "react";
 const ITEMS = [
   { venue: "Manor", result: "2026 Dates Booked in 90 Days" },
   { venue: "Waterloo Farms", result: "2 Weddings Booked in 7 Days" },
-  { venue: "Atlantic Stables", result: "$15,000 in Booked Weddings in 30 Days" },
+  { venue: "Atlantic Stables", result: "$10,000 in Booked Weddings" },
   { venue: "Retreat at Evans Farms", result: "258 Leads in 60 Days" },
   { venue: "Red Barn Acres", result: "9 Weddings Booked in 4 Months" },
   { venue: "Irongate Wedding Venue", result: "131 Leads in 60 Days" },
