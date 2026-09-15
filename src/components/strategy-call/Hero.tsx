@@ -61,12 +61,11 @@ export default function Hero() {
           {/* Subhead */}
           <motion.p
             variants={item}
-            className="text-[15px] sm:text-[17px] text-brand-muted tracking-wide text-balance"
+            className="text-[18px] sm:text-[21px] text-brand-muted tracking-wide text-balance"
             style={{ fontFamily: "var(--font-open-sans)" }}
           >
-            Discover the Bride Booking System<sup className="text-[0.55em] align-top relative -top-[0.1em] ml-[0.5px]">™</sup>{" "}
-            that helps wedding venues find more brides, host more tours, and book
-            more weddings.
+            Discover the Bride Booking System that helps wedding venues find more
+            brides, host more tours, and book more weddings.
           </motion.p>
 
           {/* VSL — branded poster, click-to-play (Cloudflare Stream). Tapping
