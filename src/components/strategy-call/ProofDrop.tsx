@@ -6,27 +6,44 @@ import { SketchUnderline } from "./SketchUnderline";
 
 const PROOF_CARDS = [
   {
+    venue: "Retreat at Evans Farms",
+    stat: "100+",
+    detail: "Bride inquiries every month",
+    logo: "/logos/retreat.png",
+    logoDims: { w: 140, h: 40 },
+  },
+  {
+    venue: "White Pine Manor",
+    stat: "8 Tours + 3 Weddings",
+    detail: "Booked in the last 30 days",
+    logo: "/logos/white-pine.png",
+    logoDims: { w: 120, h: 28 },
+  },
+  {
     venue: "Atlantic Stables",
-    stat: "$15k",
-    detail: "In booked weddings the first 30 days",
+    stat: "$10,000",
+    detail: "In booked weddings his first month live",
     logo: "/logos/atlantic.png",
     logoDims: { w: 120, h: 28 },
   },
   {
-    venue: "Waterloo Farms",
-    stat: "$8,000",
-    detail: "In booked weddings the first 7 days",
-    logo: "/logos/waterloo.png",
-    logoDims: { w: 120, h: 28 },
-  },
-  {
-    venue: "Retreat at Evans Farms",
-    stat: "258",
-    detail: "Leads in 60 days",
-    logo: "/logos/retreat.png",
-    logoDims: { w: 140, h: 40 },
+    venue: "Magnolia Weddings & Event Center",
+    stat: "48 Hours",
+    detail: "To their very first booked tour after going live",
+    logo: "/logos/magnolia.png",
+    logoDims: { w: 150, h: 52 },
   },
 ];
+
+// Content-aware stat size — keeps short stats punchy while letting longer,
+// multi-word stats (e.g. "8 Tours + 3 Weddings") wrap cleanly instead of
+// overflowing the card.
+function statFont(stat: string): string {
+  const n = stat.length;
+  if (n <= 6) return "clamp(46px, 5.2vw, 68px)";
+  if (n <= 9) return "clamp(38px, 4.4vw, 56px)";
+  return "clamp(26px, 3vw, 40px)";
+}
 
 function ProofCard({
   venue,
@@ -72,18 +89,21 @@ function ProofCard({
             </p>
           )}
 
-          {/* Big stat — size tuned so even '$8,000' fits comfortably */}
-          <p
-            className="leading-none"
-            style={{
-              fontFamily: "EditorsNote, serif",
-              fontWeight: 300,
-              fontSize: "clamp(48px, 5.5vw, 72px)",
-              color: "#1b1b1b",
-            }}
-          >
-            {stat}
-          </p>
+          {/* Big stat — bottom-aligned in a fixed box so single- and
+              multi-line stats keep the detail line level across cards. */}
+          <div className="flex items-end min-h-[80px] sm:min-h-[92px]">
+            <p
+              className="leading-[1.02]"
+              style={{
+                fontFamily: "EditorsNote, serif",
+                fontWeight: 300,
+                fontSize: statFont(stat),
+                color: "#1b1b1b",
+              }}
+            >
+              {stat}
+            </p>
+          </div>
 
           {/* Detail — min-height keeps single-line cards level with two-line ones */}
           <p
