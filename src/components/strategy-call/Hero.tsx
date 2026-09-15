@@ -85,9 +85,11 @@ export default function Hero() {
             We bring the brides.&nbsp;&nbsp;&nbsp;Our team works the leads.&nbsp;&nbsp;&nbsp;You show up for the tour.
           </motion.p>
 
-          {/* VSL — ungated, autoplays as soon as they land. */}
+          {/* VSL — branded poster, click-to-play (Cloudflare Stream). Tapping
+              play mounts the player with sound on the user gesture, which is
+              reliable across browsers for a talking-head VSL. */}
           <motion.div variants={item} className="pt-2 sm:pt-4">
-            <VideoPlayer showPoster={false} autoplay />
+            <VideoPlayer />
           </motion.div>
 
           {/* CTA */}

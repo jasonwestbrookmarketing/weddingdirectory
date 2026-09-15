@@ -66,6 +66,13 @@ function toEmbedUrl(url: string, autoplay: boolean): string {
       }
     }
 
+    // Cloudflare Stream: the player reads ?autoplay=true (not =1). It only
+    // mounts after a tap, so autoplay-with-sound is allowed by the browser.
+    if (u.hostname.includes("cloudflarestream.com")) {
+      if (autoplay) u.searchParams.set("autoplay", "true");
+      return u.toString();
+    }
+
     // Vimeo / YouTube / other embeds: append autoplay if requested
     if (autoplay && !/autoplay=/.test(u.search)) {
       u.searchParams.set("autoplay", "1");
@@ -79,9 +86,9 @@ function toEmbedUrl(url: string, autoplay: boolean): string {
 
 export default function VideoPlayer({
   videoUrl = VSL_VIDEO_URL,
-  poster = "/hero-wedding.jpg",
-  durationLabel = "Watch · 4 min 40 sec",
-  ariaLabel = "Play video — Watch · 4 minutes 40 seconds",
+  poster = "/vsl-poster.jpg",
+  durationLabel = "Watch · 8 min 20 sec",
+  ariaLabel = "Play video — Watch · 8 minutes 20 seconds",
   fillScale = 1,
   showPoster = true,
   autoplay,
