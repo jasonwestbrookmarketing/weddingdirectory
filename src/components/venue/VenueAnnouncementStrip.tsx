@@ -23,7 +23,7 @@ import { useEffect, useRef, useState, type CSSProperties, type Ref } from "react
  * active window (see venue/[slug]/page.tsx), so this component just renders.
  */
 
-const SCROLL_PX_PER_SEC = 70; // constant apparent speed, any message length
+const SCROLL_PX_PER_SEC = 52.5; // constant apparent speed (~25% slower), any message length
 
 function hashMessage(msg: string): string {
   let h = 0;
