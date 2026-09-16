@@ -267,8 +267,6 @@ export default async function VenuePage({ params, searchParams }: Props) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Owner announcement strip — top of page, above the nav. Message-only. */}
-      {announcementMessage && <VenueAnnouncementStrip message={announcementMessage} />}
       {/* Structured data for search + AI answer engines (skip on demo preview). */}
       {!previewToken && (
         <script
@@ -312,6 +310,13 @@ export default async function VenuePage({ params, searchParams }: Props) {
       </nav>
       )}
       {venue.id && <ListingTracker venueId={venue.id} />}
+      {/* Owner announcement strip — constrained to the photo-grid width with
+          matching rounded corners so it reads as its own card. Message-only. */}
+      {announcementMessage && (
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 pt-4 md:pt-6">
+          <VenueAnnouncementStrip message={announcementMessage} />
+        </div>
+      )}
       <VenuePageClient
         venue={venue}
         reviews={reviews}
