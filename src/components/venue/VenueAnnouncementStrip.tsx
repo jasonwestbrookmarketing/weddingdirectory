@@ -16,8 +16,11 @@ import { useEffect, useRef, useState, type CSSProperties, type Ref } from "react
  *     translate -50% for a seamless loop. Duration scales with width so the
  *     scroll SPEED stays constant regardless of message length. Disabled under
  *     prefers-reduced-motion (falls back to a centered static message).
- *   - Dismissible per visitor, keyed to the message text, so a NEW announcement
- *     re-shows the bar for someone who dismissed the previous one.
+ *   - Dismissible for the current page view only — no localStorage. Refreshing
+ *     the page always brings it back while the announcement is still active on
+ *     the backend. The ONLY way to make it stop showing entirely is turning the
+ *     announcement off (or letting its window lapse) in the dashboard, at which
+ *     point the page stops passing `message` and this component renders null.
  *
  * The page passes `message` only when the announcement is enabled and in its
  * active window (see venue/[slug]/page.tsx), so this component just renders.
@@ -25,34 +28,16 @@ import { useEffect, useRef, useState, type CSSProperties, type Ref } from "react
 
 const SCROLL_PX_PER_SEC = 42; // constant apparent speed, any message length
 
-function hashMessage(msg: string): string {
-  let h = 0;
-  for (let i = 0; i < msg.length; i++) {
-    h = (h << 5) - h + msg.charCodeAt(i);
-    h |= 0;
-  }
-  return Math.abs(h).toString(36);
-}
-
 export default function VenueAnnouncementStrip({ message }: { message: string }) {
   const trimmed = message.trim();
-  const storageKey = `sv_ann_dismiss_${hashMessage(trimmed)}`;
 
-  const [dismissed, setDismissed] = useState(true); // hidden until we confirm not-dismissed (avoids flash)
+  const [dismissed, setDismissed] = useState(false);
   const [copies, setCopies] = useState(1);
   const [durationSec, setDurationSec] = useState(20);
   const [animate, setAnimate] = useState(false);
 
   const trackRef = useRef<HTMLDivElement>(null);
   const unitRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    try {
-      setDismissed(localStorage.getItem(storageKey) === "1");
-    } catch {
-      setDismissed(false);
-    }
-  }, [storageKey]);
 
   // Measure one message "unit" vs. the track, then repeat enough to fill and
   // pick a duration that keeps the scroll speed constant.
@@ -86,11 +71,6 @@ export default function VenueAnnouncementStrip({ message }: { message: string })
 
   function dismiss() {
     setDismissed(true);
-    try {
-      localStorage.setItem(storageKey, "1");
-    } catch {
-      /* ignore */
-    }
   }
 
   const unit = (key: string, ref?: Ref<HTMLSpanElement>) => (
