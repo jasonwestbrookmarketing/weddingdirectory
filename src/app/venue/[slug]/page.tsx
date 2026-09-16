@@ -6,6 +6,7 @@ import { parseGoogleReviewsCache } from "@/lib/google-reviews";
 import { needsLocationRepair, repairVenueLocation } from "@/lib/location-repair";
 import VenuePageClient from "./VenuePageClient";
 import ListingTracker from "@/components/venue/ListingTracker";
+import VenueAnnouncementStrip from "@/components/venue/VenueAnnouncementStrip";
 import SiteFooter from "@/components/SiteFooter";
 import { VenueSeoFooter } from "@/components/VenueSeoFooter";
 import type { Metadata } from "next";
@@ -26,6 +27,25 @@ function parseFaqServer(raw: unknown): Array<{ question: string; answer: string 
     if (out.length >= 20) break;
   }
   return out;
+}
+
+/**
+ * Owner announcement strip gate. This repo reads the venues row directly, so we
+ * apply the same rules the StoryPay API uses: show only when enabled, non-empty,
+ * and not past its expiry (so time-boxed promos auto-hide on their own). Returns
+ * the message to render, or null.
+ */
+function getAnnouncementMessage(raw: unknown): string | null {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  const a = raw as { enabled?: unknown; message?: unknown; expires_at?: unknown };
+  if (a.enabled !== true) return null;
+  const message = typeof a.message === "string" ? a.message.trim() : "";
+  if (!message) return null;
+  if (typeof a.expires_at === "string" && a.expires_at) {
+    const t = new Date(a.expires_at).getTime();
+    if (!Number.isNaN(t) && t <= Date.now()) return null;
+  }
+  return message;
 }
 
 /** Build EventVenue + FAQPage JSON-LD from whatever venue fields are present. */
@@ -241,8 +261,14 @@ export default async function VenuePage({ params, searchParams }: Props) {
     guidePreviewUrl = pricingGuideEnabled ? (guideRow?.cover_image_url ?? "") : "";
   }
 
+  const announcementMessage = getAnnouncementMessage(
+    (venue as Record<string, unknown>).announcement,
+  );
+
   return (
     <div className="min-h-screen bg-white">
+      {/* Owner announcement strip — top of page, above the nav. Message-only. */}
+      {announcementMessage && <VenueAnnouncementStrip message={announcementMessage} />}
       {/* Structured data for search + AI answer engines (skip on demo preview). */}
       {!previewToken && (
         <script

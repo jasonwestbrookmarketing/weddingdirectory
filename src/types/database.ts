@@ -27,7 +27,7 @@ export type Json =
  * this repo must select from this list (or a subset of it) instead of `*`.
  */
 export const ANON_VENUE_SELECT =
-  "id, slug, name, description, venue_type, location_full, location_city, location_state, lat, lng, capacity_min, capacity_max, price_min, price_max, indoor_outdoor, features, cover_image_url, gallery_images, availability_notes, is_published, is_demo, demo_preview_token, brand_website, phone, email, show_map, social_links, lead_link_links, faq, google_place_id, google_reviews_cache, google_reviews_fetched_at, directory_verified_status, directory_sponsored_status, directory_plan_id, meta_pixel_id, seo_title, seo_description, seo_keywords, created_at, updated_at" as const;
+  "id, slug, name, description, venue_type, location_full, location_city, location_state, lat, lng, capacity_min, capacity_max, price_min, price_max, indoor_outdoor, features, cover_image_url, gallery_images, availability_notes, is_published, is_demo, demo_preview_token, brand_website, phone, email, show_map, announcement, social_links, lead_link_links, faq, google_place_id, google_reviews_cache, google_reviews_fetched_at, directory_verified_status, directory_sponsored_status, directory_plan_id, meta_pixel_id, seo_title, seo_description, seo_keywords, created_at, updated_at" as const;
 
 export type Database = {
   public: {
@@ -95,6 +95,13 @@ export interface Venue {
   email: string | null;
   /** Owner toggle for the public map embed on the venue listing. */
   show_map: boolean | null;
+  /**
+   * Owner announcement strip: { enabled, message, expires_at }. Rendered at the
+   * very top of the public listing when enabled + non-empty + not expired.
+   * Message-only by design (no link) so it never competes with the pricing-guide
+   * opt-in. Gated in the page (this repo reads the column directly).
+   */
+  announcement: Json | null;
   /** Sparse object of social URLs. See VenueSocialLinks for known keys. */
   social_links: Json | null;
   /** Up to 3 custom bio-link buttons: [{ label, url, icon }]. See LeadLinkCustomLink. */
