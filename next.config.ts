@@ -4,6 +4,10 @@ const APP_URL =
   process.env.NEXT_PUBLIC_STORYPAY_URL ?? "https://app.storyvenue.com";
 
 const nextConfig: NextConfig = {
+  // A stray lockfile in the home folder makes Turbopack guess the wrong
+  // workspace root in local dev, which breaks `next dev`; pin it to the
+  // project (next always runs from the project directory).
+  turbopack: { root: process.cwd() },
   images: {
     remotePatterns: [
       {
