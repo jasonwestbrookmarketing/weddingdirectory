@@ -21,6 +21,7 @@ Each venue listing page includes: venue name and location, venue type (barn, bal
 
 - [Venue directory](${SITE_URL}/venues): browse wedding venues by city and state
 - [Search](${SITE_URL}/search): search wedding venues
+- [Free Wedding Planner](${SITE_URL}/wedding-planner): free planning tools for couples — budget, guest list with RSVPs, seating chart, checklist, timeline, vendors, and a free wedding website
 - [Sitemap](${SITE_URL}/sitemap.xml): all venue listing pages and city/state browse pages
 
 ## For venues
