@@ -242,7 +242,7 @@ export default function WeddingPlannerPage() {
               style={editors}
               className="mx-auto mt-4 max-w-3xl text-balance text-[2.75rem] leading-[1.06] tracking-tight sm:text-6xl lg:text-7xl"
             >
-              Plan your whole wedding from <em className="italic">one beautiful place</em>
+              Plan your whole wedding from one beautiful place
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-stone-600">
               Budget, guest list, RSVPs, seating chart, checklist, timeline, vendors, and a free
@@ -286,7 +286,7 @@ export default function WeddingPlannerPage() {
         {/* ============================================================ */}
         <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <h2 style={editors} className="mx-auto max-w-2xl text-balance text-center text-4xl tracking-tight sm:text-5xl">
-            Sound <em className="italic">familiar?</em>
+            Sound familiar?
           </h2>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {PAINS.map(({ icon: Icon, text }) => (
@@ -310,7 +310,7 @@ export default function WeddingPlannerPage() {
             </p>
             <h2 style={editors} className="mt-4 text-balance text-4xl leading-snug tracking-tight sm:text-5xl">
               None of it is hard on its own.{" "}
-              <em className="italic text-[#d4c4ad]">It&rsquo;s hard because it&rsquo;s scattered.</em>
+              <span className="text-[#d4c4ad]">It&rsquo;s hard because it&rsquo;s scattered.</span>
             </h2>
             <div className="mt-7 space-y-5 text-left text-[17px] leading-relaxed text-stone-300 sm:text-center">
               <p className="text-pretty">
@@ -320,7 +320,7 @@ export default function WeddingPlannerPage() {
               </p>
               <p className="text-pretty">
                 Scattered is planning the happiest day of your life with the back of your mind
-                permanently whispering, <em style={editors} className="italic text-stone-200">you&rsquo;re forgetting something.</em>
+                permanently whispering, <span className="text-stone-200">you&rsquo;re forgetting something.</span>
               </p>
               <p className="text-pretty font-medium text-white">
                 You didn&rsquo;t get engaged to run a logistics operation out of six apps. There&rsquo;s a
@@ -336,7 +336,7 @@ export default function WeddingPlannerPage() {
         <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <div className="text-center">
             <h2 style={editors} className="text-balance text-4xl tracking-tight sm:text-5xl">
-              One home for the whole plan. <em className="italic">Here&rsquo;s how it works:</em>
+              One home for the whole plan. Here&rsquo;s how it works:
             </h2>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -366,7 +366,7 @@ export default function WeddingPlannerPage() {
                 Everything you get, free
               </p>
               <h2 style={editors} className="mt-3 text-balance text-4xl tracking-tight sm:text-5xl">
-                Six tools. <em className="italic">One plan.</em>
+                Six tools. One plan.
               </h2>
             </div>
 
@@ -424,7 +424,7 @@ export default function WeddingPlannerPage() {
                 <Lock className="h-5 w-5 text-emerald-700" />
               </span>
               <h2 style={editors} className="text-3xl tracking-tight sm:text-4xl">
-                Free. <em className="italic">Actually free.</em>
+                Free. Actually free.
               </h2>
             </div>
             <p className="mt-4 text-pretty text-[16px] leading-relaxed text-stone-600">
@@ -453,7 +453,7 @@ export default function WeddingPlannerPage() {
         <section className="bg-stone-50 py-20">
           <div className="mx-auto max-w-3xl px-4 sm:px-6">
             <h2 style={editors} className="text-balance text-center text-4xl tracking-tight sm:text-5xl">
-              Questions, <em className="italic">answered.</em>
+              Questions, answered.
             </h2>
             <div className="mt-10 space-y-3">
               {FAQS.map((f) => (
@@ -475,7 +475,7 @@ export default function WeddingPlannerPage() {
         <section className="bg-[#1b1b1b] py-24 text-center text-white">
           <div className="mx-auto max-w-2xl px-4 sm:px-6">
             <h2 style={editors} className="text-balance text-4xl leading-tight tracking-tight sm:text-6xl">
-              Your wedding, <em className="italic text-[#d4c4ad]">organized by tonight.</em>
+              Your wedding, <span className="text-[#d4c4ad]">organized by tonight.</span>
             </h2>
             <p className="mt-5 text-pretty text-[17px] leading-relaxed text-stone-300">
               Two minutes to start, on your laptop or your phone. And the next time someone asks
