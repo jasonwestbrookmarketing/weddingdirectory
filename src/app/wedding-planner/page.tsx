@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     "Plan your whole wedding from one place, free: budget tracker, guest list with RSVPs, seating chart, checklist, timeline, vendors, and a free wedding website. No credit card, no vendor spam.",
   alternates: { canonical: "/wedding-planner" },
   openGraph: {
-    title: "Plan your whole wedding from one beautiful place — free",
+    title: "Plan your whole wedding from one beautiful place, free",
     description:
       "Budget, guest list, RSVPs, seating chart, checklist, timeline, vendors, and a free wedding website. Everything in one tab instead of eleven.",
     url: "/wedding-planner",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "The free StoryVenue Wedding Planner",
     description:
-      "Budget, guest list, RSVPs, seating, checklist, timeline and a free wedding website — in one place.",
+      "Budget, guest list, RSVPs, seating, checklist, timeline and a free wedding website, all in one place.",
     images: [OG_IMAGE],
   },
 };
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
 /* -------------------------------------------------------------------- */
 
 const PAINS: Array<{ icon: React.ComponentType<{ className?: string }>; text: string }> = [
-  { icon: ClipboardList, text: "The guest list lives in a spreadsheet. Well — three versions of a spreadsheet." },
+  { icon: ClipboardList, text: "The guest list lives in a spreadsheet. Well, three versions of a spreadsheet." },
   { icon: MailQuestion, text: "RSVPs arrive by text, DM, email, and through your mom." },
   { icon: Wallet, text: "The budget is a note on your phone that stopped being true in March." },
   { icon: StickyNote, text: "The seating chart is sticky notes on a poster board that the cat found." },
@@ -66,7 +66,7 @@ const PAINS: Array<{ icon: React.ComponentType<{ className?: string }>; text: st
 ];
 
 const STEPS: Array<{ n: string; title: string; text: string }> = [
-  { n: "1", title: "Create your free planner", text: "Two minutes. An email and a password — no credit card, no “pick a plan.”" },
+  { n: "1", title: "Create your free planner", text: "Two minutes. An email and a password. No credit card, and no “pick a plan.”" },
   { n: "2", title: "Put in the big three", text: "Your date, your people, your number. That’s the skeleton of every wedding plan." },
   { n: "3", title: "Plan from one hub", text: "RSVPs land on the guest list. The guest list fills the seating chart. The checklist knows what’s next. Nothing to reconcile, ever." },
 ];
@@ -82,15 +82,15 @@ const FEATURES: Array<{
   {
     icon: CalendarHeart,
     title: "One hub for the whole wedding",
-    text: "Open one page and know exactly where everything stands — the countdown, RSVPs in, budget spent, to-dos done, and what to do next.",
+    text: "Open one page and know exactly where everything stands: the countdown, RSVPs in, budget spent, to-dos done, and what to do next.",
     points: ["Your next steps, in order", "Every number at a glance", "Your cover photo themes it all"],
     img: { src: "/wedding-planner/hub-laptop.webp", width: 1800, height: 1119, alt: "The Wedding Planner hub with countdown, RSVPs, budget and next steps" },
   },
   {
     icon: PiggyBank,
     title: "A budget that tells the truth",
-    text: "Target, estimated, actually spent, and what’s left — per category, marked paid as you go. No formulas to break.",
-    points: ["14 wedding categories built in", "Paid vs. still-owed at a glance", "Private to you — even your venue can’t see it"],
+    text: "Target, estimated, actually spent, and what’s left, per category, marked paid as you go. No formulas to break.",
+    points: ["14 wedding categories built in", "Paid vs. still-owed at a glance", "Private to you. Even your venue can’t see it"],
     img: { src: "/wedding-planner/budget-phone.webp", width: 760, height: 1451, alt: "The wedding budget on a phone" },
     phone: true,
   },
@@ -98,20 +98,20 @@ const FEATURES: Array<{
     icon: Users,
     title: "Guest list & RSVPs that run themselves",
     text: "Track households, not rows: parties, groups, meals and replies in one list. RSVPs from your wedding website land here on their own.",
-    points: ["Invites, meals & replies per party", "“Who hasn’t answered?” in one glance", "17 yes · 2 no · 3 waiting — always current"],
+    points: ["Invites, meals & replies per party", "“Who hasn’t answered?” in one glance", "17 yes · 2 no · 3 waiting, always current"],
     img: { src: "/wedding-planner/guests-desktop.webp", width: 1700, height: 1163, alt: "The guest list with RSVP tracking" },
   },
   {
     icon: HeartHandshake,
     title: "A seating chart without scissors",
     text: "Add tables, drop in each party, and watch seats fill by party size. When it’s done, your venue can see the layout for day-of setup.",
-    points: ["Seats count themselves", "Deleting a table un-seats guests — never deletes them", "Room layout view included"],
+    points: ["Seats count themselves", "Deleting a table un-seats guests, never deletes them", "Room layout view included"],
     img: { src: "/wedding-planner/seating-desktop.webp", width: 1700, height: 1163, alt: "The seating chart with tables and seated guests" },
   },
   {
     icon: ListChecks,
     title: "The checklist & day-of timeline",
-    text: "Every task with a due date, from “book the venue” to “final guest count” — then a minute-by-minute timeline for the day itself.",
+    text: "Every task with a due date, from “book the venue” to “final guest count.” Then a minute-by-minute timeline for the day itself.",
     points: ["Know what’s next without thinking", "Hair & makeup to sparkler send-off", "Share the timeline with anyone who asks"],
     img: { src: "/wedding-planner/checklist-phone.webp", width: 760, height: 1451, alt: "The wedding checklist on a phone" },
     phone: true,
@@ -119,7 +119,7 @@ const FEATURES: Array<{
   {
     icon: Globe,
     title: "A free wedding website",
-    text: "Your story, your photos, your details — with built-in RSVP, an optional password, and a guestbook your people will actually sign.",
+    text: "Your story, your photos, your details, with built-in RSVP, an optional password, and a guestbook your people will actually sign.",
     points: ["RSVPs flow straight into your guest list", "Password-protect it if you like", "Your planner’s cover photo is the website’s cover"],
     img: { src: "/wedding-planner/hub-phone.webp", width: 760, height: 1451, alt: "The Wedding Planner on a phone" },
     phone: true,
@@ -127,16 +127,16 @@ const FEATURES: Array<{
 ];
 
 const GUARANTEES: string[] = [
-  "No credit card — not now, not later, not for the planner.",
+  "No credit card. Not now, not later, not for the planner.",
   "No vendor spam. Your guest list is nobody’s mailing list.",
   "Private by default. Your budget is visible to exactly one couple: you.",
-  "Yours with any venue — or before you’ve picked one at all.",
+  "Yours with any venue, or before you’ve picked one at all.",
 ];
 
 const FAQS: Array<{ q: string; a: string }> = [
   {
     q: "Is it really free?",
-    a: "Yes. Wedding venues pay StoryVenue for their booking software — that’s the business. The Wedding Planner is the couple’s side of the platform, and it’s free for couples. No trial clock, no credit card, no locked “pro” version of your own wedding.",
+    a: "Yes. Wedding venues pay StoryVenue for their booking software; that’s the business. The Wedding Planner is the couple’s side of the platform, and it’s free for couples. No trial clock, no credit card, no locked “pro” version of your own wedding.",
   },
   {
     q: "Does my venue need to be on StoryVenue?",
@@ -144,7 +144,7 @@ const FAQS: Array<{ q: string; a: string }> = [
   },
   {
     q: "Can my partner and my mom help plan?",
-    a: "Yes — invite collaborators to plan with you. They can see and help with the plan, while your budget stays visible to you alone.",
+    a: "Yes. Invite collaborators to plan with you. They can see and help with the plan, while your budget stays visible to you alone.",
   },
   {
     q: "Is a wedding website included?",
@@ -156,7 +156,7 @@ const FAQS: Array<{ q: string; a: string }> = [
   },
   {
     q: "We already started in spreadsheets. Is switching painful?",
-    a: "Put in the big three — date, guest list, budget — and you’re moved in. Most couples do it in an evening with a show on in the background, and never open the spreadsheet again.",
+    a: "Put in the big three (date, guest list, budget) and you’re moved in. Most couples do it in an evening with a show on in the background, and never open the spreadsheet again.",
   },
 ];
 
@@ -198,7 +198,8 @@ function Reassurance({ dark = false }: { dark?: boolean }) {
   );
 }
 
-const serif = { fontFamily: "var(--font-playfair)" } as const;
+/** Main headings: EditorsNote Light, like the rest of the site's heroes. */
+const editors = { fontFamily: "EditorsNote, serif", fontWeight: 300 } as const;
 
 /* -------------------------------------------------------------------- */
 /*  Page                                                                  */
@@ -237,15 +238,16 @@ export default function WeddingPlannerPage() {
             <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#8a7448]">
               The free StoryVenue Wedding Planner
             </p>
-            <h1 className="mx-auto mt-4 max-w-3xl text-4xl leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
-              Plan your whole wedding from{" "}
-              <em style={serif} className="italic">
-                one beautiful place
-              </em>
+            <h1
+              style={editors}
+              className="mx-auto mt-4 max-w-3xl text-balance text-[2.75rem] leading-[1.06] tracking-tight sm:text-6xl lg:text-7xl"
+            >
+              Plan your whole wedding from <em className="italic">one beautiful place</em>
             </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-stone-600">
-              Budget, guest list, RSVPs, seating chart, checklist, timeline, vendors — and a free
-              wedding website. Everything that lives in eleven tabs right now, in one tab by tonight.
+            <p className="mx-auto mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-stone-600">
+              Budget, guest list, RSVPs, seating chart, checklist, timeline, vendors, and a free
+              wedding website. Everything that lives in eleven tabs right now, in one tab
+              by&nbsp;tonight.
             </p>
             <div className="mt-8 flex flex-col items-center gap-3">
               <CTAButton>Start planning free</CTAButton>
@@ -283,11 +285,8 @@ export default function WeddingPlannerPage() {
         {/* PAIN                                                          */}
         {/* ============================================================ */}
         <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <h2 className="mx-auto max-w-2xl text-center text-3xl tracking-tight sm:text-4xl">
-            Sound{" "}
-            <em style={serif} className="italic">
-              familiar?
-            </em>
+          <h2 style={editors} className="mx-auto max-w-2xl text-balance text-center text-4xl tracking-tight sm:text-5xl">
+            Sound <em className="italic">familiar?</em>
           </h2>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {PAINS.map(({ icon: Icon, text }) => (
@@ -295,7 +294,7 @@ export default function WeddingPlannerPage() {
                 <span className="mt-0.5 rounded-full bg-stone-100 p-2">
                   <Icon className="h-4 w-4 text-stone-600" />
                 </span>
-                <p className="text-[15px] leading-relaxed text-stone-700">{text}</p>
+                <p className="text-pretty text-[15px] leading-relaxed text-stone-700">{text}</p>
               </div>
             ))}
           </div>
@@ -309,25 +308,23 @@ export default function WeddingPlannerPage() {
             <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#d4c4ad]">
               The real problem isn&rsquo;t the wedding
             </p>
-            <h2 className="mt-4 text-3xl leading-snug tracking-tight sm:text-4xl">
+            <h2 style={editors} className="mt-4 text-balance text-4xl leading-snug tracking-tight sm:text-5xl">
               None of it is hard on its own.{" "}
-              <em style={serif} className="italic text-[#d4c4ad]">
-                It&rsquo;s hard because it&rsquo;s scattered.
-              </em>
+              <em className="italic text-[#d4c4ad]">It&rsquo;s hard because it&rsquo;s scattered.</em>
             </h2>
             <div className="mt-7 space-y-5 text-left text-[17px] leading-relaxed text-stone-300 sm:text-center">
-              <p>
+              <p className="text-pretty">
                 Scattered is how a deposit gets paid twice. How the photographer you loved gets booked
                 by another couple while you hunt for her quote in three inboxes. How Aunt Dana ends up
-                with no seat and the caterer with the wrong count.
+                with no seat and the caterer with the wrong&nbsp;count.
               </p>
-              <p>
+              <p className="text-pretty">
                 Scattered is planning the happiest day of your life with the back of your mind
-                permanently whispering, <em style={serif} className="italic text-stone-200">you&rsquo;re forgetting something.</em>
+                permanently whispering, <em style={editors} className="italic text-stone-200">you&rsquo;re forgetting something.</em>
               </p>
-              <p className="font-medium text-white">
+              <p className="text-pretty font-medium text-white">
                 You didn&rsquo;t get engaged to run a logistics operation out of six apps. There&rsquo;s a
-                simpler way to do this.
+                simpler way to do&nbsp;this.
               </p>
             </div>
           </div>
@@ -338,11 +335,8 @@ export default function WeddingPlannerPage() {
         {/* ============================================================ */}
         <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <div className="text-center">
-            <h2 className="text-3xl tracking-tight sm:text-4xl">
-              One home for the whole plan.{" "}
-              <em style={serif} className="italic">
-                Here&rsquo;s how it works:
-              </em>
+            <h2 style={editors} className="text-balance text-4xl tracking-tight sm:text-5xl">
+              One home for the whole plan. <em className="italic">Here&rsquo;s how it works:</em>
             </h2>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -352,13 +346,13 @@ export default function WeddingPlannerPage() {
                   {s.n}
                 </span>
                 <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-stone-600">{s.text}</p>
+                <p className="mt-2 text-pretty text-[15px] leading-relaxed text-stone-600">{s.text}</p>
               </div>
             ))}
           </div>
-          <p className="mx-auto mt-10 max-w-2xl text-center text-[15px] leading-relaxed text-stone-500">
-            Built by StoryVenue — the platform wedding venues run their bookings on. We built the
-            venue side. This is the couple side, and it&rsquo;s yours free.
+          <p className="mx-auto mt-10 max-w-2xl text-pretty text-center text-[15px] leading-relaxed text-stone-500">
+            Built by StoryVenue, the platform wedding venues run their bookings on. We built the
+            venue side. This is the couple side, and it&rsquo;s yours&nbsp;free.
           </p>
         </section>
 
@@ -369,13 +363,10 @@ export default function WeddingPlannerPage() {
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="text-center">
               <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#8a7448]">
-                Everything you get — free
+                Everything you get, free
               </p>
-              <h2 className="mt-3 text-3xl tracking-tight sm:text-4xl">
-                Six tools.{" "}
-                <em style={serif} className="italic">
-                  One plan.
-                </em>
+              <h2 style={editors} className="mt-3 text-balance text-4xl tracking-tight sm:text-5xl">
+                Six tools. <em className="italic">One plan.</em>
               </h2>
             </div>
 
@@ -389,11 +380,13 @@ export default function WeddingPlannerPage() {
                     <span className="inline-flex rounded-full bg-white p-2.5 shadow-sm ring-1 ring-stone-200">
                       <Icon className="h-5 w-5 text-[#8a7448]" />
                     </span>
-                    <h3 className="mt-4 text-2xl tracking-tight">{title}</h3>
-                    <p className="mt-3 text-[16px] leading-relaxed text-stone-600">{text}</p>
+                    <h3 style={editors} className="mt-4 text-balance text-3xl tracking-tight">
+                      {title}
+                    </h3>
+                    <p className="mt-3 text-pretty text-[16px] leading-relaxed text-stone-600">{text}</p>
                     <ul className="mt-5 space-y-2.5">
                       {points.map((p) => (
-                        <li key={p} className="flex items-start gap-2.5 text-[15px] text-stone-700">
+                        <li key={p} className="flex items-start gap-2.5 text-pretty text-[15px] text-stone-700">
                           <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
                           {p}
                         </li>
@@ -416,7 +409,7 @@ export default function WeddingPlannerPage() {
 
             <p className="mx-auto mt-14 flex max-w-xl items-center justify-center gap-2.5 rounded-full border border-stone-200 bg-white px-6 py-3.5 text-center text-[14px] text-stone-600">
               <Users className="h-4 w-4 shrink-0 text-[#8a7448]" />
-              Plan it together — invite your partner or your mom. Your budget stays yours alone.
+              Plan it together. Invite your partner or your mom; your budget stays yours&nbsp;alone.
             </p>
           </div>
         </section>
@@ -430,21 +423,18 @@ export default function WeddingPlannerPage() {
               <span className="rounded-full bg-emerald-50 p-2.5">
                 <Lock className="h-5 w-5 text-emerald-700" />
               </span>
-              <h2 className="text-2xl tracking-tight sm:text-3xl">
-                Free.{" "}
-                <em style={serif} className="italic">
-                  Actually free.
-                </em>
+              <h2 style={editors} className="text-3xl tracking-tight sm:text-4xl">
+                Free. <em className="italic">Actually free.</em>
               </h2>
             </div>
-            <p className="mt-4 text-[16px] leading-relaxed text-stone-600">
+            <p className="mt-4 text-pretty text-[16px] leading-relaxed text-stone-600">
               Here&rsquo;s the whole deal, in plain words: venues pay StoryVenue for their booking
-              software — that&rsquo;s the business. The Wedding Planner is how we make their couples&rsquo;
-              lives easier, so for couples it&rsquo;s simply free.
+              software. That&rsquo;s the business. The Wedding Planner is how we make their couples&rsquo;
+              lives easier, so for couples it&rsquo;s simply&nbsp;free.
             </p>
             <ul className="mt-6 grid gap-3 sm:grid-cols-2">
               {GUARANTEES.map((g) => (
-                <li key={g} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-stone-700">
+                <li key={g} className="flex items-start gap-2.5 text-pretty text-[15px] leading-relaxed text-stone-700">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
                   {g}
                 </li>
@@ -462,11 +452,8 @@ export default function WeddingPlannerPage() {
         {/* ============================================================ */}
         <section className="bg-stone-50 py-20">
           <div className="mx-auto max-w-3xl px-4 sm:px-6">
-            <h2 className="text-center text-3xl tracking-tight sm:text-4xl">
-              Questions,{" "}
-              <em style={serif} className="italic">
-                answered.
-              </em>
+            <h2 style={editors} className="text-balance text-center text-4xl tracking-tight sm:text-5xl">
+              Questions, <em className="italic">answered.</em>
             </h2>
             <div className="mt-10 space-y-3">
               {FAQS.map((f) => (
@@ -475,7 +462,7 @@ export default function WeddingPlannerPage() {
                     {f.q}
                     <ChevronDown className="h-4 w-4 shrink-0 text-stone-400 transition group-open:rotate-180" />
                   </summary>
-                  <p className="mt-3 text-[15px] leading-relaxed text-stone-600">{f.a}</p>
+                  <p className="mt-3 text-pretty text-[15px] leading-relaxed text-stone-600">{f.a}</p>
                 </details>
               ))}
             </div>
@@ -487,15 +474,12 @@ export default function WeddingPlannerPage() {
         {/* ============================================================ */}
         <section className="bg-[#1b1b1b] py-24 text-center text-white">
           <div className="mx-auto max-w-2xl px-4 sm:px-6">
-            <h2 className="text-3xl leading-tight tracking-tight sm:text-5xl">
-              Your wedding,{" "}
-              <em style={serif} className="italic text-[#d4c4ad]">
-                organized by tonight.
-              </em>
+            <h2 style={editors} className="text-balance text-4xl leading-tight tracking-tight sm:text-6xl">
+              Your wedding, <em className="italic text-[#d4c4ad]">organized by tonight.</em>
             </h2>
-            <p className="mt-5 text-[17px] leading-relaxed text-stone-300">
+            <p className="mt-5 text-pretty text-[17px] leading-relaxed text-stone-300">
               Two minutes to start, on your laptop or your phone. And the next time someone asks
-              &ldquo;how&rsquo;s planning going?&rdquo; — you&rsquo;ll just smile.
+              &ldquo;how&rsquo;s planning going?&rdquo; you&rsquo;ll just&nbsp;smile.
             </p>
             <div className="mt-8 flex flex-col items-center gap-3">
               <CTAButton dark>Start planning free</CTAButton>
