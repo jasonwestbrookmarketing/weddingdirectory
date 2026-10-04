@@ -30,7 +30,7 @@ const OG_IMAGE = "/og-wedding-planner.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://storyvenue.com"),
-  title: "Free Wedding Planner — Budget, Guest List, Seating & Website | StoryVenue",
+  title: "Free Wedding Planner | Budget, Guest List, Seating & Website | StoryVenue",
   description:
     "Plan your whole wedding from one place, free: budget tracker, guest list with RSVPs, seating chart, checklist, timeline, vendors, and a free wedding website. No credit card, no vendor spam.",
   alternates: { canonical: "/wedding-planner" },
@@ -231,7 +231,7 @@ export default function WeddingPlannerPage() {
 
       <main className="bg-white text-[#1b1b1b]">
         {/* ============================================================ */}
-        {/* PROMISE — hero                                                */}
+        {/* PROMISE: hero                                                */}
         {/* ============================================================ */}
         <section className="overflow-hidden bg-stone-50">
           <div className="mx-auto max-w-6xl px-4 pb-10 pt-16 text-center sm:px-6 lg:pt-24">
@@ -331,7 +331,7 @@ export default function WeddingPlannerPage() {
         </section>
 
         {/* ============================================================ */}
-        {/* SOLUTION — the plan                                           */}
+        {/* SOLUTION: the plan                                           */}
         {/* ============================================================ */}
         <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <div className="text-center">
