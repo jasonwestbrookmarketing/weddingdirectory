@@ -5,7 +5,21 @@
  * (same read-only RLS the venue pages use). No dependency on the dashboard API.
  */
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@supabase/supabase-js';
+
+/**
+ * These helpers feed statically prerendered pages (/venues, state hubs, the
+ * sitemap). The cookie-bound server client can't run during prerender, which
+ * silently baked those pages empty on every build (the Oct 3 outage made it
+ * visible). Public reads need no cookies, so use the plain anon client.
+ */
+function anonClient() {
+  return createClient(
+    String(process.env.NEXT_PUBLIC_SUPABASE_URL),
+    String(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
+    { auth: { persistSession: false } },
+  );
+}
 import { stateFullName, stateSlug, citySlug } from '@/lib/us-states';
 
 export interface DirectoryVenue {
@@ -22,7 +36,7 @@ export interface DirectoryVenue {
  */
 export async function fetchAllPublishedVenues(): Promise<DirectoryVenue[]> {
   try {
-    const supabase = await createClient();
+    const supabase = anonClient();
     const pageSize = 1000;
     const out: DirectoryVenue[] = [];
     for (let from = 0; from < 20_000; from += pageSize) {

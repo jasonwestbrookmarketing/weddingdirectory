@@ -35,7 +35,7 @@ function authorized(req: NextRequest): boolean {
 
 function purge(slug: string | null, extraPaths: string[]): string[] {
   const revalidated: string[] = [];
-  const paths = ["/", "/search", ...extraPaths];
+  const paths = ["/", "/search", "/venues", ...extraPaths];
   if (slug) paths.push(`/venue/${slug}`);
   for (const p of paths) {
     try {
