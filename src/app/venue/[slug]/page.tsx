@@ -230,7 +230,9 @@ export default async function VenuePage({ params, searchParams }: Props) {
   // Fetch nav_permissions + hide_header in one query.
   // Venues without a plan (legacy) get full access + header visible.
   let pricingGuideEnabled = true;
-  let hideHeader = false;
+  // Landing page mode: per-plan (hide_header) or per-venue (the Venue
+  // Management "Private Client" checkbox switches the venue flag on).
+  let hideHeader = venue.landing_page_mode === true;
   if (venue.directory_plan_id) {
     const { data: plan } = await supabase
       .from("directory_plans")
@@ -240,7 +242,7 @@ export default async function VenuePage({ params, searchParams }: Props) {
     if (plan) {
       const perms = (plan.nav_permissions ?? {}) as Record<string, boolean>;
       pricingGuideEnabled = perms["nav_listing_pricing_guide"] === true;
-      hideHeader = (plan as Record<string, unknown>).hide_header === true;
+      if ((plan as Record<string, unknown>).hide_header === true) hideHeader = true;
     } else {
       pricingGuideEnabled = false;
     }

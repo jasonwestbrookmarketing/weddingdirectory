@@ -27,7 +27,7 @@ export type Json =
  * this repo must select from this list (or a subset of it) instead of `*`.
  */
 export const ANON_VENUE_SELECT =
-  "id, slug, name, description, venue_type, location_full, location_city, location_state, lat, lng, capacity_min, capacity_max, price_min, price_max, indoor_outdoor, features, cover_image_url, gallery_images, availability_notes, is_published, is_demo, demo_preview_token, brand_website, phone, email, show_map, announcement, social_links, lead_link_links, faq, google_place_id, google_reviews_cache, google_reviews_fetched_at, directory_verified_status, directory_sponsored_status, directory_plan_id, meta_pixel_id, seo_title, seo_description, seo_keywords, created_at, updated_at" as const;
+  "id, slug, name, description, venue_type, location_full, location_city, location_state, lat, lng, capacity_min, capacity_max, price_min, price_max, indoor_outdoor, features, cover_image_url, gallery_images, availability_notes, is_published, is_demo, demo_preview_token, brand_website, phone, email, show_map, announcement, social_links, lead_link_links, landing_page_mode, faq, google_place_id, google_reviews_cache, google_reviews_fetched_at, directory_verified_status, directory_sponsored_status, directory_plan_id, meta_pixel_id, seo_title, seo_description, seo_keywords, created_at, updated_at" as const;
 
 export type Database = {
   public: {
@@ -106,6 +106,7 @@ export interface Venue {
   social_links: Json | null;
   /** Up to 3 custom bio-link buttons: [{ label, url, icon }]. See LeadLinkCustomLink. */
   lead_link_links: Json | null;
+  landing_page_mode: boolean | null;
   /** Array of { question, answer } pairs. See VenueFaqItem. */
   faq: Json | null;
   /** Google Maps Place ID (e.g. ChIJ...) if the venue connected Google reviews. */
