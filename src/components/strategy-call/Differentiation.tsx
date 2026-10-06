@@ -105,7 +105,7 @@ export default function Differentiation() {
               <div className="shrink-0 flex flex-col items-start gap-2 sm:w-[180px]">
                 <Image
                   src="/storyvenue-dark-logo.png"
-                  alt="StoryVenue™"
+                  alt="StoryVenue"
                   width={160}
                   height={36}
                   unoptimized

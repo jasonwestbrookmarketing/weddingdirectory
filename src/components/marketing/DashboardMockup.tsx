@@ -152,7 +152,7 @@ function DashboardScreen() {
         <div>
           {/* Logo */}
           <div className="px-2.5 mb-2">
-            <p className="text-[10px] font-bold text-stone-900">StoryVenue™</p>
+            <p className="text-[10px] font-bold text-stone-900">StoryVenue</p>
           </div>
           {/* Nav items */}
           <div className="flex flex-col gap-px px-1.5">
